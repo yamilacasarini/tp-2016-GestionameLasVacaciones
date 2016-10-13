@@ -14,3 +14,13 @@ C:\Users\Wall-E\Desktop\ClinicaFrba\ClinicaFrba\bin\Debug\ClinicaFrba.pdb
 C:\Users\Wall-E\Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.csprojResolveAssemblyReference.cache
 C:\Users\Wall-E\Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.Properties.Resources.resources
 C:\Users\Wall-E\Desktop\ClinicaFrba\ClinicaFrba\obj\Debug\ClinicaFrba.csproj.GenerateResource.Cache
+C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\bin\Debug\ClinicaFrba.exe.config
+C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.exe
+C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.pdb
+C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\bin\Debug\ClinicaFrba.exe
+C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\bin\Debug\ClinicaFrba.pdb
+C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.csprojResolveAssemblyReference.cache
+C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.Form1.resources
+C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Properties.Resources.resources
+C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.csproj.GenerateResource.Cache
+C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.AbmRol.form_ABMRoles.resources
