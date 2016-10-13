@@ -68,17 +68,23 @@
     <Compile Include="Abm Profesional\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmRol\elegirRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\elegirRol.Designer.cs">
+      <DependentUpon>elegirRol.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmRol\crearRol.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmRol\crearRol.Designer.cs">
       <DependentUpon>crearRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\form_ABMRoles.cs">
+    <Compile Include="AbmRol\ABMRoles.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\form_ABMRoles.Designer.cs">
-      <DependentUpon>form_ABMRoles.cs</DependentUpon>
+    <Compile Include="AbmRol\ABMRoles.Designer.cs">
+      <DependentUpon>ABMRoles.cs</DependentUpon>
     </Compile>
     <Compile Include="Cancelar Atencion\Form1.cs">
       <SubType>Form</SubType>
@@ -92,11 +98,13 @@
     <Compile Include="Compra Bono\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="ConeccionSql.cs" />
+    <Compile Include="Seccion.cs" />
+    <Compile Include="login.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="login.Designer.cs">
+      <DependentUpon>login.cs</DependentUpon>
     </Compile>
     <Compile Include="Listados\Form1.cs">
       <SubType>Form</SubType>
@@ -133,11 +141,17 @@
     <EmbeddedResource Include="Abm Afiliado\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\elegirRol.resx">
+      <DependentUpon>elegirRol.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\crearRol.resx">
       <DependentUpon>crearRol.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRol\form_ABMRoles.resx">
-      <DependentUpon>form_ABMRoles.cs</DependentUpon>
+    <EmbeddedResource Include="AbmRol\ABMRoles.resx">
+      <DependentUpon>ABMRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="login.resx">
+      <DependentUpon>login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -148,6 +162,21 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="Properties\DataSources\ClinicaFrba.Abm_Afiliado.Form1.datasource" />
+    <None Include="Properties\DataSources\ClinicaFrba.Abm_Especialidades_Medicas.Form1.datasource" />
+    <None Include="Properties\DataSources\ClinicaFrba.Abm_Planes.Form1.datasource" />
+    <None Include="Properties\DataSources\ClinicaFrba.Abm_Profesional.Form1.datasource" />
+    <None Include="Properties\DataSources\ClinicaFrba.Cancelar_Atencion.Form1.datasource" />
+    <None Include="Properties\DataSources\ClinicaFrba.Compra_Bono.Form1.datasource" />
+    <None Include="Properties\DataSources\ClinicaFrba.Listados.Form1.datasource" />
+    <None Include="Properties\DataSources\ClinicaFrba.Pedir_Turno.Form1.datasource" />
+    <None Include="Properties\DataSources\ClinicaFrba.Properties.Resources.datasource" />
+    <None Include="Properties\DataSources\ClinicaFrba.Properties.Settings.datasource" />
+    <None Include="Properties\DataSources\ClinicaFrba.Registrar_Agenta_Medico.Form1.datasource" />
+    <None Include="Properties\DataSources\ClinicaFrba.Registro_Llegada.Form1.datasource" />
+    <None Include="Properties\DataSources\ClinicaFrba.Registro_Resultado.Form1.datasource" />
+    <None Include="Properties\DataSources\Form1.datasource" />
+    <None Include="Properties\DataSources\Program.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
