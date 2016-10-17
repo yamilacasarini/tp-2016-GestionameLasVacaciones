@@ -94,7 +94,7 @@ CREATE TABLE Modificacion(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   idPaciente INT REFERENCES Paciente(id),
   idPlan INT REFERENCES Servicio(id),
-  fecha DATE,
+  fecha DATE DEFAULT NULL,
    )
 CREATE TABLE Bono(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
@@ -179,8 +179,9 @@ SELECT DISTINCT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direcc
 				Plan_Med_Codigo,Plan_Med_Descripcion,Plan_Med_Precio_Bono_Farmacia,Plan_Med_Precio_Bono_Consulta, Compra_Bono_Fecha
 					FROM gd_esquema.Maestra
 
+
 INSERT INTO Paciente(nombre,apellido,documento, direccion, telefono, email, fechaNacimiento)
-	SELECT DISTINCT nombre,apellido,dni,direccion,telefono,email,fechaNacimiento
+	SELECT distinct nombre,apellido,dni,direccion,telefono,email,fechaNacimiento
 		FROM #PacienteTemporal
 
 INSERT INTO Servicio(id,descripcion, precioCuota, precioBono)
@@ -201,18 +202,18 @@ INSERT INTO Profesional(nombre,apellido,documento,direccion,email,fechaNacimient
 	SELECT DISTINCT Medico_Nombre,Medico_Apellido,Medico_Dni,Medico_Direccion,Medico_Mail,Medico_Fecha_Nac,Medico_Telefono
 	FROM gd_esquema.Maestra
 	WHERE Medico_Nombre IS NOT NULL
-
+	
 INSERT INTO RolxFuncionalidad(idFuncionalidad, idRol)
-	SELECT DISTINCT f.id, r.id FROM Funcionalidad f, Rol r WHERE r.id = 1
+	SELECT DISTINCT Funcionalidad.id, Rol.id FROM Funcionalidad, Rol WHERE Rol.id = 1
 
 INSERT INTO RolxUsuario(idRol, idUsuario) 
-	SELECT DISTINCT r.id, u.id FROM Rol r, Usuario u WHERE r.id = 1
+	SELECT   Rol.id, Usuario.id FROM Rol , Usuario  WHERE Rol.id = 1
 
 --Probar, depende del inserser de CompraBono DE ACA PARA ABAJO
 INSERT INTO Bono(idCompraBono, idPaciente, idPlan)
 	SELECT c.id, p.id, s.id FROM CompraBono c, Paciente p, Servicio s
 
-	-- Que?
+
 INSERT INTO Especialidad(id,descripcion,tipoEspecialidad)
 	SELECT DISTINCT	Especialidad_Codigo,Especialidad_Descripcion,Tipo_Especialidad_Descripcion
 	FROM gd_esquema.Maestra
@@ -237,6 +238,7 @@ INSERT INTO EspecialidadxProfesional(idEspecialidad, idProfesional)
 
 -- FUNCION PARA SACAR EL idUsuario del DNI
 GO
+
 CREATE FUNCTION funcObtenerIdDeDni(@dni INT)
 RETURNS INTEGER
 AS
@@ -251,8 +253,6 @@ BEGIN
 		
 	RETURN @retorno;
 END
-SELECT * FROM gd_esquema.Maestra
-
 
 
 
