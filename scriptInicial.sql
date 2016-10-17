@@ -13,10 +13,9 @@ DROP TABLE Bono
 DROP TABLE ConsultaMedica
 DROP TABLE Turno
 DROP TABLE Cancelacion
-DROP TABLE CancelacionProfesional
 DROP TABLE Especialidad
 DROP TABLE EspecialidadxProfesional
-
+DROP TABLE AgendaxEspxProf
 
 CREATE TABLE Funcionalidad (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
@@ -124,16 +123,16 @@ CREATE TABLE Cancelacion(
   tipoCancelacion INT NOT NULL,
   motivo VARCHAR(255),
   )
-CREATE TABLE CancelacionProfesional(
-  id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  idProfesional INT REFERENCES Profesional(id),
-  fecha DATE NOT NULL
-  )
 CREATE TABLE Especialidad(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   descripcion VARCHAR(255),
-  tipoEspecialidad VARCHAR(30) NOT NULL,
+  tipoEspecialidad VARCHAR(30),
   )
+CREATE TABLE AgendaxEspxProf(
+	idAgenda INT REFERENCES Agenda(id),
+	idEspecialidad INT REFERENCES Especialidad(id),
+	idProfesional INT REFERENCES Profesional(id),
+)
 CREATE TABLE EspecialidadxProfesional(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   idEspecialidad INT REFERENCES Especialidad(id) ,
@@ -157,6 +156,7 @@ CREATE TABLE #PacienteTemporal(
   precioBono INT NOT NULL,
   precioCuota INT NOT NULL,
   descripcion varchar(255),
+  Compra_Bono_Fecha datetime,
   )
 
 --- Creando los datos
@@ -164,9 +164,19 @@ INSERT INTO Rol(descripcion) VALUES ('Administrativo')
 INSERT INTO Rol(descripcion) VALUES ('Afiliado')
 INSERT INTO Rol(descripcion) VALUES ('Profesional')
 
-INSERT INTO #PacienteTemporal(nombre,apellido,dni,direccion,telefono,email,fechaNacimiento,idPlan,descripcion,precioBono,precioCuota)
+INSERT INTO Funcionalidad(descripcion) VALUES ('ABM ROL')
+INSERT INTO Funcionalidad(descripcion) VALUES ('ABM AFILIADOS')
+INSERT INTO Funcionalidad(descripcion) VALUES ('COMPRA BONOS')
+INSERT INTO Funcionalidad(descripcion) VALUES ('PEDIDO DE TURNO')
+INSERT INTO Funcionalidad(descripcion) VALUES ('REGISTRO DE LLEGADA')
+INSERT INTO Funcionalidad(descripcion) VALUES ('CANCELAR TURNO')
+INSERT INTO Funcionalidad(descripcion) VALUES ('LISTADO ESTADISTICO')
+
+INSERT INTO Usuario (usuario, pass) VALUES ('admin', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7')
+
+INSERT INTO #PacienteTemporal(nombre,apellido,dni,direccion,telefono,email,fechaNacimiento,idPlan,descripcion,precioBono,precioCuota, Compra_Bono_Fecha)
 SELECT DISTINCT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direccion, Paciente_Telefono, Paciente_Mail,Paciente_Fecha_Nac,
-				Plan_Med_Codigo,Plan_Med_Descripcion,Plan_Med_Precio_Bono_Farmacia,Plan_Med_Precio_Bono_Consulta
+				Plan_Med_Codigo,Plan_Med_Descripcion,Plan_Med_Precio_Bono_Farmacia,Plan_Med_Precio_Bono_Consulta, Compra_Bono_Fecha
 					FROM gd_esquema.Maestra
 
 INSERT INTO Paciente(nombre,apellido,documento, direccion, telefono, email, fechaNacimiento)
@@ -180,22 +190,51 @@ INSERT INTO Servicio(id,descripcion, precioCuota, precioBono)
 INSERT INTO Modificacion(idPaciente,idPlan)
 	SELECT DISTINCT id,idPlan
 		FROM #PacienteTemporal
-		
-INSERT INTO CompraBono(idPaciente,cantidad,monto)
-	SELECT DISTINCT id,COUNT(precioBono) + COUNT(precioCuota),SUM(precioBono) + SUM(precioCuota)
-	FROM #PacienteTemporal
-	GROUP BY id
+
+--Preguntar		
+--INSERT INTO CompraBono(idPaciente,cantidad,monto)
+--	SELECT id, COUNT(cantidad), suma
+--	FROM gd_esquema.Maestra
+--	GROUP BY Paciente_nombre, Paciente_Apellido, Paciente_Dni
 
 INSERT INTO Profesional(nombre,apellido,documento,direccion,email,fechaNacimiento,telefono)
 	SELECT DISTINCT Medico_Nombre,Medico_Apellido,Medico_Dni,Medico_Direccion,Medico_Mail,Medico_Fecha_Nac,Medico_Telefono
 	FROM gd_esquema.Maestra
 	WHERE Medico_Nombre IS NOT NULL
 
+INSERT INTO RolxFuncionalidad(idFuncionalidad, idRol)
+	SELECT DISTINCT f.id, r.id FROM Funcionalidad f, Rol r WHERE r.id = 1
+
+INSERT INTO RolxUsuario(idRol, idUsuario) 
+	SELECT DISTINCT r.id, u.id FROM Rol r, Usuario u WHERE r.id = 1
+
+--Probar, depende del inserser de CompraBono DE ACA PARA ABAJO
+INSERT INTO Bono(idCompraBono, idPaciente, idPlan)
+	SELECT c.id, p.id, s.id FROM CompraBono c, Paciente p, Servicio s
+
 	-- Que?
 INSERT INTO Especialidad(id,descripcion,tipoEspecialidad)
 	SELECT DISTINCT	Especialidad_Codigo,Especialidad_Descripcion,Tipo_Especialidad_Descripcion
 	FROM gd_esquema.Maestra
-	
+
+--Meter Bono_Consulta_Numero en algun lugar del bono ACORDARSE
+INSERT INTO ConsultaMedica(idBono, sintomas, fecha, diagnostico)
+	SELECT b.id, Consulta_Sintomas, Turno_Fecha, Consulta_Enfermedades FROM Bono b, gd_esquema.Maestra
+
+INSERT INTO Turno(idConsultaMedica, idPaciente, idProfesional, fecha)
+	SELECT c.id, p.id, prof.id, Turno_Fecha FROM ConsultaMedica c, Paciente p, Profesional prof, gd_esquema.Maestra
+
+INSERT INTO Especialidad(descripcion, tipoEspecialidad)
+	SELECT DISTINCT Especialidad_Descripcion, Especialidad_Codigo 
+	FROM gd_esquema.Maestra
+	WHERE Especialidad_Codigo IS NOT NULL AND Especialidad_Descripcion IS NOT NULL
+
+INSERT INTO AgendaxEspxProf(idAgenda, idEspecialidad, idProfesional)
+	SELECT a.id, e.id, p.id FROM Agenda a, Especialidad e, Profesional p
+
+INSERT INTO EspecialidadxProfesional(idEspecialidad, idProfesional)
+	SELECT e.id, p.id FROM Especialidad e, Profesional p
+
 -- FUNCION PARA SACAR EL idUsuario del DNI
 GO
 CREATE FUNCTION funcObtenerIdDeDni(@dni INT)
