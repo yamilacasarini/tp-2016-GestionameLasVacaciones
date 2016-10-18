@@ -25,7 +25,7 @@ namespace ClinicaFrba.AbmRol
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            ABMRoles roles = new ABMRoles();
+            Principal roles = new Principal();
             roles.Show();
             this.Close();
 

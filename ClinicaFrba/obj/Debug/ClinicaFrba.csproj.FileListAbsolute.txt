@@ -24,3 +24,6 @@ C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\Clinica
 C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Properties.Resources.resources
 C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.csproj.GenerateResource.Cache
 C:\Users\MaluP\git\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.AbmRol.form_ABMRoles.resources
+C:\Users\Wall-E\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\bin\Debug\ClinicaFrba.exe.config
+C:\Users\Wall-E\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.exe
+C:\Users\Wall-E\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.pdb

@@ -40,7 +40,7 @@
             // buttonModificar
             // 
             this.buttonModificar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.buttonModificar.Location = new System.Drawing.Point(178, 160);
+            this.buttonModificar.Location = new System.Drawing.Point(196, 219);
             this.buttonModificar.Name = "buttonModificar";
             this.buttonModificar.Size = new System.Drawing.Size(76, 30);
             this.buttonModificar.TabIndex = 5;
@@ -51,7 +51,7 @@
             // buttonAceptar
             // 
             this.buttonAceptar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.buttonAceptar.Location = new System.Drawing.Point(84, 160);
+            this.buttonAceptar.Location = new System.Drawing.Point(12, 219);
             this.buttonAceptar.Name = "buttonAceptar";
             this.buttonAceptar.Size = new System.Drawing.Size(76, 30);
             this.buttonAceptar.TabIndex = 4;
@@ -63,48 +63,48 @@
             // 
             this.titulo.AutoSize = true;
             this.titulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.titulo.Location = new System.Drawing.Point(79, 19);
+            this.titulo.Location = new System.Drawing.Point(62, 29);
             this.titulo.Name = "titulo";
-            this.titulo.Size = new System.Drawing.Size(147, 26);
+            this.titulo.Size = new System.Drawing.Size(154, 26);
             this.titulo.TabIndex = 3;
-            this.titulo.Text = "Inicie Seccion";
+            this.titulo.Text = "Iniciar Seccion";
             this.titulo.Click += new System.EventHandler(this.titulo_Click);
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(154, 75);
+            this.textBox1.Location = new System.Drawing.Point(128, 94);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.Size = new System.Drawing.Size(144, 20);
             this.textBox1.TabIndex = 6;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(154, 117);
+            this.textBox2.Location = new System.Drawing.Point(128, 156);
             this.textBox2.Name = "textBox2";
             this.textBox2.PasswordChar = '*';
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
+            this.textBox2.Size = new System.Drawing.Size(144, 20);
             this.textBox2.TabIndex = 7;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label1.Location = new System.Drawing.Point(40, 82);
+            this.label1.Location = new System.Drawing.Point(12, 92);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(64, 20);
+            this.label1.Size = new System.Drawing.Size(68, 20);
             this.label1.TabIndex = 8;
-            this.label1.Text = "Usuario";
+            this.label1.Text = "Usuario:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label2.Location = new System.Drawing.Point(40, 117);
+            this.label2.Location = new System.Drawing.Point(12, 156);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(92, 20);
+            this.label2.Size = new System.Drawing.Size(96, 20);
             this.label2.TabIndex = 9;
-            this.label2.Text = "Contraseña";
+            this.label2.Text = "Contraseña:";
             // 
             // login
             // 

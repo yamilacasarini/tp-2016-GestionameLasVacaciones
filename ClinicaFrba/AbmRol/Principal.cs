@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ClinicaFrba.AbmRol
 {
-    public partial class ABMRoles : Form
+    public partial class Principal : Form
     {
-        public ABMRoles()
+        public Principal()
         {
             InitializeComponent();
             label_nombre.Hide();

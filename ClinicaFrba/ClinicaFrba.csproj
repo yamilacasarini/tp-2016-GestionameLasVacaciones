@@ -44,17 +44,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abm Afiliado\Form1.cs">
+    <Compile Include="Abm Afiliado\AltaAfiliado.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Afiliado\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Afiliado\AltaAfiliado.Designer.cs">
+      <DependentUpon>AltaAfiliado.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Especialidades Medicas\Form1.cs">
+    <Compile Include="Abm Afiliado\Principal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Especialidades Medicas\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Abm Afiliado\Principal.Designer.cs">
+      <DependentUpon>Principal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Especialidades Medicas\AltaEspecialidades.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Especialidades Medicas\AltaEspecialidades.Designer.cs">
+      <DependentUpon>AltaEspecialidades.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Especialidades Medicas\Principal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Especialidades Medicas\Principal.Designer.cs">
+      <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Planes\Form1.cs">
       <SubType>Form</SubType>
@@ -62,11 +74,23 @@
     <Compile Include="Abm Planes\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Planes\Principal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Planes\Principal.Designer.cs">
+      <DependentUpon>Principal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Profesional\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Abm Profesional\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Profesional\Principal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Profesional\Principal.Designer.cs">
+      <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRol\elegirRol.cs">
       <SubType>Form</SubType>
@@ -80,11 +104,11 @@
     <Compile Include="AbmRol\crearRol.Designer.cs">
       <DependentUpon>crearRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\ABMRoles.cs">
+    <Compile Include="AbmRol\Principal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\ABMRoles.Designer.cs">
-      <DependentUpon>ABMRoles.cs</DependentUpon>
+    <Compile Include="AbmRol\Principal.Designer.cs">
+      <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
     <Compile Include="Cancelar Atencion\Form1.cs">
       <SubType>Form</SubType>
@@ -138,8 +162,23 @@
     <Compile Include="Registro Resultado\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Abm Afiliado\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Afiliado\AltaAfiliado.resx">
+      <DependentUpon>AltaAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\Principal.resx">
+      <DependentUpon>Principal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Especialidades Medicas\AltaEspecialidades.resx">
+      <DependentUpon>AltaEspecialidades.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Especialidades Medicas\Principal.resx">
+      <DependentUpon>Principal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Planes\Principal.resx">
+      <DependentUpon>Principal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Profesional\Principal.resx">
+      <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\elegirRol.resx">
       <DependentUpon>elegirRol.cs</DependentUpon>
@@ -147,8 +186,8 @@
     <EmbeddedResource Include="AbmRol\crearRol.resx">
       <DependentUpon>crearRol.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRol\ABMRoles.resx">
-      <DependentUpon>ABMRoles.cs</DependentUpon>
+    <EmbeddedResource Include="AbmRol\Principal.resx">
+      <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="login.resx">
       <DependentUpon>login.cs</DependentUpon>
