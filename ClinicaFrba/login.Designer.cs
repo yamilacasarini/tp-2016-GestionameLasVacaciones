@@ -65,9 +65,9 @@
             this.titulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
             this.titulo.Location = new System.Drawing.Point(62, 29);
             this.titulo.Name = "titulo";
-            this.titulo.Size = new System.Drawing.Size(154, 26);
+            this.titulo.Size = new System.Drawing.Size(143, 26);
             this.titulo.TabIndex = 3;
-            this.titulo.Text = "Iniciar Seccion";
+            this.titulo.Text = "Iniciar Sesión";
             this.titulo.Click += new System.EventHandler(this.titulo_Click);
             // 
             // textBox1

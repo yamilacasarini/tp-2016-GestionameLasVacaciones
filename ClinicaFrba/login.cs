@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient.SqlCommand;
+//using System.Data.SqlClient.SqlCommand;
 
 namespace ClinicaFrba
 {
     public partial class login : Form
     {
-        Conexion conn = Conexion.Instance;
+        
         Sesion sesion;
         public login()
         {
@@ -26,8 +26,8 @@ namespace ClinicaFrba
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
-        {/*
-            SqlCommand cmd = new SqlCommand("ADIOS_TERCER_ANIO.login", conn.getConexion);
+        {
+     /*       SqlCommand cmd = new SqlCommand("ADIOS_TERCER_ANIO.login", conn.getConexion);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             SqlParameter usuario = new SqlParameter("@usuario", txtUsr.Text);

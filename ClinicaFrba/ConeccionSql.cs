@@ -1,82 +1,72 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using System.Data.SqlClient;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
 
-namespace ClinicaFrba
+namespace AerolineaFrba
 {
-    sealed class Conexion
+    class Server
     {
-        private string source;
-        private string nombreInstancia;
-        private string nombreBD;
-        private string user;
-        private string password;
-        private SqlConnection conn;
-        private static readonly Conexion instance = new Conexion(ConfigurationManager.AppSettings["local"],
-                                                                 ConfigurationManager.AppSettings["tipo"],
-                                                                 ConfigurationManager.AppSettings["base"],
-                                                                 ConfigurationManager.AppSettings["user"],
-                                                                 ConfigurationManager.AppSettings["password"]);
+        string servidor = ConfigurationManager.AppSettings["server"];
+        string db = ConfigurationManager.AppSettings["database"];
+        string user = ConfigurationManager.AppSettings["username"];
+        string password = ConfigurationManager.AppSettings["password"];
 
+        public static Server server;
+        private SqlConnection connection;
+        private SqlDataReader reader;
 
-        public Conexion(String _source, String _nombreInstancia, String _nombreBD, String _user, String _password)
+        /// <summary>Get the instance for the server</summary>
+        public static Server getInstance()
         {
-            this.source = _source;
-            this.nombreInstancia = _nombreInstancia;
-            this.nombreBD = _nombreBD;
-            this.user = _user;
-            this.password = _password;
-            this.conectar();
+            if (server == null)
+            {
+                server = new Server();
+                server.conectar();
+            }
+            return server;
         }
 
-        public void conectar()
+        /// <summary>Execute a query with a return value (functions or selects)</summary>
+        /// <param name="query">Query to be executed</param>
+        /// <returns>Returns the reader with the results of the query</returns>
+        public SqlDataReader query(string query)
         {
-            this.conn = new SqlConnection();
-            conn.ConnectionString = this.conecctionString();
+            SqlCommand command = new SqlCommand(query, this.connection);
+            this.reader = command.ExecuteReader();
+            return this.reader;
+        }
+
+        /// <summary>Close the reader opened with the previous method (if the reader is not closed it will fail in the next execution)</summary>
+        public void closeReader()
+        {
+            this.reader.Close();
+        }
+
+        /// <summary>Execute a query without a return value (procedures, updates, drops, etc)</summary>
+        public void realizarQuery(string query)
+        {
+            this.query(query);
+            this.closeReader();
+        }
+
+        /// <summary>Connects to the database</summary>
+        private void conectar()
+        {
             try
             {
-                this.conn.Open();
+                this.connection = new SqlConnection("Data Source=" + servidor +
+                    ";Initial Catalog=" + db + ";Integrated Security=False;User ID=" + user + ";Password=" + password);
+                this.connection.Open();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                MessageBox.Show("No se pudo establecer la conexión con la Base de datos.");
-                Application.Exit();
+                MessageBox.Show(ex.Message);
             }
         }
-
-        public String conecctionString()
-        {
-            return "Data Source=" + this.source + "\\" + this.nombreInstancia
-                       + ";Initial Catalog=" + this.nombreBD
-                       + ";User ID=" + this.user
-                       + ";Password=" + this.password
-                       + ";Trusted_Connection=False;";
-        }
-
-        public void cerrarConexion()
-        {
-            this.conn.Close();
-        }
-
-        public static Conexion Instance
-        {
-            get
-            {
-                return instance;
-            }
-        }
-
-        public SqlConnection getConexion
-        {
-            get
-            {
-                return conn;
-            }
-        }
-
     }
 }
