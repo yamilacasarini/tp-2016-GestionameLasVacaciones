@@ -1,7 +1,103 @@
 CREATE SCHEMA [GESTIONAME_LAS_VACACIONES]
 GO
 
-DROP TABLE GESTIONAME_LAS_VACACIONES.Funcionalidad
+ DECLARE @name VARCHAR(128)
+DECLARE @SQL VARCHAR(254)
+SELECT @name = (SELECT TOP 1 [name] FROM sysobjects WHERE [type] = 'P' AND category = 0 ORDER BY [name])
+WHILE @name is not null
+BEGIN
+    SELECT @SQL = 'DROP PROCEDURE [GESTIONAME_LAS_VACACIONES].[' + RTRIM(@name) +']'
+    EXEC (@SQL)
+    PRINT 'Dropped Procedure: ' + @name
+    SELECT @name = (SELECT TOP 1 [name] FROM sysobjects WHERE [type] = 'P' AND category = 0 AND [name] > @name ORDER BY [name])
+END
+GO
+
+/* Drop all views */
+DECLARE @name VARCHAR(128)
+DECLARE @SQL VARCHAR(254)
+SELECT @name = (SELECT TOP 1 [name] FROM sysobjects WHERE [type] = 'V' AND category = 0 ORDER BY [name])
+WHILE @name IS NOT NULL
+BEGIN
+    SELECT @SQL = 'DROP VIEW [GESTIONAME_LAS_VACACIONES].[' + RTRIM(@name) +']'
+    EXEC (@SQL)
+    PRINT 'Dropped View: ' + @name
+    SELECT @name = (SELECT TOP 1 [name] FROM sysobjects WHERE [type] = 'V' AND category = 0 AND [name] > @name ORDER BY [name])
+END
+GO
+
+/* Drop all functions */
+DECLARE @name VARCHAR(128)
+DECLARE @SQL VARCHAR(254)
+
+SELECT @name = (SELECT TOP 1 [name] FROM sysobjects WHERE [type] IN (N'FN', N'IF', N'TF', N'FS', N'FT') AND category = 0 ORDER BY [name])
+
+WHILE @name IS NOT NULL
+BEGIN
+    SELECT @SQL = 'DROP FUNCTION [GESTIONAME_LAS_VACACIONES].[' + RTRIM(@name) +']'
+    EXEC (@SQL)
+    PRINT 'Dropped Function: ' + @name
+    SELECT @name = (SELECT TOP 1 [name] FROM sysobjects WHERE [type] IN (N'FN', N'IF', N'TF', N'FS', N'FT') AND category = 0 AND [name] > @name ORDER BY [name])
+END
+GO
+
+/* Drop all Foreign Key constraints */
+DECLARE @name VARCHAR(128)
+DECLARE @constraint VARCHAR(254)
+DECLARE @SQL VARCHAR(254)
+
+SELECT @name = (SELECT TOP 1 TABLE_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE constraint_catalog=DB_NAME() AND CONSTRAINT_TYPE = 'FOREIGN KEY' ORDER BY TABLE_NAME)
+
+WHILE @name is not null
+BEGIN
+    SELECT @constraint = (SELECT TOP 1 CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE constraint_catalog=DB_NAME() AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND TABLE_NAME = @name ORDER BY CONSTRAINT_NAME)
+    WHILE @constraint IS NOT NULL
+    BEGIN
+        SELECT @SQL = 'ALTER TABLE [GESTIONAME_LAS_VACACIONES].[' + RTRIM(@name) +'] DROP CONSTRAINT [' + RTRIM(@constraint) +']'
+        EXEC (@SQL)
+        PRINT 'Dropped FK Constraint: ' + @constraint + ' on ' + @name
+        SELECT @constraint = (SELECT TOP 1 CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE constraint_catalog=DB_NAME() AND CONSTRAINT_TYPE = 'FOREIGN KEY' AND CONSTRAINT_NAME <> @constraint AND TABLE_NAME = @name ORDER BY CONSTRAINT_NAME)
+    END
+SELECT @name = (SELECT TOP 1 TABLE_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE constraint_catalog=DB_NAME() AND CONSTRAINT_TYPE = 'FOREIGN KEY' ORDER BY TABLE_NAME)
+END
+GO
+
+/* Drop all Primary Key constraints */
+DECLARE @name VARCHAR(128)
+DECLARE @constraint VARCHAR(254)
+DECLARE @SQL VARCHAR(254)
+
+SELECT @name = (SELECT TOP 1 TABLE_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE constraint_catalog=DB_NAME() AND CONSTRAINT_TYPE = 'PRIMARY KEY' ORDER BY TABLE_NAME)
+
+WHILE @name IS NOT NULL
+BEGIN
+    SELECT @constraint = (SELECT TOP 1 CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE constraint_catalog=DB_NAME() AND CONSTRAINT_TYPE = 'PRIMARY KEY' AND TABLE_NAME = @name ORDER BY CONSTRAINT_NAME)
+    WHILE @constraint is not null
+    BEGIN
+        SELECT @SQL = 'ALTER TABLE [GESTIONAME_LAS_VACACIONES].[' + RTRIM(@name) +'] DROP CONSTRAINT [' + RTRIM(@constraint)+']'
+        EXEC (@SQL)
+        PRINT 'Dropped PK Constraint: ' + @constraint + ' on ' + @name
+        SELECT @constraint = (SELECT TOP 1 CONSTRAINT_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE constraint_catalog=DB_NAME() AND CONSTRAINT_TYPE = 'PRIMARY KEY' AND CONSTRAINT_NAME <> @constraint AND TABLE_NAME = @name ORDER BY CONSTRAINT_NAME)
+    END
+SELECT @name = (SELECT TOP 1 TABLE_NAME FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE constraint_catalog=DB_NAME() AND CONSTRAINT_TYPE = 'PRIMARY KEY' ORDER BY TABLE_NAME)
+END
+GO
+
+/* Drop all tables */
+DECLARE @name VARCHAR(128)
+DECLARE @SQL VARCHAR(254)
+
+SELECT @name = (SELECT TOP 1 [name] FROM sysobjects WHERE [type] = 'U' AND category = 0 ORDER BY [name])
+
+WHILE @name IS NOT NULL
+BEGIN
+    SELECT @SQL = 'DROP TABLE [GESTIONAME_LAS_VACACIONES].[' + RTRIM(@name) +']'
+    EXEC (@SQL)
+    PRINT 'Dropped Table: ' + @name
+    SELECT @name = (SELECT TOP 1 [name] FROM sysobjects WHERE [type] = 'U' AND category = 0 AND [name] > @name ORDER BY [name])
+END
+
+/*DROP TABLE GESTIONAME_LAS_VACACIONES.Funcionalidad
 DROP TABLE GESTIONAME_LAS_VACACIONES.Rol
 DROP TABLE GESTIONAME_LAS_VACACIONES.Usuario
 DROP TABLE GESTIONAME_LAS_VACACIONES.RolxFuncionalidad
@@ -18,7 +114,8 @@ DROP TABLE GESTIONAME_LAS_VACACIONES.Turno
 DROP TABLE GESTIONAME_LAS_VACACIONES.Cancelacion
 DROP TABLE GESTIONAME_LAS_VACACIONES.Especialidad
 DROP TABLE GESTIONAME_LAS_VACACIONES.EspecialidadxProfesional
-DROP TABLE GESTIONAME_LAS_VACACIONES.AgendaxEspxProf
+DROP TABLE GESTIONAME_LAS_VACACIONES.AgendaxEspxProf*/
+
 
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Funcionalidad (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
@@ -38,19 +135,18 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Usuario (
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.RolxFuncionalidad (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  idRol INT REFERENCES Rol(id) ,
-  idFuncionalidad INT REFERENCES Funcionalidad(id) ,
+  idRol INT REFERENCES GESTIONAME_LAS_VACACIONES.Rol(id) ,
+  idFuncionalidad INT REFERENCES GESTIONAME_LAS_VACACIONES.Funcionalidad(id),
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.RolxUsuario(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  idRol INT REFERENCES Rol(id) ,
-  idUsuario INT REFERENCES Usuario(id) ,
+  idRol INT REFERENCES GESTIONAME_LAS_VACACIONES.Rol(id) ,
+  idUsuario INT REFERENCES GESTIONAME_LAS_VACACIONES.Usuario(id) ,
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY,
   nombre NVARCHAR(50) NOT NULL ,
   apellido NVARCHAR(50) NOT NULL ,
- -- tipoDocumento VARCHAR NOT NULL,
   documento INT NOT NULL,
   direccion VARCHAR(100) NOT NULL,
   telefono INT NOT NULL,
@@ -75,14 +171,14 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Profesional (
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Agenda(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY,
-  idProfesional INT REFERENCES Profesional(id),
+  idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesional(id),
   fechaInicio DATE NOT NULL,   -- ACA PARA FECHA DEL AÑO QUE TRABAJA Y HORARIO
   fechaFinal DATE NOT NULL,
   diaInicio VARCHAR(10),   -- ACA PARA LUNES Y MARTES
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.CompraBono(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY,
-  idPaciente INT REFERENCES Paciente(id),
+  idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Paciente(id),
   cantidad INT NOT NULL DEFAULT 1,
   monto INT NOT NULL,
   fecha DATE NOT NULL,
@@ -96,34 +192,34 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Servicio(
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Modificacion(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  idPaciente INT REFERENCES Paciente(id),
-  idPlan INT REFERENCES Servicio(id),
+  idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Paciente(id),
+  idPlan INT REFERENCES GESTIONAME_LAS_VACACIONES.Servicio(id),
   fecha DATE DEFAULT NULL,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Bono(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  idPaciente INT REFERENCES Paciente(id),
-  idPlan INT REFERENCES Servicio(id),
-  idCompraBono INT REFERENCES CompraBono(id),
+  idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Paciente(id),
+  idPlan INT REFERENCES GESTIONAME_LAS_VACACIONES.Servicio(id),
+  idCompraBono INT REFERENCES GESTIONAME_LAS_VACACIONES.CompraBono(id),
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultaMedica(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  idBono INT REFERENCES Bono(id),
+  idBono INT REFERENCES GESTIONAME_LAS_VACACIONES.Bono(id),
   fecha DATE NOT NULL,
   diagnostico VARCHAR(255) NOT NULL,
   sintomas VARCHAR(255),
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Turno(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  idProfesional INT REFERENCES Profesional(id),
-  idPaciente INT REFERENCES Paciente(id),
-  idConsultaMedica INT REFERENCES ConsultaMedica(id),
+  idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesional(id),
+  idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Paciente(id),
+  idConsultaMedica INT REFERENCES GESTIONAME_LAS_VACACIONES.ConsultaMedica(id),
   fecha DATE NOT NULL,
   baja INT default 0,
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Cancelacion(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  idConsultaMedica INT REFERENCES ConsultaMedica(id),
+  idConsultaMedica INT REFERENCES GESTIONAME_LAS_VACACIONES.ConsultaMedica(id),
   tipoCancelacion INT NOT NULL,
   motivo VARCHAR(255),
   )
@@ -133,17 +229,17 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Especialidad(
   tipoEspecialidad VARCHAR(30),
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.AgendaxEspxProf(
-	idAgenda INT REFERENCES Agenda(id),
-	idEspecialidad INT REFERENCES Especialidad(id),
-	idProfesional INT REFERENCES Profesional(id),
+	idAgenda INT REFERENCES GESTIONAME_LAS_VACACIONES.Agenda(id),
+	idEspecialidad INT REFERENCES GESTIONAME_LAS_VACACIONES.Especialidad(id),
+	idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesional(id),
 )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadxProfesional(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  idEspecialidad INT REFERENCES Especialidad(id) ,
-  idProfesional INT REFERENCES Profesional(id) ,
+  idEspecialidad INT REFERENCES GESTIONAME_LAS_VACACIONES.Especialidad(id) ,
+  idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesional(id) ,
   )
  
-
+GO
 DROP TABLE #PacienteTemporal
 
 CREATE TABLE #PacienteTemporal(
@@ -191,14 +287,15 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Servicio(id,descripcion, precioCuota, prec
 	SELECT DISTINCT idPlan,descripcion, precioCuota, precioBono
 		FROM #PacienteTemporal
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Modificacion(idPaciente,idPlan)
-	SELECT DISTINCT id,idPlan
+INSERT INTO GESTIONAME_LAS_VACACIONES.Modificacion(idPaciente,idPlan,fecha)
+	SELECT DISTINCT id,idPlan,Compra_Bono_Fecha
 		FROM #PacienteTemporal
+		where idPlan is not null and id is not null
 
 
 INSERT INTO CompraBono(idPaciente,fecha,cantidad,monto)
 select p.id,Bono_Consulta_Fecha_Impresion, COUNT(Bono_Consulta_Fecha_Impresion) as cantidad_bonos_por_dia,  COUNT(Bono_Consulta_Fecha_Impresion)* Plan_Med_Precio_Bono_Consulta as monto
-from gd_esquema.Maestra m , Paciente p 
+from gd_esquema.Maestra m , GESTIONAME_LAS_VACACIONES.Paciente p 
 where Bono_Consulta_Fecha_Impresion is not null  and p.documento = Paciente_Dni
 group by Bono_Consulta_Fecha_Impresion, Paciente_Apellido,Paciente_Nombre, Plan_Med_Precio_Bono_Consulta, p.id
 
