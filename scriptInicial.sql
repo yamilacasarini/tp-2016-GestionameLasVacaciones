@@ -96,27 +96,6 @@ BEGIN
     PRINT 'Dropped Table: ' + @name
     SELECT @name = (SELECT TOP 1 [name] FROM sysobjects WHERE [type] = 'U' AND category = 0 AND [name] > @name ORDER BY [name])
 END
-
-/*DROP TABLE GESTIONAME_LAS_VACACIONES.Funcionalidad
-DROP TABLE GESTIONAME_LAS_VACACIONES.Rol
-DROP TABLE GESTIONAME_LAS_VACACIONES.Usuario
-DROP TABLE GESTIONAME_LAS_VACACIONES.RolxFuncionalidad
-DROP TABLE GESTIONAME_LAS_VACACIONES.RolxUsuario
-DROP TABLE GESTIONAME_LAS_VACACIONES.Paciente
-DROP TABLE GESTIONAME_LAS_VACACIONES.Profesional
-DROP TABLE GESTIONAME_LAS_VACACIONES.Agenda
-DROP TABLE GESTIONAME_LAS_VACACIONES.CompraBono
-DROP TABLE GESTIONAME_LAS_VACACIONES.Servicio
-DROP TABLE GESTIONAME_LAS_VACACIONES.Modificacion
-DROP TABLE GESTIONAME_LAS_VACACIONES.Bono
-DROP TABLE GESTIONAME_LAS_VACACIONES.ConsultaMedica
-DROP TABLE GESTIONAME_LAS_VACACIONES.Turno
-DROP TABLE GESTIONAME_LAS_VACACIONES.Cancelacion
-DROP TABLE GESTIONAME_LAS_VACACIONES.Especialidad
-DROP TABLE GESTIONAME_LAS_VACACIONES.EspecialidadxProfesional
-DROP TABLE GESTIONAME_LAS_VACACIONES.AgendaxEspxProf*/
-
-
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Funcionalidad (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   descripcion NVARCHAR(255) NULL ,
@@ -293,7 +272,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Modificacion(idPaciente,idPlan,fecha)
 		where idPlan is not null and id is not null
 
 
-INSERT INTO CompraBono(idPaciente,fecha,cantidad,monto)
+INSERT INTO GESTIONAME_LAS_VACACIONES.CompraBono(idPaciente,fecha,cantidad,monto)
 select p.id,Bono_Consulta_Fecha_Impresion, COUNT(Bono_Consulta_Fecha_Impresion) as cantidad_bonos_por_dia,  COUNT(Bono_Consulta_Fecha_Impresion)* Plan_Med_Precio_Bono_Consulta as monto
 from gd_esquema.Maestra m , GESTIONAME_LAS_VACACIONES.Paciente p 
 where Bono_Consulta_Fecha_Impresion is not null  and p.documento = Paciente_Dni
