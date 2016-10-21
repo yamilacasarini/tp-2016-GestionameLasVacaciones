@@ -96,6 +96,10 @@ BEGIN
     PRINT 'Dropped Table: ' + @name
     SELECT @name = (SELECT TOP 1 [name] FROM sysobjects WHERE [type] = 'U' AND category = 0 AND [name] > @name ORDER BY [name])
 END
+
+
+
+--/////////////////////////////////////////////////////--
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Funcionalidad (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   descripcion NVARCHAR(255) NULL ,
@@ -365,3 +369,21 @@ AS BEGIN
 	WHERE usuarios.usuario = @username
 END
 GO
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.crearRol(@nombre as  varchar(30))
+AS 
+
+BEGIN
+if  not exists   (select descripcion from GESTIONAME_LAS_VACACIONES.Rol where  descripcion like @nombre)
+Insert into GESTIONAME_LAS_VACACIONES.Rol(descripcion) values(@nombre)
+ELSE
+PRINT 'El Rol ya existe'
+END
+GO
+
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.agregarFuncionalidad (@nombreRol as varchar(30),@nombreFuncionalidad as varchar(30))
+AS
+INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidad(descripcion) values (@nombreFuncionalidad)
+INSERT INTO GESTIONAME_LAS_VACACIONES.RolxFuncionalidad(idFuncionalidad,idRol)
+(SELECT id FROM GESTIONAME_LAS_VACACIONES.Funcionalidad WHERE descripcion like @nombreFuncionalidad),
+(SELECT id FROM GESTIONAME_LAS_VACACIONES.Rol WHERE descripcion like @nombreRol)
