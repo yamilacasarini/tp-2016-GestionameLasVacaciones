@@ -97,7 +97,9 @@ namespace ClinicaFrba.Abm_Afiliado
         bool validarDatos(){
            return txNombre.Text.Trim() != "" && txApellido.Text.Trim() != "" &&
                txTelefono.Text.Trim() != "" && txMail.Text.Trim() != "" && 
-               txDireccion.Text.Trim() != "" && txDocumento.Text.Trim() != "";
+               txDireccion.Text.Trim() != "" && txDocumento.Text.Trim() != "" &&
+               cBestadoCivil.Text.Trim() != "" && cBplanMedico.Text.Trim() != "" &&
+               cBsexo.Text.Trim() != "" && cBtipoDocumento.Text.Trim() != "";
         }
 
         private void cBtipoDocumento_SelectedIndexChanged(object sender, EventArgs e)
