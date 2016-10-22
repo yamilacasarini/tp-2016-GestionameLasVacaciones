@@ -435,3 +435,4 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidad(descripcion) values (@nombre
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolxFuncionalidad(idFuncionalidad,idRol)
 (SELECT id FROM GESTIONAME_LAS_VACACIONES.Funcionalidad WHERE descripcion like @nombreFuncionalidad),
 (SELECT id FROM GESTIONAME_LAS_VACACIONES.Rol WHERE descripcion like @nombreRol)
+
