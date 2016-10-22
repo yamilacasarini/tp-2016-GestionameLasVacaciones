@@ -369,9 +369,10 @@ AS BEGIN
 	WHERE usuarios.usuario = @username
 END
 GO
+
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.crearRol(@nombre as  varchar(30))
 AS 
-
 BEGIN
 if  not exists   (select descripcion from GESTIONAME_LAS_VACACIONES.Rol where  descripcion like @nombre)
 Insert into GESTIONAME_LAS_VACACIONES.Rol(descripcion) values(@nombre)
@@ -379,6 +380,53 @@ ELSE
 PRINT 'El Rol ya existe'
 END
 GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarRol(@nombre as  varchar(30))
+AS 
+BEGIN 
+DELETE FROM GESTIONAME_LAS_VACACIONES.Rol WHERE descripcion like @nombre
+END
+GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarRol(@nombreViejo as varchar(30), @nombreNuevo as varchar(30))
+AS
+BEGIN
+UPDATE GESTIONAME_LAS_VACACIONES.Rol
+SET descripcion= @nombreNuevo
+WHERE descripcion= @nombreViejo
+END
+GO
+
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre as nvarchar(50), @apellido as nvarchar(50), 
+@doc as int, @direc as varchar(100), @tel as int, @mail as varchar(255), @nacimiento as DATE, @sexo as char, @civil as varchar(10),
+@cantFami as int)
+AS
+BEGIN 
+IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Paciente WHERE nombre LIKE @nombre AND apellido LIKE @apellido AND documento = @doc) 
+INSERT INTO GESTIONAME_LAS_VACACIONES.Paciente(nombre, apellido, documento, direccion, telefono, email, 
+fechaNacimiento, sexo, estadoCivil, cantFamiliares) VALUES (@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami)
+ELSE
+PRINT 'El paciente ya existe'
+END 
+GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarPaciente(@numAfiliado as int)
+AS
+DELETE GESTIONAME_LAS_VACACIONES.Paciente WHERE id = @numAfiliado
+GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id as int,@nombre as nvarchar(50), @apellido as nvarchar(50), 
+@doc as int, @direc as varchar(100), @tel as int, @mail as varchar(255), @sexo as char, @civil as varchar(10),
+@cantFami as int)
+AS
+BEGIN
+UPDATE GESTIONAME_LAS_VACACIONES.Paciente
+SET nombre = @nombre, apellido  = @apellido , documento = @doc, direccion = @direc, telefono = @tel, email = @mail, sexo = @sexo, 
+estadoCivil = @civil, cantFamiliares = @cantFami WHERE id = @id
+END
+GO
+ 
 
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.agregarFuncionalidad (@nombreRol as varchar(30),@nombreFuncionalidad as varchar(30))
