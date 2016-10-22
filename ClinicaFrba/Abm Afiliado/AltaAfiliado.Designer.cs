@@ -51,7 +51,6 @@
             this.cBsexo = new System.Windows.Forms.ComboBox();
             this.cBestadoCivil = new System.Windows.Forms.ComboBox();
             this.cBplanMedico = new System.Windows.Forms.ComboBox();
-            this.directoryEntry1 = new System.DirectoryServices.DirectoryEntry();
             this.buttonSalir = new System.Windows.Forms.Button();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();

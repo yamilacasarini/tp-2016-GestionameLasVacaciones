@@ -26,7 +26,8 @@ namespace ClinicaFrba
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-     /*       SqlCommand cmd = new SqlCommand("ADIOS_TERCER_ANIO.login", conn.getConexion);
+     /*       ClinicaFrba.ConnecionSql.
+            SqlCommand cmd = new SqlCommand("ADIOS_TERCER_ANIO.login", conn.getConexion);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
             SqlParameter usuario = new SqlParameter("@usuario", txtUsr.Text);

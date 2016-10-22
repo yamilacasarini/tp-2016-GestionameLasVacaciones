@@ -102,17 +102,17 @@ END
 --/////////////////////////////////////////////////////--
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Funcionalidad (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  descripcion NVARCHAR(255) NULL ,
+  descripcion NVARCHAR(50) NULL ,
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Rol(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  descripcion NVARCHAR(255) NULL,
+  descripcion NVARCHAR(50) NULL,
   baja INT DEFAULT 0,
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Usuario (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  usuario NVARCHAR(255) NOT NULL,
-  pass NVARCHAR(255) NULL ,
+  usuario NVARCHAR(30) NOT NULL,
+  pass NVARCHAR(30) NULL ,
   baja INT default 0,
   fechaBaja DATE,
   )
@@ -133,7 +133,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   documento INT NOT NULL,
   direccion VARCHAR(100) NOT NULL,
   telefono INT NOT NULL,
-  email VARCHAR(255),
+  email VARCHAR(100),
   fechaNacimiento DATE NOT NULL,
   sexo CHAR,
   estadoCivil VARCHAR(10),
@@ -148,7 +148,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Profesional (
   documento INT NOT NULL,
   direccion VARCHAR(100) NOT NULL,
   telefono INT NOT NULL,
-  email VARCHAR(255),
+  email VARCHAR(100),
   fechaNacimiento DATE NOT NULL,
   sexo CHAR,
    )
@@ -170,7 +170,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Servicio(
   id INTEGER PRIMARY KEY,
   precioBono INT,
   precioCuota INT ,
-  descripcion varchar(255),
+  descripcion varchar(30),
   baja INT DEFAULT 0,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Modificacion(
@@ -208,7 +208,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Cancelacion(
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Especialidad(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  descripcion VARCHAR(255),
+  descripcion VARCHAR(30),
   tipoEspecialidad VARCHAR(30),
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.AgendaxEspxProf(
@@ -224,6 +224,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadxProfesional(
  
 GO
 DROP TABLE #PacienteTemporal
+
 
 CREATE TABLE #PacienteTemporal(
  id INTEGER PRIMARY KEY NOT NULL IDENTITY,
@@ -337,7 +338,7 @@ BEGIN
 	RETURN @retorno;
 END
 GO
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.logueo(@username VARCHAR(255), @pass VARCHAR(255))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.logueo(@username VARCHAR(30), @pass VARCHAR(30))
 AS BEGIN
 	DECLARE @usuario NUMERIC(18,0)
 	DECLARE @intentos INT
@@ -399,11 +400,11 @@ GO
 
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre as nvarchar(50), @apellido as nvarchar(50), 
-@doc as int, @direc as varchar(100), @tel as int, @mail as varchar(255), @nacimiento as DATE, @sexo as char, @civil as varchar(10),
+@doc as int, @direc as varchar(100), @tel as int, @mail as varchar(100), @nacimiento as DATE, @sexo as char, @civil as varchar(10),
 @cantFami as int)
 AS
 BEGIN 
-IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Paciente WHERE nombre LIKE @nombre AND apellido LIKE @apellido AND documento = @doc) 
+IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Paciente WHERE apellido LIKE @apellido AND documento = @doc) 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Paciente(nombre, apellido, documento, direccion, telefono, email, 
 fechaNacimiento, sexo, estadoCivil, cantFamiliares) VALUES (@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami)
 ELSE
@@ -427,12 +428,28 @@ estadoCivil = @civil, cantFamiliares = @cantFami WHERE id = @id
 END
 GO
  
+GO
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdFuncionalidad (@descripcion as varchar(30))
+RETURNS INT AS
+ BEGIN 
+ RETURN (SELECT id FROM GESTIONAME_LAS_VACACIONES.Funcionalidad
+			WHERE @descripcion like descripcion) 
+END
+
+GO
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdRol (@descripcion as varchar(30))
+RETURNS INT AS
+ BEGIN 
+ RETURN (SELECT id FROM GESTIONAME_LAS_VACACIONES.Rol
+			WHERE @descripcion like descripcion) 
+END
 
 
+GO
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.agregarFuncionalidad (@nombreRol as varchar(30),@nombreFuncionalidad as varchar(30))
 AS
+BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidad(descripcion) values (@nombreFuncionalidad)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolxFuncionalidad(idFuncionalidad,idRol)
-(SELECT id FROM GESTIONAME_LAS_VACACIONES.Funcionalidad WHERE descripcion like @nombreFuncionalidad),
-(SELECT id FROM GESTIONAME_LAS_VACACIONES.Rol WHERE descripcion like @nombreRol)
-
+INSERT INTO GESTIONAME_LAS_VACACIONES.RolxFuncionalidad(idFuncionalidad,idRol) VALUES
+( GESTIONAME_LAS_VACACIONES.getIdFuncionalidad(@nombreFuncionalidad),GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol))
+END

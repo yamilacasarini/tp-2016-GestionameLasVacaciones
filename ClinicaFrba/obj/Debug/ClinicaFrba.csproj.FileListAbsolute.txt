@@ -41,3 +41,5 @@ C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.A
 C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.login.resources
 C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Properties.Resources.resources
 C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.csproj.GenerateResource.Cache
+C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\bin\Debug\ClinicaFrba.exe.config
+C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.exe
