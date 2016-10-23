@@ -17,7 +17,7 @@ namespace ClinicaFrba
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Deberia conectar con la base de datos primero
-            Application.Run(new login());
+            Application.Run(new Abm_Afiliado.Principal());
         }
     }
 }

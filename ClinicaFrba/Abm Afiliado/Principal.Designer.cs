@@ -35,7 +35,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(12, 61);
+            this.button3.Location = new System.Drawing.Point(12, 66);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(260, 30);
             this.button3.TabIndex = 2;
@@ -51,6 +51,7 @@
             this.button1.TabIndex = 3;
             this.button1.Text = "Baja";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 

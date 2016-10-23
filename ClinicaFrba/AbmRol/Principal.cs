@@ -15,7 +15,7 @@ namespace ClinicaFrba.AbmRol
         public Principal()
         {
             InitializeComponent();
-            label_nombre.Hide();
+        //    label_nombre.Hide();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -33,8 +33,8 @@ namespace ClinicaFrba.AbmRol
 
         private void button_crear_click(object sender, EventArgs e)
         {
-            crearRol newForm = new crearRol();
-            newForm.Show();
+       //     crearRol newForm = new crearRol();
+       //     newForm.Show();
             this.Close();
         }
 

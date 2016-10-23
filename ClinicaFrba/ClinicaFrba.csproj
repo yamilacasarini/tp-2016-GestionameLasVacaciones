@@ -51,6 +51,12 @@
     <Compile Include="Abm Afiliado\AltaAfiliado.Designer.cs">
       <DependentUpon>AltaAfiliado.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Afiliado\listadoAfiliados.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\listadoAfiliados.Designer.cs">
+      <DependentUpon>listadoAfiliados.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Afiliado\Principal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -112,6 +118,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ConeccionSql.cs" />
+    <Compile Include="dataClass\afiliado.cs" />
     <Compile Include="Seccion.cs" />
     <Compile Include="login.cs">
       <SubType>Form</SubType>
@@ -153,6 +160,9 @@
     </Compile>
     <EmbeddedResource Include="Abm Afiliado\AltaAfiliado.resx">
       <DependentUpon>AltaAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\listadoAfiliados.resx">
+      <DependentUpon>listadoAfiliados.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>

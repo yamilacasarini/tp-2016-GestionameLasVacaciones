@@ -14,7 +14,7 @@ namespace ClinicaFrba
 {
     public partial class login : Form
     {
-        
+
         Sesion sesion;
         public login()
         {
@@ -61,7 +61,9 @@ namespace ClinicaFrba
         {
 
         }
-    private bool validarDatos(){
-    return txtUsuario.Text.Trim() != "" && txtPassword.Text.Trim() != "";
+        private bool validarDatos()
+        {
+            return txtUsuario.Text.Trim() != "" && txtPassword.Text.Trim() != "";
+        }
     }
 }

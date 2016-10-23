@@ -13,7 +13,7 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class listadoAfiliados : Form
     {
-        List<dataClass.afiliado> afiliados = new List<dataClass.afiliado>;
+        List<dataClass.afiliado> afiliados = new List<dataClass.afiliado>();
         public listadoAfiliados()
         {
             InitializeComponent();
@@ -30,10 +30,10 @@ namespace ClinicaFrba.Abm_Afiliado
             while (reader.Read())
             {
                 dataClass.afiliado afiliado = new dataClass.afiliado();
-                afiliado.id= Convert.ToInt32(reader["id"]);
+                afiliado.id = Convert.ToInt32(reader["id"]);
                 afiliado.nombre = reader["nombre"].ToString();
                 afiliado.apellido = reader["apellido"].ToString();
-                afiliado.documento= Convert.ToInt32(reader["documento"]);
+                afiliado.documento = Convert.ToInt32(reader["documento"]);
                 afiliado.direccion = reader["direccion"].ToString();
                 afiliado.telefono = Convert.ToInt32(reader["telefono"]);
                 afiliado.email = reader["email"].ToString();
@@ -41,11 +41,11 @@ namespace ClinicaFrba.Abm_Afiliado
                 afiliado.sexo = reader["sexo"].ToString();
                 afiliado.estadoCivil = reader["estadoCivil"].ToString();
                 afiliado.cantFamiliares = Convert.ToInt32(reader["cantFamiliares"]);
-                
+
                 afiliados.Add(afiliado);
             }
             reader.Close();
         }
-        }
     }
 }
+

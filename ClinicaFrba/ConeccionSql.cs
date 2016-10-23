@@ -9,7 +9,7 @@ using System.Configuration;
 
 namespace ClinicaFrba
 {
-    class Server
+    public class Server
     {
         string servidor = ConfigurationManager.AppSettings["server"];
         string db = ConfigurationManager.AppSettings["database"];

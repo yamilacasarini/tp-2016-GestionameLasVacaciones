@@ -114,7 +114,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Usuario (
   usuario NVARCHAR(30) NOT NULL,
   pass NVARCHAR(30) NULL ,
   baja INT default 0,
-  fechaBaja DATE,
+  fechaBaja DATETIME,
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.RolxFuncionalidad (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
@@ -149,14 +149,14 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Profesional (
   direccion VARCHAR(100) NOT NULL,
   telefono INT NOT NULL,
   email VARCHAR(100),
-  fechaNacimiento DATE NOT NULL,
+  fechaNacimiento DATETIME NOT NULL,
   sexo CHAR,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Agenda(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY,
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesional(id),
-  fechaInicio DATE NOT NULL,   -- ACA PARA FECHA DEL AÑO QUE TRABAJA Y HORARIO
-  fechaFinal DATE NOT NULL,
+  fechaInicio DATETIME NOT NULL,   -- ACA PARA FECHA DEL AÑO QUE TRABAJA Y HORARIO
+  fechaFinal DATETIME NOT NULL,
   diaInicio VARCHAR(10),   -- ACA PARA LUNES Y MARTES
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.CompraBono(
@@ -164,7 +164,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.CompraBono(
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Paciente(id),
   cantidad INT NOT NULL DEFAULT 1,
   monto INT NOT NULL,
-  fecha DATE NOT NULL,
+  fecha DATETIME NOT NULL,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Servicio(
   id INTEGER PRIMARY KEY,
@@ -177,7 +177,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Modificacion(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Paciente(id),
   idPlan INT REFERENCES GESTIONAME_LAS_VACACIONES.Servicio(id),
-  fecha DATE DEFAULT NULL,
+  fecha DATETIME DEFAULT NULL,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Bono(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
@@ -188,7 +188,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Bono(
 CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultaMedica(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   idBono INT REFERENCES GESTIONAME_LAS_VACACIONES.Bono(id),
-  fecha DATE NOT NULL,
+  fecha DATETIME NOT NULL,
   diagnostico VARCHAR(255) NOT NULL,
   sintomas VARCHAR(255),
    )
@@ -197,7 +197,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turno(
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesional(id),
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Paciente(id),
   idConsultaMedica INT REFERENCES GESTIONAME_LAS_VACACIONES.ConsultaMedica(id),
-  fecha DATE NOT NULL,
+  fecha DATETIME NOT NULL,
   baja INT default 0,
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Cancelacion(
@@ -221,7 +221,11 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadxProfesional(
   idEspecialidad INT REFERENCES GESTIONAME_LAS_VACACIONES.Especialidad(id) ,
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesional(id) ,
   )
- 
+CREATE TABLE GESTIONAME_LAS_VACACIONES.Intento(
+	id INTEGER PRIMARY KEY NOT NULL IDENTITY,
+	idUsuario INT REFERENCES GESTIONAME_LAS_VACACIONES.Usuario(id),
+	tiempo DATETIME,)
+
 GO
 DROP TABLE #PacienteTemporal
 
@@ -234,12 +238,12 @@ CREATE TABLE #PacienteTemporal(
   direccion VARCHAR(100) NOT NULL,
   telefono INT NOT NULL,
   email VARCHAR(255),
-  fechaNacimiento DATE NOT NULL,
+  fechaNacimiento DATETIME NOT NULL,
   idPlan INT,
   precioBono INT NOT NULL,
   precioCuota INT NOT NULL,
   descripcion varchar(255),
-  Compra_Bono_Fecha datetime,
+  Compra_Bono_Fecha DATETIME,
   )
 
 --- Creando los datos
@@ -266,57 +270,43 @@ SELECT DISTINCT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direcc
 INSERT INTO GESTIONAME_LAS_VACACIONES.Paciente(nombre,apellido,documento, direccion, telefono, email, fechaNacimiento)
 	SELECT distinct nombre,apellido,dni,direccion,telefono,email,fechaNacimiento
 		FROM #PacienteTemporal
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.Servicio(id,descripcion, precioCuota, precioBono)
 	SELECT DISTINCT idPlan,descripcion, precioCuota, precioBono
 		FROM #PacienteTemporal
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.Modificacion(idPaciente,idPlan,fecha)
 	SELECT DISTINCT id,idPlan,Compra_Bono_Fecha
 		FROM #PacienteTemporal
 		where idPlan is not null and id is not null
-
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.CompraBono(idPaciente,fecha,cantidad,monto)
 select p.id,Bono_Consulta_Fecha_Impresion, COUNT(Bono_Consulta_Fecha_Impresion) as cantidad_bonos_por_dia,  COUNT(Bono_Consulta_Fecha_Impresion)* Plan_Med_Precio_Bono_Consulta as monto
 from gd_esquema.Maestra m , GESTIONAME_LAS_VACACIONES.Paciente p 
 where Bono_Consulta_Fecha_Impresion is not null  and p.documento = Paciente_Dni
 group by Bono_Consulta_Fecha_Impresion, Paciente_Apellido,Paciente_Nombre, Plan_Med_Precio_Bono_Consulta, p.id
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.Profesional(nombre,apellido,documento,direccion,email,fechaNacimiento,telefono)
 	SELECT DISTINCT Medico_Nombre,Medico_Apellido,Medico_Dni,Medico_Direccion,Medico_Mail,Medico_Fecha_Nac,Medico_Telefono
 	FROM gd_esquema.Maestra
 	WHERE Medico_Nombre IS NOT NULL
-	
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolxFuncionalidad(idFuncionalidad, idRol)
 	SELECT DISTINCT f.id, r.id FROM GESTIONAME_LAS_VACACIONES.Funcionalidad f, GESTIONAME_LAS_VACACIONES.Rol r  WHERE r.id = 1
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolxUsuario(idRol, idUsuario) 
 	SELECT   r.id, u.id FROM GESTIONAME_LAS_VACACIONES.Rol r  , GESTIONAME_LAS_VACACIONES.Usuario u WHERE r.id = 1
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bono(idCompraBono, idPaciente, idPlan)
 	SELECT c.id, p.id, s.id FROM GESTIONAME_LAS_VACACIONES.CompraBono c, GESTIONAME_LAS_VACACIONES.Paciente p, GESTIONAME_LAS_VACACIONES.Servicio s
-
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.Especialidad(id,descripcion,tipoEspecialidad)
 	SELECT DISTINCT	Especialidad_Codigo,Especialidad_Descripcion,Tipo_Especialidad_Descripcion
 	FROM gd_esquema.Maestra
-
 --Meter Bono_Consulta_Numero en algun lugar del bono ACORDARSE
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultaMedica(idBono, sintomas, fecha, diagnostico)
 	SELECT b.id, Consulta_Sintomas, Turno_Fecha, Consulta_Enfermedades FROM GESTIONAME_LAS_VACACIONES.Bono b, gd_esquema.Maestra
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Turno(idConsultaMedica, idPaciente, idProfesional, fecha)
 	SELECT c.id, p.id, prof.id, Turno_Fecha FROM GESTIONAME_LAS_VACACIONES.ConsultaMedica c, GESTIONAME_LAS_VACACIONES.Paciente p, GESTIONAME_LAS_VACACIONES.Profesional prof, gd_esquema.Maestra
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.Especialidad(descripcion, tipoEspecialidad)
 	SELECT DISTINCT Especialidad_Descripcion, Especialidad_Codigo 
 	FROM gd_esquema.Maestra
 	WHERE Especialidad_Codigo IS NOT NULL AND Especialidad_Descripcion IS NOT NULL
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.AgendaxEspxProf(idAgenda, idEspecialidad, idProfesional)
 	SELECT a.id, e.id, p.id FROM GESTIONAME_LAS_VACACIONES.Agenda a, GESTIONAME_LAS_VACACIONES.Especialidad e, GESTIONAME_LAS_VACACIONES.Profesional p
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.EspecialidadxProfesional(idEspecialidad, idProfesional)
 	SELECT e.id, p.id FROM GESTIONAME_LAS_VACACIONES.Especialidad e, GESTIONAME_LAS_VACACIONES.Profesional p
 
@@ -342,8 +332,8 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.logueo(@username VARCHAR(30), @pass V
 AS BEGIN
 	DECLARE @usuario NUMERIC(18,0)
 	DECLARE @intentos INT
-	SELECT @intentos = intentos FROM GESTIONAME_LAS_VACACIONES.Intentos i
-								JOIN GESTIONAME_LAS_VACACIONES.Usuarios u ON i.usuario_id = u.id
+	SELECT COUNT(idUsuario) FROM GESTIONAME_LAS_VACACIONES.Intento i
+								JOIN GESTIONAME_LAS_VACACIONES.Usuario u ON i.id = u.id
 								WHERE u.usuario = @username
 	IF (@intentos >= 3)
 		RAISERROR('El usuario se encuentra bloqueado por tener 3 intentos de logueo fallidos',16,217) WITH SETERROR
@@ -351,7 +341,7 @@ AS BEGIN
 	SELECT @usuario = id FROM GESTIONAME_LAS_VACACIONES.Usuarios WHERE usuario = @username AND pass = HASHBYTES('SHA2_256', @pass)
 	IF (@usuario IS NULL)
 	BEGIN	
-		UPDATE intentos SET intentos = @intentos + 1 
+		UPDATETIME intentos SET intentos = @intentos + 1 
 		FROM GESTIONAME_LAS_VACACIONES.Usuarios usuarios
 		JOIN GESTIONAME_LAS_VACACIONES.Intentos intentos ON intentos.usuario_id = usuarios.id
 		WHERE usuarios.usuario = @username
@@ -364,7 +354,7 @@ AS BEGIN
 						WHERE nombre = 'Administrativo' AND @usuario = id_usuario)
 			RAISERROR('El usuario no tiene los permisos necesarios',16,217) WITH SETERROR
 	END
-	UPDATE intentos SET intentos = 0 
+	UPDATETIME intentos SET intentos = 0 
 	FROM GESTIONAME_LAS_VACACIONES.Usuarios usuarios
 	JOIN GESTIONAME_LAS_VACACIONES.Intentos intentos ON intentos.usuario_id = usuarios.id
 	WHERE usuarios.usuario = @username
@@ -392,7 +382,7 @@ GO
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarRol(@nombreViejo as varchar(30), @nombreNuevo as varchar(30))
 AS
 BEGIN
-UPDATE GESTIONAME_LAS_VACACIONES.Rol
+UPDATETIME GESTIONAME_LAS_VACACIONES.Rol
 SET descripcion= @nombreNuevo
 WHERE descripcion= @nombreViejo
 END
@@ -400,7 +390,7 @@ GO
 
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre as nvarchar(50), @apellido as nvarchar(50), 
-@doc as int, @direc as varchar(100), @tel as int, @mail as varchar(100), @nacimiento as DATE, @sexo as char, @civil as varchar(10),
+@doc as int, @direc as varchar(100), @tel as int, @mail as varchar(100), @nacimiento as DATETIME, @sexo as char, @civil as varchar(10),
 @cantFami as int)
 AS
 BEGIN 
@@ -422,7 +412,7 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id as int,@nombre 
 @cantFami as int)
 AS
 BEGIN
-UPDATE GESTIONAME_LAS_VACACIONES.Paciente
+UPDATETIME GESTIONAME_LAS_VACACIONES.Paciente
 SET nombre = @nombre, apellido  = @apellido , documento = @doc, direccion = @direc, telefono = @tel, email = @mail, sexo = @sexo, 
 estadoCivil = @civil, cantFamiliares = @cantFami WHERE id = @id
 END

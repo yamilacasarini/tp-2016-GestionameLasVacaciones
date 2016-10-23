@@ -386,7 +386,7 @@
         private System.Windows.Forms.ComboBox cBsexo;
         private System.Windows.Forms.ComboBox cBestadoCivil;
         private System.Windows.Forms.ComboBox cBplanMedico;
-        private System.DirectoryServices.DirectoryEntry directoryEntry1;
+      //  private System.DirectoryServices.DirectoryEntry directoryEntry1;
         private System.Windows.Forms.Button buttonSalir;
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
