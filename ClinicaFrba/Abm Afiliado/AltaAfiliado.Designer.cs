@@ -163,6 +163,7 @@
             this.txMail.Name = "txMail";
             this.txMail.Size = new System.Drawing.Size(144, 20);
             this.txMail.TabIndex = 20;
+            this.txMail.TextChanged += new System.EventHandler(this.txMail_TextChanged);
             // 
             // label7
             // 
@@ -292,7 +293,7 @@
             // buttonSalir
             // 
             this.buttonSalir.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.buttonSalir.Location = new System.Drawing.Point(213, 414);
+            this.buttonSalir.Location = new System.Drawing.Point(239, 401);
             this.buttonSalir.Name = "buttonSalir";
             this.buttonSalir.Size = new System.Drawing.Size(76, 30);
             this.buttonSalir.TabIndex = 41;
@@ -303,7 +304,7 @@
             // buttonAceptar
             // 
             this.buttonAceptar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.buttonAceptar.Location = new System.Drawing.Point(29, 414);
+            this.buttonAceptar.Location = new System.Drawing.Point(55, 401);
             this.buttonAceptar.Name = "buttonAceptar";
             this.buttonAceptar.Size = new System.Drawing.Size(76, 30);
             this.buttonAceptar.TabIndex = 40;
@@ -354,6 +355,7 @@
             this.Controls.Add(this.txNombre);
             this.Name = "AltaAfiliado";
             this.Text = "Alta  Afiliado";
+            this.Load += new System.EventHandler(this.AltaAfiliado_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

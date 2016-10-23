@@ -134,7 +134,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   direccion VARCHAR(100) NOT NULL,
   telefono INT NOT NULL,
   email VARCHAR(100),
-  fechaNacimiento DATE NOT NULL,
+  fechaNacimiento DATETIME NOT NULL,
   sexo CHAR,
   estadoCivil VARCHAR(10),
   cantFamiliares INT DEFAULT 0,
