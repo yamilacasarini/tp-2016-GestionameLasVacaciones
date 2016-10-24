@@ -65,17 +65,22 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            Abm_Afiliado.Principal proximo = new Abm_Afiliado.Principal();
-            proximo.Show();
-            server.query("INSERT INTO GESTIONAME_LAS_VACACIONES.Paciente(nombre,apellido,documento,direccion,telefono,email,fechaNacimiento,sexo,EstadoCivil,cantFamiliares)" +
-            "VALUES (" + txNombre.Text.Trim() + ", " + txApellido.Text.Trim() + "," + txDocumento.Text.Trim() + "," + txDireccion.Text.Trim() + "," + txTelefono.Text.Trim() +
-            " " + txMail.Text.Trim() + "," + dateTimePicker1.Text.Trim() + "," + cBsexo.Text.Trim() + "," + cBestadoCivil.Text.Trim() + "," + txFamiliaresACargo.Text.Trim() + ",)");
-            this.Close();
+            
         }
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-            if (!validarDatos())
+            if (validarDatos())
             {
+                Abm_Afiliado.Principal proximo = new Abm_Afiliado.Principal();
+                proximo.Show();
+                server.query("INSERT INTO GESTIONAME_LAS_VACACIONES.Paciente(nombre,apellido,documento,direccion,telefono,email,fechaNacimiento,sexo,EstadoCivil,cantFamiliares,servicio)" +
+                "VALUES (" + txNombre.Text.Trim() + ", " + txApellido.Text.Trim() + "," + txDocumento.Text.Trim() + "," + txDireccion.Text.Trim() + "," + txTelefono.Text.Trim() +
+                " " + txMail.Text.Trim() + "," + dateTimePicker1.Text.Trim() + "," + cBsexo.Text.Trim() + "," + cBestadoCivil.Text.Trim() + "," + txFamiliaresACargo.Text.Trim() +
+                planMedico(cBplanMedico.Text.Trim()) + ",)");
+                this.Close();
+            }
+            else {
+                MessageBox.Show("Faltan datos");
             }
 
         }
@@ -114,6 +119,77 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
         private void txMail_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private string planMedico(string descripcion)
+        {
+            SqlDataReader reader = server.query("SELECT GESTIONAME_LAS_VACACIONES.getIdPlanMedico("+descripcion+")");
+            return Convert.ToString(reader["id"]);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cBsexo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txFamiliaresACargo_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txTelefono_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
         {
 
         }

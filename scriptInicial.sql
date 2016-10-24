@@ -139,7 +139,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   nombre NVARCHAR(50) NOT NULL ,
   apellido NVARCHAR(50) NOT NULL ,
   documento INT NOT NULL,
-  tipoDocumento VARCHAR(3) NOT NULL,
+  tipoDocumento VARCHAR(10) NOT NULL,
   direccion VARCHAR(100) NOT NULL,
   telefono INT NOT NULL,
   email VARCHAR(100),
@@ -188,7 +188,8 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Modificacion(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Paciente(id),
   idPlan INT REFERENCES GESTIONAME_LAS_VACACIONES.Servicio(id),
-  fecha DATETIME DEFAULT NULL,
+  motivo VARCHAR(50),
+  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Bono(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
@@ -377,6 +378,25 @@ BEGIN
 END
 GO
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getPlanMedico (@idAfiliado as INT)
+RETURNS varchar(30) AS
+ BEGIN 
+ RETURN (SELECT s.descripcion FROM GESTIONAME_LAS_VACACIONES.Servicio s JOIN
+								GESTIONAME_LAS_VACACIONES.Paciente p ON (p.servicio = s.descripcion)
+			WHERE @idAfiliado = p.id) 
+END
+GO
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdPlanMedico (@descripcion as VARCHAR(30))
+RETURNS INT AS
+ BEGIN 
+ RETURN (SELECT id FROM GESTIONAME_LAS_VACACIONES.Servicio s
+			WHERE @descripcion = s.descripcion) 
+END
+GO
+
+
+
 --////////////////////////////////////--
 --PROCEDURES--
 --NUMERO 2--
@@ -473,6 +493,14 @@ SET nombre = @nombre, apellido  = @apellido , documento = @doc, direccion = @dir
 estadoCivil = @civil, cantFamiliares = @cantFami WHERE id = @id
 END
 GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cambioPlan(@idPaciente AS INT,@descripcionPlan AS VARCHAR(30), @motivo AS VARCHAR(50))
+AS
+BEGIN
+INSERT INTO GESTIONAME_LAS_VACACIONES.Modificacion(idPaciente,idPlan,motivo)
+VALUES(@idPaciente,GESTIONAME_LAS_VACACIONES.getIdPlanMedico(@descripcionPlan),@motivo)
+END
+
 
 --////////////////////////////////////--
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.agregarFuncionalidadAUnRol (@nombreRol as varchar(30),@nombreFuncionalidad as varchar(30))

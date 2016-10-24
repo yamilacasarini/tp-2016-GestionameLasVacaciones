@@ -51,6 +51,12 @@
     <Compile Include="Abm Afiliado\AltaAfiliado.Designer.cs">
       <DependentUpon>AltaAfiliado.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Afiliado\cambiarPlanMedico.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\cambiarPlanMedico.Designer.cs">
+      <DependentUpon>cambiarPlanMedico.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Afiliado\listadoAfiliados.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +172,9 @@
     </Compile>
     <EmbeddedResource Include="Abm Afiliado\AltaAfiliado.resx">
       <DependentUpon>AltaAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\cambiarPlanMedico.resx">
+      <DependentUpon>cambiarPlanMedico.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\listadoAfiliados.resx">
       <DependentUpon>listadoAfiliados.cs</DependentUpon>

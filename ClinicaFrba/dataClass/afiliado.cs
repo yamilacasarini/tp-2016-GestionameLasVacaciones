@@ -20,5 +20,6 @@ namespace ClinicaFrba.dataClass
           public string sexo { get; set; }
           public string estadoCivil { get; set; }
           public int cantFamiliares { get; set; }
+          public string planMedico { get; set; }
     }
 }

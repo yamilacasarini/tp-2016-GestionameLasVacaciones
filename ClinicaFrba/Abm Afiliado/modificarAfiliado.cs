@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
@@ -18,6 +19,7 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             InitializeComponent();
             btAceptar.Hide();
+            btCambiarPlan.Hide();
         }
 
         private void label6_Click(object sender, EventArgs e)
@@ -27,6 +29,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btBuscar_Click(object sender, EventArgs e)
         {
+            Server server = Server.getInstance();
+            SqlDataReader reader;
             listadoAfiliados formAfiliados = new listadoAfiliados();
             formAfiliados.ShowDialog();
             if (formAfiliados.afiliadoBuscado.id != -1)
@@ -42,8 +46,11 @@ namespace ClinicaFrba.Abm_Afiliado
                 cBestadoCivil.Text = afiliado.estadoCivil;
                 cBsexo.Text = afiliado.sexo;
                 cBtipoDocumento.Text = afiliado.tipoDocumento;
+                reader = server.query("SELECT GESTIONAME_LAS_VACACIONES.getPlanMedico(" + formAfiliados.afiliadoBuscado.id + ")");
+                txPlanMedico.Text = reader.GetString(0); // espero que funcione
             }
             btAceptar.Show();
+            btCambiarPlan.Show();
         }
 
         private void cBestadoCivil_SelectedIndexChanged(object sender, EventArgs e)
@@ -84,6 +91,21 @@ namespace ClinicaFrba.Abm_Afiliado
         private void txNombre_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void txPlanMedico_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btCambiarPlan_Click(object sender, EventArgs e)
+        {
+            cambiarPlanMedico form = new cambiarPlanMedico();
+            form.afiliado = afiliado;
+            this.Hide();
+            form.ShowDialog();
+            btCambiarPlan.Hide();
+            this.Show(); // hipoteticamente dicen que esto sucede recien cuando el form se cierra
         }
     }
 }

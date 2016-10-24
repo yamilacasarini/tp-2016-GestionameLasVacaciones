@@ -53,6 +53,9 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.btBuscar = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.btCambiarPlan = new System.Windows.Forms.Button();
+            this.txPlanMedico = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // dateTimePicker1
@@ -69,7 +72,7 @@
             // buttonSalir
             // 
             this.buttonSalir.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.buttonSalir.Location = new System.Drawing.Point(343, 345);
+            this.buttonSalir.Location = new System.Drawing.Point(330, 362);
             this.buttonSalir.Name = "buttonSalir";
             this.buttonSalir.Size = new System.Drawing.Size(76, 30);
             this.buttonSalir.TabIndex = 65;
@@ -79,7 +82,7 @@
             // btAceptar
             // 
             this.btAceptar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.btAceptar.Location = new System.Drawing.Point(75, 345);
+            this.btAceptar.Location = new System.Drawing.Point(62, 362);
             this.btAceptar.Name = "btAceptar";
             this.btAceptar.Size = new System.Drawing.Size(76, 30);
             this.btAceptar.TabIndex = 64;
@@ -303,7 +306,7 @@
             // btBuscar
             // 
             this.btBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.btBuscar.Location = new System.Drawing.Point(168, 349);
+            this.btBuscar.Location = new System.Drawing.Point(155, 366);
             this.btBuscar.Name = "btBuscar";
             this.btBuscar.Size = new System.Drawing.Size(145, 26);
             this.btBuscar.TabIndex = 69;
@@ -311,11 +314,44 @@
             this.btBuscar.UseVisualStyleBackColor = true;
             this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label11.Location = new System.Drawing.Point(59, 334);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(99, 20);
+            this.label11.TabIndex = 70;
+            this.label11.Text = "Plan Medico:";
+            // 
+            // btCambiarPlan
+            // 
+            this.btCambiarPlan.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.btCambiarPlan.Location = new System.Drawing.Point(369, 327);
+            this.btCambiarPlan.Name = "btCambiarPlan";
+            this.btCambiarPlan.Size = new System.Drawing.Size(115, 30);
+            this.btCambiarPlan.TabIndex = 72;
+            this.btCambiarPlan.Text = "Cambiar Plan";
+            this.btCambiarPlan.UseVisualStyleBackColor = true;
+            this.btCambiarPlan.Click += new System.EventHandler(this.btCambiarPlan_Click);
+            // 
+            // txPlanMedico
+            // 
+            this.txPlanMedico.Location = new System.Drawing.Point(219, 334);
+            this.txPlanMedico.MaxLength = 2;
+            this.txPlanMedico.Name = "txPlanMedico";
+            this.txPlanMedico.Size = new System.Drawing.Size(144, 20);
+            this.txPlanMedico.TabIndex = 73;
+            this.txPlanMedico.TextChanged += new System.EventHandler(this.txPlanMedico_TextChanged);
+            // 
             // modificarAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(442, 388);
+            this.ClientSize = new System.Drawing.Size(487, 404);
+            this.Controls.Add(this.txPlanMedico);
+            this.Controls.Add(this.btCambiarPlan);
+            this.Controls.Add(this.label11);
             this.Controls.Add(this.btBuscar);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label6);
@@ -375,6 +411,9 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btBuscar;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button btCambiarPlan;
+        private System.Windows.Forms.TextBox txPlanMedico;
 
     }
 }
