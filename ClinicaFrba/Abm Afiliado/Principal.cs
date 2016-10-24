@@ -29,6 +29,12 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
+        private void botonDeModificacion_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            new modificarAfiliado().Show();
+        }
+
 
     }
 }

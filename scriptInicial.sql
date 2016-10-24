@@ -139,6 +139,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   nombre NVARCHAR(50) NOT NULL ,
   apellido NVARCHAR(50) NOT NULL ,
   documento INT NOT NULL,
+  tipoDocumento VARCHAR(3) NOT NULL,
   direccion VARCHAR(100) NOT NULL,
   telefono INT NOT NULL,
   email VARCHAR(100),

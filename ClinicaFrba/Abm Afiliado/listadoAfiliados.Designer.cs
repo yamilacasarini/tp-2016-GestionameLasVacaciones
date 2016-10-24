@@ -40,7 +40,9 @@
             this.sexo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.estadoCivil = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cantFamiliares = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.seleccionar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.btAceptar = new System.Windows.Forms.Button();
+            this.btCancelar = new System.Windows.Forms.Button();
+            this.tipoDocumento = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,7 +63,7 @@
             this.sexo,
             this.estadoCivil,
             this.cantFamiliares,
-            this.seleccionar});
+            this.tipoDocumento});
             this.dataGridView1.Location = new System.Drawing.Point(13, 79);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -135,17 +137,41 @@
             this.cantFamiliares.Name = "cantFamiliares";
             this.cantFamiliares.ReadOnly = true;
             // 
-            // seleccionar
+            // btAceptar
             // 
-            this.seleccionar.HeaderText = "seleccionar";
-            this.seleccionar.Name = "seleccionar";
-            this.seleccionar.ReadOnly = true;
+            this.btAceptar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.btAceptar.Location = new System.Drawing.Point(293, 307);
+            this.btAceptar.Name = "btAceptar";
+            this.btAceptar.Size = new System.Drawing.Size(128, 33);
+            this.btAceptar.TabIndex = 1;
+            this.btAceptar.Text = "aceptar";
+            this.btAceptar.UseVisualStyleBackColor = true;
+            this.btAceptar.Click += new System.EventHandler(this.btAceptar_Click);
+            // 
+            // btCancelar
+            // 
+            this.btCancelar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.btCancelar.Location = new System.Drawing.Point(489, 307);
+            this.btCancelar.Name = "btCancelar";
+            this.btCancelar.Size = new System.Drawing.Size(128, 33);
+            this.btCancelar.TabIndex = 2;
+            this.btCancelar.Text = "Cancelar";
+            this.btCancelar.UseVisualStyleBackColor = true;
+            this.btCancelar.Click += new System.EventHandler(this.btCancelar_Click);
+            // 
+            // tipoDocumento
+            // 
+            this.tipoDocumento.HeaderText = "tipoDocumento";
+            this.tipoDocumento.Name = "tipoDocumento";
+            this.tipoDocumento.ReadOnly = true;
             // 
             // listadoAfiliados
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1273, 307);
+            this.ClientSize = new System.Drawing.Size(1273, 352);
+            this.Controls.Add(this.btCancelar);
+            this.Controls.Add(this.btAceptar);
             this.Controls.Add(this.dataGridView1);
             this.Name = "listadoAfiliados";
             this.Text = "listadoAfiliados";
@@ -168,6 +194,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn sexo;
         private System.Windows.Forms.DataGridViewTextBoxColumn estadoCivil;
         private System.Windows.Forms.DataGridViewTextBoxColumn cantFamiliares;
-        private System.Windows.Forms.DataGridViewButtonColumn seleccionar;
+        private System.Windows.Forms.Button btAceptar;
+        private System.Windows.Forms.Button btCancelar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn tipoDocumento;
     }
 }

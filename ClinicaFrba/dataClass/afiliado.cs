@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.dataClass
 {
-    class afiliado
+    public class afiliado
     {
           public int id{get;set;}
           public string nombre { get; set; }
           public string apellido { get; set; }
           public int documento { get; set; }
+          public string tipoDocumento { get; set; }
           public string direccion { get; set; }
           public int telefono { get; set; }
           public string email { get; set; }

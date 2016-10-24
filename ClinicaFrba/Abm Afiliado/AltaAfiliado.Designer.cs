@@ -44,16 +44,16 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.txFamiliaresACargo = new System.Windows.Forms.TextBox();
             this.cBtipoDocumento = new System.Windows.Forms.ComboBox();
             this.cBsexo = new System.Windows.Forms.ComboBox();
             this.cBestadoCivil = new System.Windows.Forms.ComboBox();
-            this.cBplanMedico = new System.Windows.Forms.ComboBox();
             this.buttonSalir = new System.Windows.Forms.Button();
             this.buttonAceptar = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.label11 = new System.Windows.Forms.Label();
+            this.cBplanMedico = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label2
@@ -213,16 +213,6 @@
             this.label10.TabIndex = 25;
             this.label10.Text = "Fecha de nacimiento:";
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label11.Location = new System.Drawing.Point(6, 366);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(99, 20);
-            this.label11.TabIndex = 35;
-            this.label11.Text = "Plan Medico:";
-            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -281,15 +271,6 @@
             this.cBestadoCivil.TabIndex = 38;
             this.cBestadoCivil.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
-            // cBplanMedico
-            // 
-            this.cBplanMedico.FormattingEnabled = true;
-            this.cBplanMedico.Location = new System.Drawing.Point(166, 365);
-            this.cBplanMedico.Name = "cBplanMedico";
-            this.cBplanMedico.Size = new System.Drawing.Size(121, 21);
-            this.cBplanMedico.TabIndex = 39;
-            this.cBplanMedico.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
-            // 
             // buttonSalir
             // 
             this.buttonSalir.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
@@ -321,6 +302,25 @@
             this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker1.TabIndex = 42;
             this.dateTimePicker1.Value = new System.DateTime(2016, 10, 19, 0, 0, 0, 0);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.label11.Location = new System.Drawing.Point(6, 366);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(99, 20);
+            this.label11.TabIndex = 35;
+            this.label11.Text = "Plan Medico:";
+            // 
+            // cBplanMedico
+            // 
+            this.cBplanMedico.FormattingEnabled = true;
+            this.cBplanMedico.Location = new System.Drawing.Point(166, 365);
+            this.cBplanMedico.Name = "cBplanMedico";
+            this.cBplanMedico.Size = new System.Drawing.Size(121, 21);
+            this.cBplanMedico.TabIndex = 39;
+            this.cBplanMedico.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
             // 
             // AltaAfiliado
             // 
@@ -379,16 +379,16 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox txFamiliaresACargo;
         private System.Windows.Forms.ComboBox cBtipoDocumento;
         private System.Windows.Forms.ComboBox cBsexo;
         private System.Windows.Forms.ComboBox cBestadoCivil;
-        private System.Windows.Forms.ComboBox cBplanMedico;
       //  private System.DirectoryServices.DirectoryEntry directoryEntry1;
         private System.Windows.Forms.Button buttonSalir;
         private System.Windows.Forms.Button buttonAceptar;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox cBplanMedico;
     }
 }
