@@ -21,7 +21,7 @@ namespace ClinicaFrba.Abm_Afiliado
         public AltaAfiliado()
         {
             InitializeComponent();
-            llenarPlanes();
+           llenarPlanes();
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -54,11 +54,11 @@ namespace ClinicaFrba.Abm_Afiliado
         void llenarPlanes()
         {
             server = Server.getInstance();
-            reader = server.query("SELECT DISTINCT description FROM GESTIONAME_LAS_VACACIONES.Servicio");
+            reader = server.query("SELECT DISTINCT descripcion FROM GESTIONAME_LAS_VACACIONES.Servicio");
 
             while (reader.Read())
             {
-                cBplanMedico.Items.Add(reader["description"].ToString());
+                cBplanMedico.Items.Add(reader["descripcion"].ToString());
             }
             reader.Close();
         }

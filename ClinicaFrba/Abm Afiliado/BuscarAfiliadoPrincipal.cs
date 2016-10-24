@@ -10,25 +10,11 @@ using System.Windows.Forms;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
-    public partial class Principal : Form
+    public partial class BuscarAfiliadoPrincipal : Form
     {
-        public Principal()
+        public BuscarAfiliadoPrincipal()
         {
             InitializeComponent();
         }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-          
-            this.Hide();
-          new AltaAfiliado().Show();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
     }
 }
