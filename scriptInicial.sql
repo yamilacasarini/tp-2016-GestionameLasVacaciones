@@ -127,6 +127,13 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.RolxUsuario(
   idRol INT REFERENCES GESTIONAME_LAS_VACACIONES.Rol(id) ,
   idUsuario INT REFERENCES GESTIONAME_LAS_VACACIONES.Usuario(id) ,
   )
+CREATE TABLE GESTIONAME_LAS_VACACIONES.Servicio(
+  id INTEGER PRIMARY KEY,
+  precioBono INT,
+  precioCuota INT ,
+  descripcion varchar(30),
+  baja INT DEFAULT 0,
+   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY,
   nombre NVARCHAR(50) NOT NULL ,
@@ -140,6 +147,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   estadoCivil VARCHAR(10),
   cantFamiliares INT DEFAULT 0,
   cantConsultas INT DEFAULT 0,
+  servicio INT REFERENCES GESTIONAME_LAS_VACACIONES.SERVICIO(id)
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Profesional (
   id INTEGER PRIMARY KEY NOT NULL DEFAULT 0,
@@ -173,14 +181,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.CompraBono(
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Paciente(id),
   cantidad INT NOT NULL DEFAULT 1,
   monto INT NOT NULL,
-  fecha DATETIME NOT NULL,
-   )
-CREATE TABLE GESTIONAME_LAS_VACACIONES.Servicio(
-  id INTEGER PRIMARY KEY,
-  precioBono INT,
-  precioCuota INT ,
-  descripcion varchar(30),
-  baja INT DEFAULT 0,
+  fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Modificacion(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
@@ -359,8 +360,25 @@ END
 
 GO
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.calcularMontoSegunPlan(@idPaciente as int, @cantidad as int)
+RETURNS INTEGER
+AS
+BEGIN
+	DECLARE @precioBonoPlan INTEGER
+	SELECT
+		@precioBonoPlan = precioBono
+	FROM 
+		GESTIONAME_LAS_VACACIONES.Servicio s
+	JOIN GESTIONAME_LAS_VACACIONES.Paciente p
+	ON s.id = p.servicio
+		
+	RETURN @precioBonoPlan * @cantidad;
+END
+GO
+
 --////////////////////////////////////--
 --PROCEDURES--
+--NUMERO 2--
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.logueo(@username VARCHAR(30), @pass VARCHAR(30))
 AS BEGIN
 	DECLARE @usuario NUMERIC(18,0)
@@ -396,6 +414,7 @@ END
 GO
 
 --////////////////////////////////////--
+--NUMERO 1--
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.crearRol(@nombre as  varchar(30))
 AS 
 BEGIN
@@ -423,6 +442,8 @@ END
 GO
 
 --////////////////////////////////////--
+--EL 3 ESTA HARCODEADO ARRIBA--
+--NUMERO 4--
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre as nvarchar(50), @apellido as nvarchar(50), 
 @doc as int, @direc as varchar(100), @tel as int, @mail as varchar(100), @nacimiento as DATETIME, @sexo as char, @civil as varchar(10),
 @cantFami as int)
@@ -486,6 +507,8 @@ END
 GO
 
 --////////////////////////////////////--
+-- LOS 5, 6, 7 NO SE HACEN--
+--NUMERO 8--
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaAgendaProfesional
 (@matriculaProfesional as int, @descEspecialidad as varchar(30), 
@@ -496,5 +519,26 @@ BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agenda(idProfesional, idEspecialidad, 
 fechaInicio, fechaFinal, diaInicio, diaFin)
 VALUES (@matriculaProfesional, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descEspecialidad), @fechaInicio, @fechaFin, @diaInicio, @diaFin) 
+END
+GO
+
+--////////////////////////////////////--
+--NUMERO 9--
+--FALTA 
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.compraDeBonos(@numAfiliado as int, @cantidad as int)
+AS
+BEGIN
+DECLARE @aux INT
+IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Paciente where id = @numAfiliado)
+PRINT 'No existe el afiliado'
+ELSE 
+INSERT INTO GESTIONAME_LAS_VACACIONES.CompraBono(idPaciente, cantidad, monto) 
+VALUES (@numAfiliado, @cantidad, GESTIONAME_LAS_VACACIONES.calcularMontoSegunPlan(@numAfiliado, @cantidad))
+WHILE (@aux < @cantidad)
+BEGIN
+INSERT INTO GESTIONAME_LAS_VACACIONES.Bono(idCompraBono, idPaciente, idPlan) 
+VALUES ('EL ID DE ESTA COSA', @numAfiliado, (SELECT servicio FROM Paciente WHERE id = @numAfiliado))
+SET @aux = @aux + 1
+END
 END
 GO
