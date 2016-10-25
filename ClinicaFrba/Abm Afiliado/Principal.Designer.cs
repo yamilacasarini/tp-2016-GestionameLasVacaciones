@@ -31,6 +31,8 @@
             this.botonDeAlta = new System.Windows.Forms.Button();
             this.botonDeBaja = new System.Windows.Forms.Button();
             this.botonDeModificacion = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // botonDeAlta
@@ -63,17 +65,40 @@
             this.botonDeModificacion.UseVisualStyleBackColor = true;
             this.botonDeModificacion.Click += new System.EventHandler(this.botonDeModificacion_Click);
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(12, 219);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(260, 30);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "Consultar";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
+            this.label1.Location = new System.Drawing.Point(98, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(76, 24);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Afiliado ";
+            // 
             // Principal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.botonDeModificacion);
             this.Controls.Add(this.botonDeBaja);
             this.Controls.Add(this.botonDeAlta);
             this.Name = "Principal";
             this.Text = "Afiliados";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -82,5 +107,7 @@
         private System.Windows.Forms.Button botonDeAlta;
         private System.Windows.Forms.Button botonDeBaja;
         private System.Windows.Forms.Button botonDeModificacion;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label1;
     }
 }

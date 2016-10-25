@@ -139,7 +139,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   nombre NVARCHAR(50) NOT NULL ,
   apellido NVARCHAR(50) NOT NULL ,
   documento INT NOT NULL,
-  tipoDocumento VARCHAR(10) NOT NULL,
+  tipoDocumento VARCHAR(10) ,
   direccion VARCHAR(100) NOT NULL,
   telefono INT NOT NULL,
   email VARCHAR(100),
@@ -571,3 +571,28 @@ SET @aux = @aux + 1
 END
 END
 GO
+
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados
+go
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre as varchar(20),@apellido as varchar(20))
+returns table 
+as 
+return select * from GESTIONAME_LAS_VACACIONES.Paciente where nombre like @nombre and apellido like @apellido
+
+go
+select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('A%','%')
+
+drop function GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar 
+go
+create function  GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar (@idFamiliar as int)
+returns int 
+AS
+begin
+declare @ret int;
+select  @ret = id from GESTIONAME_LAS_VACACIONES.Paciente where id between @idFamiliar and @idFamiliar+100
+return @ret;
+end
+go
+
+print GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar (600);

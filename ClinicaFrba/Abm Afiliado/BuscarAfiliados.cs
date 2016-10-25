@@ -11,15 +11,14 @@ using System.Data.SqlClient;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
-    public partial class listadoAfiliados : Form
+    public partial class BuscarAfiliados : Form
     {
         List<dataClass.afiliado> afiliados = new List<dataClass.afiliado>();
        public dataClass.afiliado afiliadoBuscado = new dataClass.afiliado();
         
-        public listadoAfiliados()
+        public BuscarAfiliados()
         {
             InitializeComponent();
-            cargarPacientes();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -76,6 +75,12 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             afiliadoBuscado.id = -1;
             this.Close();
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.dataGridView1.DataSource = AfiliadoManager.BuscarAfiliados("abs", "afjdis", 1932);
         }
     }
 }
