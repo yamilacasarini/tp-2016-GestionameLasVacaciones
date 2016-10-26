@@ -45,29 +45,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abm Afiliado\Afiliado.cs" />
+    <Compile Include="Abm Afiliado\AfiliadoManager.cs" />
     <Compile Include="Abm Afiliado\AltaAfiliado.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Abm Afiliado\AltaAfiliado.Designer.cs">
       <DependentUpon>AltaAfiliado.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Afiliado\cambiarPlanMedico.cs">
+    <Compile Include="Abm Afiliado\BuscarAfiliados.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Afiliado\cambiarPlanMedico.Designer.cs">
-      <DependentUpon>cambiarPlanMedico.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Afiliado\listadoAfiliados.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Afiliado\listadoAfiliados.Designer.cs">
-      <DependentUpon>listadoAfiliados.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Afiliado\modificarAfiliado.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Afiliado\modificarAfiliado.Designer.cs">
-      <DependentUpon>modificarAfiliado.cs</DependentUpon>
+    <Compile Include="Abm Afiliado\BuscarAfiliados.Designer.cs">
+      <DependentUpon>BuscarAfiliados.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Afiliado\Principal.cs">
       <SubType>Form</SubType>
@@ -173,14 +163,8 @@
     <EmbeddedResource Include="Abm Afiliado\AltaAfiliado.resx">
       <DependentUpon>AltaAfiliado.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Afiliado\cambiarPlanMedico.resx">
-      <DependentUpon>cambiarPlanMedico.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Afiliado\listadoAfiliados.resx">
-      <DependentUpon>listadoAfiliados.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Afiliado\modificarAfiliado.resx">
-      <DependentUpon>modificarAfiliado.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Afiliado\BuscarAfiliados.resx">
+      <DependentUpon>BuscarAfiliados.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
