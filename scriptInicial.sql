@@ -175,7 +175,8 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Agenda(
   fechaFinal DATETIME NOT NULL,
   diaInicio INT,   -- LUNES 1 MARTES 2 MIERCOLES 3 JUEVES 4 VIERNES 5
   diaFin INT,
-  baja INTEGER DEFAULT 0
+  baja INTEGER DEFAULT 0,
+  motivo VARCHAR(255),
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.CompraBono(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY,
@@ -389,13 +390,11 @@ GO
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados
 go
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre as varchar(20),@apellido as varchar(20))
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre as varchar(20),@apellido as varchar(20), @numAfiliado as int )
 returns table 
 as 
-return select * from GESTIONAME_LAS_VACACIONES.Paciente where nombre like @nombre and apellido like @apellido
-
+return select * from GESTIONAME_LAS_VACACIONES.Paciente where id = @numAfiliado or (nombre like @nombre and apellido like @apellido)
 go
-select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('A%','%')
 
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar 
 go
@@ -610,7 +609,6 @@ GO
 
 --////////////////////////////////////--
 --NUMERO 13--	
---FALTA EL DEL PROFESIONAL--
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado(@numAfiliado as int, @matricula as int, @especialidad as varchar(30), @fecha as DATETIME, @motivo as VARCHAR(255))
 AS
 BEGIN
@@ -626,3 +624,102 @@ WHERE idPaciente = @numAfiliado and (idProfesional = @matricula or especialidad 
 END
 GO
 
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarDiaPorProfesional(@matricula as int, @especialidad as varchar(30), @diaACancelar as DATETIME, @motivo as varchar(255))
+AS
+BEGIN 
+DECLARE @inicioAux AS DATETIME
+DECLARE @finalAux AS DATETIME
+DECLARE @diaInicialAux as INT
+DECLARE @diaFinalAux as INT
+
+
+IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Agenda WHERE idProfesional = @matricula 
+				and @diaACancelar between fechaInicio and fechaFinal
+				and GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad )
+PRINT 'El dia no se encuentra agendado'
+ELSE
+
+SELECT @inicioAux= fechaInicio,  @finalAux = fechaFinal, @diaInicialAux = diaInicio, @diaFinalAux = diaFin
+FROM GESTIONAME_LAS_VACACIONES.Agenda 
+WHERE idProfesional = @matricula 
+	  and @diaACancelar between fechaInicio 
+	  and fechaFinal 
+	  and GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad
+
+UPDATE GESTIONAME_LAS_VACACIONES.Agenda 
+SET baja = 1, motivo = @motivo
+WHERE idProfesional = @matricula and @diaACancelar between fechaInicio and fechaFinal and GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad
+
+UPDATE GESTIONAME_LAS_VACACIONES.Turno
+SET baja = 1, motivo = @motivo
+WHERE idProfesional = @matricula and especialidad = @especialidad and fecha = @diaACancelar
+
+IF (@diaACancelar != @inicioAux and @diaACancelar != @finalAux)
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agenda(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1, @diaACancelar), @diaInicialAux, @diaFinalAux)
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agenda(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(day,+1, @diaACancelar), @finalAux, @diaInicialAux, @diaFinalAux)
+
+IF (@diaACancelar = @inicioAux)
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agenda(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(day,+1, @inicioAux), @finalAux, @diaInicialAux, @diaFinalAux)
+
+IF (@diaACancelar = @finalAux)
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agenda(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1, @finalAux), @diaInicialAux, @diaFinalAux)
+
+END
+GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarPeriodoPorProfesional(@matricula as int, @especialidad as varchar(30), @diaInicialACancelar as DATETIME, @diaFinalACancelar as DATETIME, @motivo as varchar(255))
+AS
+BEGIN 
+DECLARE @inicioAux AS DATETIME
+DECLARE @finalAux AS DATETIME
+DECLARE @diaInicialAux as INT
+DECLARE @diaFinalAux as INT
+
+
+IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Agenda WHERE idProfesional = @matricula 
+				and @diaInicialACancelar between fechaInicio and fechaFinal
+				and @diaFinalACancelar between fechaInicio and fechaFinal
+				and GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad )
+PRINT 'El rango de fechas no se encuentra agendado'
+ELSE
+
+SELECT @inicioAux= fechaInicio,  @finalAux = fechaFinal, @diaInicialAux = diaInicio, @diaFinalAux = diaFin
+FROM GESTIONAME_LAS_VACACIONES.Agenda 
+WHERE idProfesional = @matricula 
+	  and @diaInicialACancelar between fechaInicio and fechaFinal
+	  and @diaFinalACancelar between fechaInicio and fechaFinal
+	  and GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad
+
+UPDATE GESTIONAME_LAS_VACACIONES.Agenda 
+SET baja = 1, motivo = @motivo
+WHERE idProfesional = @matricula 
+	and @diaInicialACancelar between fechaInicio and fechaFinal
+	and @diaFinalACancelar between fechaInicio and fechaFinal 
+	and GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad
+
+UPDATE GESTIONAME_LAS_VACACIONES.Turno
+SET baja = 1, motivo = @motivo
+WHERE idProfesional = @matricula 
+	and especialidad = @especialidad 
+	and fecha between  @diaInicialACancelar and @diaFinalACancelar
+
+IF (@diaInicialACancelar != @inicioAux and @diaFinalACancelar != @finalAux)
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agenda(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1,  @diaInicialACancelar ), @diaInicialAux, @diaFinalAux)
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agenda(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(day,+1, @diaFinalACancelar), @finalAux, @diaInicialAux, @diaFinalAux)
+
+IF (@diaInicialACancelar = @inicioAux)
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agenda(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(day,+1, @diaFinalACancelar), @finalAux, @diaInicialAux, @diaFinalAux)
+
+IF (@diaFinalACancelar = @finalAux)
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agenda(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1, @diaInicialACancelar), @diaInicialAux, @diaFinalAux)
+
+END
+GO
