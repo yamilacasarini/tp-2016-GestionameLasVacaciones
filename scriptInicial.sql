@@ -173,8 +173,8 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Agenda(
   idEspecialidad int REFERENCES GESTIONAME_LAS_VACACIONES.Especialidad(id),
   fechaInicio DATETIME NOT NULL,   -- ACA PARA FECHA DEL AÑO QUE TRABAJA Y HORARIO
   fechaFinal DATETIME NOT NULL,
-  diaInicio VARCHAR(10),   -- ACA PARA LUNES Y MARTES
-  diaFin VARCHAR (10),
+  diaInicio INT,   -- LUNES 1 MARTES 2 MIERCOLES 3 JUEVES 4 VIERNES 5
+  diaFin INT,
   baja INTEGER DEFAULT 0
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.CompraBono(
@@ -207,15 +207,12 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultaMedica(
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Turno(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesional(id),
+  especialidad VARCHAR(30),
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Paciente(id),
   idConsultaMedica INT REFERENCES GESTIONAME_LAS_VACACIONES.ConsultaMedica(id),
   fecha DATETIME NOT NULL,
   baja INT default 0,
-  )
-CREATE TABLE GESTIONAME_LAS_VACACIONES.Cancelacion(
-  id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  idConsultaMedica INT REFERENCES GESTIONAME_LAS_VACACIONES.ConsultaMedica(id),
-  tipoCancelacion INT NOT NULL,
+  tipoCancelacion INT, -- 0 Paciente, 1 Profesional
   motivo VARCHAR(255),
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadxProfesional(
@@ -584,5 +581,48 @@ END
 END
 GO
 
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.reservarTurno(
+--////////////////////////////////////--
+--NUMERO 10--
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.verificarSiAtiende(@matricula as int, @especialidad as varchar(30), @fecha as DATETIME) 
+RETURNS	INT
+AS
+BEGIN
+IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Agenda 
+WHERE idProfesional = @matricula 
+	  and idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) 
+	  and (@fecha between fechaInicio and fechaFinal)
+	  and datepart (dw, @fecha) between diaInicio and diaFin)
+RETURN 0
+
+RETURN 1
+END
+GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.reservarTurno(@matricula as int, @numAfiliado as int, @especialidad as varchar(30), @fecha as DATETIME)
+AS
+BEGIN
+IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turno WHERE idProfesional = @matricula and fecha = @fecha and (GESTIONAME_LAS_VACACIONES.verificarSiAtiende (@matricula, @especialidad, @fecha)) = 1))
+	INSERT INTO GESTIONAME_LAS_VACACIONES.Turno (idPaciente, idProfesional, especialidad, fecha) 
+	VALUES (@numAfiliado, @matricula, @especialidad, @fecha) 
+END
+GO
+
+
+--////////////////////////////////////--
+--NUMERO 13--	
+--FALTA EL DEL PROFESIONAL--
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado(@numAfiliado as int, @matricula as int, @especialidad as varchar(30), @fecha as DATETIME, @motivo as VARCHAR(255))
+AS
+BEGIN
+IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turno WHERE idPaciente = @numAfiliado 
+				and (idProfesional = @matricula or especialidad like @especialidad) 
+				and fecha = @fecha and CAST(fecha AS DATE) < CAST(CURRENT_TIMESTAMP AS DATE) ))
+	
+Print 'Como va a cancelar un turno que nunca agendo usted es hijo de primos'
+ELSE 
+UPDATE GESTIONAME_LAS_VACACIONES.Turno 
+SET baja = 1, tipoCancelacion = 0, motivo = @motivo
+WHERE idPaciente = @numAfiliado and (idProfesional = @matricula or especialidad like @especialidad) and fecha = @fecha
+END
+GO
 

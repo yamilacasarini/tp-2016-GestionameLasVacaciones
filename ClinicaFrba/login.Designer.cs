@@ -35,7 +35,6 @@
             this.txtPassword = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.labelError = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonModificar
@@ -108,24 +107,11 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "Contraseña:";
             // 
-            // labelError
-            // 
-            this.labelError.AutoSize = true;
-            this.labelError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.labelError.ForeColor = System.Drawing.Color.Red;
-            this.labelError.Location = new System.Drawing.Point(53, 66);
-            this.labelError.Name = "labelError";
-            this.labelError.Size = new System.Drawing.Size(185, 15);
-            this.labelError.TabIndex = 10;
-            this.labelError.Text = "Usuario y/o Contraseña invalidos";
-            this.labelError.Visible = false;
-            // 
             // login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.labelError);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtPassword);
@@ -149,7 +135,6 @@
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label labelError;
     }
 }
 

@@ -43,6 +43,7 @@ namespace ClinicaFrba
                         }
                         server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + hashString + "'");
                         this.Hide(); // procedure no terminada
+                        new ValidacionDeRol(txtUsuario.Text.Trim()).Show();
                         //Aca deberiamos hacer alguna clases de retorno, pudiendo ser un int en caso de ser 1-paciente 2-medico 3-variosRoles 5-admin -1 error
                     }
                     catch (Exception ex)
@@ -59,7 +60,7 @@ namespace ClinicaFrba
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
 
         private void label3_Click(object sender, EventArgs e)
