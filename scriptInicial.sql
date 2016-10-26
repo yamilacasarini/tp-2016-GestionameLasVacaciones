@@ -197,12 +197,13 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Bono(
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Paciente(id),
   idPlan INT REFERENCES GESTIONAME_LAS_VACACIONES.Servicio(id),
   idCompraBono INT REFERENCES GESTIONAME_LAS_VACACIONES.CompraBono(id),
+  usado INT DEFAULT 0 --0 Sin usar, 1 usado
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultaMedica(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   idBono INT REFERENCES GESTIONAME_LAS_VACACIONES.Bono(id),
-  fecha DATETIME NOT NULL,
-  diagnostico VARCHAR(255) NOT NULL,
+  fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  diagnostico VARCHAR(255),
   sintomas VARCHAR(255),
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Turno(
@@ -608,6 +609,51 @@ GO
 
 
 --////////////////////////////////////--
+--NUMERO 11--
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@numAfiliado as int, @matricula as int, @especialidad as varchar(30))
+AS
+BEGIN
+
+DECLARE @bonoID AS INT
+
+IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turno WHERE idPaciente = @numAfiliado	
+						and idProfesional = @matricula
+						and  CAST(fecha AS DATE) = CAST(CURRENT_TIMESTAMP AS DATE))
+PRINT 'No existe el turno'
+ELSE
+
+
+SELECT @bonoID = min(b.id) 
+FROM GESTIONAME_LAS_VACACIONES.Paciente p JOIN GESTIONAME_LAS_VACACIONES.Bono b 
+ON p.id = b.idPaciente and b.usado = 0
+
+INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultaMedica(idBono, fecha) 
+VALUES (@bonoID, CURRENT_TIMESTAMP)
+
+UPDATE GESTIONAME_LAS_VACACIONES.Bono
+SET usado = 1
+WHERE id = @bonoID
+
+END
+GO
+
+--////////////////////////////////////--
+--NUMERO 12--
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cargarSintomasYDiagnostico(@idBono as int, @diagnostico as varchar(255), @sintomas as varchar(255))
+AS
+BEGIN
+
+UPDATE GESTIONAME_LAS_VACACIONES.ConsultaMedica
+SET diagnostico = @diagnostico, sintomas = @sintomas
+WHERE idBono = @idBono
+
+END
+GO
+
+
+--////////////////////////////////////--
 --NUMERO 13--	
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado(@numAfiliado as int, @matricula as int, @especialidad as varchar(30), @fecha as DATETIME, @motivo as VARCHAR(255))
 AS
@@ -721,5 +767,32 @@ IF (@diaFinalACancelar = @finalAux)
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agenda(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
 VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1, @diaInicialACancelar), @diaInicialAux, @diaFinalAux)
 
+END
+GO
+
+--////////////////////////////////////--
+--NUMERO 14--
+--LISTADO ESTRATEGICO--
+
+CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
+returns table 
+AS
+RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turno t JOIN GESTIONAME_LAS_VACACIONES.Agenda a ON t.baja = 1 and a.baja = 1)
+GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones
+AS
+BEGIN
+
+SELECT * FROM GESTIONAME_LAS_VACACIONES.Turno t
+JOIN GESTIONAME_LAS_VACACIONES.Agenda a
+ON t.baja = 1 and a.baja = 1
+
+
+SELECT idEspecialidad FROM 
+(select idEspecialidad as columns from GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
+union all
+select especialidad from GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones())
+ORDER BY especialidades
 END
 GO
