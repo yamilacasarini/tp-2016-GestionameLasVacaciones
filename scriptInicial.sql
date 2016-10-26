@@ -112,7 +112,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Rol(
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Usuario (
   usuario VARCHAR(255) PRIMARY KEY NOT NULL,
-  pass VARCHAR(255) NULL ,
+pass VARCHAR(255),
   baja INT default 0,
   fechaBaja DATETIME,
   intentos INT,
@@ -255,7 +255,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidad(descripcion) VALUES ('REGIST
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidad(descripcion) VALUES ('CANCELAR TURNO')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidad(descripcion) VALUES ('LISTADO ESTADISTICO')
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Usuario (usuario, pass) VALUES ('admin', '0xE6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Usuario (usuario, pass) VALUES ('admin','52d77462b24987175c8d7dab901a5967e927ffc8d0b6e4a234e07a4aec5e3724')
 
 INSERT INTO #PacienteTemporal(nombre,apellido,dni,direccion,telefono,email,fechaNacimiento,idPlan,descripcion,precioBono,precioCuota, Compra_Bono_Fecha)
 SELECT DISTINCT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direccion, Paciente_Telefono, Paciente_Mail,Paciente_Fecha_Nac,
@@ -417,8 +417,9 @@ go
 --PROCEDURES--
 --NUMERO 2--
 
-
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.LoguearUsuario(@username VARCHAR(255), @pass VARBINARY(8000))
+drop PROCEDURE GESTIONAME_LAS_VACACIONES.LoguearUsuario
+go
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.LoguearUsuario(@username VARCHAR(255), @pass VARCHAR(255))
 AS 
 BEGIN
 	DECLARE @usuario VARCHAR(255)
@@ -428,23 +429,23 @@ BEGIN
 	IF (@intentos >= 3)
 		RAISERROR('El usuario se encuentra bloqueado por tener 3 intentos de logueo fallidos',16,217) WITH SETERROR
 			
-	SELECT @usuario = usuario FROM GESTIONAME_LAS_VACACIONES.Usuario WHERE usuario like @username AND pass like HASHBYTES('SHA2_256', @pass)
+	SELECT @usuario = usuario FROM GESTIONAME_LAS_VACACIONES.Usuario WHERE usuario like @username AND pass like @pass
 	IF (@usuario IS NULL)
-	BEGIN	
+	BEGIN
 		UPDATE GESTIONAME_LAS_VACACIONES.Usuario
-		SET intentos = @intentos + 1 
-		WHERE usuario like @username
-		RAISERROR('Los datos ingresados no son validos',16,217) WITH SETERROR
+		SET intentos = @intentos +1 
+		WHERE usuario = @username 
+		RAISERROR(@pass,16,217) WITH SETERROR
 	END
-
+	ELSE
+	BEGIN
 	UPDATE GESTIONAME_LAS_VACACIONES.Usuario 
 	SET intentos = 0 
 	WHERE Usuario.usuario like @username
+	END
 END
 GO
 
-
-SELECT * FROM GESTIONAME_LAS_VACACIONES.Usuario WHERE usuario like 'admin'
 
 --////////////////////////////////////--
 --NUMERO 1--

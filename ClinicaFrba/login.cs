@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Security.Cryptography;
+using System.Text;
 using ClinicaFrba;
 
 namespace ClinicaFrba
@@ -31,8 +33,15 @@ namespace ClinicaFrba
                     Server server = Server.getInstance();
                     try
                     {
-                
-                        server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + txtPassword.Text.Trim() + "'");
+                        byte[] bytes = Encoding.Unicode.GetBytes(txtPassword.Text.Trim());
+                        SHA256Managed hashstring = new SHA256Managed();
+                        byte[] hash = hashstring.ComputeHash(bytes);
+                        string hashString = string.Empty;
+                        foreach (byte x in hash)
+                        {
+                            hashString += String.Format("{0:x2}", x);
+                        }
+                        server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + hashString + "'");
                         this.Hide(); // procedure no terminada
                         //Aca deberiamos hacer alguna clases de retorno, pudiendo ser un int en caso de ser 1-paciente 2-medico 3-variosRoles 5-admin -1 error
                     }
