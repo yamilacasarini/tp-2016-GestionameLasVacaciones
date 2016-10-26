@@ -111,11 +111,11 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Rol(
   baja INT DEFAULT 0,
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Usuario (
-  id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
-  usuario NVARCHAR(30) NOT NULL,
-  pass NVARCHAR(30) NULL ,
+  usuario VARCHAR(255) PRIMARY KEY NOT NULL,
+  pass VARCHAR(255) NULL ,
   baja INT default 0,
   fechaBaja DATETIME,
+  intentos INT,
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.RolxFuncionalidad (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
@@ -125,7 +125,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.RolxFuncionalidad (
 CREATE TABLE GESTIONAME_LAS_VACACIONES.RolxUsuario(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   idRol INT REFERENCES GESTIONAME_LAS_VACACIONES.Rol(id) ,
-  idUsuario INT REFERENCES GESTIONAME_LAS_VACACIONES.Usuario(id) ,
+  idUsuario INT REFERENCES GESTIONAME_LAS_VACACIONES.Usuario(usuario) ,
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Servicio(
   id INTEGER PRIMARY KEY,
@@ -148,7 +148,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   estadoCivil VARCHAR(10),
   cantFamiliares INT DEFAULT 0,
   cantConsultas INT DEFAULT 0,
-  servicio INT REFERENCES GESTIONAME_LAS_VACACIONES.SERVICIO(id)
+  servicio INT REFERENCES GESTIONAME_LAS_VACACIONES.SERVICIO(id),
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Profesional (
   id INTEGER PRIMARY KEY NOT NULL DEFAULT 0,
@@ -223,12 +223,6 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadxProfesional(
   idEspecialidad INT REFERENCES GESTIONAME_LAS_VACACIONES.Especialidad(id) ,
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesional(id) ,
   )
-CREATE TABLE GESTIONAME_LAS_VACACIONES.Intento(
-	id INTEGER PRIMARY KEY NOT NULL IDENTITY,
-	idUsuario INT REFERENCES GESTIONAME_LAS_VACACIONES.Usuario(id),
-	tiempo DATETIME,)
-
-GO
 
 --////////////////////////////////////--
 --MIGRACION--
@@ -261,7 +255,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidad(descripcion) VALUES ('REGIST
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidad(descripcion) VALUES ('CANCELAR TURNO')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidad(descripcion) VALUES ('LISTADO ESTADISTICO')
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Usuario (usuario, pass) VALUES ('admin', 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Usuario (usuario, pass) VALUES ('admin', '0xE6B87050BFCB8143FCB8DB0170A4DC9ED00D904DDD3E2A4AD1B1E8DC0FDC9BE7')
 
 INSERT INTO #PacienteTemporal(nombre,apellido,dni,direccion,telefono,email,fechaNacimiento,idPlan,descripcion,precioBono,precioCuota, Compra_Bono_Fecha)
 SELECT DISTINCT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direccion, Paciente_Telefono, Paciente_Mail,Paciente_Fecha_Nac,
@@ -395,44 +389,62 @@ RETURNS INT AS
 END
 GO
 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados
+go
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre as varchar(20),@apellido as varchar(20))
+returns table 
+as 
+return select * from GESTIONAME_LAS_VACACIONES.Paciente where nombre like @nombre and apellido like @apellido
+
+go
+select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('A%','%')
+
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar 
+go
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar (@idFamiliar as int)
+returns int 
+AS
+begin
+declare @ret int;
+select  @ret = id from GESTIONAME_LAS_VACACIONES.Paciente where id between @idFamiliar and @idFamiliar+100
+return @ret;
+end
+go
 
 
 --////////////////////////////////////--
 --PROCEDURES--
 --NUMERO 2--
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.logueo(@username VARCHAR(30), @pass VARCHAR(30))
-AS BEGIN
-	DECLARE @usuario NUMERIC(18,0)
+
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.LoguearUsuario(@username VARCHAR(255), @pass VARBINARY(8000))
+AS 
+BEGIN
+	DECLARE @usuario VARCHAR(255)
 	DECLARE @intentos INT
-	SELECT COUNT(idUsuario) FROM GESTIONAME_LAS_VACACIONES.Intento i
-								JOIN GESTIONAME_LAS_VACACIONES.Usuario u ON i.id = u.id
-								WHERE u.usuario = @username
+	SELECT @intentos = intentos FROM GESTIONAME_LAS_VACACIONES.Usuario
+								WHERE usuario like @username
 	IF (@intentos >= 3)
 		RAISERROR('El usuario se encuentra bloqueado por tener 3 intentos de logueo fallidos',16,217) WITH SETERROR
 			
-	SELECT @usuario = id FROM GESTIONAME_LAS_VACACIONES.Usuarios WHERE usuario = @username AND pass = HASHBYTES('SHA2_256', @pass)
+	SELECT @usuario = usuario FROM GESTIONAME_LAS_VACACIONES.Usuario WHERE usuario like @username AND pass like HASHBYTES('SHA2_256', @pass)
 	IF (@usuario IS NULL)
-		BEGIN 
-		UPDATETIME intentos SET intentos = @intentos + 1 
-		FROM GESTIONAME_LAS_VACACIONES.Usuarios usuarios
-		JOIN GESTIONAME_LAS_VACACIONES.Intentos intentos ON intentos.usuario_id = usuarios.id
-		WHERE usuarios.usuario = @username
+	BEGIN	
+		UPDATE GESTIONAME_LAS_VACACIONES.Usuario
+		SET intentos = @intentos + 1 
+		WHERE usuario like @username
 		RAISERROR('Los datos ingresados no son validos',16,217) WITH SETERROR
-		END 
-
-	ELSE
-	BEGIN
-		IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Usuario_Rol 
-						JOIN GESTIONAME_LAS_VACACIONES.Roles ON id = id_rol
-						WHERE nombre = 'Administrativo' AND @usuario = id_usuario)
-			RAISERROR('El usuario no tiene los permisos necesarios',16,217) WITH SETERROR
 	END
-	UPDATETIME intentos SET intentos = 0 
-	FROM GESTIONAME_LAS_VACACIONES.Usuarios usuarios
-	JOIN GESTIONAME_LAS_VACACIONES.Intentos intentos ON intentos.usuario_id = usuarios.id
-	WHERE usuarios.usuario = @username
+
+	UPDATE GESTIONAME_LAS_VACACIONES.Usuario 
+	SET intentos = 0 
+	WHERE Usuario.usuario like @username
 END
 GO
+
+
+SELECT * FROM GESTIONAME_LAS_VACACIONES.Usuario WHERE usuario like 'admin'
 
 --////////////////////////////////////--
 --NUMERO 1--
@@ -456,7 +468,7 @@ GO
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarRol(@nombreViejo as varchar(30), @nombreNuevo as varchar(30))
 AS
 BEGIN
-UPDATETIME GESTIONAME_LAS_VACACIONES.Rol
+UPDATE GESTIONAME_LAS_VACACIONES.Rol
 SET descripcion= @nombreNuevo
 WHERE descripcion= @nombreViejo
 END
@@ -488,7 +500,7 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id as int,@nombre 
 @cantFami as int)
 AS
 BEGIN
-UPDATETIME GESTIONAME_LAS_VACACIONES.Paciente
+UPDATE GESTIONAME_LAS_VACACIONES.Paciente
 SET nombre = @nombre, apellido  = @apellido , documento = @doc, direccion = @direc, telefono = @tel, email = @mail, sexo = @sexo, 
 estadoCivil = @civil, cantFamiliares = @cantFami WHERE id = @id
 END
@@ -500,7 +512,7 @@ BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Modificacion(idPaciente,idPlan,motivo)
 VALUES(@idPaciente,GESTIONAME_LAS_VACACIONES.getIdPlanMedico(@descripcionPlan),@motivo)
 END
-
+GO
 
 --////////////////////////////////////--
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.agregarFuncionalidadAUnRol (@nombreRol as varchar(30),@nombreFuncionalidad as varchar(30))
@@ -553,7 +565,6 @@ GO
 
 --////////////////////////////////////--
 --NUMERO 9--
---FALTA 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.compraDeBonos(@numAfiliado as int, @cantidad as int)
 AS
 BEGIN
@@ -566,33 +577,11 @@ VALUES (@numAfiliado, @cantidad, GESTIONAME_LAS_VACACIONES.calcularMontoSegunPla
 WHILE (@aux < @cantidad)
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bono(idCompraBono, idPaciente, idPlan) 
-VALUES ('EL ID DE ESTA COSA', @numAfiliado, (SELECT servicio FROM Paciente WHERE id = @numAfiliado))
+VALUES ((SELECT id FROM GESTIONAME_LAS_VACACIONES.CompraBono WHERE idPaciente = @numAfiliado and fecha = CURRENT_TIMESTAMP) , @numAfiliado, (SELECT servicio FROM Paciente WHERE id = @numAfiliado))
 SET @aux = @aux + 1
 END
 END
 GO
 
-DROP FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados
-go
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.reservarTurno(
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre as varchar(20),@apellido as varchar(20))
-returns table 
-as 
-return select * from GESTIONAME_LAS_VACACIONES.Paciente where nombre like @nombre and apellido like @apellido
-
-go
-select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('A%','%')
-
-drop function GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar 
-go
-create function  GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar (@idFamiliar as int)
-returns int 
-AS
-begin
-declare @ret int;
-select  @ret = id from GESTIONAME_LAS_VACACIONES.Paciente where id between @idFamiliar and @idFamiliar+100
-return @ret;
-end
-go
-
-print GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar (600);

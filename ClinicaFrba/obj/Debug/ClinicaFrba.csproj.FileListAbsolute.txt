@@ -45,7 +45,6 @@ C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\bin\Debug\Clini
 C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.exe
 C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.csprojResolveAssemblyReference.cache
 C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.AltaAfiliado.resources
-C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.listadoAfiliados.resources
 C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.Principal.resources
 C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Especialidades_Medicas.AltaEspecialidades.resources
 C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Especialidades_Medicas.Form1.resources
@@ -58,8 +57,7 @@ C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\Clini
 C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\bin\Debug\ClinicaFrba.exe
 C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\bin\Debug\ClinicaFrba.pdb
 C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.pdb
-C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.modificarAfiliado.resources
-C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.cambiarPlanMedico.resources
 C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\bin\Debug\ClinicaFrba.exe
 C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\bin\Debug\ClinicaFrba.pdb
 C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.BuscarAfiliados.resources
+C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.BuscarAfiliados.resources

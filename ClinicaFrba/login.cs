@@ -31,6 +31,7 @@ namespace ClinicaFrba
                     Server server = Server.getInstance();
                     try
                     {
+                
                         server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + txtPassword.Text.Trim() + "'");
                         this.Hide(); // procedure no terminada
                         //Aca deberiamos hacer alguna clases de retorno, pudiendo ser un int en caso de ser 1-paciente 2-medico 3-variosRoles 5-admin -1 error
