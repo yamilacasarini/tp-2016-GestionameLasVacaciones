@@ -38,11 +38,11 @@
             // 
             this.titulo.AutoSize = true;
             this.titulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F);
-            this.titulo.Location = new System.Drawing.Point(76, 9);
+            this.titulo.Location = new System.Drawing.Point(101, 9);
             this.titulo.Name = "titulo";
-            this.titulo.Size = new System.Drawing.Size(123, 26);
+            this.titulo.Size = new System.Drawing.Size(68, 26);
             this.titulo.TabIndex = 0;
-            this.titulo.Text = "ABM-Roles";
+            this.titulo.Text = "Roles";
             // 
             // button2
             // 
@@ -71,7 +71,7 @@
             this.button3.Text = "Alta";
             this.button3.UseVisualStyleBackColor = true;
             // 
-            // ABMRoles
+            // Principal
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(284, 261);
@@ -79,7 +79,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.titulo);
-            this.Name = "ABMRoles";
+            this.Name = "Principal";
             this.Text = "Roles";
             this.Load += new System.EventHandler(this.ABMRoles_Load);
             this.ResumeLayout(false);

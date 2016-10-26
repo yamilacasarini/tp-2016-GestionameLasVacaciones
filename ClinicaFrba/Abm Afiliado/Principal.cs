@@ -19,9 +19,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void button3_Click(object sender, EventArgs e)
         {
-          
-            this.Hide();
-          new AltaAfiliado().Show();
+         
+          new AltaAfiliado().ShowDialog();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -31,14 +30,11 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void botonDeModificacion_Click(object sender, EventArgs e)
         {
-            this.Hide();
-         //   new modificarAfiliado().Show();
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            this.Hide();
-            new BuscarAfiliados().Show();
+            new BuscarAfiliados().ShowDialog();
         }
 
 
