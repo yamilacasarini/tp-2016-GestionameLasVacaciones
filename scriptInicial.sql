@@ -305,6 +305,8 @@ GO
 
 --////////////////////////////////////--
 --FUNCIONES--
+
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.funcObtenerIdDeDni(@dni INT)
 RETURNS INTEGER
 AS
@@ -413,9 +415,11 @@ go
 --////////////////////////////////////--
 --PROCEDURES--
 --NUMERO 2--
+--LOGUIN DE USUARIOS--
 
 drop PROCEDURE GESTIONAME_LAS_VACACIONES.LoguearUsuario
 go
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.LoguearUsuario(@username VARCHAR(255), @pass VARCHAR(255))
 AS 
 BEGIN
@@ -446,6 +450,9 @@ GO
 
 --////////////////////////////////////--
 --NUMERO 1--
+--ABM ROLES--
+
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.crearRol(@nombre as  varchar(30))
 AS 
 BEGIN
@@ -475,6 +482,8 @@ GO
 --////////////////////////////////////--
 --EL 3 ESTA HARCODEADO ARRIBA--
 --NUMERO 4--
+--ABM PACIENTES--
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre as nvarchar(50), @apellido as nvarchar(50), 
 @doc as int, @direc as varchar(100), @tel as int, @mail as varchar(100), @nacimiento as DATETIME, @sexo as char, @civil as varchar(10),
 @cantFami as int)
@@ -513,6 +522,8 @@ END
 GO
 
 --////////////////////////////////////--
+--ABM FUNCIONALIDADES A ROL --
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.agregarFuncionalidadAUnRol (@nombreRol as varchar(30),@nombreFuncionalidad as varchar(30))
 AS
 BEGIN
@@ -548,6 +559,7 @@ GO
 --////////////////////////////////////--
 -- LOS 5, 6, 7 NO SE HACEN--
 --NUMERO 8--
+--CREACION AGENDA PROFESIONAL--
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaAgendaProfesional
 (@matriculaProfesional as int, @descEspecialidad as varchar(30), 
@@ -563,6 +575,8 @@ GO
 
 --////////////////////////////////////--
 --NUMERO 9--
+--COMPRA DE BONOS--
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.compraDeBonos(@numAfiliado as int, @cantidad as int)
 AS
 BEGIN
@@ -583,6 +597,8 @@ GO
 
 --////////////////////////////////////--
 --NUMERO 10--
+--RESERVA DE TURNOS--
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.verificarSiAtiende(@matricula as int, @especialidad as varchar(30), @fecha as DATETIME) 
 RETURNS	INT
 AS
@@ -610,6 +626,7 @@ GO
 
 --////////////////////////////////////--
 --NUMERO 11--
+--REGISTRO DE LLEGADA--
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@numAfiliado as int, @matricula as int, @especialidad as varchar(30))
 AS
@@ -640,6 +657,7 @@ GO
 
 --////////////////////////////////////--
 --NUMERO 12--
+--CARGA DE SINTOMAS Y DIAGNOSTICO A LA CONSULTA MEDICA--
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cargarSintomasYDiagnostico(@idBono as int, @diagnostico as varchar(255), @sintomas as varchar(255))
 AS
@@ -654,7 +672,10 @@ GO
 
 
 --////////////////////////////////////--
---NUMERO 13--	
+--NUMERO 13--
+--CANCELACION DE TURNOS--
+--PACIENTE--
+	
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado(@numAfiliado as int, @matricula as int, @especialidad as varchar(30), @fecha as DATETIME, @motivo as VARCHAR(255))
 AS
 BEGIN
@@ -669,6 +690,11 @@ SET baja = 1, tipoCancelacion = 0, motivo = @motivo
 WHERE idPaciente = @numAfiliado and (idProfesional = @matricula or especialidad like @especialidad) and fecha = @fecha
 END
 GO
+
+
+--////////////////////////////////////--
+--PROFESIONAL--
+
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarDiaPorProfesional(@matricula as int, @especialidad as varchar(30), @diaACancelar as DATETIME, @motivo as varchar(255))
 AS
@@ -773,26 +799,28 @@ GO
 --////////////////////////////////////--
 --NUMERO 14--
 --LISTADO ESTRATEGICO--
+--TOP 5 ESPECIALIDADES CON MAS CANCELACIONES--
 
 CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
 returns table 
 AS
-RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turno t JOIN GESTIONAME_LAS_VACACIONES.Agenda a ON t.baja = 1 and a.baja = 1)
+RETURN (SELECT GESTIONAME_LAS_VACACIONES.getIdEspecialidad(t.especialidad) as especialidades, a.idEspecialidad as especialidades2 FROM GESTIONAME_LAS_VACACIONES.Turno t JOIN GESTIONAME_LAS_VACACIONES.Agenda a ON t.baja = 1 and a.baja = 1)
+GO
+
+CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones()
+returns table 
+AS
+RETURN (SELECT especialidades FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
+UNION ALL
+SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
+ORDER BY especialidades)
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones
 AS
 BEGIN
 
-SELECT * FROM GESTIONAME_LAS_VACACIONES.Turno t
-JOIN GESTIONAME_LAS_VACACIONES.Agenda a
-ON t.baja = 1 and a.baja = 1
+SELECT TOP 5 especialidades FROM GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones()
 
-
-SELECT idEspecialidad FROM 
-(select idEspecialidad as columns from GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
-union all
-select especialidad from GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones())
-ORDER BY especialidades
 END
 GO
