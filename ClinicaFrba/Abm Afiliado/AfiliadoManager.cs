@@ -81,6 +81,13 @@ int CantidadFamiliares)
             return Convert.ToInt32(reader["id"]);
         }
 
+        public static int id(string dni)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("SELECT id FROM GESTIONAME_LAS_VACACIONES.Paciente WHERE documento =" + dni);
+            return Convert.ToInt32(reader["id"]);
+        }
+
         /*         CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id as int,@nombre as nvarchar(50), @apellido as nvarchar(50), 
      @doc as int, @direc as varchar(100), @tel as int, @mail as varchar(255), @sexo as char, @civil as varchar(10),
      @cantFami as int)*/

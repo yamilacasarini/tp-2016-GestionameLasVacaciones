@@ -50,12 +50,14 @@
             this.cBsexo = new System.Windows.Forms.ComboBox();
             this.cBestadoCivil = new System.Windows.Forms.ComboBox();
             this.buttonSalir = new System.Windows.Forms.Button();
-            this.buttonAceptar = new System.Windows.Forms.Button();
+            this.btAgregar = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.label11 = new System.Windows.Forms.Label();
             this.cBplanMedico = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
             this.txId = new System.Windows.Forms.Label();
+            this.btAgregarFam = new System.Windows.Forms.Button();
+            this.labelFamiliar = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label2
@@ -287,7 +289,7 @@
             // buttonSalir
             // 
             this.buttonSalir.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.buttonSalir.Location = new System.Drawing.Point(239, 401);
+            this.buttonSalir.Location = new System.Drawing.Point(327, 400);
             this.buttonSalir.Name = "buttonSalir";
             this.buttonSalir.Size = new System.Drawing.Size(76, 30);
             this.buttonSalir.TabIndex = 41;
@@ -295,16 +297,17 @@
             this.buttonSalir.UseVisualStyleBackColor = true;
             this.buttonSalir.Click += new System.EventHandler(this.buttonModificar_Click);
             // 
-            // buttonAceptar
+            // btAgregar
             // 
-            this.buttonAceptar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.buttonAceptar.Location = new System.Drawing.Point(55, 401);
-            this.buttonAceptar.Name = "buttonAceptar";
-            this.buttonAceptar.Size = new System.Drawing.Size(76, 30);
-            this.buttonAceptar.TabIndex = 40;
-            this.buttonAceptar.Text = "Aceptar";
-            this.buttonAceptar.UseVisualStyleBackColor = true;
-            this.buttonAceptar.Click += new System.EventHandler(this.buttonAceptar_Click);
+            this.btAgregar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.btAgregar.Location = new System.Drawing.Point(29, 400);
+            this.btAgregar.Name = "btAgregar";
+            this.btAgregar.Size = new System.Drawing.Size(76, 30);
+            this.btAgregar.TabIndex = 40;
+            this.btAgregar.Text = "Agregar";
+            this.btAgregar.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btAgregar.UseVisualStyleBackColor = true;
+            this.btAgregar.Click += new System.EventHandler(this.btAgregar_Click);
             // 
             // dateTimePicker1
             // 
@@ -356,16 +359,40 @@
             this.txId.Size = new System.Drawing.Size(0, 20);
             this.txId.TabIndex = 44;
             // 
+            // btAgregarFam
+            // 
+            this.btAgregarFam.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.btAgregarFam.Location = new System.Drawing.Point(146, 400);
+            this.btAgregarFam.Name = "btAgregarFam";
+            this.btAgregarFam.Size = new System.Drawing.Size(146, 30);
+            this.btAgregarFam.TabIndex = 45;
+            this.btAgregarFam.Text = "Agregar Familiar";
+            this.btAgregarFam.UseVisualStyleBackColor = true;
+            this.btAgregarFam.Click += new System.EventHandler(this.btAgregarFam_Click);
+            // 
+            // labelFamiliar
+            // 
+            this.labelFamiliar.AutoSize = true;
+            this.labelFamiliar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.labelFamiliar.Location = new System.Drawing.Point(25, 22);
+            this.labelFamiliar.Name = "labelFamiliar";
+            this.labelFamiliar.Size = new System.Drawing.Size(170, 20);
+            this.labelFamiliar.TabIndex = 46;
+            this.labelFamiliar.Text = "Ingresando familiar de:";
+            this.labelFamiliar.Click += new System.EventHandler(this.label14_Click);
+            // 
             // AltaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(445, 443);
+            this.Controls.Add(this.labelFamiliar);
+            this.Controls.Add(this.btAgregarFam);
             this.Controls.Add(this.txId);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.buttonSalir);
-            this.Controls.Add(this.buttonAceptar);
+            this.Controls.Add(this.btAgregar);
             this.Controls.Add(this.cBplanMedico);
             this.Controls.Add(this.cBestadoCivil);
             this.Controls.Add(this.cBsexo);
@@ -422,11 +449,13 @@
         private System.Windows.Forms.ComboBox cBestadoCivil;
       //  private System.DirectoryServices.DirectoryEntry directoryEntry1;
         private System.Windows.Forms.Button buttonSalir;
-        private System.Windows.Forms.Button buttonAceptar;
+        private System.Windows.Forms.Button btAgregar;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.ComboBox cBplanMedico;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label txId;
+        private System.Windows.Forms.Button btAgregarFam;
+        private System.Windows.Forms.Label labelFamiliar;
     }
 }

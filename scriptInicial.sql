@@ -98,7 +98,7 @@ BEGIN
 END
 
 
-
+GO
 --/////////////////////////////////////////////////////--
 --CREACION DE TABLAS--
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Funcionalidad (
@@ -125,7 +125,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.RolxFuncionalidad (
 CREATE TABLE GESTIONAME_LAS_VACACIONES.RolxUsuario(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   idRol INT REFERENCES GESTIONAME_LAS_VACACIONES.Rol(id) ,
-  idUsuario INT REFERENCES GESTIONAME_LAS_VACACIONES.Usuario(usuario) ,
+  idUsuario VARCHAR(255) REFERENCES GESTIONAME_LAS_VACACIONES.Usuario(usuario) ,
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Servicio(
   id INTEGER PRIMARY KEY,
@@ -284,7 +284,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Profesional(nombre,apellido,documento,dire
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolxFuncionalidad(idFuncionalidad, idRol)
 	SELECT DISTINCT f.id, r.id FROM GESTIONAME_LAS_VACACIONES.Funcionalidad f, GESTIONAME_LAS_VACACIONES.Rol r  WHERE r.id = 1
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolxUsuario(idRol, idUsuario) 
-	SELECT   r.id, u.id FROM GESTIONAME_LAS_VACACIONES.Rol r  , GESTIONAME_LAS_VACACIONES.Usuario u WHERE r.id = 1
+	SELECT   r.id, u.usuario FROM GESTIONAME_LAS_VACACIONES.Rol r  , GESTIONAME_LAS_VACACIONES.Usuario u WHERE r.id = 1
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bono(idCompraBono, idPaciente, idPlan)
 	SELECT c.id, p.id, s.id FROM GESTIONAME_LAS_VACACIONES.CompraBono c, GESTIONAME_LAS_VACACIONES.Paciente p, GESTIONAME_LAS_VACACIONES.Servicio s
 --Meter Bono_Consulta_Numero en algun lugar del bono ACORDARSE
@@ -390,24 +390,27 @@ RETURNS INT AS
 END
 GO
 
-DROP FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados
-go
-
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre as varchar(20),@apellido as varchar(20), @numAfiliado as int )
 returns table 
 as 
 return select * from GESTIONAME_LAS_VACACIONES.Paciente where id = @numAfiliado or (nombre like @nombre and apellido like @apellido)
 go
 
-DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado()
+returns INT 
+as 
+BEGIN
+return (((select max(id) from GESTIONAME_LAS_VACACIONES.Paciente) /100)+1) * 100
+END
+
 go
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar (@idFamiliar as int)
 returns int 
 AS
 begin
 declare @ret int;
-select  @ret = id from GESTIONAME_LAS_VACACIONES.Paciente where id between @idFamiliar and @idFamiliar+100
-return @ret;
+select  @ret = max(id) from GESTIONAME_LAS_VACACIONES.Paciente where id between @idFamiliar and @idFamiliar+80 -- por si existe otro afiliado
+return @ret +1;
 end
 go
 
@@ -416,9 +419,6 @@ go
 --PROCEDURES--
 --NUMERO 2--
 --LOGUIN DE USUARIOS--
-
-drop PROCEDURE GESTIONAME_LAS_VACACIONES.LoguearUsuario
-go
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.LoguearUsuario(@username VARCHAR(255), @pass VARCHAR(255))
 AS 
@@ -486,16 +486,30 @@ GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre as nvarchar(50), @apellido as nvarchar(50), 
 @doc as int, @direc as varchar(100), @tel as int, @mail as varchar(100), @nacimiento as DATETIME, @sexo as char, @civil as varchar(10),
-@cantFami as int)
+@cantFami as int, @servicio as int)
 AS
 BEGIN 
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Paciente WHERE apellido LIKE @apellido AND documento = @doc) 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Paciente(nombre, apellido, documento, direccion, telefono, email, 
-fechaNacimiento, sexo, estadoCivil, cantFamiliares) VALUES (@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami)
+INSERT INTO GESTIONAME_LAS_VACACIONES.Paciente(id,nombre, apellido, documento, direccion, telefono, email, 
+fechaNacimiento, sexo, estadoCivil, cantFamiliares,servicio) VALUES (GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado(),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@servicio)
 ELSE
 PRINT 'El paciente ya existe'
 END 
 GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaFamiliar(@idFamiliar as INT,@nombre as nvarchar(50), @apellido as nvarchar(50), 
+@doc as int, @direc as varchar(100), @tel as int, @mail as varchar(100), @nacimiento as DATETIME, @sexo as char, @civil as varchar(10),
+@cantFami as int,@servicio as int)
+AS
+BEGIN 
+IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Paciente WHERE apellido LIKE @apellido AND documento = @doc) 
+INSERT INTO GESTIONAME_LAS_VACACIONES.Paciente(id,nombre, apellido, documento, direccion, telefono, email, 
+fechaNacimiento, sexo, estadoCivil, cantFamiliares,servicio) VALUES (GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar(@idFamiliar),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@servicio)
+ELSE
+PRINT 'El paciente ya existe'
+END 
+GO
+
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarPaciente(@numAfiliado as int)
 AS
@@ -812,8 +826,8 @@ returns table
 AS
 RETURN (SELECT especialidades FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
 UNION ALL
-SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
-ORDER BY especialidades)
+SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones())
+--ORDER BY especialidades)
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones

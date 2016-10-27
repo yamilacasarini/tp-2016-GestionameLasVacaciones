@@ -14,14 +14,22 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class AltaAfiliado : Form
     {
-
+        Afiliado afiliadoFamiliar = new Afiliado();
         public static Server server;
         private SqlDataReader reader;
+
 
         public AltaAfiliado()
         {
             InitializeComponent();
-           llenarPlanes();
+            llenarPlanes();
+            btAgregarFam.Hide();
+            labelFamiliar.Hide();
+            if (afiliadoFamiliar.id != 0)
+            {
+                labelFamiliar.Text = "Ingresando familiar de:" + afiliadoFamiliar.apellido;
+                labelFamiliar.Show();
+            }
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -65,21 +73,27 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            
+            this.Close();
         }
-        private void buttonAceptar_Click(object sender, EventArgs e)
+        private void btAgregar_Click(object sender, EventArgs e)
         {
             if (validarDatos())
             {
-                Abm_Afiliado.Principal proximo = new Abm_Afiliado.Principal();
-                proximo.Show();
-                server.query("INSERT INTO GESTIONAME_LAS_VACACIONES.Paciente(nombre,apellido,documento,direccion,telefono,email,fechaNacimiento,sexo,EstadoCivil,cantFamiliares,servicio)" +
-                "VALUES (" + txNombre.Text.Trim() + ", " + txApellido.Text.Trim() + "," + txDocumento.Text.Trim() + "," + txDireccion.Text.Trim() + "," + txTelefono.Text.Trim() +
+                server.query("EXEC GESTIONAME_LAS_VACACIONES.Paciente(" +
+                txNombre.Text.Trim() + ", " + txApellido.Text.Trim() + "," + txDocumento.Text.Trim() + "," + txDireccion.Text.Trim() + "," + txTelefono.Text.Trim() +
                 " " + txMail.Text.Trim() + "," + dateTimePicker1.Text.Trim() + "," + cBsexo.Text.Trim() + "," + cBestadoCivil.Text.Trim() + "," + txFamiliaresACargo.Text.Trim() +
                 AfiliadoManager.idPlanMedico(cBplanMedico.Text.Trim()) + ",)");
-                this.Close();
+                btAgregar.Hide();
+                if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
+                {
+                    btAgregarFam.Show();
+                    afiliadoFamiliar.nombre = txNombre.Text.Trim();
+                    afiliadoFamiliar.apellido = txApellido.Text.Trim();
+                    afiliadoFamiliar.id = AfiliadoManager.id(txDocumento.Text.Trim());
+                }
             }
-            else {
+            else
+            {
                 MessageBox.Show("Faltan datos");
             }
 
@@ -184,6 +198,18 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
         private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btAgregarFam_Click(object sender, EventArgs e)
+        {
+            AltaAfiliado form = new AltaAfiliado();
+            form.afiliadoFamiliar = afiliadoFamiliar;
+            form.ShowDialog();
+        }
+
+        private void label14_Click(object sender, EventArgs e)
         {
 
         }
