@@ -13,7 +13,7 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class BuscarAfiliados : Form
     {
-          Afiliado afiliadoBuscado;
+        public  Afiliado afiliadoBuscado;
         public BuscarAfiliados()
         {
             InitializeComponent();

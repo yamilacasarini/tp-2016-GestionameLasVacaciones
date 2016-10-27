@@ -59,6 +59,18 @@
     <Compile Include="Abm Afiliado\BuscarAfiliados.Designer.cs">
       <DependentUpon>BuscarAfiliados.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Afiliado\CambioPlan.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\CambioPlan.Designer.cs">
+      <DependentUpon>CambioPlan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Abm Afiliado\modificarUnAfiliado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\modificarUnAfiliado.Designer.cs">
+      <DependentUpon>modificarUnAfiliado.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Afiliado\Principal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -171,6 +183,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\BuscarAfiliados.resx">
       <DependentUpon>BuscarAfiliados.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\CambioPlan.resx">
+      <DependentUpon>CambioPlan.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\modificarUnAfiliado.resx">
+      <DependentUpon>modificarUnAfiliado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>

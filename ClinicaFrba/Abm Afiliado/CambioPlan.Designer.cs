@@ -64,7 +64,7 @@
             this.cBplanMedico.Name = "cBplanMedico";
             this.cBplanMedico.Size = new System.Drawing.Size(121, 21);
             this.cBplanMedico.TabIndex = 65;
-            this.cBplanMedico.SelectedIndexChanged += new System.EventHandler(this.cBplanMedico_SelectedIndexChanged);
+            this.cBplanMedico.SelectedIndexChanged += new System.EventHandler(this.cBplanMedico_SelectedIndexChanged_1);
             // 
             // label11
             // 

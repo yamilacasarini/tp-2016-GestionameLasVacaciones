@@ -14,7 +14,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
     public partial class modificarAfiliado : Form
     {
-        dataClass.afiliado afiliado = new dataClass.afiliado();
+        Afiliado afiliado = new Afiliado();
         public modificarAfiliado()
         {
             InitializeComponent();
@@ -31,11 +31,11 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             Server server = Server.getInstance();
             SqlDataReader reader;
-            listadoAfiliados formAfiliados = new listadoAfiliados();
-            formAfiliados.ShowDialog();
-            if (formAfiliados.afiliadoBuscado.id != -1)
+            BuscarAfiliados form= new BuscarAfiliados();
+            form.ShowDialog();
+            if (form.afiliadoBuscado.id != -1)
             {
-                afiliado = formAfiliados.afiliadoBuscado;
+                afiliado = form.afiliadoBuscado;
                 txApellido.Text = afiliado.apellido;
                 txNombre.Text = afiliado.nombre;
                 txDireccion.Text = afiliado.direccion;
@@ -46,7 +46,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 cBestadoCivil.Text = afiliado.estadoCivil;
                 cBsexo.Text = afiliado.sexo;
                 cBtipoDocumento.Text = afiliado.tipoDocumento;
-                reader = server.query("SELECT GESTIONAME_LAS_VACACIONES.getPlanMedico(" + formAfiliados.afiliadoBuscado.id + ")");
+                reader = server.query("SELECT GESTIONAME_LAS_VACACIONES.getPlanMedico(" + form.afiliadoBuscado.id + ")");
                 txPlanMedico.Text = reader.GetString(0); // espero que funcione
             }
             btAceptar.Show();
@@ -65,13 +65,14 @@ namespace ClinicaFrba.Abm_Afiliado
                 Server server = Server.getInstance();
                 server.query("UPDATE GESTIONAME_LAS_VACACIONES.Paciente SET direccion =" +
              txDireccion.Text.Trim() + ", telefono =" + txTelefono.Text.Trim() + ", email =" + txMail.Text.Trim() + ", sexo=" +
-             cBsexo.Text.Trim() + ", estadoCivil = " + cBestadoCivil.Text.Trim() + ", cantFamiliares = "+ txFamiliaresACargo.Text.Trim() +
+             cBsexo.Text.Trim() + ", estadoCivil = " + cBestadoCivil.Text.Trim() + ", cantFamiliares = " + txFamiliaresACargo.Text.Trim() +
                  "WHERE id =" + afiliado.id);
                 this.Close();
-        
+
             }
-            else {
-            MessageBox.Show("Falta algun dato");
+            else
+            {
+                MessageBox.Show("Falta algun dato");
             }
         }
 
@@ -106,6 +107,11 @@ namespace ClinicaFrba.Abm_Afiliado
             form.ShowDialog();
             btCambiarPlan.Hide();
             this.Show(); // hipoteticamente dicen que esto sucede recien cuando el form se cierra
+        }
+
+        private void btAceptar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

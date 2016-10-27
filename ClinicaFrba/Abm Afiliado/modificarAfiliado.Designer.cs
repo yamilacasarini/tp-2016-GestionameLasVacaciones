@@ -88,7 +88,7 @@
             this.btAceptar.TabIndex = 64;
             this.btAceptar.Text = "Aceptar";
             this.btAceptar.UseVisualStyleBackColor = true;
-            this.btAceptar.Click += new System.EventHandler(this.buttonAceptar_Click);
+            this.btAceptar.Click += new System.EventHandler(this.btAceptar_Click);
             // 
             // cBestadoCivil
             // 
@@ -103,7 +103,6 @@
             this.cBestadoCivil.Name = "cBestadoCivil";
             this.cBestadoCivil.Size = new System.Drawing.Size(121, 21);
             this.cBestadoCivil.TabIndex = 62;
-            this.cBestadoCivil.SelectedIndexChanged += new System.EventHandler(this.cBestadoCivil_SelectedIndexChanged);
             // 
             // cBsexo
             // 
@@ -240,7 +239,6 @@
             this.txDocumento.Name = "txDocumento";
             this.txDocumento.Size = new System.Drawing.Size(144, 20);
             this.txDocumento.TabIndex = 47;
-            this.txDocumento.TextChanged += new System.EventHandler(this.txDocumento_TextChanged);
             // 
             // label2
             // 
@@ -280,7 +278,6 @@
             this.txNombre.Name = "txNombre";
             this.txNombre.Size = new System.Drawing.Size(144, 20);
             this.txNombre.TabIndex = 43;
-            this.txNombre.TextChanged += new System.EventHandler(this.txNombre_TextChanged);
             // 
             // label8
             // 
@@ -301,7 +298,6 @@
             this.label6.Size = new System.Drawing.Size(41, 20);
             this.label6.TabIndex = 67;
             this.label6.Text = "Mail:";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // btBuscar
             // 
@@ -312,7 +308,6 @@
             this.btBuscar.TabIndex = 69;
             this.btBuscar.Text = "Buscar Afiliado";
             this.btBuscar.UseVisualStyleBackColor = true;
-            this.btBuscar.Click += new System.EventHandler(this.btBuscar_Click);
             // 
             // label11
             // 
@@ -333,7 +328,6 @@
             this.btCambiarPlan.TabIndex = 72;
             this.btCambiarPlan.Text = "Cambiar Plan";
             this.btCambiarPlan.UseVisualStyleBackColor = true;
-            this.btCambiarPlan.Click += new System.EventHandler(this.btCambiarPlan_Click);
             // 
             // txPlanMedico
             // 
@@ -342,9 +336,8 @@
             this.txPlanMedico.Name = "txPlanMedico";
             this.txPlanMedico.Size = new System.Drawing.Size(144, 20);
             this.txPlanMedico.TabIndex = 73;
-            this.txPlanMedico.TextChanged += new System.EventHandler(this.txPlanMedico_TextChanged);
             // 
-            // modificarAfiliado
+            // modificarUnAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -377,7 +370,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txApellido);
             this.Controls.Add(this.txNombre);
-            this.Name = "modificarAfiliado";
+            this.Name = "modificarUnAfiliado";
             this.Text = "modificarAfiliado";
             this.ResumeLayout(false);
             this.PerformLayout();

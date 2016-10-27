@@ -8,10 +8,11 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     class AfiliadoManager
     {
+     //   Server server = Server.getInstance();
         public static Afiliado afiliadoSeleccionado { get; set; }
         public static List<Afiliado> BuscarAfiliados(String nombre, String apellido, int id)
         {
-            Server server = Server.getInstance();
+           Server server = Server.getInstance();
             SqlDataReader reader = server.query("SELECT  * FROM GESTIONAME_LAS_VACACIONES.buscarAfiliados " + ",\'%" + nombre + "%\' " + ",\'%" + apellido + "%\' " + id.ToString());
             List<Afiliado> afiliados = new List<Afiliado>();
             while (reader.Read())
@@ -67,6 +68,13 @@ int CantidadFamiliares)
 
 
         }
+        public static string planMedico(int idServicio)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Servicio WHERE id =" + idServicio);
+            return Convert.ToString(reader["descripcion"]);
+        }
+
         /*         CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id as int,@nombre as nvarchar(50), @apellido as nvarchar(50), 
      @doc as int, @direc as varchar(100), @tel as int, @mail as varchar(255), @sexo as char, @civil as varchar(10),
      @cantFami as int)*/

@@ -11,10 +11,10 @@ using System.Data.SqlClient;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
-    public partial class cambiarPlanMedico : Form
+    public partial class cambiarPlan : Form
     {
-        public dataClass.afiliado afiliado = new dataClass.afiliado();
-        public cambiarPlanMedico()
+        public Afiliado afiliado = new Afiliado();
+        public cambiarPlan()
         {
             InitializeComponent();
             Server server = Server.getInstance();
@@ -29,15 +29,16 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-            if (validarDatos() && (String.Compare(afiliado.planMedico, cBplanMedico.Text) != 0))
+            if (validarDatos() && (String.Compare(AfiliadoManager.planMedico(afiliado.servicio), cBplanMedico.Text) != 0))
             {
-                afiliado.planMedico = cBplanMedico.Text;
+                afiliado.servicio = cBplanMedico.Text;
                 Server server = Server.getInstance();
                 SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.cambioPlan(" +
-                    afiliado.id + "," + afiliado.planMedico + "," + txtMotivo.Text.Trim() + ")");
+                    afiliado.id + "," + afiliado.servicio + "," + txtMotivo.Text.Trim() + ")");
                 this.Close();
             }
-            else {
+            else
+            {
                 MessageBox.Show("Faltan algun dato o es el mismo plan");
             }
         }
@@ -49,6 +50,11 @@ namespace ClinicaFrba.Abm_Afiliado
         bool validarDatos()
         {
             return txtMotivo.Text.Trim() != "" && cBplanMedico.Text.Trim() != "";
+        }
+
+        private void cBplanMedico_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

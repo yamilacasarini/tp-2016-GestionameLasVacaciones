@@ -123,12 +123,6 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
-        private string planMedico(string descripcion)
-        {
-            SqlDataReader reader = server.query("SELECT GESTIONAME_LAS_VACACIONES.getIdPlanMedico("+descripcion+")");
-            return Convert.ToString(reader["id"]);
-        }
-
         private void label1_Click(object sender, EventArgs e)
         {
 
