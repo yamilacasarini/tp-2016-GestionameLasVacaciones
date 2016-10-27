@@ -13,19 +13,20 @@ namespace ClinicaFrba
 {
     public partial class ValidacionDeRol : Form
     {
+        Server server;
         public ValidacionDeRol(String id)
         {
             InitializeComponent();
             rellenarListaConRoles(id);
+            server=Server.getInstance();
         }
 
         public void rellenarListaConRoles(String id)
         {
-            Server server = Server.getInstance();
             SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.RolxUsuario u JOIN GESTIONAME_LAS_VACACIONES.Rol r ON u.idRol = r.id WHERE u.idUsuario =" + "'" + id + "'");
             while (reader.Read())
             {
-                comboBox1.Items.Add(reader["descripcion"].ToString());
+                RolComboBox.Items.Add(reader["descripcion"].ToString());
             }
             reader.Close();
         }
@@ -47,16 +48,42 @@ namespace ClinicaFrba
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Close();
+
+            this.Hide();
+            switch (FuncionalidadComboBox.Text.ToString())
+            {
+                case "ABM ROL":
+                    new AbmRol.Principal().Show();
+                    break;
+                case "ABM AFILIADOS":
+                    new Abm_Afiliado.Principal().Show();
+                    break;
+                case "COMPRA BONOS":
+                    new Compra_Bono.Principal().Show();
+                    break;
+                case "PEDIDO DE TURNO":
+                    new Pedir_Turno.Principal().Show();
+                    break;
+                case "REGISTRO DE LLEGADA":
+                    new Registro_Llegada.Principal().Show();
+                    break;
+                case "CANCELAR TURNO":
+                    new Cancelar_Atencion.Principal().Show();
+                    break;
+                case "LISTADO ESTADISTICO":
+                    new Listados.Principal().Show();
+                    break;
+            }
+            
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Server server = Server.getInstance();
+            
             SqlDataReader reader = server.query("select descripcion from GESTIONAME_LAS_VACACIONES.Funcionalidad f  join GESTIONAME_LAS_VACACIONES.RolxFuncionalidad r on f.id = r.idFuncionalidad where r.idRol = 1");
             while (reader.Read())
             {
-                comboBox2.Items.Add(reader["descripcion"].ToString());
+                FuncionalidadComboBox.Items.Add(reader["descripcion"].ToString());
             }
             reader.Close();
 

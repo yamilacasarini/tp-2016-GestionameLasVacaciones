@@ -77,28 +77,28 @@
     <Compile Include="Abm Afiliado\Principal.Designer.cs">
       <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Especialidades Medicas\AltaEspecialidades.cs">
+    <Compile Include="Abm Especialidades Medicas %28NOT TO IMPLEMENT%29\AltaEspecialidades.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Especialidades Medicas\AltaEspecialidades.Designer.cs">
+    <Compile Include="Abm Especialidades Medicas %28NOT TO IMPLEMENT%29\AltaEspecialidades.Designer.cs">
       <DependentUpon>AltaEspecialidades.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Especialidades Medicas\Principal.cs">
+    <Compile Include="Abm Especialidades Medicas %28NOT TO IMPLEMENT%29\Principal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Especialidades Medicas\Principal.Designer.cs">
+    <Compile Include="Abm Especialidades Medicas %28NOT TO IMPLEMENT%29\Principal.Designer.cs">
       <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Planes\Form1.cs">
+    <Compile Include="Abm Planes %28NOT TO IMPLEMENT%29\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Planes\Form1.Designer.cs">
+    <Compile Include="Abm Planes %28NOT TO IMPLEMENT%29\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Planes\Principal.cs">
+    <Compile Include="Abm Planes %28NOT TO IMPLEMENT%29\Principal.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Planes\Principal.Designer.cs">
+    <Compile Include="Abm Planes %28NOT TO IMPLEMENT%29\Principal.Designer.cs">
       <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Profesional\Form1.cs">
@@ -192,13 +192,13 @@
     <EmbeddedResource Include="Abm Afiliado\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Especialidades Medicas\AltaEspecialidades.resx">
+    <EmbeddedResource Include="Abm Especialidades Medicas %28NOT TO IMPLEMENT%29\AltaEspecialidades.resx">
       <DependentUpon>AltaEspecialidades.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Especialidades Medicas\Principal.resx">
+    <EmbeddedResource Include="Abm Especialidades Medicas %28NOT TO IMPLEMENT%29\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Planes\Principal.resx">
+    <EmbeddedResource Include="Abm Planes %28NOT TO IMPLEMENT%29\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Profesional\Principal.resx">
