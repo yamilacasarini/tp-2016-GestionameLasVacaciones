@@ -42,10 +42,8 @@ namespace ClinicaFrba
                             hashString += String.Format("{0:x2}", x);
                         }
                         server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + hashString + "'");
-                        this.Hide(); // procedure no terminada
-                      //  new ValidacionDeRol(txtUsuario.Text.Trim()).Show();
-                        //Aca deberiamos hacer alguna clases de retorno, pudiendo ser un int en caso de ser 1-paciente 2-medico 3-variosRoles 5-admin -1 error
-                    }
+                       new ValidacionDeRol(txtUsuario.Text.Trim()).Show();
+                        }
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);

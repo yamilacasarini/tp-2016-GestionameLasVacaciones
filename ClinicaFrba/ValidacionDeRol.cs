@@ -22,7 +22,7 @@ namespace ClinicaFrba
         public void rellenarListaConRoles(String id)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.RolxUsuario u JOIN GESTIONAME_LAS_VACACIONES.Rol r ON u.idRol = r.id WHERE u.idUsuario like " + id);
+            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.RolxUsuario u JOIN GESTIONAME_LAS_VACACIONES.Rol r ON u.idRol = r.id WHERE u.idUsuario =" + "'" + id + "'");
             while (reader.Read())
             {
                 comboBox1.Items.Add(reader["descripcion"].ToString());
@@ -43,6 +43,15 @@ namespace ClinicaFrba
         private void label1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MessageBox.Show(comboBox1.SelectedItem.ToString());
         }
     }
 }
