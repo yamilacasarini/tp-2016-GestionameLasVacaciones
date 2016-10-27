@@ -76,7 +76,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 server.query("INSERT INTO GESTIONAME_LAS_VACACIONES.Paciente(nombre,apellido,documento,direccion,telefono,email,fechaNacimiento,sexo,EstadoCivil,cantFamiliares,servicio)" +
                 "VALUES (" + txNombre.Text.Trim() + ", " + txApellido.Text.Trim() + "," + txDocumento.Text.Trim() + "," + txDireccion.Text.Trim() + "," + txTelefono.Text.Trim() +
                 " " + txMail.Text.Trim() + "," + dateTimePicker1.Text.Trim() + "," + cBsexo.Text.Trim() + "," + cBestadoCivil.Text.Trim() + "," + txFamiliaresACargo.Text.Trim() +
-                planMedico(cBplanMedico.Text.Trim()) + ",)");
+                AfiliadoManager.idPlanMedico(cBplanMedico.Text.Trim()) + ",)");
                 this.Close();
             }
             else {

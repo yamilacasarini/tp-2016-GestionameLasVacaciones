@@ -74,6 +74,12 @@ int CantidadFamiliares)
             SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Servicio WHERE id =" + idServicio);
             return Convert.ToString(reader["descripcion"]);
         }
+        public static int idPlanMedico(string descripcion)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("SELECT id FROM GESTIONAME_LAS_VACACIONES.Servicio WHERE descripcion =" + descripcion);
+            return Convert.ToInt32(reader["id"]);
+        }
 
         /*         CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id as int,@nombre as nvarchar(50), @apellido as nvarchar(50), 
      @doc as int, @direc as varchar(100), @tel as int, @mail as varchar(255), @sexo as char, @civil as varchar(10),

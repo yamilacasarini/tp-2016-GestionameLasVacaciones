@@ -1,6 +1,6 @@
 ﻿namespace ClinicaFrba.Abm_Afiliado
 {
-    partial class cambiarPlanMedico
+    partial class cambiarPlan
     {
         /// <summary>
         /// Required designer variable.

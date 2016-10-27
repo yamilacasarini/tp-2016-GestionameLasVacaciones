@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
-    class Afiliado
+    public class Afiliado
     {
        public int id {get; set;}
   public String nombre {get; set;}

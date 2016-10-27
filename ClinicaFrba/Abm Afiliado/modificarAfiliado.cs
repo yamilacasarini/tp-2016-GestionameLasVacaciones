@@ -101,7 +101,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btCambiarPlan_Click(object sender, EventArgs e)
         {
-            cambiarPlanMedico form = new cambiarPlanMedico();
+            cambiarPlan form = new cambiarPlan();
             form.afiliado = afiliado;
             this.Hide();
             form.ShowDialog();

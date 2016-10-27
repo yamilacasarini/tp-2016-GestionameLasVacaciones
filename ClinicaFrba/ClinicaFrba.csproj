@@ -65,11 +65,11 @@
     <Compile Include="Abm Afiliado\CambioPlan.Designer.cs">
       <DependentUpon>CambioPlan.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Afiliado\modificarUnAfiliado.cs">
+    <Compile Include="Abm Afiliado\modificarAfiliado.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abm Afiliado\modificarUnAfiliado.Designer.cs">
-      <DependentUpon>modificarUnAfiliado.cs</DependentUpon>
+    <Compile Include="Abm Afiliado\modificarAfiliado.Designer.cs">
+      <DependentUpon>modificarAfiliado.cs</DependentUpon>
     </Compile>
     <Compile Include="Abm Afiliado\Principal.cs">
       <SubType>Form</SubType>
@@ -132,7 +132,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ConeccionSql.cs" />
-    <Compile Include="dataClass\afiliado.cs" />
     <Compile Include="ValidacionDeRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -187,8 +186,8 @@
     <EmbeddedResource Include="Abm Afiliado\CambioPlan.resx">
       <DependentUpon>CambioPlan.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Afiliado\modificarUnAfiliado.resx">
-      <DependentUpon>modificarUnAfiliado.cs</DependentUpon>
+    <EmbeddedResource Include="Abm Afiliado\modificarAfiliado.resx">
+      <DependentUpon>modificarAfiliado.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
