@@ -47,11 +47,19 @@ namespace ClinicaFrba
 
         private void button1_Click(object sender, EventArgs e)
         {
+            this.Close();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MessageBox.Show(comboBox1.SelectedItem.ToString());
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("select descripcion from GESTIONAME_LAS_VACACIONES.Funcionalidad f  join GESTIONAME_LAS_VACACIONES.RolxFuncionalidad r on f.id = r.idFuncionalidad where r.idRol = 1");
+            while (reader.Read())
+            {
+                comboBox2.Items.Add(reader["descripcion"].ToString());
+            }
+            reader.Close();
+
         }
     }
 }
