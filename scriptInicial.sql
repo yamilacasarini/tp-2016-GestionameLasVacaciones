@@ -98,7 +98,7 @@ BEGIN
 END
 
 
-GO;
+GO
 --/////////////////////////////////////////////////////--
 --CREACION DE TABLAS--
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Funcionalidad (
@@ -125,7 +125,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.RolxFuncionalidad (
 CREATE TABLE GESTIONAME_LAS_VACACIONES.RolxUsuario(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY ,
   idRol INT REFERENCES GESTIONAME_LAS_VACACIONES.Rol(id) ,
-  idUsuario INT REFERENCES GESTIONAME_LAS_VACACIONES.Usuario(usuario) ,
+  idUsuario VARCHAR(255) REFERENCES GESTIONAME_LAS_VACACIONES.Usuario(usuario) ,
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Servicio(
   id INTEGER PRIMARY KEY,
@@ -284,7 +284,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Profesional(nombre,apellido,documento,dire
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolxFuncionalidad(idFuncionalidad, idRol)
 	SELECT DISTINCT f.id, r.id FROM GESTIONAME_LAS_VACACIONES.Funcionalidad f, GESTIONAME_LAS_VACACIONES.Rol r  WHERE r.id = 1
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolxUsuario(idRol, idUsuario) 
-	SELECT   r.id, u.id FROM GESTIONAME_LAS_VACACIONES.Rol r  , GESTIONAME_LAS_VACACIONES.Usuario u WHERE r.id = 1
+	SELECT   r.id, u.usuario FROM GESTIONAME_LAS_VACACIONES.Rol r  , GESTIONAME_LAS_VACACIONES.Usuario u WHERE r.id = 1
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bono(idCompraBono, idPaciente, idPlan)
 	SELECT c.id, p.id, s.id FROM GESTIONAME_LAS_VACACIONES.CompraBono c, GESTIONAME_LAS_VACACIONES.Paciente p, GESTIONAME_LAS_VACACIONES.Servicio s
 --Meter Bono_Consulta_Numero en algun lugar del bono ACORDARSE
@@ -390,14 +390,11 @@ RETURNS INT AS
 END
 GO
 
-DROP FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados
-go
-
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre as varchar(20),@apellido as varchar(20), @numAfiliado as int )
 returns table 
 as 
 return select * from GESTIONAME_LAS_VACACIONES.Paciente where id = @numAfiliado or (nombre like @nombre and apellido like @apellido)
-go;
+go
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado()
 returns INT 
@@ -405,9 +402,7 @@ as
 BEGIN
 return (((select max(id) from GESTIONAME_LAS_VACACIONES.Paciente) /100)+1) * 100
 END
-go
 
-DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar 
 go
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar (@idFamiliar as int)
 returns int 
@@ -424,9 +419,6 @@ go
 --PROCEDURES--
 --NUMERO 2--
 --LOGUIN DE USUARIOS--
-
-drop PROCEDURE GESTIONAME_LAS_VACACIONES.LoguearUsuario
-go
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.LoguearUsuario(@username VARCHAR(255), @pass VARCHAR(255))
 AS 
@@ -834,8 +826,8 @@ returns table
 AS
 RETURN (SELECT especialidades FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
 UNION ALL
-SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
-ORDER BY especialidades)
+SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones())
+--ORDER BY especialidades)
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones
