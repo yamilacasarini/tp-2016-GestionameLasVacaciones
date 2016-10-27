@@ -67,3 +67,4 @@ C:\Users\ABM\Desktop\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\Clini
 C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.cambiarPlan.resources
 C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Abm_Afiliado.modificarAfiliado.resources
 C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.ValidacionDeRol.resources
+C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Cancelar_Atencion.Principal.resources

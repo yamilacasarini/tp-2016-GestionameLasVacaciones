@@ -32,15 +32,18 @@ namespace ClinicaFrba
                     Server server = Server.getInstance();
                     try
                     {
-                        byte[] bytes = Encoding.Unicode.GetBytes(txtPassword.Text.Trim());
-                        SHA256Managed hashstring = new SHA256Managed();
-                        byte[] hash = hashstring.ComputeHash(bytes);
-                        string hashString = string.Empty;
-                        foreach (byte x in hash)
+                        StringBuilder Sb = new StringBuilder();
+
+                        using (SHA256 hash = SHA256Managed.Create())
                         {
-                            hashString += String.Format("{0:x2}", x);
+                            Encoding enc = Encoding.UTF8;
+                            Byte[] result = hash.ComputeHash(enc.GetBytes(txtPassword.Text.ToString()));
+
+                            foreach (Byte b in result)
+                                Sb.Append(b.ToString("x2"));
                         }
-                        server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + hashString + "'");
+
+                       server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + Sb.ToString() + "'");
                        new ValidacionDeRol(txtUsuario.Text.Trim()).Show();
                         }
                     catch (Exception ex)
