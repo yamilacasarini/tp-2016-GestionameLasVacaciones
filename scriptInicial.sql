@@ -43,7 +43,6 @@ BEGIN
     SELECT @name = (SELECT TOP 1 [name] FROM sysobjects WHERE [type] IN (N'FN', N'IF', N'TF', N'FS', N'FT') AND category = 0 AND [name] > @name ORDER BY [name])
 END
 GO
-
 /* Drop all Foreign Key constraints */
 DECLARE @name VARCHAR(128)
 DECLARE @constraint VARCHAR(254)
@@ -153,6 +152,8 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   cantFamiliares INT DEFAULT 0,
   cantConsultas INT DEFAULT 0,
   servicio INT REFERENCES GESTIONAME_LAS_VACACIONES.SERVICIO(id),
+  baja int DEFAULT 0,
+  fechaBaja DATE,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Profesional (
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
@@ -203,14 +204,6 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Bono(
   idCompraBono INT REFERENCES GESTIONAME_LAS_VACACIONES.CompraBono(id),
   usado INT DEFAULT 0 --0 Sin usar, 1 usado
    )
-CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultaMedica(
-  id INTEGER IDENTITY(1,1) PRIMARY KEY,
-  idBono INT REFERENCES GESTIONAME_LAS_VACACIONES.Bono(id),
-  fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  diagnostico VARCHAR(255),
-  sintomas VARCHAR(255),
-  idTurno INT REFERENCES GESTIONAME_LAS_VACACIONES.Turno(id),
-   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Turno(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesional(id),
@@ -221,6 +214,14 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turno(
   tipoCancelacion INT, -- 0 Paciente, 1 Profesional
   motivo VARCHAR(255),
   )
+  CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultaMedica(
+  id INTEGER IDENTITY(1,1) PRIMARY KEY,
+  idBono INT REFERENCES GESTIONAME_LAS_VACACIONES.Bono(id),
+  fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  diagnostico VARCHAR(255),
+  sintomas VARCHAR(255),
+  idTurno INT REFERENCES GESTIONAME_LAS_VACACIONES.Turno(id),
+   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadxProfesional(
   id INTEGER  IDENTITY(1,1) PRIMARY KEY,
   idEspecialidad INT REFERENCES GESTIONAME_LAS_VACACIONES.Especialidad(id) ,
@@ -230,13 +231,11 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadxProfesional(
 --////////////////////////////////////--
 --MIGRACION--
 
-IF EXISTS (SELECT 1 
+IF NOT EXISTS (SELECT 1 
            FROM INFORMATION_SCHEMA.TABLES 
            WHERE TABLE_TYPE='BASE TABLE' 
-           AND TABLE_NAME='#PacienteTemporal')
-		   drop table #PacienteTemporal
-GO
-
+           AND TABLE_NAME='PacienteTemporal')
+		   
 CREATE TABLE #PacienteTemporal(
  id INTEGER IDENTITY(1,1) PRIMARY KEY,
   nombre NVARCHAR(50) NOT NULL ,
@@ -252,6 +251,8 @@ CREATE TABLE #PacienteTemporal(
   descripcion varchar(255),
   Compra_Bono_Fecha DATETIME,
   )
+
+GO
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Rol(descripcion) VALUES ('Administrativo')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Rol(descripcion) VALUES ('Afiliado')
@@ -270,7 +271,7 @@ select descripcion from GESTIONAME_LAS_VACACIONES.Funcionalidad f  join GESTIONA
 INSERT INTO #PacienteTemporal(nombre,apellido,dni,direccion,telefono,email,fechaNacimiento,idPlan,descripcion,precioBono,precioCuota, Compra_Bono_Fecha)
 SELECT DISTINCT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direccion, Paciente_Telefono, Paciente_Mail,Paciente_Fecha_Nac,
 				Plan_Med_Codigo,Plan_Med_Descripcion,Plan_Med_Precio_Bono_Farmacia,Plan_Med_Precio_Bono_Consulta, Compra_Bono_Fecha
-					FROM gd_esquema.Maestra
+					FROM GD2C2016.gd_esquema.Maestra
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Paciente(nombre,apellido,documento, direccion, telefono, email, fechaNacimiento)
 	SELECT distinct nombre,apellido,dni,direccion,telefono,email,fechaNacimiento
@@ -281,12 +282,12 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Servicio(id,descripcion, precioCuota, prec
 		FROM #PacienteTemporal
 INSERT INTO GESTIONAME_LAS_VACACIONES.CompraBono(idPaciente,fecha,cantidad,monto)
 select p.id,Bono_Consulta_Fecha_Impresion, COUNT(Bono_Consulta_Fecha_Impresion) as cantidad_bonos_por_dia,  COUNT(Bono_Consulta_Fecha_Impresion)* Plan_Med_Precio_Bono_Consulta as monto
-from gd_esquema.Maestra m , GESTIONAME_LAS_VACACIONES.Paciente p 
+from GD2C2016.gd_esquema.Maestra m , GESTIONAME_LAS_VACACIONES.Paciente p 
 where Bono_Consulta_Fecha_Impresion is not null  and p.documento = Paciente_Dni
 group by Bono_Consulta_Fecha_Impresion, Paciente_Apellido,Paciente_Nombre, Plan_Med_Precio_Bono_Consulta, p.id
 INSERT INTO GESTIONAME_LAS_VACACIONES.Profesional(nombre,apellido,documento,direccion,email,fechaNacimiento,telefono)
 	SELECT DISTINCT Medico_Nombre,Medico_Apellido,Medico_Dni,Medico_Direccion,Medico_Mail,Medico_Fecha_Nac,Medico_Telefono
-	FROM gd_esquema.Maestra
+	FROM GD2C2016.gd_esquema.Maestra
 	WHERE Medico_Nombre IS NOT NULL
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolxFuncionalidad(idFuncionalidad, idRol)
 	SELECT DISTINCT f.id, r.id FROM GESTIONAME_LAS_VACACIONES.Funcionalidad f, GESTIONAME_LAS_VACACIONES.Rol r  WHERE r.id = 1
@@ -296,13 +297,13 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Bono(idCompraBono, idPaciente, idPlan)
 	SELECT c.id, p.id, s.id FROM GESTIONAME_LAS_VACACIONES.CompraBono c, GESTIONAME_LAS_VACACIONES.Paciente p, GESTIONAME_LAS_VACACIONES.Servicio s
 --Meter Bono_Consulta_Numero en algun lugar del bono ACORDARSE
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultaMedica(idBono, sintomas, fecha, diagnostico)
-	SELECT b.id, Consulta_Sintomas, Turno_Fecha, Consulta_Enfermedades FROM GESTIONAME_LAS_VACACIONES.Bono b, gd_esquema.Maestra
+	SELECT b.id, Consulta_Sintomas, Turno_Fecha, Consulta_Enfermedades FROM GESTIONAME_LAS_VACACIONES.Bono b, GD2C2016.gd_esquema.Maestra
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Turno(idConsultaMedica, idPaciente, idProfesional, fecha)
-	SELECT c.id, p.id, prof.id, Turno_Fecha FROM GESTIONAME_LAS_VACACIONES.ConsultaMedica c, GESTIONAME_LAS_VACACIONES.Paciente p, GESTIONAME_LAS_VACACIONES.Profesional prof, gd_esquema.Maestra
+	SELECT c.id, p.id, prof.id, Turno_Fecha FROM GESTIONAME_LAS_VACACIONES.ConsultaMedica c, GESTIONAME_LAS_VACACIONES.Paciente p, GESTIONAME_LAS_VACACIONES.Profesional prof, GD2C2016.gd_esquema.Maestra
 INSERT INTO GESTIONAME_LAS_VACACIONES.Especialidad(descripcion, tipoEspecialidad)
 	SELECT DISTINCT Especialidad_Descripcion, Tipo_Especialidad_Descripcion
-	FROM gd_esquema.Maestra
+	FROM GD2C2016.gd_esquema.Maestra
 	WHERE Especialidad_Codigo IS NOT NULL AND Especialidad_Descripcion IS NOT NULL
 INSERT INTO GESTIONAME_LAS_VACACIONES.EspecialidadxProfesional(idEspecialidad, idProfesional)
 	SELECT e.id, p.id FROM GESTIONAME_LAS_VACACIONES.Especialidad e, GESTIONAME_LAS_VACACIONES.Profesional p
@@ -404,7 +405,7 @@ GO
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre varchar(20),@apellido varchar(20), @numAfiliado int )
 returns table 
 as 
-return select * from GESTIONAME_LAS_VACACIONES.Paciente where id = @numAfiliado or (nombre like @nombre and apellido like @apellido)
+return select * from GESTIONAME_LAS_VACACIONES.Paciente where id = @numAfiliado or (nombre like @nombre and apellido like @apellido) AND baja = 0
 go
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado()
@@ -537,7 +538,10 @@ GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarPaciente(@numAfiliado int)
 AS
-DELETE GESTIONAME_LAS_VACACIONES.Paciente WHERE id = @numAfiliado
+BEGIN
+UPDATE GESTIONAME_LAS_VACACIONES.turno SET baja = 1 WHERE idPaciente = @numAfiliado
+UPDATE GESTIONAME_LAS_VACACIONES.Paciente SET baja = 1, fechaBaja = CURRENT_TIMESTAMP WHERE id = @numAfiliado
+END
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id int,@nombre nvarchar(50), @apellido nvarchar(50), 
