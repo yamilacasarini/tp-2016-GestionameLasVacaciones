@@ -1,4 +1,7 @@
-CREATE SCHEMA [GESTIONAME_LAS_VACACIONES]
+IF NOT EXISTS ( SELECT  *
+				FROM    sys.schemas
+				WHERE   name = N'GESTIONAME_LAS_VACACIONES' ) 
+	EXEC('CREATE SCHEMA [GESTIONAME_LAS_VACACIONES]');
 GO
 
  DECLARE @name VARCHAR(128)
@@ -136,13 +139,13 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Servicio(
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY,
-  nombre NVARCHAR(20) NOT NULL ,
-  apellido NVARCHAR(20) NOT NULL ,
+  nombre NVARCHAR(50) NOT NULL ,
+  apellido NVARCHAR(50) NOT NULL ,
   documento INT NOT NULL,
-  tipoDocumento VARCHAR(10) ,
+  tipoDocumento VARCHAR(100) DEFAULT 'DNI' ,
   direccion VARCHAR(100) NOT NULL,
   telefono INT NOT NULL,
-  email VARCHAR(100),
+  email VARCHAR(255),
   fechaNacimiento DATETIME NOT NULL,
   sexo CHAR,
   estadoCivil VARCHAR(10),
@@ -151,14 +154,14 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   servicio INT REFERENCES GESTIONAME_LAS_VACACIONES.SERVICIO(id),
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Profesional (
-  id INTEGER PRIMARY KEY NOT NULL DEFAULT 0,
+  id INTEGER PRIMARY KEY NOT NULL IDENTITY,
   nombre NVARCHAR(50) NOT NULL ,
   apellido VARCHAR(50) NOT NULL,
   tipoDocumento VARCHAR,
   documento INT NOT NULL,
-  direccion VARCHAR(100) NOT NULL,
+  direccion VARCHAR(255) NOT NULL,
   telefono INT NOT NULL,
-  email VARCHAR(100),
+  email VARCHAR(255),
   fechaNacimiento DATETIME NOT NULL,
   sexo CHAR,
    )
@@ -226,6 +229,13 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadxProfesional(
 --////////////////////////////////////--
 --MIGRACION--
 
+IF EXISTS (SELECT 1 
+           FROM INFORMATION_SCHEMA.TABLES 
+           WHERE TABLE_TYPE='BASE TABLE' 
+           AND TABLE_NAME='#PacienteTemporal')
+		   drop table #PacienteTemporal
+GO
+
 CREATE TABLE #PacienteTemporal(
  id INTEGER PRIMARY KEY NOT NULL IDENTITY,
   nombre NVARCHAR(50) NOT NULL ,
@@ -261,17 +271,12 @@ SELECT DISTINCT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direcc
 				Plan_Med_Codigo,Plan_Med_Descripcion,Plan_Med_Precio_Bono_Farmacia,Plan_Med_Precio_Bono_Consulta, Compra_Bono_Fecha
 					FROM gd_esquema.Maestra
 
-select descripcion from GESTIONAME_LAS_VACACIONES.Funcionalidad f  join GESTIONAME_LAS_VACACIONES.RolxFuncionalidad r on f.id = r.idFuncionalidad where r.idRol =1
 INSERT INTO GESTIONAME_LAS_VACACIONES.Paciente(nombre,apellido,documento, direccion, telefono, email, fechaNacimiento)
 	SELECT distinct nombre,apellido,dni,direccion,telefono,email,fechaNacimiento
 		FROM #PacienteTemporal
 INSERT INTO GESTIONAME_LAS_VACACIONES.Servicio(id,descripcion, precioCuota, precioBono)
 	SELECT DISTINCT idPlan,descripcion, precioCuota, precioBono
 		FROM #PacienteTemporal
-INSERT INTO GESTIONAME_LAS_VACACIONES.Modificacion(idPaciente,idPlan,fecha)
-	SELECT DISTINCT id,idPlan,Compra_Bono_Fecha
-		FROM #PacienteTemporal
-		where idPlan is not null and id is not null
 INSERT INTO GESTIONAME_LAS_VACACIONES.CompraBono(idPaciente,fecha,cantidad,monto)
 select p.id,Bono_Consulta_Fecha_Impresion, COUNT(Bono_Consulta_Fecha_Impresion) as cantidad_bonos_por_dia,  COUNT(Bono_Consulta_Fecha_Impresion)* Plan_Med_Precio_Bono_Consulta as monto
 from gd_esquema.Maestra m , GESTIONAME_LAS_VACACIONES.Paciente p 
