@@ -666,12 +666,12 @@ GO
 --NUMERO 11--
 --REGISTRO DE LLEGADA--
 
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@numAfiliado as int, @matricula as int, @especialidad as varchar(30))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@numAfiliado int, @matricula int, @especialidad varchar(30))
 AS
 BEGIN
 
-DECLARE @bonoID AS INT
-DECLARE @turnoID AS INT
+DECLARE @bonoID INT
+DECLARE @turnoID INT
 
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turno WHERE idPaciente = @numAfiliado	
 						and idProfesional = @matricula
@@ -702,7 +702,7 @@ GO
 --NUMERO 12--
 --CARGA DE SINTOMAS Y DIAGNOSTICO A LA CONSULTA MEDICA--
 
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cargarSintomasYDiagnostico(@idBono as int, @diagnostico as varchar(255), @sintomas as varchar(255))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cargarSintomasYDiagnostico(@idBono int, @diagnostico varchar(255), @sintomas varchar(255))
 AS
 BEGIN
 
@@ -719,7 +719,7 @@ GO
 --CANCELACION DE TURNOS--
 --PACIENTE--
 	
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado(@numAfiliado as int, @matricula as int, @especialidad as varchar(30), @fecha as DATETIME, @motivo as VARCHAR(255))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado(@numAfiliado int, @matricula int, @especialidad varchar(30), @fecha DATETIME, @motivo VARCHAR(255))
 AS
 BEGIN
 IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turno WHERE idPaciente = @numAfiliado 
@@ -739,13 +739,13 @@ GO
 --PROFESIONAL--
 
 
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarDiaPorProfesional(@matricula as int, @especialidad as varchar(30), @diaACancelar as DATETIME, @motivo as varchar(255))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarDiaPorProfesional(@matricula int, @especialidad varchar(30), @diaACancelar DATETIME, @motivo varchar(255))
 AS
 BEGIN 
-DECLARE @inicioAux AS DATETIME
-DECLARE @finalAux AS DATETIME
-DECLARE @diaInicialAux as INT
-DECLARE @diaFinalAux as INT
+DECLARE @inicioAux DATETIME
+DECLARE @finalAux DATETIME
+DECLARE @diaInicialAux INT
+DECLARE @diaFinalAux INT
 
 
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Agenda WHERE idProfesional = @matricula 
@@ -786,7 +786,7 @@ VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), 
 END
 GO
 
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarPeriodoPorProfesional(@matricula as int, @especialidad as varchar(30), @diaInicialACancelar as DATETIME, @diaFinalACancelar as DATETIME, @motivo as varchar(255))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarPeriodoPorProfesional(@matricula int, @especialidad varchar(30), @diaInicialACancelar DATETIME, @diaFinalACancelar DATETIME, @motivo varchar(255))
 AS
 BEGIN 
 DECLARE @inicioAux AS DATETIME
@@ -870,7 +870,7 @@ GO
 
 --TOP 5 PROFESIONALES MAS CONSULTADOS POR PLAN ESPECIFICANDO ESPECIALIDAD--
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@servicio as INT)
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@servicio INT)
 RETURNS TABLE AS
 RETURN (SELECT p.id as idProf, COUNT(p.id) as cantConsultas
 FROM GESTIONAME_LAS_VACACIONES.ConsultaMedica c JOIN GESTIONAME_LAS_VACACIONES.Turno t 
@@ -882,14 +882,14 @@ ON t.idPaciente = pac.id and pac.servicio = @servicio
 GROUP BY p.id)
 GO
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTop5Profesionales(@servicio as INT)
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTop5Profesionales(@servicio INT)
 RETURNS TABLE AS
 RETURN SELECT TOP 5 cantConsultas, idProf
 FROM GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@servicio)
 ORDER BY cantConsultas
 GO
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadMasAtendida(@servicio as INT)
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadMasAtendida(@servicio INT)
 RETURNS TABLE AS
 RETURN (SELECT a.idProf as profesional, COUNT(t.especialidad) as vecesEspecialidad
 FROM  GESTIONAME_LAS_VACACIONES.getTop5Profesionales(@servicio) a
