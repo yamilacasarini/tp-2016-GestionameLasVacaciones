@@ -136,8 +136,8 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Servicio(
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Paciente (
   id INTEGER PRIMARY KEY NOT NULL IDENTITY,
-  nombre NVARCHAR(50) NOT NULL ,
-  apellido NVARCHAR(50) NOT NULL ,
+  nombre NVARCHAR(20) NOT NULL ,
+  apellido NVARCHAR(20) NOT NULL ,
   documento INT NOT NULL,
   tipoDocumento VARCHAR(10) ,
   direccion VARCHAR(100) NOT NULL,
@@ -395,7 +395,6 @@ returns table
 as 
 return select * from GESTIONAME_LAS_VACACIONES.Paciente where id = @numAfiliado or (nombre like @nombre and apellido like @apellido)
 go
-
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado()
 returns INT 
 as 

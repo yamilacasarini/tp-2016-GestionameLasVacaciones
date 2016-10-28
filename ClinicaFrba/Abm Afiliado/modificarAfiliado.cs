@@ -27,31 +27,6 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
-        private void btBuscar_Click(object sender, EventArgs e)
-        {
-            Server server = Server.getInstance();
-            SqlDataReader reader;
-            BuscarAfiliados form= new BuscarAfiliados();
-            form.ShowDialog();
-            if (form.afiliadoBuscado.id != -1)
-            {
-                afiliado = form.afiliadoBuscado;
-                txApellido.Text = afiliado.apellido;
-                txNombre.Text = afiliado.nombre;
-                txDireccion.Text = afiliado.direccion;
-                txDocumento.Text = Convert.ToString(afiliado.documento);
-                txFamiliaresACargo.Text = Convert.ToString(afiliado.cantFamiliares);
-                txMail.Text = afiliado.email;
-                txTelefono.Text = Convert.ToString(afiliado.telefono);
-                cBestadoCivil.Text = afiliado.estadoCivil;
-                cBsexo.Text = afiliado.sexo;
-                cBtipoDocumento.Text = afiliado.tipoDocumento;
-                reader = server.query("SELECT GESTIONAME_LAS_VACACIONES.getPlanMedico(" + form.afiliadoBuscado.id + ")");
-                txPlanMedico.Text = reader.GetString(0); // espero que funcione
-            }
-            btAceptar.Show();
-            btCambiarPlan.Show();
-        }
 
         private void cBestadoCivil_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -99,7 +74,44 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
-        private void btCambiarPlan_Click(object sender, EventArgs e)
+
+        private void btAceptar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btBuscar_Click_1(object sender, EventArgs e)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader;
+            BuscarAfiliados form = new BuscarAfiliados();
+            form.ShowDialog();
+            if (form.afiliadoBuscado.id != -1)
+            {
+                afiliado = form.afiliadoBuscado;
+                txApellido.Text = afiliado.apellido;
+                txNombre.Text = afiliado.nombre;
+                txDireccion.Text = afiliado.direccion;
+                txDocumento.Text = Convert.ToString(afiliado.documento);
+                txFamiliaresACargo.Text = Convert.ToString(afiliado.cantFamiliares);
+                txMail.Text = afiliado.email;
+                txTelefono.Text = Convert.ToString(afiliado.telefono);
+                cBestadoCivil.Text = afiliado.estadoCivil;
+                cBsexo.Text = afiliado.sexo;
+                cBtipoDocumento.Text = afiliado.tipoDocumento;
+                reader = server.query("SELECT GESTIONAME_LAS_VACACIONES.getPlanMedico(" + form.afiliadoBuscado.id + ")");
+                txPlanMedico.Text = reader.GetString(0); // espero que funcione
+            }
+            btAceptar.Show();
+            btCambiarPlan.Show();
+        }
+
+        private void buttonSalir_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btCambiarPlan_Click_1(object sender, EventArgs e)
         {
             cambiarPlan form = new cambiarPlan();
             form.afiliado = afiliado;
@@ -107,11 +119,6 @@ namespace ClinicaFrba.Abm_Afiliado
             form.ShowDialog();
             btCambiarPlan.Hide();
             this.Show(); // hipoteticamente dicen que esto sucede recien cuando el form se cierra
-        }
-
-        private void btAceptar_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

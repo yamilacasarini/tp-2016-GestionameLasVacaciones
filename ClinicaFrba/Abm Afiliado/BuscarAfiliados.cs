@@ -13,7 +13,7 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class BuscarAfiliados : Form
     {
-        public  Afiliado afiliadoBuscado;
+        public Afiliado afiliadoBuscado;
         public BuscarAfiliados()
         {
             InitializeComponent();
@@ -40,7 +40,8 @@ namespace ClinicaFrba.Abm_Afiliado
                 afiliadoBuscado.tipoDocumento = Convert.ToString(dataGridView1.CurrentRow.Cells[11].Value);
                 this.Close();
             }
-            else{
+            else
+            {
                 MessageBox.Show("Seleccione una unica fila");
             }
         }
@@ -54,7 +55,25 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.dataGridView1.DataSource = AfiliadoManager.BuscarAfiliados("abs", "afjdis", 1932);
+            if (validarDatos())
+            {
+                if (txId.Text.Trim() == "")
+                    txId.Text = "0";
+                this.dataGridView1.DataSource = AfiliadoManager.BuscarAfiliados(txApellido.Text.Trim(), txNombre.Text.Trim(), Convert.ToInt32(txId.Text.Trim()));
+            }
+            else
+            {
+                MessageBox.Show("Ingrese al menos un id");
+            }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        bool validarDatos()
+        {
+            return txApellido.Text.Trim() != "" && txNombre.Text.Trim() != "" || txId.Text.Trim() != "";
         }
     }
 }

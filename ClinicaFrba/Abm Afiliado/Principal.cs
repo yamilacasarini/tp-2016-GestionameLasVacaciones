@@ -30,6 +30,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void botonDeModificacion_Click(object sender, EventArgs e)
         {
+            new modificarAfiliado().ShowDialog();
         }
 
         private void button1_Click_1(object sender, EventArgs e)

@@ -8,12 +8,14 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     class AfiliadoManager
     {
-     //   Server server = Server.getInstance();
+        //   Server server = Server.getInstance();
         public static Afiliado afiliadoSeleccionado { get; set; }
         public static List<Afiliado> BuscarAfiliados(String nombre, String apellido, int id)
         {
-           Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT  * FROM GESTIONAME_LAS_VACACIONES.buscarAfiliados " + ",\'%" + nombre + "%\' " + ",\'%" + apellido + "%\' " + id.ToString());
+            Server server = Server.getInstance();
+            AfiliadoManager.validarDato(nombre);
+            AfiliadoManager.validarDato(apellido);
+            SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('" + nombre + "','" + apellido + "'," + id + ")");
             List<Afiliado> afiliados = new List<Afiliado>();
             while (reader.Read())
             {
@@ -35,6 +37,12 @@ namespace ClinicaFrba.Abm_Afiliado
             reader.Close();
             return afiliados;
         }
+        public static void validarDato(String algo)
+        {
+            if (algo == "")
+                algo = "*";
+        }
+
         public static Afiliado BuscarAfiliado(int id)
         {
             Afiliado afil = new Afiliado();
