@@ -174,7 +174,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Agenda(
   id INTEGER PRIMARY KEY NOT NULL IDENTITY,
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesional(id),
   idEspecialidad int REFERENCES GESTIONAME_LAS_VACACIONES.Especialidad(id),
-  fechaInicio DATETIME NOT NULL,   -- ACA PARA FECHA DEL AÑO QUE TRABAJA Y HORARIO
+  fechaInicio DATETIME NOT NULL,   -- ACA PARA FECHA DEL AÃ‘O QUE TRABAJA Y HORARIO
   fechaFinal DATETIME NOT NULL,
   diaInicio INT,   -- LUNES 1 MARTES 2 MIERCOLES 3 JUEVES 4 VIERNES 5
   diaFin INT,
@@ -400,11 +400,25 @@ returns table
 as 
 return select * from GESTIONAME_LAS_VACACIONES.Paciente where id = @numAfiliado or (nombre like @nombre and apellido like @apellido)
 go
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado()
 returns INT 
 as 
 BEGIN
-return (((select max(id) from GESTIONAME_LAS_VACACIONES.Paciente) /100)+1) * 100
+declare @ret int;
+if((select Count(*) from GESTIONAME_LAS_VACACIONES.Paciente)= 0)
+BEGIN
+set @ret = 1
+END
+if((select Count(*) from GESTIONAME_LAS_VACACIONES.Paciente)= 1)
+BEGIN
+set @ret = 100
+END
+if((select Count(*) from GESTIONAME_LAS_VACACIONES.Paciente)> 1)
+BEGIN
+set @ret = (((select max(id) from GESTIONAME_LAS_VACACIONES.Paciente) /100)+1) * 100
+END
+RETURN @ret
 END
 
 go
