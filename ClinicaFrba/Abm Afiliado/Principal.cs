@@ -19,13 +19,12 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void button3_Click(object sender, EventArgs e)
         {
-         
-          new AltaAfiliado().ShowDialog();
+            new AltaAfiliado().ShowDialog();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            new Baja().ShowDialog();
         }
 
         private void botonDeModificacion_Click(object sender, EventArgs e)

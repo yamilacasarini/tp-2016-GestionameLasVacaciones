@@ -67,12 +67,11 @@ namespace ClinicaFrba.Abm_Afiliado
             return afil;
         }
 
-        public static void ModificarAfiliado(int id, String nombre, String apellido,
-int documento, String direccion, int telefono, String mail, char sexo, String estadoCivil,
-int CantidadFamiliares)
+        public static void ModificarAfiliado(int id, String nombre, String apellido, int documento,
+            String direccion, int telefono, String mail, char sexo, String estadoCivil, int CantidadFamiliares)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("GESTIONAME_LAS_VACACIONES.modificarPaciente " + id.ToString() + ",\'%" + nombre + "%\' " + ",\'%" + apellido + "%\' " + "," + documento.ToString() + "%\' " + ",\'%" + direccion + "," + telefono.ToString() + "%\' " + ",\'%" + mail + "%\' " + ",\'%" + sexo.ToString() + ",\'%" + estadoCivil + "%\' ");
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.modificarPaciente '" + id.ToString() + "','%" + nombre + "%','%" + apellido + "%'," + documento + ",'%" + direccion + "%'," + telefono.ToString() + ",'%" + mail + "%','%" + sexo.ToString() + "%','%" + estadoCivil + "%'");
 
 
         }
@@ -96,6 +95,13 @@ int CantidadFamiliares)
             return Convert.ToInt32(reader["id"]);
         }
 
+        public static void borrarAfiliado(int id)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.borrarPaciente " + id);
+           
+            
+        }
         /*         CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id as int,@nombre as nvarchar(50), @apellido as nvarchar(50), 
      @doc as int, @direc as varchar(100), @tel as int, @mail as varchar(255), @sexo as char, @civil as varchar(10),
      @cantFami as int)*/

@@ -101,9 +101,10 @@ namespace ClinicaFrba.Abm_Afiliado
                 cBtipoDocumento.Text = afiliado.tipoDocumento;
                 reader = server.query("SELECT GESTIONAME_LAS_VACACIONES.getPlanMedico(" + form.afiliadoBuscado.id + ")");
                 txPlanMedico.Text = reader.GetString(0); // espero que funcione
+                btAceptar.Show();
+                btCambiarPlan.Show();
             }
-            btAceptar.Show();
-            btCambiarPlan.Show();
+
         }
 
         private void buttonSalir_Click(object sender, EventArgs e)
