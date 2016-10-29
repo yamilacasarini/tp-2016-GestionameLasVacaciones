@@ -746,7 +746,7 @@ SET baja = 1, motivo = @motivo
 WHERE idProfesional = @matricula and @diaACancelar between fechaInicio and fechaFinal and GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad
 
 UPDATE GESTIONAME_LAS_VACACIONES.Turno
-SET baja = 1, motivo = @motivo
+SET baja = 1, tipoCancelacion = 1, motivo = @motivo
 WHERE idProfesional = @matricula and especialidad = @especialidad and fecha = @diaACancelar
 
 IF (@diaACancelar != @inicioAux and @diaACancelar != @finalAux)
@@ -797,7 +797,7 @@ WHERE idProfesional = @matricula
 	and GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad
 
 UPDATE GESTIONAME_LAS_VACACIONES.Turno
-SET baja = 1, motivo = @motivo
+SET baja = 1, tipoCancelacion = 1, motivo = @motivo
 WHERE idProfesional = @matricula 
 	and especialidad = @especialidad 
 	and fecha between  @diaInicialACancelar and @diaFinalACancelar
