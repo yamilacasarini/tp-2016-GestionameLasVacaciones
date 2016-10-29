@@ -900,3 +900,24 @@ ON a.idProf = t.idProfesional
 GROUP BY a.idProf, t.especialidad)
 GO
 
+-- CHEQUEAR PORQUE NO SE SI ME ESTA TIRANDO VALORES BIEN--
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getPacientesConMasCompras()
+RETURNS TABLE AS
+return (SELECT TOP 5 unPaciente.id , unPaciente.nombre, unPaciente.apellido , (select sum(id) from GESTIONAME_LAS_VACACIONES.Paciente familiar where familiar.id/100  = unPaciente.id/100 and familiar.id <> unPaciente.id) as 'Cantidad de familiares'
+FROM GESTIONAME_LAS_VACACIONES.Paciente  unPaciente 
+JOIN GESTIONAME_LAS_VACACIONES.CompraBono compra ON  unPaciente.id/100 = compra.idPaciente/100
+group by unPaciente.id, unPaciente.nombre,unPaciente.apellido  
+order by count(compra.idPaciente))
+GO
+
+-- IDEM AL DE ARRIBA, SOY UN CAGON LO SE-- 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.topDeEspecialidadesConMasConsultas()
+returns table as 
+return (select top 5 especialidad.id from GESTIONAME_LAS_VACACIONES.Especialidad especialidad
+join (GESTIONAME_LAS_VACACIONES.ConsultaMedica consulta
+join GESTIONAME_LAS_VACACIONES.Turno turno
+on turno.idConsultaMedica = consulta.id)
+on turno.especialidad = especialidad.id
+group by especialidad.id
+order by count(consulta.id))
+go
