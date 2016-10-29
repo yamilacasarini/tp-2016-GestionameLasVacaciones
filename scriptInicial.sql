@@ -683,10 +683,9 @@ IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turno WHERE idPaciente = 
 PRINT 'No existe el turno'
 ELSE
 
-
 SELECT @bonoID = min(b.id) 
 FROM GESTIONAME_LAS_VACACIONES.Paciente p JOIN GESTIONAME_LAS_VACACIONES.Bono b 
-ON p.id = b.idPaciente and b.usado = 0
+ON p.id/100 = b.idPaciente/100 and b.usado = 0
 
 SELECT @TurnoID = id FROM GESTIONAME_LAS_VACACIONES.Turno WHERE idPaciente = @numAfiliado	
 						and idProfesional = @matricula
@@ -859,16 +858,15 @@ returns table
 AS
 RETURN (SELECT especialidades FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
 UNION ALL
-SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones())
---ORDER BY especialidades)
+SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
+ORDER BY especialidades)
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones
 AS
 BEGIN
-
-SELECT TOP 5 especialidades FROM GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones()
-
+SELECT TOP 5 especialidades 
+FROM GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones()
 END
 GO
 
