@@ -43,11 +43,12 @@ namespace ClinicaFrba.Abm_Afiliado
                 algo = "*";
         }
 
-        public static Afiliado BuscarAfiliado(int id)
+        public static Afiliado BuscarAfiliado(string nombre, string apellido, int id)
         {
             Afiliado afil = new Afiliado();
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT  * FROM GESTIONAME_LAS_VACACIONES.Paciente where id =" + id.ToString());
+            SqlDataReader reader = server.query("exec GESTIONAME_LAS_VACACIONES.buscarAfiliados(" + nombre + "," + apellido + "," + id + ")");
+
             while (reader.Read())
             {
                 afiliadoSeleccionado.id = Convert.ToInt32(reader["id"]);

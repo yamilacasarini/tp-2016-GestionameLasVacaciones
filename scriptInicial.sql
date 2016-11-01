@@ -215,7 +215,7 @@ DROP FUNCTION GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones;
 GO
 
 IF OBJECT_ID('GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones', 'FN') IS NOT NULL
-DROP FUNCTION GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones;
+DROP PROCEDURE GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones;
 GO
 
 IF OBJECT_ID('GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas', 'FN') IS NOT NULL
@@ -286,7 +286,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Planes(
   baja INT DEFAULT 0,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
-  id NVARCHAR(13) PRIMARY KEY,
+  id INT PRIMARY KEY IDENTITY (1,1),
   nombre NVARCHAR(50) NOT NULL ,
   apellido NVARCHAR(50) NOT NULL ,
   documento INT NOT NULL,
@@ -333,21 +333,21 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Agendas(
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.ComprasBonos(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
-  idPaciente NVARCHAR(13) REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
+  idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   cantidad INT NOT NULL DEFAULT 1,
   monto INT NOT NULL,
   fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Modificaciones(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
-  idPaciente NVARCHAR (13) REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
+  idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   idPlan INT REFERENCES GESTIONAME_LAS_VACACIONES.Planes(id),
   motivo VARCHAR(50),
   fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Bonos(
   id INTEGER PRIMARY KEY,
-  idPaciente NVARCHAR(13) REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
+  idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   idPlan INT REFERENCES GESTIONAME_LAS_VACACIONES.Planes(id),
   usado INT DEFAULT 0 --0 Sin usar, 1 usado
    )
@@ -355,7 +355,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   id INTEGER PRIMARY KEY,
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesionales(id),
   especialidad VARCHAR(30),
-  idPaciente NVARCHAR(13) REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
+  idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   fecha DATETIME NOT NULL,
   baja INT default 0,
   tipoCancelacion INT, -- 0 Paciente, 1 Profesional
@@ -399,6 +399,7 @@ SELECT  @ret = max(id) FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE id BETWEEN
 RETURN @ret +1;
 end
 GO
+
 
 CREATE TABLE #PacienteTemporal(
   nombre NVARCHAR(50) NOT NULL ,
@@ -450,7 +451,7 @@ diagnostico varchar(50)
 
 insert into #ConsultasTemporal(id,fecha,idBono,fechaBono,precioBono,idPaciente,sintomas,diagnostico)
 SELECT	 Turno_Numero, Turno_Fecha,Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion,Plan_Med_Precio_Bono_Consulta,
-cast((Paciente_Dni*100) as varchar(13)),Consulta_Sintomas,Consulta_Enfermedades 
+(Paciente_Dni*100),Consulta_Sintomas,Consulta_Enfermedades 
 FROM gd_esquema.Maestra
 
 INSERT INTO #PacienteTemporal (nombre,apellido,dni,direccion,telefono,email,fechaNacimiento,idPlan,descripcionPlan,precioBono,idTurno,fechaTurno,fechaBono,idBono)
@@ -458,8 +459,8 @@ SELECT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direccion, Paci
 				Plan_Med_Codigo,Plan_Med_Descripcion,Plan_Med_Precio_Bono_Consulta, Turno_Numero,Turno_Fecha ,Compra_Bono_Fecha,Bono_Consulta_Numero
 					FROM GD2C2016.gd_esquema.Maestra
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre,apellido,direccion,documento,email,fechaNacimiento,telefono)
-SELECT  cast((dni*100) as nvarchar(13)) ,nombre,apellido,direccion,dni,email,fechaNacimiento,telefono 
+INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(nombre,apellido,direccion,documento,email,fechaNacimiento,telefono)
+SELECT  nombre,apellido,direccion,dni,email,fechaNacimiento,telefono 
 from #PacienteTemporal group by nombre,apellido,direccion,dni,email,fechaNacimiento,telefono
 
 INSERT INTO #TemporalProfesional (consultaEnfermedad,consultaSintoma,especialidadDescripcion,especialidadDescripcion2,fechaTurno,
@@ -496,6 +497,8 @@ SELECT t.idPaciente,t.fechaBono, COUNT(t.fechaBono) ,  COUNT(t.fechaBono)* t.pre
 FROM #ConsultasTemporal t
 where t.fechaBono is not null
 GROUP BY t.idPaciente, fechaBono,precioBono 
+
+SELECT * FROM GESTIONAME_LAS_VACACIONES.PACIENTES 
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (1,1)
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (2,1)
@@ -625,10 +628,16 @@ AS
 END
 GO
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre VARCHAR(20),@apellido VARCHAR(20), @numAfiliado INT )
-RETURNS TABLE 
-AS 
-RETURN SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE id = @numAfiliado or (nombre LIKE @nombre AND apellido LIKE @apellido) AND baja = 0
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados
+GO
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre varchar(20),@apellido varchar(20), @numAfiliado int )
+returns table 
+as 
+return select * from GESTIONAME_LAS_VACACIONES.Pacientes where (nombre like @nombre or id = @numAfiliado or apellido like @apellido) AND baja = 0
+go
+
+SELECT * FROM GESTIONAME_LAS_VACACIONES.PACIENTES
+SELECT * FROM GESTIONAME_LAS_VACACIONES.buscarAfiliados('aaron', '',  -1)
 GO
 
 

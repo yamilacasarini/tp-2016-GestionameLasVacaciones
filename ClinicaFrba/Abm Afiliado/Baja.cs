@@ -34,9 +34,9 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             if (validarDatos())
             {
-                if (txId.Text.Trim() == "")
-                    txId.Text = "0";
-                this.dataGridView1.DataSource = AfiliadoManager.BuscarAfiliados(txApellido.Text.Trim(), txNombre.Text.Trim(), Convert.ToInt32(txId.Text.Trim()));
+                if (txId.Text.Trim() == "") { txId.Text = "-1"; }
+
+                this.dataGridView1.DataSource = AfiliadoManager.BuscarAfiliados(txNombre.Text.Trim(), txApellido.Text.Trim(), Convert.ToInt32(txId.Text.Trim()));
             }
             else
             {
@@ -45,7 +45,7 @@ namespace ClinicaFrba.Abm_Afiliado
         }
         bool validarDatos()
         {
-            return txApellido.Text.Trim() != "" && txNombre.Text.Trim() != "" || txId.Text.Trim() != "";
+            return txApellido.Text.Trim() != "" || txNombre.Text.Trim() != "" || txId.Text.Trim() != "";
         }
     }
 }
