@@ -92,3 +92,5 @@ C:\Users\ABM\Documents\GitHub\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\De
 C:\Users\ABM\Documents\GitHub\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.login.resources
 C:\Users\ABM\Documents\GitHub\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Properties.Resources.resources
 C:\Users\ABM\Documents\GitHub\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.csproj.GenerateResource.Cache
+C:\Users\ABM\Documents\GitHub\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.AbmRol.AltaRol.resources
+C:\Users\ABM\Documents\GitHub\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.AbmRol.ModificacionRol.resources

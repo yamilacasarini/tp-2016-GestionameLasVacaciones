@@ -47,5 +47,10 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             return txApellido.Text.Trim() != "" || txNombre.Text.Trim() != "" || txId.Text.Trim() != "";
         }
+
+        private void txNombre_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
