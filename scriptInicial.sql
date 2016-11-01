@@ -404,7 +404,7 @@ GO
 CREATE TABLE #PacienteTemporal(
   nombre NVARCHAR(50) NOT NULL ,
   apellido NVARCHAR(50) NOT NULL ,
-  dni BIGINT NOT NULL,
+  dni INT NOT NULL,
   direccion VARCHAR(100) NOT NULL,
   telefono INT NOT NULL,
   email VARCHAR(255),
@@ -444,14 +444,14 @@ fecha DATETIME,
 idBono INT,
 fechaBono DATETIME,
 precioBono INT,
-idPaciente VARCHAR(13),
+idPaciente INT,
 sintomas varchar(50),
 diagnostico varchar(50)
 )
 
-insert into #ConsultasTemporal(id,fecha,idBono,fechaBono,precioBono,idPaciente,sintomas,diagnostico)
-SELECT	 Turno_Numero, Turno_Fecha,Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion,Plan_Med_Precio_Bono_Consulta,
-(Paciente_Dni*100),Consulta_Sintomas,Consulta_Enfermedades 
+insert into #ConsultasTemporal(id,fecha,idBono,fechaBono,precioBono,sintomas,diagnostico)
+SELECT	 Turno_Numero, Turno_Fecha,Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion,Plan_Med_Precio_Bono_Consulta, 
+Consulta_Sintomas,Consulta_Enfermedades 
 FROM gd_esquema.Maestra
 
 INSERT INTO #PacienteTemporal (nombre,apellido,dni,direccion,telefono,email,fechaNacimiento,idPlan,descripcionPlan,precioBono,idTurno,fechaTurno,fechaBono,idBono)
