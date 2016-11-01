@@ -73,34 +73,47 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.modificarPaciente '" + id.ToString() + "','%" + nombre + "%','%" + apellido + "%'," + documento + ",'%" + direccion + "%'," + telefono.ToString() + ",'%" + mail + "%','%" + sexo.ToString() + "%','%" + estadoCivil + "%'");
-
+            reader.Close();
 
         }
         public static string planMedico(int idServicio)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Servicio WHERE id =" + idServicio);
+            
+            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes WHERE id =" + idServicio);
+            reader.Close();
             return Convert.ToString(reader["descripcion"]);
         }
-        public static int idPlanMedico(string descripcion)
+        public static int idPlanMedico(String descripcion)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT id FROM GESTIONAME_LAS_VACACIONES.Servicio WHERE descripcion =" + descripcion);
-            return Convert.ToInt32(reader["id"]);
+            
+            SqlDataReader reader = server.query("SELECT id FROM GESTIONAME_LAS_VACACIONES.Planes WHERE descripcion like '" + descripcion+"'");
+
+            reader.Read();
+            
+            int retornito= Convert.ToInt32(reader["id"]);
+            
+            reader.Close();
+           
+            return retornito;
         }
 
         public static int id(string dni)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT id FROM GESTIONAME_LAS_VACACIONES.Paciente WHERE documento =" + dni);
-            return Convert.ToInt32(reader["id"]);
+            SqlDataReader reader = server.query("SELECT id FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE documento =" + dni);
+            reader.Read();
+            int retornito = Convert.ToInt32(reader["id"]); // santi esto es por vos!!!!!
+            reader.Close();
+            return retornito;
         }
 
         public static void borrarAfiliado(int id)
         {
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.borrarPaciente " + id);
-           
+            reader.Close();
             
         }
         /*         CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id as int,@nombre as nvarchar(50), @apellido as nvarchar(50), 

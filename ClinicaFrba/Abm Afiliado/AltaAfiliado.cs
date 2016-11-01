@@ -62,7 +62,7 @@ namespace ClinicaFrba.Abm_Afiliado
         void llenarPlanes()
         {
             server = Server.getInstance();
-            reader = server.query("SELECT DISTINCT descripcion FROM GESTIONAME_LAS_VACACIONES.Servicio");
+            reader = server.query("SELECT DISTINCT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes");
 
             while (reader.Read())
             {
@@ -79,17 +79,17 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             if (validarDatos())
             {
-                server.query("EXEC GESTIONAME_LAS_VACACIONES.Paciente(" +
-                txNombre.Text.Trim() + ", " + txApellido.Text.Trim() + "," + txDocumento.Text.Trim() + "," + txDireccion.Text.Trim() + "," + txTelefono.Text.Trim() +
-                " " + txMail.Text.Trim() + "," + dateTimePicker1.Text.Trim() + "," + cBsexo.Text.Trim() + "," + cBestadoCivil.Text.Trim() + "," + txFamiliaresACargo.Text.Trim() +
-                AfiliadoManager.idPlanMedico(cBplanMedico.Text.Trim()) + ",)");
+                server.query("EXEC GESTIONAME_LAS_VACACIONES.altaPaciente '" +
+                txNombre.Text.Trim() + "', '" + txApellido.Text.Trim() + "'," + txDocumento.Text.Trim() + ",'" + txDireccion.Text.Trim() + "'," + txTelefono.Text.Trim() +
+                ",'" + txMail.Text.Trim() + "','" + Convert.ToDateTime(dateTimePicker1.Value) + "','" + cBsexo.Text.Trim() + "','" + cBestadoCivil.Text.Trim() + "'," + txFamiliaresACargo.Text.Trim() +
+                ", "+ AfiliadoManager.idPlanMedico(cBplanMedico.Text.Trim()));
                 btAgregar.Hide();
                 if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
                 {
-                    btAgregarFam.Show();
-                    afiliadoFamiliar.nombre = txNombre.Text.Trim();
-                    afiliadoFamiliar.apellido = txApellido.Text.Trim();
-                    afiliadoFamiliar.id = AfiliadoManager.id(txDocumento.Text.Trim());
+                 //   btAgregarFam.Show();
+                  //  afiliadoFamiliar.nombre = txNombre.Text.Trim();
+                  //  afiliadoFamiliar.apellido = txApellido.Text.Trim();
+                  //  afiliadoFamiliar.id = AfiliadoManager.id(txDocumento.Text.Trim());
                 }
             }
             else

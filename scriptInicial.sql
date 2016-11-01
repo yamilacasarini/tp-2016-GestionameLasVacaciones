@@ -7,6 +7,7 @@ GO
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional', N'U') IS NOT NULL 
 DROP TABLE GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional;
 GO
+
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.ConsultasMedicas', N'U') IS NOT NULL 
 DROP TABLE GESTIONAME_LAS_VACACIONES.ConsultasMedicas;
 GO
@@ -286,7 +287,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Planes(
   baja INT DEFAULT 0,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
-  id INT PRIMARY KEY IDENTITY (1,1),
+  id INT PRIMARY KEY IDENTITY(1,1),
   nombre NVARCHAR(50) NOT NULL ,
   apellido NVARCHAR(50) NOT NULL ,
   documento INT NOT NULL,
@@ -303,6 +304,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
   baja INT DEFAULT 0,
   fechaBaja DATE,
    )
+SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON  
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Profesionales (
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   nombre NVARCHAR(50) NOT NULL ,
@@ -376,23 +378,6 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional(
   )
 
 --////////////////////////////////////--
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Funcionalidad
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Rol
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Usuario
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.RolXUsuario
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.RolXFuncionalidad
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Especialidad
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Servicio
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Profesional
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Agenda
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadXProfesional
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Paciente
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Turno
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.CompraBono
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Bono
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.ConsultaMedica
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Modificacion
-TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.#PacienteTemporal
 --MIGRACION--
 GO
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado()
@@ -419,6 +404,7 @@ GO
 
 
 CREATE TABLE #PacienteTemporal(
+id INT IDENTITY(1,1) PRIMARY KEY,
   nombre NVARCHAR(50) NOT NULL ,
   apellido NVARCHAR(50) NOT NULL ,
   dni INT NOT NULL,
@@ -491,9 +477,12 @@ SELECT medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNomb
 FROM #TemporalProfesional where medicoApellido is not null 
 group by medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNombre,medicoTelefono 
 
+
+
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Administrativo')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Afiliado')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Profesional')
+
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('ABM ROL')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('ABM AFILIADOS')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('COMPRA BONOS')
@@ -507,7 +496,7 @@ GO
 INSERT INTO GESTIONAME_LAS_VACACIONES.Planes(id,descripcion, precioCuota, precioBono)
 	SELECT DISTINCT idPlan,descripcionPlan, precioCuota, precioBono
 		FROM #PacienteTemporal
-		
+
 INSERT INTO GESTIONAME_LAS_VACACIONES.ComprasBonos(idPaciente,fecha,cantidad,monto)
 SELECT t.idPaciente,t.fechaBono, COUNT(t.fechaBono) ,  COUNT(t.fechaBono)* t.precioBono
 FROM #ConsultasTemporal t
@@ -523,9 +512,6 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (5,1)
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (6,1)
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (7,1)
-
-INSERT INTO GESTIONAME_LAS_VACACIONES.Modificaciones (idPaciente,idPlan)
-SELECT cast((dni*100) as nvarchar(13)),idPlan  from #PacienteTemporal group by dni ,idPlan
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional, fecha)
 	select c.id, c.idPaciente, p.id , c.fecha
@@ -644,7 +630,7 @@ AS
 END
 GO
 
-
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados
 GO
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre varchar(20),@apellido varchar(20), @numAfiliado int )
 returns table 
@@ -694,17 +680,6 @@ GO
 --ABM ROLES--
 
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerFuncionalidades(@nombreRol VARCHAR(30))
-RETURNS TABLE
-AS
-RETURN (SELECT funcionalidad.id, funcionalidad.descripcion
- FROM GESTIONAME_LAS_VACACIONES.Funcionalidades funcionalidad, GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad rolxfun
- WHERE funcionalidad.id = rolxfun.idFuncionalidad
- AND rolxfun.idRol = GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol))
- GO
-
-
-
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.crearRol(@nombre VARCHAR(30))
 AS 
 BEGIN
@@ -730,8 +705,6 @@ SET descripcion= @nombreNuevo
 WHERE descripcion= @nombreViejo
 END
 GO
-
-
 
 --////////////////////////////////////--
 --EL 3 ESTA HARCODEADO ARRIBA--
@@ -763,8 +736,7 @@ ELSE
 PRINT 'El paciente ya existe'
 END 
 GO
-
-
+SELECT id FROM GESTIONAME_LAS_VACACIONES.Planes WHERE descripcion like 'Plan Medico 140'
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarPaciente(@numAfiliado INT)
 AS
 BEGIN
@@ -1072,10 +1044,16 @@ GO
 --LISTADO ESTRATEGICO--
 --TOP 5 ESPECIALIDADES CON MAS CANCELACIONES--
 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones
+GO
+
 CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
 RETURNS TABLE 
 AS
 RETURN (SELECT GESTIONAME_LAS_VACACIONES.getIdEspecialidad(t.especialidad) AS especialidades, a.idEspecialidad AS especialidades2 FROM GESTIONAME_LAS_VACACIONES.Turnos t JOIN GESTIONAME_LAS_VACACIONES.Agendas a ON t.baja = 1 AND a.baja = 1)
+GO
+
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones
 GO
 
 CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones()
@@ -1087,6 +1065,9 @@ SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
 ORDER BY especialidades, especialidades2)
 GO
 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones
+GO
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones()
 RETURNS TABLE 
 AS
@@ -1095,6 +1076,10 @@ FROM GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones());
 GO
 
 --TOP 5 PROFESIONALES MAS CONSULTADOS POR PLAN ESPECIFICANDO ESPECIALIDAD--
+
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas
+GO
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@planes INT)
 RETURNS TABLE AS
 RETURN (SELECT p.id AS idProf, COUNT(p.id) AS cantConsultas
@@ -1107,11 +1092,17 @@ ON t.idPaciente = pac.id AND pac.planes = @planes
 GROUP BY p.id)
 GO
 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES..getTop5Profesionales
+GO
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTop5Profesionales(@planes INT)
 RETURNS TABLE AS
 RETURN SELECT TOP 5 cantConsultas, idProf
 FROM GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@planes)
 ORDER BY cantConsultas
+GO
+
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadMasAtendida
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadMasAtendida(@planes INT)
@@ -1123,6 +1114,9 @@ ON a.idProf = t.idProfesional
 GROUP BY a.idProf, t.especialidad)
 GO
 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.getPacientesConMasCompras
+GO
+
 -- CHEQUEAR PORQUE NO SE SI ME ESTA TIRANDO VALORES BIEN--
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getPacientesConMasCompras()
 RETURNS TABLE AS
@@ -1131,6 +1125,9 @@ FROM GESTIONAME_LAS_VACACIONES.Pacientes  unPaciente
 JOIN GESTIONAME_LAS_VACACIONES.ComprasBonos compra ON  unPaciente.id/100 = compra.idPaciente/100
 GROUP BY unPaciente.id, unPaciente.nombre,unPaciente.apellido  
 ORDER BY COUNT(compra.idPaciente))
+GO
+
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.topDeEspecialidadesConMasConsultas
 GO
 
 -- IDEM AL DE ARRIBA, SOY UN CAGON LO SE-- 
@@ -1145,6 +1142,9 @@ GROUP BY especialidad.id
 ORDER BY COUNT(consulta.id))
 GO
 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada
+GO
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada(@id INTEGER)
 RETURNS TABLE AS
 RETURN (SELECT tipoEspecialidad FROM GESTIONAME_LAS_VACACIONES.Especialidades e JOIN 
@@ -1152,3 +1152,4 @@ GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional x ON e.id = x.idEspecialida
 GESTIONAME_LAS_VACACIONES.Profesionales p ON x.idProfesional = p.id WHERE p.id = @id 
 AND tipoEspecialidad NOT IN (SELECT idEspecialidad FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @id)) 
 GO
+

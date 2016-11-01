@@ -103,7 +103,6 @@
             this.txNombre.Name = "txNombre";
             this.txNombre.Size = new System.Drawing.Size(100, 20);
             this.txNombre.TabIndex = 19;
-            this.txNombre.TextChanged += new System.EventHandler(this.txNombre_TextChanged);
             // 
             // label2
             // 
@@ -124,6 +123,7 @@
             this.btCancelar.TabIndex = 17;
             this.btCancelar.Text = "Salir";
             this.btCancelar.UseVisualStyleBackColor = true;
+            this.btCancelar.Click += new System.EventHandler(this.btCancelar_Click);
             // 
             // btBorrar
             // 
