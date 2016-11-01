@@ -376,6 +376,23 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional(
   )
 
 --////////////////////////////////////--
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Funcionalidad
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Rol
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Usuario
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.RolXUsuario
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.RolXFuncionalidad
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Especialidad
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Servicio
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Profesional
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Agenda
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadXProfesional
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Paciente
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Turno
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.CompraBono
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Bono
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.ConsultaMedica
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.Modificacion
+TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.#PacienteTemporal
 --MIGRACION--
 GO
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado()
@@ -477,7 +494,6 @@ group by medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNo
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Administrativo')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Afiliado')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Profesional')
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('ABM ROL')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('ABM AFILIADOS')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('COMPRA BONOS')
@@ -491,7 +507,7 @@ GO
 INSERT INTO GESTIONAME_LAS_VACACIONES.Planes(id,descripcion, precioCuota, precioBono)
 	SELECT DISTINCT idPlan,descripcionPlan, precioCuota, precioBono
 		FROM #PacienteTemporal
-
+		
 INSERT INTO GESTIONAME_LAS_VACACIONES.ComprasBonos(idPaciente,fecha,cantidad,monto)
 SELECT t.idPaciente,t.fechaBono, COUNT(t.fechaBono) ,  COUNT(t.fechaBono)* t.precioBono
 FROM #ConsultasTemporal t
@@ -628,7 +644,7 @@ AS
 END
 GO
 
-DROP FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados
+
 GO
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre varchar(20),@apellido varchar(20), @numAfiliado int )
 returns table 
@@ -678,6 +694,17 @@ GO
 --ABM ROLES--
 
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerFuncionalidades(@nombreRol VARCHAR(30))
+RETURNS TABLE
+AS
+RETURN (SELECT funcionalidad.id, funcionalidad.descripcion
+ FROM GESTIONAME_LAS_VACACIONES.Funcionalidades funcionalidad, GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad rolxfun
+ WHERE funcionalidad.id = rolxfun.idFuncionalidad
+ AND rolxfun.idRol = GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol))
+ GO
+
+
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.crearRol(@nombre VARCHAR(30))
 AS 
 BEGIN
@@ -703,6 +730,8 @@ SET descripcion= @nombreNuevo
 WHERE descripcion= @nombreViejo
 END
 GO
+
+
 
 --////////////////////////////////////--
 --EL 3 ESTA HARCODEADO ARRIBA--
