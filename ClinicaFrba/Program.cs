@@ -16,7 +16,7 @@ namespace ClinicaFrba
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-           Application.Run(new Abm_Afiliado.Principal());
+           Application.Run(new Compra_Bono.Principal());
           
         }
     }
