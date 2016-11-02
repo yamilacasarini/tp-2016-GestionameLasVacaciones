@@ -10,13 +10,13 @@ namespace ClinicaFrba.AbmRol
     class RolManager
     {
         public static Rol rolSeleccionado { get; set; }
-        public static Funcionalidad funcionalidadDeRol {get; set;}
+        public static Funcionalidad funcionalidadDeRol { get; set; }
         public static List<Funcionalidad> mostrarFuncionalidades(String rol)
         {
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerFuncionalidades( '" + rol + "' )");
             List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
-      
+
             while (reader.Read())
             {
                 Funcionalidad funcionalidad = new Funcionalidad();
@@ -49,14 +49,14 @@ namespace ClinicaFrba.AbmRol
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.borrarFuncionalidadAUnRol '" + rol + "','" + funcionalidad + "'");
             reader.Close();
-           
+
         }
         public static void agregarRolYFuncionalidad(String rol, String funcionalidad)
         {
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.crearRol '" + rol + "'");
             reader.Close();
-             reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.agregarFuncionalidadAUnRol '" + rol + "','" + funcionalidad + "'");
+            reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.agregarFuncionalidadAUnRol '" + rol + "','" + funcionalidad + "'");
             reader.Close();
         }
         public static List<Funcionalidad> obtenerFuncionalidadesNoAgregadasEnRol(String rol)
@@ -96,5 +96,20 @@ namespace ClinicaFrba.AbmRol
             SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.borrarRol '" + rol + "'");
             reader.Close();
         }
+
+        public static void mofidicarNombre(String viejoNombre, String nuevoNombre)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.modificarRol '" + viejoNombre + "','" + nuevoNombre + "'");
+            reader.Close();
+        }
+
+        public static void noExisteElRol(String rol)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.elRolNoExiste '" + rol + "'");
+            reader.Close();
+        }
+
     }
 }
