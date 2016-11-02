@@ -34,7 +34,7 @@ namespace ClinicaFrba.Registro_Llegada
         {
             if (txApellido.Text.Trim() != "" || txNombre.Text.Trim() != "" || txEspecialidad.Text.Trim() != "")
             {
-                //this.dataGridView1.DataSource = llegadaMananger.BuscarProfesionales(txApellido.Text.Trim(), txNombre.Text.Trim(),txEspecialidad.Text.Trim());
+                this.dataGridView1.DataSource = LlegadaManager.BuscarTurnos(txApellido.Text.Trim(), txNombre.Text.Trim(),txEspecialidad.Text.Trim());
                 btSeleccionar.Show();
             }
             else

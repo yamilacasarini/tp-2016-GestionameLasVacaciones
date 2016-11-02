@@ -43,12 +43,28 @@ namespace ClinicaFrba.Compra_Bono
 
         private void botonAceptar_Click(object sender, EventArgs e)
         {
-            server.query("EXEC GESTIONAME_LAS_VACACIONES.compraDeBonos '" + afiliadoBuscado.id.ToString() + "', '" + cantidad.Value.ToString()+"'");
+            SqlDataReader read = server.query("EXEC GESTIONAME_LAS_VACACIONES.compraDeBonos '" + afiliadoBuscado.id.ToString() + "', '" + cantidad.Value.ToString()+"'");
+            read.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (etiquetaPaciente.Text == "")
+            {
+                MessageBox.Show("Todavia no ingreso ningun paciente");
+            }
+            else {
+                SqlDataReader reader = server.query("Select sum(b.cantidad) from GESTIONAME_LAS_VACACIONES.ComprasBonos b where b.idPaciente =" + etiquetaPaciente.Text);
+                reader.Read();
+                MessageBox.Show("El usuario ahora poseee: "+reader.GetInt32(0).ToString()
+                    +" bonos");
+                reader.Close();
+            }
         }
     }
 }
