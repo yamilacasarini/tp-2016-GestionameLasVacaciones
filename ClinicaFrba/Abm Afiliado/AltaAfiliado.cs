@@ -65,7 +65,7 @@ namespace ClinicaFrba.Abm_Afiliado
             if (validarDatos())
             {
                 Server server = Server.getInstance();
-                SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.altaPaciente '" +
+                server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.altaPaciente '" +
                 txNombre.Text.Trim() + "', '" + txApellido.Text.Trim() + "'," + txDocumento.Text.Trim() + ",'" + txDireccion.Text.Trim() + "'," + txTelefono.Text.Trim() +
                 ",'" + txMail.Text.Trim() + "','" + Convert.ToDateTime(dateTimePicker1.Value) + "','" + cBsexo.Text.Trim() + "','" + cBestadoCivil.Text.Trim() + "'," + txFamiliaresACargo.Text.Trim() +
                 ", "+ AfiliadoManager.idPlanMedico(cBplanMedico.Text.Trim()));
