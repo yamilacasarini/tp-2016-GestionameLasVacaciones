@@ -532,9 +532,9 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Especialidades(descripcion, tipoEspecialid
 	FROM #TemporalProfesional
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional(idEspecialidad, idProfesional)
-	SELECT esp.id, e.id FROM #TemporalProfesional p 
+	SELECT DISTINCT esp.id, e.id FROM #TemporalProfesional p 
 	join  GESTIONAME_LAS_VACACIONES.Profesionales e 
-	on p.medicoDni = e.documento
+	on (p.medicoDni = e.documento and p.medicoNombre like e.nombre and p.medicoApellido like e.apellido)
 	join GESTIONAME_LAS_VACACIONES.Especialidades esp
 	on esp.descripcion = p.especialidadDescripcion
 
@@ -606,6 +606,25 @@ BEGIN
 END
 GO
 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.getDescEspecialidad
+GO
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDescEspecialidad(@idEspecialidad int)
+RETURNS VARCHAR(200)
+AS
+BEGIN
+	DECLARE @retorno  VARCHAR(200)
+	SELECT
+		@retorno = descripcion
+	FROM 
+		GESTIONAME_LAS_VACACIONES.Especialidades
+	WHERE
+		id = @idEspecialidad
+	RETURN @retorno;
+END
+GO
+
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdFuncionalidad (@descripcion VARCHAR(30))
 RETURNS INT
  AS
@@ -670,6 +689,41 @@ SELECT * FROM GESTIONAME_LAS_VACACIONES.PACIENTES
 SELECT * FROM GESTIONAME_LAS_VACACIONES.buscarAfiliados('aaron', '',  -1)
 GO
 
+drop function  GESTIONAME_LAS_VACACIONES.joinearEspecialidadYProfesional
+go
+drop FUNCTION GESTIONAME_LAS_VACACIONES.buscarProfesionales
+go
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.joinearEspecialidadYProfesional()
+returns table 
+as 
+return select p.id as idProf, e.id as idEsp, p.nombre, p.apellido from GESTIONAME_LAS_VACACIONES.Profesionales p JOIN GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e
+ON e.idProfesional = p.id 
+go
+
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarProfesionales(@nombre varchar(20),@apellido varchar(20), @especialidad varchar(20), @matricula int )
+returns table 
+as 
+return select idProf, GESTIONAME_LAS_VACACIONES.getDescEspecialidad(idEsp) as especialidad, nombre, apellido from GESTIONAME_LAS_VACACIONES.joinearEspecialidadYProfesional() a
+WHERE a.nombre like @nombre or a.idProf = @matricula or a.apellido like @apellido or a.idEsp = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad)
+go
+
+
+SELECT * FROM GESTIONAME_LAS_VACACIONES.Profesionales
+GO
+
+SELECT * FROM GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional
+
+
+
+
+SELECT * FROM GESTIONAME_LAS_VACACIONES.PACIENTES
+SELECT * FROM GESTIONAME_LAS_VACACIONES.joinearEspecialidadYProfesional()
+GO
+
+SELECT * FROM GESTIONAME_LAS_VACACIONES.Profesionales
+SELECT * FROM GESTIONAME_LAS_VACACIONES.buscarProfesionales ('', '', '', 3)
 
 --////////////////////////////////////--
 --PROCEDURES--
