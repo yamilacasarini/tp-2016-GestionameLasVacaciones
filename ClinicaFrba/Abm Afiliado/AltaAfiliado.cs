@@ -63,13 +63,12 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btAgregar_Click(object sender, EventArgs e)
         {
             if (validarDatos())
-            {
-                Server server = Server.getInstance();
-                server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.altaPaciente '" +
-                txNombre.Text.Trim() + "', '" + txApellido.Text.Trim() + "'," + txDocumento.Text.Trim() + ",'" + txDireccion.Text.Trim() + "'," + txTelefono.Text.Trim() +
-                ",'" + txMail.Text.Trim() + "','" + Convert.ToDateTime(dateTimePicker1.Value) + "','" + cBsexo.Text.Trim() + "','" + cBestadoCivil.Text.Trim() + "'," + txFamiliaresACargo.Text.Trim() +
-                ", "+ AfiliadoManager.idPlanMedico(cBplanMedico.Text.Trim()));
-                btAgregar.Hide();
+            {       
+                AfiliadoManager.altaAfiliado(txNombre.Text.Trim(),txApellido.Text.Trim(),
+                    Convert.ToInt32(txDocumento.Text.Trim()), txDireccion.Text.Trim(), Convert.ToInt32(txTelefono.Text.Trim()),
+                    txMail.Text.Trim(),Convert.ToDateTime(dateTimePicker1.Value),cBsexo.Text.Trim(),
+                    cBestadoCivil.Text.Trim(),Convert.ToInt32(txFamiliaresACargo.Text.Trim()),cBplanMedico.Text.Trim());
+                btAgregar.Hide(); //TRY CATCH EN CASO DE QUE NO SE PUEDA AGREGAR
                 if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
                 {
                     btAgregarFam.Show();
