@@ -13,17 +13,17 @@ namespace ClinicaFrba
 {
     public partial class ValidacionDeRol : Form
     {
-        Server server;
+        Server server=Server.getInstance();
         public ValidacionDeRol(String id)
         {
             InitializeComponent();
             rellenarListaConRoles(id);
-            server=Server.getInstance();
+            
         }
 
         public void rellenarListaConRoles(String id)
-        {
-            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.RolxUsuario u JOIN GESTIONAME_LAS_VACACIONES.Rol r ON u.idRol = r.id WHERE u.idUsuario =" + "'" + id + "'");
+        {server=Server.getInstance();
+            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.RolesxUsuario u JOIN GESTIONAME_LAS_VACACIONES.Roles r ON u.idRol = r.id WHERE u.idUsuario = " + "'" + id.ToString() + "'");
             while (reader.Read())
             {
                 RolComboBox.Items.Add(reader["descripcion"].ToString());
@@ -62,7 +62,7 @@ namespace ClinicaFrba
                     new Compra_Bono.Principal().Show();
                     break;
                 case "PEDIDO DE TURNO":
-                    new Pedir_Turno.Principal().Show();
+                    new Pedir_Turno.PrincipalProf().Show();
                     break;
                 case "REGISTRO DE LLEGADA":
                     new Registro_Llegada.Principal().Show();
@@ -79,8 +79,8 @@ namespace ClinicaFrba
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
-            SqlDataReader reader = server.query("select descripcion from GESTIONAME_LAS_VACACIONES.Funcionalidad f  join GESTIONAME_LAS_VACACIONES.RolxFuncionalidad r on f.id = r.idFuncionalidad where r.idRol = 1");
+
+            SqlDataReader reader = server.query("select f.descripcion from GESTIONAME_LAS_VACACIONES.Funcionalidades f  join GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad r on f.id = r.idFuncionalidad  join GESTIONAME_LAS_VACACIONES.Roles rol on r.idRol = rol.id where rol.descripcion= " + "'" + RolComboBox.SelectedItem.ToString() + "'");
             while (reader.Read())
             {
                 FuncionalidadComboBox.Items.Add(reader["descripcion"].ToString());

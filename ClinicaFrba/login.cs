@@ -30,8 +30,6 @@ namespace ClinicaFrba
             {
                 {
                     Server server = Server.getInstance();
-                    try
-                    {
                         StringBuilder Sb = new StringBuilder();
 
                         using (SHA256 hash = SHA256Managed.Create())
@@ -44,12 +42,8 @@ namespace ClinicaFrba
                         }
 
                        server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + Sb.ToString() + "'");
-                       new ValidacionDeRol(txtUsuario.Text.Trim()).Show();
-                        }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                       new ValidacionDeRol(txtUsuario.Text.Trim()).ShowDialog();
+              
                 }
             }
             else
