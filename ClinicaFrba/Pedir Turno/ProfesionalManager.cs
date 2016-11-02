@@ -17,23 +17,15 @@ namespace ClinicaFrba.Pedir_Turno
         public static List<Profesional> BuscarProfesionales(String nombre, String apellido, String especialidad, int id)
         {
             Server server = Server.getInstance();
-            //ProfesionalManager.validarDato(nombre);
-            //ProfesionalManager.validarDato(apellido);
             SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarProfesionales('" + nombre + "','" + apellido + "', '" + especialidad + "'," + id + ")");
             List<Profesional> profesionales = new List<Profesional>();
             while (reader.Read())
             {
                 Profesional prof = new Profesional();
-                prof.id = Convert.ToInt32(reader["id"]);
+                prof.matricula = Convert.ToInt32(reader["idProf"]);
                 prof.nombre = reader["nombre"].ToString();
                 prof.apellido = reader["apellido"].ToString();
-                prof.tipoDocumento = reader["tipoDocumento"].ToString();
-                prof.documento = Convert.ToInt32(reader["documento"]);
-                prof.direccion = reader["direccion"].ToString();
-                prof.telefono = Convert.ToInt32(reader["telefono"]);
-                prof.email = reader["email"].ToString();
-                prof.fechaNacimiento = Convert.ToDateTime(reader["fechaNacimiento"]);
-                prof.sexo = reader["sexo"].ToString();
+                prof.especialidad = reader["especialidad"].ToString();
                 profesionales.Add(prof);
             }
             reader.Close();
@@ -41,62 +33,69 @@ namespace ClinicaFrba.Pedir_Turno
         }
 
 
-        public static void validarDato(String algo)
-        {
-            if (algo == "")
-                algo = "*";
-        }
-
-        public static void ModificarAfiliado(int id, String nombre, String apellido, int documento,
-            String direccion, int telefono, String mail, char sexo, String estadoCivil, int CantidadFamiliares)
+       
+        public static List<DateTime> MostrarTurnosDeProfesional(int id, string especialidad)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.modificarPaciente '" + id.ToString() + "','%" + nombre + "%','%" + apellido + "%'," + documento + ",'%" + direccion + "%'," + telefono.ToString() + ",'%" + mail + "%','%" + sexo.ToString() + "%','%" + estadoCivil + "%'");
+            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(" + id + ", '" + especialidad + "')");
+          
+            List<DateTime> rango = new List<DateTime>();
+
+            while (reader.Read())
+            {
+                rango.Add(Convert.ToDateTime(reader[0]));
+                rango.Add(Convert.ToDateTime(reader[1]));
+            }
+
             reader.Close();
 
-        }
-        public static string planMedico(int idServicio)
-        {
-            Server server = Server.getInstance();
+            List<DateTime> turnos = new List<DateTime>();
             
-            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes WHERE id =" + idServicio);
-            reader.Close();
-            return Convert.ToString(reader["descripcion"]);
-        }
-        public static int idPlanMedico(String descripcion)
-        {
-            Server server = Server.getInstance();
-            
-            SqlDataReader reader = server.query("SELECT id FROM GESTIONAME_LAS_VACACIONES.Planes WHERE descripcion like '" + descripcion+"'");
+             DateTime inicio = rango[0];
+             DateTime fin = rango[1];
 
-            reader.Read();
-            
-            int retornito= Convert.ToInt32(reader["id"]);
-            
-            reader.Close();
-           
-            return retornito;
-        }
+            while (inicio != fin)
+            {
+                turnos.Add(inicio);
+                inicio = inicio.AddMinutes(30);
 
-        public static int id(string dni)
-        {
-            Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT id FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE documento =" + dni);
-            reader.Read();
-            int retornito = Convert.ToInt32(reader["id"]); // santi esto es por vos!!!!!
-            reader.Close();
-            return retornito;
-        }
+            }
 
-        public static void borrarAfiliado(int id)
-        {
-            Server server = Server.getInstance();
-            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.borrarPaciente " + id);
+            int i = 0;
+            int j = 0;
+
+            SqlDataReader reader2 = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(" + id + ", '" + especialidad + "')");
+            List<DateTime> turnosNoDisponibles = new List<DateTime>();
+
+            while (reader2.Read())
+            {
+                turnosNoDisponibles.Add(Convert.ToDateTime(reader2[0]));
+            }
+
+            reader2.Close();
+
+            System.Windows.Forms.MessageBox.Show(fin.TimeOfDay.ToString());
+
+            while (i < turnos.Count())
+            {
+                j = 0;
+                while (j < turnosNoDisponibles.Count())
+                {
+
+                    if (turnos[i] == turnosNoDisponibles[j] || turnos[i].TimeOfDay.CompareTo(fin.TimeOfDay) > 0 )
+                        turnos.RemoveAt(i);
+                        j++;
+                }
+                i++;
+            }
+
+
+
             reader.Close();
-            
+            return turnos;
+
         }
-        /*         CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id as int,@nombre as nvarchar(50), @apellido as nvarchar(50), 
-     @doc as int, @direc as varchar(100), @tel as int, @mail as varchar(255), @sexo as char, @civil as varchar(10),
-     @cantFami as int)*/
+       
+
     }
 }

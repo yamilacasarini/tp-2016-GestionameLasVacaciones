@@ -1,4 +1,4 @@
-IF NOT EXISTS ( SELECT  *
+﻿IF NOT EXISTS ( SELECT  *
 				FROM    sys.schemas
 				WHERE   name = N'GESTIONAME_LAS_VACACIONES' ) 
 	EXEC('CREATE SCHEMA [GESTIONAME_LAS_VACACIONES]');
@@ -588,8 +588,7 @@ RETURN @ret +1;
 end
 GO
 
-
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descEspecialidad VARCHAR(30))
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descEspecialidad VARCHAR(100))
 RETURNS INTEGER
 AS
 BEGIN
@@ -597,12 +596,13 @@ BEGIN
 	SELECT
 		@retorno = id
 	FROM 
-		GESTIONAME_LAS_VACACIONES.Planes
+		GESTIONAME_LAS_VACACIONES.Especialidades
 	WHERE
 		descripcion = @descEspecialidad
 	RETURN @retorno;
 END
 GO
+
 
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.getDescEspecialidad
 GO
@@ -722,6 +722,33 @@ GO
 
 SELECT * FROM GESTIONAME_LAS_VACACIONES.Profesionales
 SELECT * FROM GESTIONAME_LAS_VACACIONES.buscarProfesionales ('', '', '', 3)
+
+drop fUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100))
+RETURNS TABLE
+AS
+RETURN select a.fechaInicio, a.fechaFinal FROM GESTIONAME_LAS_VACACIONES.Agendas a
+WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and CURRENT_TIMESTAMP between fechaInicio and fechaFinal
+GO
+
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(@matricula int, @especialidad as varchar(100))
+RETURNS TABLE
+AS
+RETURN select fecha from GESTIONAME_LAS_VACACIONES.Turnos t
+WHERE t.idProfesional = @matricula and t.especialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and baja = 0 
+GO
+
+
+
+SELECT * FROM GESTIONAME_LAS_VACACIONES.Especialidades
+select * FROM GESTIONAME_LAS_VACACIONES.Agendas a
+SELECT * FROM GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(3, 'Cirugía General y del Aparato Digestivo')
+
+
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal) VALUES  (3,6, '2016-03-03 07:00:00.000', '2016-12-12 11:00:00.000')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idProfesional, fecha, especialidad) VALUES (0, 3, '2016-04-04 07:30:00.000', 6)
+
 
 --////////////////////////////////////--
 --PROCEDURES--

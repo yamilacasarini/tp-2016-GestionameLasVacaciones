@@ -38,7 +38,7 @@
             this.txMatricula = new System.Windows.Forms.TextBox();
             this.txEspecialidad = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
+            this.hola = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -130,15 +130,16 @@
             this.dataGridView1.Size = new System.Drawing.Size(431, 150);
             this.dataGridView1.TabIndex = 9;
             // 
-            // button1
+            // hola
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(56, 307);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(99, 34);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Buscar ";
-            this.button1.UseVisualStyleBackColor = true;
+            this.hola.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.hola.Location = new System.Drawing.Point(56, 307);
+            this.hola.Name = "hola";
+            this.hola.Size = new System.Drawing.Size(99, 34);
+            this.hola.TabIndex = 10;
+            this.hola.Text = "Buscar ";
+            this.hola.UseVisualStyleBackColor = true;
+            this.hola.Click += new System.EventHandler(this.hola_Click_1);
             // 
             // button2
             // 
@@ -149,14 +150,15 @@
             this.button2.TabIndex = 11;
             this.button2.Text = "Aceptar ";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // Principal
+            // PrincipalProf
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(459, 353);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.hola);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.txEspecialidad);
             this.Controls.Add(this.txMatricula);
@@ -167,7 +169,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "Principal";
+            this.Name = "PrincipalProf";
             this.Text = "Reservar Turno";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
@@ -187,7 +189,7 @@
         private System.Windows.Forms.TextBox txMatricula;
         private System.Windows.Forms.TextBox txEspecialidad;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button hola;
         private System.Windows.Forms.Button button2;
     }
 }
