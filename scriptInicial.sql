@@ -707,14 +707,14 @@ GO
 --NUMERO 1--
 --ABM ROLES--
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerFuncionalidades(@nombreRol VARCHAR(30))
- RETURNS TABLE
- AS
- RETURN (SELECT funcionalidad.id, funcionalidad.descripcion
+RETURNS TABLE
+AS
+RETURN (SELECT funcionalidad.id, funcionalidad.descripcion
  FROM GESTIONAME_LAS_VACACIONES.Funcionalidades funcionalidad, GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad rolxfun
  WHERE funcionalidad.id = rolxfun.idFuncionalidad
  AND rolxfun.idRol = GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol))
  GO
-
+ 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.crearRol(@nombre VARCHAR(30))
 AS 
 BEGIN
@@ -724,6 +724,7 @@ ELSE
 PRINT 'El Rol ya existe'
 END
 GO
+
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarRol(@nombre VARCHAR(30))
 AS 
@@ -740,6 +741,7 @@ SET descripcion= @nombreNuevo
 WHERE descripcion= @nombreViejo
 END
 GO
+
 
 --////////////////////////////////////--
 --EL 3 ESTA HARCODEADO ARRIBA--
@@ -812,6 +814,24 @@ END
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad,idRol) VALUES
 ( GESTIONAME_LAS_VACACIONES.getIdFuncionalidad(@nombreFuncionalidad),GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol))
 END
+GO
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDescripcionFuncionalidad(@id INTEGER)
+RETURNS NVARCHAR(50)
+AS
+BEGIN
+RETURN (SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Funcionalidades WHERE id = @id)
+END
+GO
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerFuncionesNoCargadasAUnRol(@nombreRol NVARCHAR(50))
+RETURNS TABLE
+AS
+RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Funcionalidades f WHERE f.descripcion NOT IN 
+(SELECT fun.descripcion FROM GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad rolx 
+JOIN GESTIONAME_LAS_VACACIONES.Funcionalidades fun 
+ON rolx.idFuncionalidad = fun.id 
+WHERE rolx.idRol = GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol)))
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarFuncionalidadAUnRol (@nombreRol VARCHAR(30), @nombreFuncionalidad VARCHAR(30))
