@@ -8,6 +8,7 @@ namespace ClinicaFrba.Pedir_Turno
 {
     public class Profesional
     {
+        
         public int id { get; set; }
         public String nombre { get; set; }
         public String apellido { get; set; }

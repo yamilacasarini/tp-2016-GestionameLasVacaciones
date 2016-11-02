@@ -13,6 +13,7 @@ namespace ClinicaFrba.Pedir_Turno
 
          
 
+
         public static List<Profesional> BuscarProfesionales(String nombre, String apellido, String especialidad, int id)
         {
             Server server = Server.getInstance();

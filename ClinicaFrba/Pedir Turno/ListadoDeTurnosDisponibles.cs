@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 namespace ClinicaFrba.Pedir_Turno
 {
+
     public partial class ListadoDeTurnosDisponibles : Form
     {
         public ListadoDeTurnosDisponibles()
