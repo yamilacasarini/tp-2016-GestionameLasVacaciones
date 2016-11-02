@@ -46,8 +46,8 @@ namespace ClinicaFrba.Abm_Afiliado
 
         void llenarPlanes()
         {
-            server = Server.getInstance();
-            reader = server.query("SELECT DISTINCT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes");
+           Server server = Server.getInstance();
+            SqlDataReader reader = server.query("SELECT DISTINCT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes");
 
             while (reader.Read())
             {
@@ -58,14 +58,14 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
-            reader.Close();
             this.Close();
         }
         private void btAgregar_Click(object sender, EventArgs e)
         {
             if (validarDatos())
             {
-                server.query("EXEC GESTIONAME_LAS_VACACIONES.altaPaciente '" +
+                Server server = Server.getInstance();
+                SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.altaPaciente '" +
                 txNombre.Text.Trim() + "', '" + txApellido.Text.Trim() + "'," + txDocumento.Text.Trim() + ",'" + txDireccion.Text.Trim() + "'," + txTelefono.Text.Trim() +
                 ",'" + txMail.Text.Trim() + "','" + Convert.ToDateTime(dateTimePicker1.Value) + "','" + cBsexo.Text.Trim() + "','" + cBestadoCivil.Text.Trim() + "'," + txFamiliaresACargo.Text.Trim() +
                 ", "+ AfiliadoManager.idPlanMedico(cBplanMedico.Text.Trim()));
