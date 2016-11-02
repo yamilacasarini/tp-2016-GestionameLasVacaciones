@@ -36,6 +36,13 @@ namespace ClinicaFrba.AbmRol
 
         private void button1_Click(object sender, EventArgs e)
         {
+               if (String.IsNullOrEmpty(txtNombre.Text.Trim()))
+                {
+                    MessageBox.Show("Llene el campo para realizar la busqueda");
+                    return;
+                }
+               else
+               {
             try
             {
                 RolManager.noExisteElRol(txtNombre.Text.Trim());
@@ -46,12 +53,7 @@ namespace ClinicaFrba.AbmRol
                 txtNombre.Clear();
                 return;
             }
-                if (String.IsNullOrEmpty(txtNombre.Text.Trim()))
-                {
-                    MessageBox.Show("Llene el campo para realizar la busqueda");
-                }
-                else
-                {
+             
                     this.dataGridView1.DataSource = RolManager.mostrarFuncionalidades(txtNombre.Text.Trim());
                     this.dataGridView2.DataSource = RolManager.obtenerFuncionalidadesNoAgregadasEnRol(txtNombre.Text.Trim());
                     int baja = RolManager.obtenerBaja(txtNombre.Text.Trim());
@@ -142,9 +144,22 @@ namespace ClinicaFrba.AbmRol
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            RolManager.mofidicarNombre(txtNombre.Text.Trim(), txtNuevoNombre.Text.Trim());
-            MessageBox.Show("Nombre modificado exitosamente");
-            txtNuevoNombre.Clear();
+            if (String.IsNullOrEmpty(txtNuevoNombre.Text.Trim()))
+            {
+                MessageBox.Show("Por favor introduzca un nombre");
+
+            }
+            else
+            {
+                if (String.IsNullOrEmpty(txtNombre.Text.Trim()))
+                {
+                    MessageBox.Show("Ingrese el nombre a querer modificar");
+                    return;
+                }
+                RolManager.mofidicarNombre(txtNombre.Text.Trim(), txtNuevoNombre.Text.Trim());
+                MessageBox.Show("Nombre modificado exitosamente");
+                txtNuevoNombre.Clear();
+            }
 
             
         }

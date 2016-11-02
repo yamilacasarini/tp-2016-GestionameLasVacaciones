@@ -19,8 +19,30 @@ namespace ClinicaFrba.AbmRol
 
         private void button3_Click(object sender, EventArgs e)
         {
-            RolManager.deshabilitarRol(txtNombre.Text.Trim());
-            MessageBox.Show("El rol fue eliminado");
+            if (string.IsNullOrEmpty(this.txtNombre.Text))
+            {
+                MessageBox.Show("Por favor introduzca un nombre");
+                return;
+            }
+            try{
+                RolManager.noExisteElRol(txtNombre.Text.Trim());
+            }
+            catch(Exception b)
+            {
+                  MessageBox.Show("Error, el Rol que se quiere eliminar no existe");
+                  return;
+            }
+            if (RolManager.obtenerBaja(txtNombre.Text.Trim()) == 1)
+            {
+                MessageBox.Show("El Rol ya fue anteriormente dado de baja");
+            }
+            else
+            {
+                RolManager.deshabilitarRol(txtNombre.Text.Trim());
+                MessageBox.Show("El rol fue eliminado");
+               
+            }
+            txtNombre.Clear();
         }
 
         private void txtNombre_TextChanged(object sender, EventArgs e)
