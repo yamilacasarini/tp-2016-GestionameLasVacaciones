@@ -43,5 +43,5 @@ namespace ClinicaFrba.Pedir_Turno
             return txNombre.Text.Trim() != "" || txApellido.Text.Trim() != "" || txMatricula.Text.Trim() != "" || txEspecialidad.Text.Trim() != "" ;
         }
     }
-    }
+    
 }
