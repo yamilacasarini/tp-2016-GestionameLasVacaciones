@@ -262,6 +262,11 @@ DROP FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada;
 IF OBJECT_ID ('GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones', 'FN') IS NOT NULL 
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones;
 GO
+
+IF OBJECT_ID ('GESTIONAME_LAS_VACACIONES.obtenerPlanAcutalAfiliado', 'FN') IS NOT NULL 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerPlanAcutalAfiliado;
+GO
+
 IF OBJECT_ID(N'tempdb..#PacienteTemporal', N'U') IS NOT NULL
 drop table #PacienteTemporal
 
@@ -320,7 +325,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
   estadoCivil VARCHAR(10),
   cantFamiliares INT DEFAULT 0,
   cantConsultas INT DEFAULT 0,
-  planes INT REFERENCES GESTIONAME_LAS_VACACIONES.Planes(id),
+  planes INTEGER ,--INT REFERENCES GESTIONAME_LAS_VACACIONES.Planes(id)
   baja INT DEFAULT 0,
   fechaBaja DATE,
    )
@@ -461,9 +466,10 @@ SELECT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direccion, Paci
 				Plan_Med_Codigo,Plan_Med_Descripcion,Plan_Med_Precio_Bono_Consulta, Turno_Numero,Turno_Fecha ,Compra_Bono_Fecha,Bono_Consulta_Numero
 					FROM GD2C2016.gd_esquema.Maestra
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(nombre,apellido,direccion,documento,email,fechaNacimiento,telefono)
-SELECT  nombre,apellido,direccion,dni,email,fechaNacimiento,telefono 
-from #PacienteTemporal group by nombre,apellido,direccion,dni,email,fechaNacimiento,telefono
+
+INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(nombre,apellido,direccion,documento,email,fechaNacimiento,telefono,planes)
+SELECT  nombre,apellido,direccion,dni,email,fechaNacimiento,telefono ,idPlan
+from #PacienteTemporal group by nombre,apellido,direccion,dni,email,fechaNacimiento,telefono,idPlan
 
 INSERT INTO #TemporalProfesional (consultaEnfermedad,consultaSintoma,especialidadDescripcion,especialidadDescripcion2,fechaTurno,
 						idEspecialidad,idEspecialidad2,idTurno,medicoApellido,medicoDni,medicoMail,medicoNacimiento,medicoNombre,medicoTelefono,medicoDir)
@@ -654,8 +660,6 @@ AS
 END
 GO
 
-DROP FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados
-GO
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre varchar(20),@apellido varchar(20), @numAfiliado int )
 returns table 
 as 
@@ -850,6 +854,15 @@ GO
 --////////////////////////////////////--
 --NUMERO 9--
 --COMPRA DE BONOS--
+
+create function GESTIONAME_LAS_VACACIONES.obtenerPlanAcutalAfiliado(@numAfiliado INT)
+RETURNS  TABLE 
+AS 
+RETURN (SELECT TOP 1 pl.descripcion,pl.precioBono FROM  GESTIONAME_LAS_VACACIONES.Pacientes p
+join GESTIONAME_LAS_VACACIONES.Planes pl
+on p.planes = pl.id
+where   @numAfiliado = p.id)
+GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.compraDeBonos(@numAfiliado INT, @cantidad INT)
 AS
