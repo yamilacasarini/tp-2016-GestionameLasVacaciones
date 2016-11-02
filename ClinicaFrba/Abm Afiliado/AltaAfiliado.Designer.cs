@@ -69,7 +69,6 @@
             this.label2.Size = new System.Drawing.Size(69, 20);
             this.label2.TabIndex = 13;
             this.label2.Text = "Apellido:";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label1
             // 
@@ -80,7 +79,6 @@
             this.label1.Size = new System.Drawing.Size(69, 20);
             this.label1.TabIndex = 12;
             this.label1.Text = "Nombre:";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // txApellido
             // 
@@ -110,7 +108,6 @@
             this.label4.Size = new System.Drawing.Size(130, 20);
             this.label4.TabIndex = 16;
             this.label4.Text = "Tipo Documento:";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // txDocumento
             // 
@@ -130,7 +127,6 @@
             this.label3.Size = new System.Drawing.Size(125, 20);
             this.label3.TabIndex = 17;
             this.label3.Text = "Nro Documento:";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label5
             // 
@@ -141,7 +137,6 @@
             this.label5.Size = new System.Drawing.Size(79, 20);
             this.label5.TabIndex = 19;
             this.label5.Text = "Direccion:";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // txDireccion
             // 
@@ -161,7 +156,6 @@
             this.label6.Size = new System.Drawing.Size(41, 20);
             this.label6.TabIndex = 21;
             this.label6.Text = "Mail:";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // txMail
             // 
@@ -181,7 +175,6 @@
             this.label7.Size = new System.Drawing.Size(75, 20);
             this.label7.TabIndex = 23;
             this.label7.Text = "Telefono:";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // txTelefono
             // 
@@ -190,7 +183,6 @@
             this.txTelefono.Name = "txTelefono";
             this.txTelefono.Size = new System.Drawing.Size(144, 20);
             this.txTelefono.TabIndex = 22;
-            this.txTelefono.TextChanged += new System.EventHandler(this.txTelefono_TextChanged);
             // 
             // label8
             // 
@@ -201,7 +193,6 @@
             this.label8.Size = new System.Drawing.Size(49, 20);
             this.label8.TabIndex = 29;
             this.label8.Text = "Sexo:";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
             // 
             // label9
             // 
@@ -212,7 +203,6 @@
             this.label9.Size = new System.Drawing.Size(92, 20);
             this.label9.TabIndex = 27;
             this.label9.Text = "Estado civil:";
-            this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
             // label10
             // 
@@ -223,7 +213,6 @@
             this.label10.Size = new System.Drawing.Size(161, 20);
             this.label10.TabIndex = 25;
             this.label10.Text = "Fecha de nacimiento:";
-            this.label10.Click += new System.EventHandler(this.label10_Click);
             // 
             // label13
             // 
@@ -234,7 +223,6 @@
             this.label13.Size = new System.Drawing.Size(142, 20);
             this.label13.TabIndex = 31;
             this.label13.Text = "Familiares a cargo:";
-            this.label13.Click += new System.EventHandler(this.label13_Click);
             // 
             // txFamiliaresACargo
             // 
@@ -329,7 +317,6 @@
             this.label11.Size = new System.Drawing.Size(99, 20);
             this.label11.TabIndex = 35;
             this.label11.Text = "Plan Medico:";
-            this.label11.Click += new System.EventHandler(this.label11_Click);
             // 
             // cBplanMedico
             // 
@@ -379,7 +366,6 @@
             this.labelFamiliar.Size = new System.Drawing.Size(170, 20);
             this.labelFamiliar.TabIndex = 46;
             this.labelFamiliar.Text = "Ingresando familiar de:";
-            this.labelFamiliar.Click += new System.EventHandler(this.label14_Click);
             // 
             // AltaAfiliado
             // 

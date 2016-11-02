@@ -82,8 +82,6 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btBuscar_Click_1(object sender, EventArgs e)
         {
-            Server server = Server.getInstance();
-            SqlDataReader reader;
             BuscarAfiliados form = new BuscarAfiliados();
             form.ShowDialog();
             if (form.afiliadoBuscado.id != -1)
@@ -99,8 +97,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 cBestadoCivil.Text = afiliado.estadoCivil;
                 cBsexo.Text = afiliado.sexo;
                 cBtipoDocumento.Text = afiliado.tipoDocumento;
-                reader = server.query("SELECT GESTIONAME_LAS_VACACIONES.getPlanMedico(" + form.afiliadoBuscado.id + ")");
-                txPlanMedico.Text = reader.GetString(0); // espero que funcione
+                txPlanMedico.Text = AfiliadoManager.planMedico(form.afiliadoBuscado.id); // espero que funcione
                 btAceptar.Show();
                 btCambiarPlan.Show();
             }

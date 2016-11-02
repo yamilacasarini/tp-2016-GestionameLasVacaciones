@@ -33,9 +33,7 @@ namespace ClinicaFrba.Abm_Afiliado
             if (validarDatos() && (String.Compare(AfiliadoManager.planMedico(afiliado.servicio), cBplanMedico.Text) != 0))
             {
                 afiliado.servicio = AfiliadoManager.idPlanMedico(cBplanMedico.Text);
-                Server server = Server.getInstance();
-                SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.cambioPlan(" +
-                    afiliado.id + "," + cBplanMedico.Text + "," + txtMotivo.Text.Trim() + ")");
+                AfiliadoManager.cambioPlan(afiliado.id,cBplanMedico.Text,txtMotivo.Text.Trim());
                 this.Close();
             }
             else

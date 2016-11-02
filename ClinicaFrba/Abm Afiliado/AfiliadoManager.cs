@@ -15,7 +15,7 @@ namespace ClinicaFrba.Abm_Afiliado
             Server server = Server.getInstance();
             AfiliadoManager.validarDato(nombre);
             AfiliadoManager.validarDato(apellido);
-            SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('" + nombre + "','" + apellido + "'," + id + ")");
+            SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('%" + nombre + "%','%" + apellido + "%'," + id + ")");
             List<Afiliado> afiliados = new List<Afiliado>();
             while (reader.Read())
             {
@@ -115,6 +115,12 @@ namespace ClinicaFrba.Abm_Afiliado
             SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.borrarPaciente " + id);
             reader.Close();
             
+        }
+        public static void cambioPlan(int id, string plan,string motivo) {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.cambioPlan" + id +
+                ",'" + plan + "','" + motivo+ "'");
+            reader.Close();
         }
         /*         CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id as int,@nombre as nvarchar(50), @apellido as nvarchar(50), 
      @doc as int, @direc as varchar(100), @tel as int, @mail as varchar(255), @sexo as char, @civil as varchar(10),

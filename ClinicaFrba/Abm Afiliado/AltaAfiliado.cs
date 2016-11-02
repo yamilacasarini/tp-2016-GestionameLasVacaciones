@@ -15,9 +15,6 @@ namespace ClinicaFrba.Abm_Afiliado
     public partial class AltaAfiliado : Form
     {
         Afiliado afiliadoFamiliar = new Afiliado();
-        public static Server server;
-        private SqlDataReader reader;
-
 
         public AltaAfiliado()
         {
@@ -33,18 +30,6 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-        private void label5_Click(object sender, EventArgs e)
         {
 
         }
@@ -73,6 +58,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonModificar_Click(object sender, EventArgs e)
         {
+            reader.Close();
             this.Close();
         }
         private void btAgregar_Click(object sender, EventArgs e)
@@ -86,10 +72,10 @@ namespace ClinicaFrba.Abm_Afiliado
                 btAgregar.Hide();
                 if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
                 {
-                 //   btAgregarFam.Show();
-                  //  afiliadoFamiliar.nombre = txNombre.Text.Trim();
-                  //  afiliadoFamiliar.apellido = txApellido.Text.Trim();
-                  //  afiliadoFamiliar.id = AfiliadoManager.id(txDocumento.Text.Trim());
+                    btAgregarFam.Show();
+                    afiliadoFamiliar.nombre = txNombre.Text.Trim();
+                    afiliadoFamiliar.apellido = txApellido.Text.Trim();
+                    afiliadoFamiliar.id = AfiliadoManager.id(txDocumento.Text.Trim());
                 }
             }
             else
@@ -137,16 +123,6 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
 
@@ -157,50 +133,17 @@ namespace ClinicaFrba.Abm_Afiliado
 
         }
 
-        private void label13_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void txFamiliaresACargo_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label10_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void txTelefono_TextChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void btAgregarFam_Click(object sender, EventArgs e)
         {
@@ -209,9 +152,5 @@ namespace ClinicaFrba.Abm_Afiliado
             form.ShowDialog();
         }
 
-        private void label14_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }
