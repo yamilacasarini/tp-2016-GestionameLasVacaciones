@@ -83,47 +83,17 @@
     <Compile Include="Abm Afiliado\Principal.Designer.cs">
       <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
-    <Compile Include="Abm Especialidades Medicas %28NOT TO IMPLEMENT%29\AltaEspecialidades.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Especialidades Medicas %28NOT TO IMPLEMENT%29\AltaEspecialidades.Designer.cs">
-      <DependentUpon>AltaEspecialidades.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Especialidades Medicas %28NOT TO IMPLEMENT%29\Principal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Especialidades Medicas %28NOT TO IMPLEMENT%29\Principal.Designer.cs">
-      <DependentUpon>Principal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Planes %28NOT TO IMPLEMENT%29\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Planes %28NOT TO IMPLEMENT%29\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Planes %28NOT TO IMPLEMENT%29\Principal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Planes %28NOT TO IMPLEMENT%29\Principal.Designer.cs">
-      <DependentUpon>Principal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Profesional\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Profesional\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Abm Profesional\Principal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Abm Profesional\Principal.Designer.cs">
-      <DependentUpon>Principal.cs</DependentUpon>
-    </Compile>
     <Compile Include="AbmRol\AltaRol.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmRol\AltaRol.Designer.cs">
       <DependentUpon>AltaRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\BajaRol.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\BajaRol.Designer.cs">
+      <DependentUpon>BajaRol.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRol\Funcionalidad.cs" />
     <Compile Include="AbmRol\ModificacionRol.cs">
@@ -153,6 +123,14 @@
       <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
     <Compile Include="ConeccionSql.cs" />
+    <Compile Include="Pedir Turno\PrincipalProf.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pedir Turno\PrincipalProf.Designer.cs">
+      <DependentUpon>PrincipalProf.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Pedir Turno\Profesional.cs" />
+    <Compile Include="Pedir Turno\ProfesionalManager.cs" />
     <Compile Include="ValidacionDeRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -170,12 +148,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Listados\Principal.Designer.cs">
-      <DependentUpon>Principal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Pedir Turno\Principal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Pedir Turno\Principal.Designer.cs">
       <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -216,20 +188,11 @@
     <EmbeddedResource Include="Abm Afiliado\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abm Especialidades Medicas %28NOT TO IMPLEMENT%29\AltaEspecialidades.resx">
-      <DependentUpon>AltaEspecialidades.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Especialidades Medicas %28NOT TO IMPLEMENT%29\Principal.resx">
-      <DependentUpon>Principal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Planes %28NOT TO IMPLEMENT%29\Principal.resx">
-      <DependentUpon>Principal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Abm Profesional\Principal.resx">
-      <DependentUpon>Principal.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\AltaRol.resx">
       <DependentUpon>AltaRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\BajaRol.resx">
+      <DependentUpon>BajaRol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\ModificacionRol.resx">
       <DependentUpon>ModificacionRol.cs</DependentUpon>
@@ -239,6 +202,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cancelar Atencion\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Pedir Turno\PrincipalProf.resx">
+      <DependentUpon>PrincipalProf.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ValidacionDeRol.resx">
       <DependentUpon>ValidacionDeRol.cs</DependentUpon>

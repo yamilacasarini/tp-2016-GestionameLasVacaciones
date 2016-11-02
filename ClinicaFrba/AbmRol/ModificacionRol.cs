@@ -15,6 +15,7 @@ namespace ClinicaFrba.AbmRol
         public ModificacionRol()
         {
             InitializeComponent();
+            this.label4.Text = "";
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -35,9 +36,26 @@ namespace ClinicaFrba.AbmRol
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.dataGridView1.DataSource = RolManager.mostrarFuncionalidades(txtNombre.Text.Trim());
-            this.dataGridView2.DataSource = RolManager.obtenerFuncionalidadesNoAgregadasEnRol(txtNombre.Text.Trim());
-           
+
+            if (String.IsNullOrEmpty(txtNombre.Text.Trim()))
+            {
+                MessageBox.Show("Llene el campo para realizar la busqueda");
+            }
+            else
+            {
+                this.dataGridView1.DataSource = RolManager.mostrarFuncionalidades(txtNombre.Text.Trim());
+                this.dataGridView2.DataSource = RolManager.obtenerFuncionalidadesNoAgregadasEnRol(txtNombre.Text.Trim());
+                int baja = RolManager.obtenerBaja(txtNombre.Text.Trim());
+                if (baja == 0)
+                {
+                    this.label4.Text = "HABILITADO";
+                }
+                else
+                {
+                    if (baja == 1)
+                        this.label4.Text = "INHABILITADO";
+                }
+            }
             }
 
         private void button2_Click(object sender, EventArgs e)
@@ -85,6 +103,23 @@ namespace ClinicaFrba.AbmRol
             }
             
 
+        }
+      
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if(this.label4.Text == "HABILITADO")
+            {
+                MessageBox.Show("El Rol ya esta habilitado");
+                }
+            else
+            {
+                if(this.label4.Text == "INHABILITADO")
+                {
+                    MessageBox.Show("Se ha habilitado el rol");
+                    RolManager.habilitarRol(txtNombre.Text.Trim());
+                    this.label4.Text = "HABILITADO";
+                }
+            }
         }
     }
 }

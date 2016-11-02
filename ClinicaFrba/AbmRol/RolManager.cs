@@ -75,5 +75,26 @@ namespace ClinicaFrba.AbmRol
             reader.Close();
             return funcionalidades;
         }
+        public static int obtenerBaja(String rol)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerBaja ('" + rol + "')");
+            reader.Read();
+            int baja = Convert.ToInt32(reader["baja"]);
+            reader.Close();
+            return baja;
+        }
+        public static void habilitarRol(String rol)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.habilitarRol '" + rol + "'");
+            reader.Close();
+        }
+        public static void deshabilitarRol(String rol)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.borrarRol '" + rol + "'");
+            reader.Close();
+        }
     }
 }
