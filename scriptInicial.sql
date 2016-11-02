@@ -800,7 +800,7 @@ BEGIN
 IF  NOT EXISTS   (SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Roles WHERE  descripcion LIKE @nombre)
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES(@nombre)
 ELSE
-PRINT 'El Rol ya existe'
+RAISERROR('El Rol ya existe',16,217) WITH SETERROR 
 END
 GO
 
@@ -828,7 +828,7 @@ AS
 BEGIN 
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Roles r WHERE r.descripcion = @nombre)
 BEGIN
-PRINT 'El Rol no existe'
+RAISERROR('El Rol no existe',16,217) WITH SETERROR  
 END
 ELSE
 BEGIN
@@ -848,7 +848,7 @@ UPDATE GESTIONAME_LAS_VACACIONES.Roles SET baja = 0 WHERE descripcion = @nombre
 END
 ELSE
 BEGIN
-PRINT 'El Rol ya esta habilitado'
+RAISERROR('El Rol ya esta habilitado',16,217) WITH SETERROR   
 END
 END
 
@@ -880,7 +880,7 @@ IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE apellido 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre, apellido, documento, direccion, telefono, email, 
 fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes) VALUES (GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado(),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes)
 ELSE
-PRINT 'El paciente ya existe'
+RAISERROR( 'El paciente ya existe',16,217) WITH SETERROR
 END 
 GO
 
@@ -894,7 +894,7 @@ IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE apellido 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre, apellido, documento, direccion, telefono, email, 
 fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes) VALUES (GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar(@idFamiliar),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes)
 ELSE
-PRINT 'El paciente ya existe'
+RAISERROR( 'El paciente ya existe',16,217)
 END 
 GO
 
@@ -970,7 +970,7 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarFuncionalidadAUnRol (@nombre
 AS
 BEGIN
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad WHERE idRol = GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol) AND idFuncionalidad = GESTIONAME_LAS_VACACIONES.getIdRol(@nombreFuncionalidadVieja))
-PRINT 'No existe la funcionalidad o el rol que desea modificar'
+RAISERROR ('No existe la funcionalidad o el rol que desea modificar',16,217)
 ELSE 
 UPDATE GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad 
 SET idFuncionalidad = @nombreFuncionalidadNueva 
@@ -1013,7 +1013,7 @@ AS
 BEGIN
 DECLARE @aux INT
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE id = @numAfiliado)
-PRINT 'No existe el afiliado'
+RAISERROR ('No existe el afiliado',16,217)
 ELSE 
 INSERT INTO GESTIONAME_LAS_VACACIONES.ComprasBonos(idPaciente, cantidad, monto) 
 VALUES (@numAfiliado, @cantidad, GESTIONAME_LAS_VACACIONES.calcularMontoSegunPlan(@numAfiliado, @cantidad))
@@ -1069,7 +1069,7 @@ DECLARE @turnoID INT
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idPaciente = @numAfiliado	
 						AND idProfesional = @matricula
 						AND  CAST(fecha AS DATE) = CAST(CURRENT_TIMESTAMP AS DATE))
-PRINT 'No existe el turno'
+RAISERROR('No existe el turno',16,217)
 ELSE
 
 SELECT @bonoID = min(b.id) 
@@ -1116,7 +1116,7 @@ IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idPaciente 
 				AND (idProfesional = @matricula or especialidad LIKE @especialidad) 
 				AND fecha = @fecha AND CAST(fecha AS DATE) < CAST(CURRENT_TIMESTAMP AS DATE) ))
 	
-Print 'Como va a cancelar un turno que nunca agendo usted es hijo de primos'
+RAISERROR( 'Como va a cancelar un turno que nunca agendo usted es hijo de primos',16,217)
 ELSE 
 UPDATE GESTIONAME_LAS_VACACIONES.Turnos 
 SET baja = 1, tipoCancelacion = 0, motivo = @motivo
@@ -1139,7 +1139,7 @@ DECLARE @diaFinalAux INT
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @matricula 
 				AND @diaACancelar BETWEEN fechaInicio AND fechaFinal
 				AND GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad )
-PRINT 'El dia no se encuentra agendado'
+RAISERROR('El dia no se encuentra agendado',16,217)
 ELSE
 
 SELECT @inicioAux= fechaInicio,  @finalAux = fechaFinal, @diaInicialAux = diaInicio, @diaFinalAux = diaFin
@@ -1187,7 +1187,7 @@ IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesion
 				AND @diaInicialACancelar BETWEEN fechaInicio AND fechaFinal
 				AND @diaFinalACancelar BETWEEN fechaInicio AND fechaFinal
 				AND GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad )
-PRINT 'El rango de fechas no se encuentra agendado'
+RAISERROR( 'El rango de fechas no se encuentra agendado',16,217)
 ELSE
 
 SELECT @inicioAux= fechaInicio,  @finalAux = fechaFinal, @diaInicialAux = diaInicio, @diaFinalAux = diaFin
