@@ -1,6 +1,6 @@
 ﻿namespace ClinicaFrba.Pedir_Turno
 {
-    partial class Principal
+    partial class PrincipalProf
     {
         /// <summary>
         /// Required designer variable.
