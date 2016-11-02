@@ -94,8 +94,14 @@ namespace ClinicaFrba.AbmRol
             }
             else
             {
-                for (int i = 0; i < this.dataGridView2.SelectedRows.Count; i++)
-                    RolManager.agregarRolYFuncionalidad(this.txtNombre.Text, Convert.ToString(this.dataGridView2.Rows[i].Cells[1].Value));
+
+                DataGridViewSelectedRowCollection seleccion = this.dataGridView2.SelectedRows;
+                foreach (DataGridViewRow funcionalidad in seleccion)
+                {
+                    RolManager.agregarRolYFuncionalidad(this.txtNombre.Text, Convert.ToString(funcionalidad.Cells[1].Value));
+                }
+
+        
 
                 MessageBox.Show("Las funcionalidades han sido agregadas al rol exitosamente");
                 this.dataGridView1.DataSource = RolManager.mostrarFuncionalidades(txtNombre.Text.Trim());
