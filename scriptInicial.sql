@@ -678,7 +678,14 @@ GO
 --////////////////////////////////////--
 --NUMERO 1--
 --ABM ROLES--
-
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerFuncionalidades(@nombreRol VARCHAR(30))
+RETURNS TABLE
+AS
+RETURN (SELECT funcionalidad.id, funcionalidad.descripcion
+ FROM GESTIONAME_LAS_VACACIONES.Funcionalidades funcionalidad, GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad rolxfun
+ WHERE funcionalidad.id = rolxfun.idFuncionalidad
+ AND rolxfun.idRol = GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol))
+ GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.crearRol(@nombre VARCHAR(30))
 AS 
