@@ -466,7 +466,6 @@ SELECT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direccion, Paci
 				Plan_Med_Codigo,Plan_Med_Descripcion,Plan_Med_Precio_Bono_Consulta, Turno_Numero,Turno_Fecha ,Compra_Bono_Fecha,Bono_Consulta_Numero
 					FROM GD2C2016.gd_esquema.Maestra
 
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(nombre,apellido,direccion,documento,email,fechaNacimiento,telefono,planes)
 SELECT  nombre,apellido,direccion,dni,email,fechaNacimiento,telefono ,idPlan
 from #PacienteTemporal group by nombre,apellido,direccion,dni,email,fechaNacimiento,telefono,idPlan
@@ -547,8 +546,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan)
 	
 
 
-GO
-SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON  
+
 GO
 --////////////////////////////////////--
 --FUNCIONES--
@@ -806,6 +804,7 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre nvarchar(50), @a
 @doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
 @cantFami INT, @planes INT)
 AS
+SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 BEGIN 
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE apellido LIKE @apellido AND documento = @doc) 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre, apellido, documento, direccion, telefono, email, 
@@ -819,6 +818,7 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaFamiliar(@idFamiliar INT,@nombre 
 @doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
 @cantFami INT,@planes INT)
 AS
+SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 BEGIN 
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE apellido LIKE @apellido AND documento = @doc) 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre, apellido, documento, direccion, telefono, email, 
