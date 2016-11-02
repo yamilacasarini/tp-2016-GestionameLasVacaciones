@@ -36,26 +36,40 @@ namespace ClinicaFrba.AbmRol
 
         private void button1_Click(object sender, EventArgs e)
         {
+               if (String.IsNullOrEmpty(txtNombre.Text.Trim()))
+                {
+                    MessageBox.Show("Llene el campo para realizar la busqueda");
+                    return;
+                }
+               else
+               {
+            try
+            {
+                RolManager.noExisteElRol(txtNombre.Text.Trim());
+            }
+            catch (Exception b)
+            {
+                MessageBox.Show("Error, el Rol buscado no existe");
+                txtNombre.Clear();
+                return;
+            }
+             
+                    this.dataGridView1.DataSource = RolManager.mostrarFuncionalidades(txtNombre.Text.Trim());
+                    this.dataGridView2.DataSource = RolManager.obtenerFuncionalidadesNoAgregadasEnRol(txtNombre.Text.Trim());
+                    int baja = RolManager.obtenerBaja(txtNombre.Text.Trim());
+                    if (baja == 0)
+                    {
+                        this.label4.Text = "HABILITADO";
+                    }
+                    else
+                    {
+                        if (baja == 1)
+                            this.label4.Text = "INHABILITADO";
+                    }
+                }
+            
+           
 
-            if (String.IsNullOrEmpty(txtNombre.Text.Trim()))
-            {
-                MessageBox.Show("Llene el campo para realizar la busqueda");
-            }
-            else
-            {
-                this.dataGridView1.DataSource = RolManager.mostrarFuncionalidades(txtNombre.Text.Trim());
-                this.dataGridView2.DataSource = RolManager.obtenerFuncionalidadesNoAgregadasEnRol(txtNombre.Text.Trim());
-                int baja = RolManager.obtenerBaja(txtNombre.Text.Trim());
-                if (baja == 0)
-                {
-                    this.label4.Text = "HABILITADO";
-                }
-                else
-                {
-                    if (baja == 1)
-                        this.label4.Text = "INHABILITADO";
-                }
-            }
             }
 
         private void button2_Click(object sender, EventArgs e)
@@ -126,6 +140,33 @@ namespace ClinicaFrba.AbmRol
                     this.label4.Text = "HABILITADO";
                 }
             }
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(txtNuevoNombre.Text.Trim()))
+            {
+                MessageBox.Show("Por favor introduzca un nombre");
+
+            }
+            else
+            {
+                if (String.IsNullOrEmpty(txtNombre.Text.Trim()))
+                {
+                    MessageBox.Show("Ingrese el nombre a querer modificar");
+                    return;
+                }
+                RolManager.mofidicarNombre(txtNombre.Text.Trim(), txtNuevoNombre.Text.Trim());
+                MessageBox.Show("Nombre modificado exitosamente");
+                txtNuevoNombre.Clear();
+            }
+
+            
+        }
+
+        private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

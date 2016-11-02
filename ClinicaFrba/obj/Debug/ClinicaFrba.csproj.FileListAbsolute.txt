@@ -97,3 +97,5 @@ C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.A
 C:\Users\ABM\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.AbmRol.ModificacionRol.resources
 C:\Users\ABM\Documents\GitHub\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.AbmRol.BajaRol.resources
 C:\Users\ABM\Documents\GitHub\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Pedir_Turno.PrincipalProf.resources
+C:\Users\ABM\Documents\GitHub\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Pedir_Turno.ListarTurnos.resources
+C:\Users\ABM\Documents\GitHub\tp-2016-GestionameLasVacaciones\ClinicaFrba\obj\Debug\ClinicaFrba.Registro_Llegada.buscarTurno.resources

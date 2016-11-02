@@ -11,6 +11,7 @@ namespace ClinicaFrba
 {
     public class Server
     {
+     
         string servidor = ConfigurationManager.AppSettings["server"];
         string db = ConfigurationManager.AppSettings["database"];
         string user = ConfigurationManager.AppSettings["username"];

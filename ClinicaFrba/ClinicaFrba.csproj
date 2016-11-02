@@ -123,6 +123,15 @@
       <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
     <Compile Include="ConeccionSql.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
+    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="Pedir Turno\ListarTurnos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pedir Turno\ListarTurnos.Designer.cs">
+      <DependentUpon>ListarTurnos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pedir Turno\PrincipalProf.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +140,13 @@
     </Compile>
     <Compile Include="Pedir Turno\Profesional.cs" />
     <Compile Include="Pedir Turno\ProfesionalManager.cs" />
+    <Compile Include="Registro Llegada\buscarTurno.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Registro Llegada\buscarTurno.Designer.cs">
+      <DependentUpon>buscarTurno.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registro Llegada\llegadaMananger.cs" />
     <Compile Include="ValidacionDeRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -203,8 +219,14 @@
     <EmbeddedResource Include="Cancelar Atencion\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Pedir Turno\ListarTurnos.resx">
+      <DependentUpon>ListarTurnos.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Pedir Turno\PrincipalProf.resx">
       <DependentUpon>PrincipalProf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registro Llegada\buscarTurno.resx">
+      <DependentUpon>buscarTurno.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ValidacionDeRol.resx">
       <DependentUpon>ValidacionDeRol.cs</DependentUpon>
@@ -221,6 +243,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="bin\Debug\ClinicaFrba.exe.config" />
+    <None Include="bin\Debug\ClinicaFrba.vshost.exe.config" />
+    <None Include="bin\Debug\ClinicaFrba.vshost.exe.manifest" />
     <None Include="Properties\DataSources\ClinicaFrba.Abm_Afiliado.Form1.datasource" />
     <None Include="Properties\DataSources\ClinicaFrba.Abm_Especialidades_Medicas.Form1.datasource" />
     <None Include="Properties\DataSources\ClinicaFrba.Abm_Planes.Form1.datasource" />
@@ -249,7 +274,14 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="bin\Debug\ClinicaFrba.exe" />
+    <Content Include="bin\Debug\ClinicaFrba.pdb" />
+    <Content Include="bin\Debug\ClinicaFrba.vshost.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Release\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
