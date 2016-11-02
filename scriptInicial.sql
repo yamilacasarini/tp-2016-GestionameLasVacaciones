@@ -245,6 +245,23 @@ DROP FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada;
 IF OBJECT_ID('GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones', 'FN') IS NOT NULL
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones;
 
+IF OBJECT_ID ('GESTIONAME_LAS_VACACIONES.obtenerFuncionalidades', 'FN') IS NOT NULL 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerFuncionalidades;
+
+
+IF OBJECT_ID ('GESTIONAME_LAS_VACACIONES.getEspecialidadMasAtendida','FN') IS NOT NULL 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadMasAtendida;
+
+
+IF OBJECT_ID ('GESTIONAME_LAS_VACACIONES.topDeEspecialidadesConMasConsultas', 'FN') IS NOT NULL 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.topDeEspecialidadesConMasConsultas;
+
+IF OBJECT_ID ('GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada', 'FN') IS NOT NULL 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada;
+
+IF OBJECT_ID ('GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones', 'FN') IS NOT NULL 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones;
+GO
 IF OBJECT_ID(N'tempdb..#PacienteTemporal', N'U') IS NOT NULL
 drop table #PacienteTemporal
 
@@ -383,28 +400,6 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional(
 
 --////////////////////////////////////--
 --MIGRACION--
-GO
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado()
-RETURNS INT 
-AS 
-BEGIN
-declare @ret INT;
-BEGIN
-IF((SELECT Count(*) FROM GESTIONAME_LAS_VACACIONES.Pacientes)= 0)set @ret = 100
-ELSE set @ret = (((SELECT top 1 id FROM GESTIONAME_LAS_VACACIONES.Pacientes ORDER BY 1 DESC) /100)+1) * 100
-END
-RETURN @ret
-END
-GO
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar (@idFamiliar INT)
-RETURNS INT 
-AS
-begin
-declare @ret INT;
-SELECT  @ret = max(id) FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE id BETWEEN @idFamiliar AND @idFamiliar+80 -- por si existe otro afiliado
-RETURN @ret +1;
-end
-GO
 
 
 CREATE TABLE #PacienteTemporal(
@@ -565,6 +560,30 @@ BEGIN
 	RETURN @retorno;
 END
 GO
+
+GO
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado()
+RETURNS INT 
+AS 
+BEGIN
+declare @ret INT;
+BEGIN
+IF((SELECT Count(*) FROM GESTIONAME_LAS_VACACIONES.Pacientes)= 0)set @ret = 100
+ELSE set @ret = (((SELECT top 1 id FROM GESTIONAME_LAS_VACACIONES.Pacientes ORDER BY 1 DESC) /100)+1) * 100
+END
+RETURN @ret
+END
+GO
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar (@idFamiliar INT)
+RETURNS INT 
+AS
+begin
+declare @ret INT;
+SELECT  @ret = max(id) FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE id BETWEEN @idFamiliar AND @idFamiliar+80 -- por si existe otro afiliado
+RETURN @ret +1;
+end
+GO
+
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descEspecialidad VARCHAR(30))
 RETURNS INTEGER
@@ -843,8 +862,8 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.ComprasBonos(idPaciente, cantidad, monto)
 VALUES (@numAfiliado, @cantidad, GESTIONAME_LAS_VACACIONES.calcularMontoSegunPlan(@numAfiliado, @cantidad))
 WHILE (@aux < @cantidad)
 BEGIN
-INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(idCompraBono, idPaciente, idPlan) 
-VALUES ((SELECT id FROM GESTIONAME_LAS_VACACIONES.ComprasBonos WHERE idPaciente = @numAfiliado AND fecha = CURRENT_TIMESTAMP) , @numAfiliado, (SELECT planes FROM Paciente WHERE id = @numAfiliado))
+INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan) 
+VALUES ((SELECT id FROM GESTIONAME_LAS_VACACIONES.ComprasBonos WHERE idPaciente = @numAfiliado AND fecha = CURRENT_TIMESTAMP) , @numAfiliado, (SELECT p.servicio FROM Paciente p WHERE id = @numAfiliado))
 SET @aux = @aux + 1
 END
 END
@@ -1066,8 +1085,8 @@ RETURNS TABLE
 AS
 RETURN (SELECT especialidades FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
 UNION ALL
-SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
-ORDER BY especialidades, especialidades2)
+SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones())
+--ORDER BY especialidades, especialidades2)
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones()
