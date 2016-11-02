@@ -22,7 +22,7 @@ namespace ClinicaFrba.Abm_Afiliado
             if (dataGridView1.SelectedRows.Count == 1)
             {
                 AfiliadoManager.borrarAfiliado(Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value));
-                MessageBox.Show("Se ah dando de baja al afiliado");
+                MessageBox.Show("Se dio de baja al afiliado");
             }
             else
             {
