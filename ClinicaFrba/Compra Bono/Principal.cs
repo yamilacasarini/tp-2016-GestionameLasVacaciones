@@ -43,7 +43,12 @@ namespace ClinicaFrba.Compra_Bono
 
         private void botonAceptar_Click(object sender, EventArgs e)
         {
-            server.query("EXEC GESTIONAME_LAS_VACACIONES.compraDeBonos " + afiliadoBuscado.id.ToString() + ", " + cantidad.Value.ToString());
+            server.query("EXEC GESTIONAME_LAS_VACACIONES.compraDeBonos '" + afiliadoBuscado.id.ToString() + "', '" + cantidad.Value.ToString()+"'");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
