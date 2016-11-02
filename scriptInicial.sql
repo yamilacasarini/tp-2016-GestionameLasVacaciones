@@ -1059,6 +1059,17 @@ GO
 --NUMERO 11--
 --REGISTRO DE LLEGADA--
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerIdProfesional(@nombre  VARCHAR(255), @apellido VARCHAR(255))
+RETURNS TABLE 
+AS
+RETURN SELECT  p.id FROM GESTIONAME_LAS_VACACIONES.Profesionales p where p.nombre like @nombre or p.apellido like @apellido;
+GO
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional(@nombreProf  varchar(255),@apellidoProf  VARCHAR(255), @especialidadProf VARCHAR(255), @idTurno INT)
+RETURNS TABLE 
+AS 
+RETURN SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos t where (t.idProfesional  = any (select * from GESTIONAME_LAS_VACACIONES.obtenerIdProfesional( @nombreProf ,  @apellidoProf) ) and t.especialidad = @especialidadProf)  or t.id = @idTurno;
+GO
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@numAfiliado INT, @matricula INT, @especialidad VARCHAR(30))
 AS
 BEGIN
