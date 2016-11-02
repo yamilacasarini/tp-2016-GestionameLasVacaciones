@@ -1,3 +1,2 @@
-*.exe
-*.exe.config
-*.exe.manifest
+ClinicaFrba\bin
+ClinicaFrba\obj
