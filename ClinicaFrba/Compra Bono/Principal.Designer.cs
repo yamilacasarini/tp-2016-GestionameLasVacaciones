@@ -79,12 +79,13 @@
             // 
             // botonAceptar
             // 
-            this.botonAceptar.Location = new System.Drawing.Point(100, 187);
+            this.botonAceptar.Location = new System.Drawing.Point(112, 187);
             this.botonAceptar.Name = "botonAceptar";
             this.botonAceptar.Size = new System.Drawing.Size(75, 23);
             this.botonAceptar.TabIndex = 4;
             this.botonAceptar.Text = "Aceptar";
             this.botonAceptar.UseVisualStyleBackColor = true;
+            this.botonAceptar.Click += new System.EventHandler(this.botonAceptar_Click);
             // 
             // cantidad
             // 

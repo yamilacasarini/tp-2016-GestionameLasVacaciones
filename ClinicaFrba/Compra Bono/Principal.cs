@@ -20,12 +20,12 @@ namespace ClinicaFrba.Compra_Bono
         public Principal()
         {
             InitializeComponent();
-           
+
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-
+            etiquetaMonto.Text = (cantidad.Value * precioBono).ToString();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -39,6 +39,11 @@ namespace ClinicaFrba.Compra_Bono
             EtiquetaPlan.Text = reader["descripcion"].ToString();
             precioBono = Convert.ToInt16(reader["precioBono"]);
             reader.Close();
+        }
+
+        private void botonAceptar_Click(object sender, EventArgs e)
+        {
+            server.query("EXEC GESTIONAME_LAS_VACACIONES.compraDeBonos " + afiliadoBuscado.id.ToString() + ", " + cantidad.Value.ToString());
         }
     }
 }
