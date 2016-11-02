@@ -10,9 +10,10 @@ using System.Windows.Forms;
 
 namespace ClinicaFrba.Pedir_Turno
 {
-    public partial class Principal : Form
+
+    public partial class PrincipalProf : Form
     {
-        public Principal()
+        public PrincipalProf()
         {
             InitializeComponent();
         }
@@ -32,7 +33,6 @@ namespace ClinicaFrba.Pedir_Turno
             }
                 
             else
-
             {
                 MessageBox.Show("Ingrese al menos un campo");
             }
@@ -42,5 +42,5 @@ namespace ClinicaFrba.Pedir_Turno
             return txNombre.Text.Trim() != "" || txApellido.Text.Trim() != "" || txMatricula.Text.Trim() != "" || txEspecialidad.Text.Trim() != "" ;
         }
     }
-    }
+    
 }
