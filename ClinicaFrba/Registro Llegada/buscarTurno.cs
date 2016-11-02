@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ClinicaFrba.Registro_Llegada
-{
-    public partial class buscarProfesional : Form
+{   
+
+    public partial class buscarTurno : Form
     {
-        public buscarProfesional()
+        public  int idTurno;
+        public buscarTurno()
         {
             InitializeComponent();
             btSeleccionar.Hide();
@@ -32,7 +34,7 @@ namespace ClinicaFrba.Registro_Llegada
         {
             if (txApellido.Text.Trim() != "" || txNombre.Text.Trim() != "" || txEspecialidad.Text.Trim() != "")
             {
-                this.dataGridView1.DataSource = llegadaMananger.BuscarProfesionales(txApellido.Text.Trim(), txNombre.Text.Trim(),txEspecialidad.Text.Trim()));
+                //this.dataGridView1.DataSource = llegadaMananger.BuscarProfesionales(txApellido.Text.Trim(), txNombre.Text.Trim(),txEspecialidad.Text.Trim());
                 btSeleccionar.Show();
             }
             else
@@ -50,11 +52,7 @@ namespace ClinicaFrba.Registro_Llegada
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
-                mostrarTurno form = new mostrarTurno();
-                form.profesional.id = Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value);
-                form.profesional.especialidad = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value);
-                form.profesional.nombre = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value);
-                form.profesional.apellido = Convert.ToString(dataGridView1.CurrentRow.Cells[3].Value);
+               
             }
             else
             {

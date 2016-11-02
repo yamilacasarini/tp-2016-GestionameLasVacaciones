@@ -13,8 +13,7 @@ namespace ClinicaFrba.Abm_Afiliado
         public static List<Afiliado> BuscarAfiliados(String nombre, String apellido, int id)
         {
             List<Afiliado> afiliados = new List<Afiliado>();
-            if ((nombre != "" && apellido != "") || id != -1)
-            {
+           
                 Server server = Server.getInstance();
                 AfiliadoManager.validarDato(nombre);
                 AfiliadoManager.validarDato(apellido);
@@ -38,12 +37,6 @@ namespace ClinicaFrba.Abm_Afiliado
                 }
                 reader.Close();
                 return afiliados;
-            }
-            else
-            {
-                afiliados.Add(new Afiliado());
-                return afiliados;
-            }
         }
         public static void validarDato(String algo)
         {

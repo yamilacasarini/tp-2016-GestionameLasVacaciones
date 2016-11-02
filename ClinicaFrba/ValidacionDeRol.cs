@@ -49,29 +49,29 @@ namespace ClinicaFrba
         private void button1_Click(object sender, EventArgs e)
         {
 
-            this.Hide();
+            this.Close();
             switch (FuncionalidadComboBox.Text.ToString())
             {
                 case "ABM ROL":
-                    new AbmRol.Principal().Show();
+                    new AbmRol.Principal().ShowDialog();
                     break;
                 case "ABM AFILIADOS":
-                    new Abm_Afiliado.Principal().Show();
+                    new Abm_Afiliado.Principal().ShowDialog();
                     break;
                 case "COMPRA BONOS":
-                    new Compra_Bono.Principal().Show();
+                    new Compra_Bono.Principal().ShowDialog();
                     break;
                 case "PEDIDO DE TURNO":
-                    new Pedir_Turno.PrincipalProf().Show();
+                    new Pedir_Turno.PrincipalProf().ShowDialog();
                     break;
                 case "REGISTRO DE LLEGADA":
-                    new Registro_Llegada.Principal().Show();
+                    new Registro_Llegada.Principal().ShowDialog();
                     break;
                 case "CANCELAR TURNO":
-                    new Cancelar_Atencion.Principal().Show();
+                    new Cancelar_Atencion.Principal().ShowDialog();
                     break;
                 case "LISTADO ESTADISTICO":
-                    new Listados.Principal().Show();
+                    new Listados.Principal().ShowDialog();
                     break;
             }
             

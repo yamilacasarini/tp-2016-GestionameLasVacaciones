@@ -30,14 +30,16 @@ namespace ClinicaFrba.Abm_Afiliado
                 afiliadoBuscado.nombre = Convert.ToString(dataGridView1.CurrentRow.Cells[1].Value);
                 afiliadoBuscado.apellido = Convert.ToString(dataGridView1.CurrentRow.Cells[2].Value);
                 afiliadoBuscado.documento = Convert.ToInt32(dataGridView1.CurrentRow.Cells[3].Value);
-                afiliadoBuscado.direccion = Convert.ToString(dataGridView1.CurrentRow.Cells[4].Value);
-                afiliadoBuscado.telefono = Convert.ToInt32(dataGridView1.CurrentRow.Cells[5].Value);
-                afiliadoBuscado.email = Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
-                afiliadoBuscado.fechaNacimiento = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[7].Value);
-                afiliadoBuscado.sexo = Convert.ToString(dataGridView1.CurrentRow.Cells[8].Value);
-                afiliadoBuscado.estadoCivil = Convert.ToString(dataGridView1.CurrentRow.Cells[9].Value);
-                afiliadoBuscado.cantFamiliares = Convert.ToInt32(dataGridView1.CurrentRow.Cells[10].Value);
-                afiliadoBuscado.tipoDocumento = Convert.ToString(dataGridView1.CurrentRow.Cells[11].Value);
+                afiliadoBuscado.tipoDocumento = Convert.ToString(dataGridView1.CurrentRow.Cells[4].Value);
+                 afiliadoBuscado.direccion = Convert.ToString(dataGridView1.CurrentRow.Cells[5].Value);
+                afiliadoBuscado.telefono= Convert.ToInt32(dataGridView1.CurrentRow.Cells[6].Value);
+                afiliadoBuscado.email = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
+                afiliadoBuscado.fechaNacimiento = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[8].Value);
+                afiliadoBuscado.sexo = Convert.ToString(dataGridView1.CurrentRow.Cells[9].Value);
+                afiliadoBuscado.estadoCivil = Convert.ToString(dataGridView1.CurrentRow.Cells[10].Value);
+                afiliadoBuscado.cantFamiliares = Convert.ToInt32(dataGridView1.CurrentRow.Cells[11].Value);
+               afiliadoBuscado.cantConsultas= Convert.ToInt32(dataGridView1.CurrentRow.Cells[12].Value);
+                afiliadoBuscado.servicio = Convert.ToInt32(dataGridView1.CurrentRow.Cells[13].Value);
                 this.Close();
             }
             else
