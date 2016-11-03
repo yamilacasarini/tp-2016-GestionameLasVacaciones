@@ -38,14 +38,12 @@ namespace ClinicaFrba.Pedir_Turno
             if (dataGridView1.SelectedRows.Count == 1)
             {
                 fechaElegida = new DateTime(Convert.ToInt32(dataGridView1.CurrentRow.Cells[12].Value), Convert.ToInt32(dataGridView1.CurrentRow.Cells[8].Value), Convert.ToInt32(dataGridView1.CurrentRow.Cells[1].Value), Convert.ToInt32(dataGridView1.CurrentRow.Cells[4].Value), Convert.ToInt32(dataGridView1.CurrentRow.Cells[7].Value), 0);
-                System.Windows.Forms.MessageBox.Show(fechaElegida.ToString());
                 
                 Abm_Afiliado.BuscarAfiliados buscador = new Abm_Afiliado.BuscarAfiliados();
                 buscador.ShowDialog();
                 Abm_Afiliado.Afiliado afiliado = buscador.afiliadoBuscado;
                 int afiliadoID = afiliado.id;
-                System.Windows.Forms.MessageBox.Show(afiliadoID.ToString());
-
+          
                 Confirmacion conf = new Confirmacion(fechaElegida, afiliado, profesional);
                 conf.ShowDialog();
             }

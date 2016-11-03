@@ -126,6 +126,12 @@
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
+    <Compile Include="Pedir Turno\Confirmacion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Pedir Turno\Confirmacion.Designer.cs">
+      <DependentUpon>Confirmacion.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pedir Turno\ListarTurnos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -140,6 +146,12 @@
     </Compile>
     <Compile Include="Pedir Turno\Profesional.cs" />
     <Compile Include="Pedir Turno\ProfesionalManager.cs" />
+    <Compile Include="Registrar Agenta Medico\AltaAgenda.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Registrar Agenta Medico\AltaAgenda.Designer.cs">
+      <DependentUpon>AltaAgenda.cs</DependentUpon>
+    </Compile>
     <Compile Include="Registro Llegada\buscarTurno.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,6 +159,8 @@
       <DependentUpon>buscarTurno.cs</DependentUpon>
     </Compile>
     <Compile Include="Registro Llegada\llegadaMananger.cs" />
+    <Compile Include="Registro Llegada\Turno.cs" />
+    <Compile Include="Registro Llegada\TurnosManager.cs" />
     <Compile Include="ValidacionDeRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -219,11 +233,17 @@
     <EmbeddedResource Include="Cancelar Atencion\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Pedir Turno\Confirmacion.resx">
+      <DependentUpon>Confirmacion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Pedir Turno\ListarTurnos.resx">
       <DependentUpon>ListarTurnos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pedir Turno\PrincipalProf.resx">
       <DependentUpon>PrincipalProf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registrar Agenta Medico\AltaAgenda.resx">
+      <DependentUpon>AltaAgenda.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Registro Llegada\buscarTurno.resx">
       <DependentUpon>buscarTurno.cs</DependentUpon>

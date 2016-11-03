@@ -34,10 +34,8 @@ namespace ClinicaFrba.Pedir_Turno
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(" + id + ", '" + especialidad + "')");
           
-            List<DateTime> rango = new List<DateTime>();
             DateTime inicio = DateTime.Now;
             DateTime fin = DateTime.Now;
-
 
             while (reader.Read())
             {
@@ -72,8 +70,6 @@ namespace ClinicaFrba.Pedir_Turno
             }
 
             reader2.Close();
-            
-            System.Windows.Forms.MessageBox.Show(turnosNoDisponibles[1].ToString());
 
             for(i = 0; i < turnos.Count(); i++)
               {

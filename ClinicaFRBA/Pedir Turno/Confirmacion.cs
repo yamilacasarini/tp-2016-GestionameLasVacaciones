@@ -60,6 +60,12 @@ namespace ClinicaFrba.Pedir_Turno
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("exec GESTIONAME_LAS_VACACIONES.reservarTurno " + profesional.matricula + "," + afiliado.id + ",'" + profesional.especialidad + "','" + fecha.ToString() + "'");
             reader.Close();
+            this.Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
