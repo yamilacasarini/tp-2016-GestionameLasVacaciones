@@ -11,9 +11,6 @@ namespace ClinicaFrba.Pedir_Turno
         //   Server server = Server.getInstance();
         public static Profesional profSeleccionado { get; set; }
 
-         
-
-
         public static List<Profesional> BuscarProfesionales(String nombre, String apellido, String especialidad, int id)
         {
             Server server = Server.getInstance();
@@ -32,32 +29,33 @@ namespace ClinicaFrba.Pedir_Turno
             return profesionales;
         }
 
-
-       
         public static List<DateTime> MostrarTurnosDeProfesional(int id, string especialidad)
         {
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(" + id + ", '" + especialidad + "')");
           
             List<DateTime> rango = new List<DateTime>();
+            DateTime inicio = DateTime.Now;
+            DateTime fin = DateTime.Now;
+
 
             while (reader.Read())
             {
-                rango.Add(Convert.ToDateTime(reader[0]));
-                rango.Add(Convert.ToDateTime(reader[1]));
+               
+                inicio = (Convert.ToDateTime(reader["fechaInicio"].ToString()));
+                fin = (Convert.ToDateTime(reader["fechaFinal"].ToString()));
             }
 
             reader.Close();
 
             List<DateTime> turnos = new List<DateTime>();
-            
-             DateTime inicio = rango[0];
-             DateTime fin = rango[1];
 
-            while (inicio != fin)
+            DateTime aux = inicio; 
+
+            while (aux != fin)
             {
-                turnos.Add(inicio);
-                inicio = inicio.AddMinutes(30);
+                turnos.Add(aux);
+                aux = aux.AddMinutes(30);
 
             }
 
@@ -66,6 +64,7 @@ namespace ClinicaFrba.Pedir_Turno
 
             SqlDataReader reader2 = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(" + id + ", '" + especialidad + "')");
             List<DateTime> turnosNoDisponibles = new List<DateTime>();
+            List<DateTime> turnosAMostrar = new List<DateTime>();
 
             while (reader2.Read())
             {
@@ -73,26 +72,29 @@ namespace ClinicaFrba.Pedir_Turno
             }
 
             reader2.Close();
+            
+            System.Windows.Forms.MessageBox.Show(turnosNoDisponibles[1].ToString());
 
-            System.Windows.Forms.MessageBox.Show(fin.TimeOfDay.ToString());
-
-            while (i < turnos.Count())
+            for(i = 0; i < turnos.Count(); i++)
+              {
+                  
+                      if ((!(turnos[i].Hour < inicio.Hour) && !(turnos[i].Hour >= fin.Hour)))
+                      {
+                          turnosAMostrar.Add(turnos[i]);
+                      }
+              }
+        
+            for (j = 0; j < turnosNoDisponibles.Count(); j++)
             {
-                j = 0;
-                while (j < turnosNoDisponibles.Count())
+                if (turnosAMostrar.Contains(turnosNoDisponibles[j]))
                 {
-
-                    if (turnos[i] == turnosNoDisponibles[j] || turnos[i].TimeOfDay.CompareTo(fin.TimeOfDay) > 0 )
-                        turnos.RemoveAt(i);
-                        j++;
+                    turnosAMostrar.Remove(turnosNoDisponibles[j]);
                 }
-                i++;
             }
 
 
-
             reader.Close();
-            return turnos;
+            return turnosAMostrar;
 
         }
        

@@ -380,9 +380,9 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Bonos(
   usado INT DEFAULT 0 --0 Sin usar, 1 usado
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY IDENTITY (1,1),
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesionales(id),
-  especialidad VARCHAR(30),
+  especialidad VARCHAR(255),
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   fecha DATETIME NOT NULL,
   baja INT default 0,
@@ -1030,30 +1030,17 @@ GO
 --NUMERO 10--
 --RESERVA DE TURNOS--
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.verificarSiAtiende(@matricula INT, @especialidad VARCHAR(30), @fecha DATETIME) 
-RETURNS	INT
-AS
-BEGIN
-IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Agendas 
-WHERE idProfesional = @matricula 
-	  AND idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) 
-	  AND (@fecha BETWEEN fechaInicio AND fechaFinal)
-	  AND datepart (dw, @fecha) BETWEEN diaInicio AND diaFin)
-RETURN 0
-
-RETURN 1
-END
+SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 GO
 
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.reservarTurno(@matricula INT, @numAfiliado INT, @especialidad VARCHAR(30), @fecha DATETIME)
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.reservarTurno(@matricula INT, @numAfiliado INT, @especialidad VARCHAR(255), @fecha DATETIME)
 AS
 BEGIN
-IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idProfesional = @matricula AND fecha = @fecha AND (GESTIONAME_LAS_VACACIONES.verificarSiAtiende (@matricula, @especialidad, @fecha)) = 1))
+IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idProfesional = @matricula AND fecha = @fecha))
 	INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos (idPaciente, idProfesional, especialidad, fecha) 
-	VALUES (@numAfiliado, @matricula, @especialidad, @fecha) 
+	VALUES (@numAfiliado, @matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) , @fecha) 
 END
 GO
-
 
 --////////////////////////////////////--
 --NUMERO 11--

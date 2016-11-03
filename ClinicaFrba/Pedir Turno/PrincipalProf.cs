@@ -46,7 +46,12 @@ namespace ClinicaFrba.Pedir_Turno
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
-                ListarTurnos fafa = new ListarTurnos(Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value), dataGridView1.CurrentRow.Cells[3].Value.ToString());
+                Profesional profesional = new Profesional();
+                profesional.matricula = Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value);
+                profesional.nombre = dataGridView1.CurrentRow.Cells[1].Value.ToString();
+                profesional.apellido = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                profesional.especialidad = dataGridView1.CurrentRow.Cells[3].Value.ToString();
+                ListarTurnos fafa = new ListarTurnos(profesional);
                 fafa.ShowDialog();
             }
             else
