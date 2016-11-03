@@ -517,6 +517,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (5,1)
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (6,1)
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (7,1)
+INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (8,1)
 
 	
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
@@ -552,7 +553,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan)
 	where c.idBono is not null
 	group by c.idBono, p.id, m.idPlan 
 	
-INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal) VALUES  (3,6, '2016-03-03 07:00:00.000', '2016-12-12 11:00:00.000')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin) VALUES  (3,6, '2016-03-03 07:00:00.000', '2016-12-12 11:00:00.000', 2, 6)
 INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idProfesional, fecha, especialidad) VALUES (0, 3, '2016-04-04 07:30:00.000', 6)
 
 GO
@@ -736,6 +737,12 @@ RETURN select a.fechaInicio, a.fechaFinal FROM GESTIONAME_LAS_VACACIONES.Agendas
 WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and CURRENT_TIMESTAMP between fechaInicio and fechaFinal
 GO
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100))
+RETURNS TABLE
+AS
+RETURN select a.diaInicio, a.diaFin FROM GESTIONAME_LAS_VACACIONES.Agendas a
+WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and CURRENT_TIMESTAMP between fechaInicio and fechaFinal
+GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(@matricula int, @especialidad as varchar(100))
 RETURNS TABLE
@@ -743,6 +750,7 @@ AS
 RETURN select fecha from GESTIONAME_LAS_VACACIONES.Turnos t
 WHERE t.idProfesional = @matricula and t.especialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and baja = 0 
 GO
+
 
 --////////////////////////////////////--
 --PROCEDURES--
