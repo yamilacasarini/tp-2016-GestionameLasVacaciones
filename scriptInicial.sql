@@ -517,14 +517,15 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (6,1)
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (7,1)
 
+	
+SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
+
 INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional, fecha)
 	select c.id, c.idPaciente, p.id , c.fecha
 	FROM #ConsultasTemporal c , #TemporalProfesional t , GESTIONAME_LAS_VACACIONES.Profesionales p
 	WHERE c.id  = t.idTurno and t.medicoDni  =p.documento
 	group by c.id, c.idPaciente, p.id , c.fecha
 
-	
-SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, fecha,  idTurno,diagnostico,sintomas)
 	SELECT t.idBono, t.fecha,t.id, t.diagnostico,t.sintomas from  #ConsultasTemporal t where t.fecha is not null and t.id is not null
