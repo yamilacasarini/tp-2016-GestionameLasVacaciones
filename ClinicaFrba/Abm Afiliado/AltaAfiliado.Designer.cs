@@ -179,7 +179,7 @@
             // txTelefono
             // 
             this.txTelefono.Location = new System.Drawing.Point(171, 205);
-            this.txTelefono.MaxLength = 15;
+            this.txTelefono.MaxLength = 12;
             this.txTelefono.Name = "txTelefono";
             this.txTelefono.Size = new System.Drawing.Size(144, 20);
             this.txTelefono.TabIndex = 22;

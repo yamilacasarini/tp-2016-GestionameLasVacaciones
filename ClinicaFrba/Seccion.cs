@@ -6,24 +6,15 @@ using System.Windows.Forms;
 
 namespace ClinicaFrba
 {
-    sealed class Sesion
+    class Sesion
     {
-        public int idUsuario;
-        public int idRol;
+        public string rol;
         private static Sesion instance;
         public Form anterior;
         public string usuario;
+        public DateTime fecha;
 
-        public Sesion(int usr, int rol, Form anterior, string usrS)
-        {
-            instance = this;
-            this.idUsuario = usr;
-            this.idRol = rol;
-            this.anterior = anterior;
-            this.usuario = usrS;
-        }
-
-        public static Sesion Instance
+        public static Sesion getInstance
         {
             get
             {

@@ -104,7 +104,10 @@ namespace ClinicaFrba.Abm_Afiliado
                 txTelefono.Text.Trim() != "" && txMail.Text.Trim() != "" &&
                 txDireccion.Text.Trim() != "" && txDocumento.Text.Trim() != "" &&
                 cBestadoCivil.Text.Trim() != "" && cBplanMedico.Text.Trim() != "" &&
-                cBsexo.Text.Trim() != "" && cBtipoDocumento.Text.Trim() != "";
+                cBsexo.Text.Trim() != "" && cBtipoDocumento.Text.Trim() != "" &&
+            Validacion.soloLetras(txNombre, "nombre") && Validacion.soloLetras(txApellido, "apellido") &&
+            Validacion.soloNumeros(txTelefono, "telefono") && Validacion.emailValido(txMail) &&
+            Validacion.esAlfanumerico(txDireccion, "direccion") && Validacion.soloNumeros(txDocumento, "documento");
         }
 
         private void cBtipoDocumento_SelectedIndexChanged(object sender, EventArgs e)

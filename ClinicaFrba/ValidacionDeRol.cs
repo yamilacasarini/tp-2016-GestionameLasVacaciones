@@ -48,33 +48,36 @@ namespace ClinicaFrba
 
         private void button1_Click(object sender, EventArgs e)
         {
-
-            this.Close();
-            switch (FuncionalidadComboBox.Text.ToString())
+            if (FuncionalidadComboBox.SelectedItem != "")
             {
-                case "ABM ROL":
-                    new AbmRol.Principal().ShowDialog();
-                    break;
-                case "ABM AFILIADOS":
-                    new Abm_Afiliado.Principal().ShowDialog();
-                    break;
-                case "COMPRA BONOS":
-                    new Compra_Bono.Principal().ShowDialog();
-                    break;
-                case "PEDIDO DE TURNO":
-                    new Pedir_Turno.PrincipalProf().ShowDialog();
-                    break;
-                case "REGISTRO DE LLEGADA":
-                    new Registro_Llegada.Principal().ShowDialog();
-                    break;
-                case "CANCELAR TURNO":
-                    new Cancelar_Atencion.Principal().ShowDialog();
-                    break;
-                case "LISTADO ESTADISTICO":
-                    new Listados.Principal().ShowDialog();
-                    break;
+            //    Sesion.getInstance.rol = FuncionalidadComboBox.Text.Trim();
+                this.Close();
+                switch (FuncionalidadComboBox.Text.ToString())
+                {
+                    case "ABM ROL":
+                        new AbmRol.Principal().ShowDialog();
+                        break;
+                    case "ABM AFILIADOS":
+                        new Abm_Afiliado.Principal().ShowDialog();
+                        break;
+                    case "COMPRA BONOS":
+                        new Compra_Bono.Principal().ShowDialog();
+                        break;
+                    case "PEDIDO DE TURNO":
+                        new Pedir_Turno.PrincipalProf().ShowDialog();
+                        break;
+                    case "REGISTRO DE LLEGADA":
+                        new Registro_Llegada.Principal().ShowDialog();
+                        break;
+                    case "CANCELAR TURNO":
+                        new Cancelar_Atencion.Principal().ShowDialog();
+                        break;
+                    case "LISTADO ESTADISTICO":
+                        new Listados.Principal().ShowDialog();
+                        break;
+                }
+
             }
-            
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
