@@ -45,7 +45,9 @@ namespace ClinicaFrba.Abm_Afiliado
         }
         bool validarDatos()
         {
-            return txApellido.Text.Trim() != "" || txNombre.Text.Trim() != "" || txId.Text.Trim() != "";
+            return (txApellido.Text.Trim() != "" || txNombre.Text.Trim() != "" || txId.Text.Trim() != "" ) &&
+                Validacion.soloLetras(txApellido,"apellido") && Validacion.soloLetras(txNombre,"nombre") &&
+                Validacion.soloNumeros(txId,"id");
         }
 
         private void btCancelar_Click(object sender, EventArgs e)

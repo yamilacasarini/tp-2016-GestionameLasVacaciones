@@ -94,8 +94,9 @@
             this.txtMotivo.Name = "txtMotivo";
             this.txtMotivo.Size = new System.Drawing.Size(304, 20);
             this.txtMotivo.TabIndex = 43;
+            this.txtMotivo.TextChanged += new System.EventHandler(this.txtMotivo_TextChanged);
             // 
-            // cambiarPlanMedico
+            // cambiarPlan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -106,7 +107,7 @@
             this.Controls.Add(this.label11);
             this.Controls.Add(this.txMotivo);
             this.Controls.Add(this.txtMotivo);
-            this.Name = "cambiarPlanMedico";
+            this.Name = "cambiarPlan";
             this.Text = "cambiarPlanMedico";
             this.ResumeLayout(false);
             this.PerformLayout();

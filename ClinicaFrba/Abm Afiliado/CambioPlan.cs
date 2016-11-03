@@ -48,10 +48,15 @@ namespace ClinicaFrba.Abm_Afiliado
         }
         bool validarDatos()
         {
-            return txtMotivo.Text.Trim() != "" && cBplanMedico.Text.Trim() != "";
+            return txtMotivo.Text.Trim() != "" && cBplanMedico.Text.Trim() != "" && Validacion.esAlfanumerico(txMotivo,"motivo");
         }
 
         private void cBplanMedico_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtMotivo_TextChanged(object sender, EventArgs e)
         {
 
         }

@@ -279,6 +279,7 @@
             this.txNombre.Name = "txNombre";
             this.txNombre.Size = new System.Drawing.Size(144, 20);
             this.txNombre.TabIndex = 43;
+            this.txNombre.TextChanged += new System.EventHandler(this.txNombre_TextChanged_1);
             // 
             // label8
             // 
