@@ -451,16 +451,16 @@ fecha DATETIME,
 idBono INT,
 fechaBono DATETIME,
 precioBono INT,
-idPaciente INT,
 sintomas varchar(50),
-diagnostico varchar(50)
+diagnostico varchar(50),
+dni INT
 )
+GO
 
-insert into #ConsultasTemporal(id,fecha,idBono,fechaBono,precioBono,sintomas,diagnostico)
+insert into #ConsultasTemporal(id,fecha,idBono,fechaBono,precioBono,sintomas,diagnostico,dni)
 SELECT	 Turno_Numero, Turno_Fecha,Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion,Plan_Med_Precio_Bono_Consulta, 
-Consulta_Sintomas,Consulta_Enfermedades 
+Consulta_Sintomas,Consulta_Enfermedades, Paciente_Dni
 FROM gd_esquema.Maestra
-
 INSERT INTO #PacienteTemporal (nombre,apellido,dni,direccion,telefono,email,fechaNacimiento,idPlan,descripcionPlan,precioBono,idTurno,fechaTurno,fechaBono,idBono)
 SELECT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direccion, Paciente_Telefono, Paciente_Mail,Paciente_Fecha_Nac,
 				Plan_Med_Codigo,Plan_Med_Descripcion,Plan_Med_Precio_Bono_Consulta, Turno_Numero,Turno_Fecha ,Compra_Bono_Fecha,Bono_Consulta_Numero
@@ -486,6 +486,7 @@ group by medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNo
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Administrativo')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Afiliado')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Profesional')
+
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('ABM ROL')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('ABM AFILIADOS')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('COMPRA BONOS')
@@ -495,19 +496,18 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('CANC
 INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('LISTADO ESTADISTICO')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios (usuario, pass) VALUES ('admin','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7')
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario) values(1,'admin')
-GO
-
+GO 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Planes(id,descripcion, precioCuota, precioBono)
 	SELECT DISTINCT idPlan,descripcionPlan, precioCuota, precioBono
 		FROM #PacienteTemporal
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.ComprasBonos(idPaciente,fecha,cantidad,monto)
-SELECT t.idPaciente,t.fechaBono, COUNT(t.fechaBono) ,  COUNT(t.fechaBono)* t.precioBono
-FROM #ConsultasTemporal t
+SELECT p.id,t.fechaBono, COUNT(t.fechaBono) ,  COUNT(t.fechaBono)* t.precioBono
+FROM #ConsultasTemporal t 
+join GESTIONAME_LAS_VACACIONES.Pacientes p
+on t.dni = p.documento
 where t.fechaBono is not null
-GROUP BY t.idPaciente, fechaBono,precioBono 
-
-SELECT * FROM GESTIONAME_LAS_VACACIONES.PACIENTES 
+GROUP BY p.id, fechaBono,precioBono 
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (1,1)
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (2,1)
@@ -521,11 +521,12 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional, fecha)
-	select c.id, c.idPaciente, p.id , c.fecha
-	FROM #ConsultasTemporal c , #TemporalProfesional t , GESTIONAME_LAS_VACACIONES.Profesionales p
+	select c.id, pa.id, p.id , c.fecha
+	FROM #ConsultasTemporal c join GESTIONAME_LAS_VACACIONES.Pacientes pa on pa.documento = c.dni
+	, #TemporalProfesional t , GESTIONAME_LAS_VACACIONES.Profesionales p
 	WHERE c.id  = t.idTurno and t.medicoDni  =p.documento
-	group by c.id, c.idPaciente, p.id , c.fecha
-
+	group by c.id, pa.id, p.id , c.fecha
+	
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, fecha,  idTurno,diagnostico,sintomas)
 	SELECT t.idBono, t.fecha,t.id, t.diagnostico,t.sintomas from  #ConsultasTemporal t where t.fecha is not null and t.id is not null
@@ -543,10 +544,12 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional(idEspecialidad,
 
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan)
-	SELECT p.idBono, p.idPaciente, m.idPlan from #ConsultasTemporal p join GESTIONAME_LAS_VACACIONES.Modificaciones m 
-	on m.idPaciente	 = p.idPaciente 
-	where p.idBono is not null
-	group by  p.idBono, p.idPaciente, m.idPlan 
+	SELECT c.idBono, p.id, m.idPlan from #ConsultasTemporal c join (GESTIONAME_LAS_VACACIONES.Modificaciones m 
+	join GESTIONAME_LAS_VACACIONES.Pacientes p
+	on p.id = m.id)
+	on p.documento	 = c.dni 
+	where c.idBono is not null
+	group by c.idBono, p.id, m.idPlan 
 	
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal) VALUES  (3,6, '2016-03-03 07:00:00.000', '2016-12-12 11:00:00.000')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idProfesional, fecha, especialidad) VALUES (0, 3, '2016-04-04 07:30:00.000', 6)
@@ -685,12 +688,7 @@ CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre varchar(20),@a
 returns table 
 as 
 return select * from GESTIONAME_LAS_VACACIONES.Pacientes where (nombre like @nombre or id = @numAfiliado or apellido like @apellido) AND baja = 0
-go
-
-SELECT * FROM GESTIONAME_LAS_VACACIONES.PACIENTES
-SELECT * FROM GESTIONAME_LAS_VACACIONES.buscarAfiliados('aaron', '',  -1)
 GO
-
 drop function  GESTIONAME_LAS_VACACIONES.joinearEspecialidadYProfesional
 go
 drop FUNCTION GESTIONAME_LAS_VACACIONES.buscarProfesionales
@@ -1002,7 +1000,6 @@ join GESTIONAME_LAS_VACACIONES.Planes pl
 on p.planes = pl.id
 where   @numAfiliado = p.id)
 GO
-
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.compraDeBonos(@numAfiliado INT, @cantidad INT)
 AS
 BEGIN
@@ -1015,7 +1012,7 @@ VALUES (@numAfiliado, @cantidad, GESTIONAME_LAS_VACACIONES.calcularMontoSegunPla
 WHILE (@aux < @cantidad)
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan) 
-VALUES ((SELECT id FROM GESTIONAME_LAS_VACACIONES.ComprasBonos WHERE idPaciente = @numAfiliado AND fecha = CURRENT_TIMESTAMP) , @numAfiliado, (SELECT p.servicio FROM Paciente p WHERE id = @numAfiliado))
+VALUES ((SELECT id FROM GESTIONAME_LAS_VACACIONES.ComprasBonos WHERE idPaciente = @numAfiliado AND fecha = CURRENT_TIMESTAMP) , @numAfiliado, (SELECT p.planes FROM GESTIONAME_LAS_VACACIONES.Pacientes p WHERE id = @numAfiliado))
 SET @aux = @aux + 1
 END
 END

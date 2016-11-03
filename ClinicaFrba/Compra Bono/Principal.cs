@@ -54,7 +54,7 @@ namespace ClinicaFrba.Compra_Bono
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (etiquetaPaciente.Text == "")
+            if (etiquetaPaciente.Text == null)
             {
                 MessageBox.Show("Todavia no ingreso ningun paciente");
             }
