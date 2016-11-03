@@ -523,6 +523,9 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional, fecha
 	WHERE c.id  = t.idTurno and t.medicoDni  =p.documento
 	group by c.id, c.idPaciente, p.id , c.fecha
 
+	
+SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
+
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, fecha,  idTurno,diagnostico,sintomas)
 	SELECT t.idBono, t.fecha,t.id, t.diagnostico,t.sintomas from  #ConsultasTemporal t where t.fecha is not null and t.id is not null
 
@@ -544,8 +547,8 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan)
 	where p.idBono is not null
 	group by  p.idBono, p.idPaciente, m.idPlan 
 	
-
-
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal) VALUES  (3,6, '2016-03-03 07:00:00.000', '2016-12-12 11:00:00.000')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idProfesional, fecha, especialidad) VALUES (0, 3, '2016-04-04 07:30:00.000', 6)
 
 GO
 --////////////////////////////////////--
@@ -724,6 +727,8 @@ SELECT * FROM GESTIONAME_LAS_VACACIONES.Profesionales
 SELECT * FROM GESTIONAME_LAS_VACACIONES.buscarProfesionales ('', '', '', 3)
 
 drop fUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional
+GO
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100))
 RETURNS TABLE
 AS
@@ -738,17 +743,6 @@ AS
 RETURN select fecha from GESTIONAME_LAS_VACACIONES.Turnos t
 WHERE t.idProfesional = @matricula and t.especialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and baja = 0 
 GO
-
-
-
-SELECT * FROM GESTIONAME_LAS_VACACIONES.Especialidades
-select * FROM GESTIONAME_LAS_VACACIONES.Agendas a
-SELECT * FROM GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(3, 'Cirugía General y del Aparato Digestivo')
-
-
-INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal) VALUES  (3,6, '2016-03-03 07:00:00.000', '2016-12-12 11:00:00.000')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idProfesional, fecha, especialidad) VALUES (0, 3, '2016-04-04 07:30:00.000', 6)
-
 
 --////////////////////////////////////--
 --PROCEDURES--
