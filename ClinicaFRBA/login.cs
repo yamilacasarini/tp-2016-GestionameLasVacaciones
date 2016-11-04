@@ -42,7 +42,6 @@ namespace ClinicaFrba
                         }
 
                        server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + Sb.ToString() + "'");
-              //         sesion.usuario = txtUsuario.Text.Trim();   
                     new ValidacionDeRol(txtUsuario.Text.Trim()).ShowDialog();
               
                 }

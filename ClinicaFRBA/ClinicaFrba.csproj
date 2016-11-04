@@ -110,6 +110,18 @@
     </Compile>
     <Compile Include="AbmRol\Rol.cs" />
     <Compile Include="AbmRol\RolManager.cs" />
+    <Compile Include="Alta Agenda Profesional\BuscarProf.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Alta Agenda Profesional\BuscarProf.Designer.cs">
+      <DependentUpon>BuscarProf.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Alta Agenda Profesional\Principal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Alta Agenda Profesional\Principal.Designer.cs">
+      <DependentUpon>Principal.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cancelar Atencion\Principal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,6 +173,7 @@
     <Compile Include="Registro Llegada\llegadaMananger.cs" />
     <Compile Include="Registro Llegada\Turno.cs" />
     <Compile Include="Registro Llegada\TurnosManager.cs" />
+    <Compile Include="Validacion.cs" />
     <Compile Include="ValidacionDeRol.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -228,6 +241,12 @@
       <DependentUpon>ModificacionRol.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\Principal.resx">
+      <DependentUpon>Principal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Alta Agenda Profesional\BuscarProf.resx">
+      <DependentUpon>BuscarProf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Alta Agenda Profesional\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cancelar Atencion\Principal.resx">

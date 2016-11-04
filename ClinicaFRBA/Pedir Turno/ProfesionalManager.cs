@@ -9,7 +9,7 @@ namespace ClinicaFrba.Pedir_Turno
     class ProfesionalManager
     {
         //   Server server = Server.getInstance();
-        public static Profesional profSeleccionado { get; set; }
+        public Profesional profSeleccionado { get; set; }
 
         public static List<Profesional> BuscarProfesionales(String nombre, String apellido, String especialidad, int id)
         {

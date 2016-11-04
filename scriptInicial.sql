@@ -986,9 +986,9 @@ GO
 --CREACION AGENDA PROFESIONAL--
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaAgendaProfesional
-(@matriculaProfesional  INT, @descEspecialidad VARCHAR(30), 
-@fechaInicio  DATETIME, @fechaFin DATETIME, @diaInicio VARCHAR(10), 
-  @diaFin VARCHAR (10))
+(@matriculaProfesional  INT, @descEspecialidad VARCHAR(255), 
+@fechaInicio  DATETIME, @fechaFin DATETIME, @diaInicio INT, 
+  @diaFin INT)
 AS
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, 

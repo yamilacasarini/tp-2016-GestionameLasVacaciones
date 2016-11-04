@@ -75,6 +75,9 @@ namespace ClinicaFrba
                     case "LISTADO ESTADISTICO":
                         new Listados.Principal().ShowDialog();
                         break;
+                    case "ALTA AGENDA PROFESIONAL":
+                        new Alta_Agenda_Profesional.Principal().ShowDialog();
+                        break;
                 }
 
             }
