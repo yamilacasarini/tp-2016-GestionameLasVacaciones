@@ -11,8 +11,10 @@ using System.Data.SqlClient;
 
 namespace ClinicaFrba.Abm_Afiliado
 {
+
     public partial class BuscarAfiliados : Form
     {
+        public int abrirCancelacion = 0;
         public Afiliado afiliadoBuscado = new Afiliado();
         public BuscarAfiliados()
         {
@@ -40,7 +42,13 @@ namespace ClinicaFrba.Abm_Afiliado
                 afiliadoBuscado.cantFamiliares = Convert.ToInt32(dataGridView1.CurrentRow.Cells[11].Value);
                afiliadoBuscado.cantConsultas= Convert.ToInt32(dataGridView1.CurrentRow.Cells[12].Value);
                 afiliadoBuscado.servicio = Convert.ToInt32(dataGridView1.CurrentRow.Cells[13].Value);
+                if (abrirCancelacion == 1)
+                {
+                    Cancelar_Atencion.CancelacionAfiliado cancelacion = new Cancelar_Atencion.CancelacionAfiliado(afiliadoBuscado.id);
+                    cancelacion.ShowDialog();
+                }
                 this.Close();
+
             }
             else
             {

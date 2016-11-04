@@ -24,7 +24,7 @@ namespace ClinicaFrba.Cancelar_Atencion
         }
         public bool cancelarTurnoDelDiaCorriente(DateTime dia)
         {
-            return (dia == DateTime.Today);
+            return (dia.Date == DateTime.Today.Date);
           
         }
         private void button1_Click(object sender, EventArgs e)

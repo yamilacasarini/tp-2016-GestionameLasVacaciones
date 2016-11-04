@@ -20,11 +20,11 @@ namespace ClinicaFrba.Cancelar_Atencion
         private void button2_Click(object sender, EventArgs e)
         {
             Abm_Afiliado.BuscarAfiliados buscador = new Abm_Afiliado.BuscarAfiliados();
+            buscador.abrirCancelacion = 1;
             buscador.ShowDialog();
-            Abm_Afiliado.Afiliado afiliado = buscador.afiliadoBuscado;
-            int afiliadoID = afiliado.id;
+           
+           
             
-            new CancelacionAfiliado(afiliadoID).ShowDialog();
         }
     }
 }
