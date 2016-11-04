@@ -269,6 +269,9 @@
     <EmbeddedResource Include="Registro Llegada\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Registro Resultado\Principal.resx">
+      <DependentUpon>Principal.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ValidacionDeRol.resx">
       <DependentUpon>ValidacionDeRol.cs</DependentUpon>
     </EmbeddedResource>
