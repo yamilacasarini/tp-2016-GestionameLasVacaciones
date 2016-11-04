@@ -80,6 +80,7 @@
             this.FuncionalidadComboBox.Name = "FuncionalidadComboBox";
             this.FuncionalidadComboBox.Size = new System.Drawing.Size(260, 21);
             this.FuncionalidadComboBox.TabIndex = 3;
+            this.FuncionalidadComboBox.SelectedIndexChanged += new System.EventHandler(this.FuncionalidadComboBox_SelectedIndexChanged);
             // 
             // ValidacionDeRol
             // 

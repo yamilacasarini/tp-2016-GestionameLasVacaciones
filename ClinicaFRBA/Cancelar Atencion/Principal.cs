@@ -23,7 +23,7 @@ namespace ClinicaFrba.Cancelar_Atencion
             buscador.ShowDialog();
             Abm_Afiliado.Afiliado afiliado = buscador.afiliadoBuscado;
             int afiliadoID = afiliado.id;
-
+            
             new CancelacionAfiliado(afiliadoID).ShowDialog();
         }
     }

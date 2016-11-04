@@ -94,5 +94,10 @@ namespace ClinicaFrba
             reader.Close();
 
         }
+
+        private void FuncionalidadComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

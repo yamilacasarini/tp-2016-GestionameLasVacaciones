@@ -79,6 +79,11 @@ namespace ClinicaFrba.Abm_Afiliado
               Validacion.soloLetras(txApellido, "apellido") && Validacion.soloLetras(txNombre, "nombre") &&
               Validacion.soloNumeros(txId, "id");
         }
+
+        private void BuscarAfiliados_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

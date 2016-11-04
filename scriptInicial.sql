@@ -8,7 +8,7 @@ IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional', N'U') IS 
 DROP TABLE GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional;
 GO
 
-IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.ConsultasMedicas', N'U') IS NOT NULL 
+IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.ConsultasMedifcas', N'U') IS NOT NULL 
 DROP TABLE GESTIONAME_LAS_VACACIONES.ConsultasMedicas;
 GO
 
@@ -379,6 +379,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Bonos(
   idPlan INT REFERENCES GESTIONAME_LAS_VACACIONES.Planes(id),
   usado INT DEFAULT 0 --0 Sin usar, 1 usado
    )
+ 
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   id INTEGER PRIMARY KEY IDENTITY (1,1),
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesionales(id),
@@ -502,7 +503,7 @@ GO
 INSERT INTO GESTIONAME_LAS_VACACIONES.Planes(id,descripcion, precioCuota, precioBono)
 	SELECT DISTINCT idPlan,descripcionPlan, precioCuota, precioBono
 		FROM #PacienteTemporal
-
+	
 INSERT INTO GESTIONAME_LAS_VACACIONES.ComprasBonos(idPaciente,fecha,cantidad,monto)
 SELECT p.id,t.fechaBono, COUNT(t.fechaBono) ,  COUNT(t.fechaBono)* t.precioBono
 FROM #ConsultasTemporal t 
@@ -1122,12 +1123,12 @@ SELECT  @id = p.id FROM GESTIONAME_LAS_VACACIONES.Pacientes p where p.nombre=@no
 RETURN @id
 END
 GO
-select * from GESTIONAME_LAS_VACACIONES.Pacientes
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelAfiliadoSegunId(@idAfiliado INT)
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSegunId(@idAfiliado INT)
 RETURNS TABLE
 AS
 RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos turnos 
-WHERE turnos.idPaciente = @idAfiliado)
+WHERE turnos.idPaciente = @idAfiliado AND turnos.tipoCancelacion IS NULL)
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelAfiliado(@nombreAfiliado NVARCHAR(50), @apellido NVARCHAR(50), @dni INT)
