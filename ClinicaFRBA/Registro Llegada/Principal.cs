@@ -26,11 +26,17 @@ namespace ClinicaFrba.Registro_Llegada
         {
             buscarTurno buscador = new buscarTurno();
             buscador.ShowDialog();
+            textBox2.Text = buscador.turnoSelect.id.ToString();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+           
         }
     }
 }

@@ -10,10 +10,9 @@ using System.Windows.Forms;
 
 namespace ClinicaFrba.Registro_Llegada
 {   
-
     public partial class buscarTurno : Form
     {
-        public  int idTurno;
+        public Turno turnoSelect;
         public buscarTurno()
         {
             InitializeComponent();
@@ -52,7 +51,12 @@ namespace ClinicaFrba.Registro_Llegada
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
-               
+                turnoSelect = new Turno();
+                turnoSelect.id = Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value);
+                turnoSelect.idProfesional= Convert.ToInt32(dataGridView1.CurrentRow.Cells[1].Value);
+                turnoSelect.especialidad = dataGridView1.CurrentRow.Cells[2].Value.ToString();
+                turnoSelect.idPaciente = Convert.ToInt32(dataGridView1.CurrentRow.Cells[3].Value);
+                this.Close();
             }
             else
             {

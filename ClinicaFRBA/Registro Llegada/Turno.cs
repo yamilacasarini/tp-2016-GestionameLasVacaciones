@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Registro_Llegada
 {
-    class Turno
-    {
-
+     public class Turno
+     {
         public Int32 id { get; set; }
         public Int32 idProfesional { get; set; }
         public String especialidad { get; set; }

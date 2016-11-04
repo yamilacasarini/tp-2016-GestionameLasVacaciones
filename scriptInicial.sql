@@ -522,14 +522,15 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol
 	
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional, fecha)
-	select c.id, pa.id, p.id , c.fecha
+INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional,especialidad, fecha)
+	select c.id, pa.id, p.id ,t.especialidadDescripcion, c.fecha
 	FROM #ConsultasTemporal c join GESTIONAME_LAS_VACACIONES.Pacientes pa on pa.documento = c.dni
 	, #TemporalProfesional t , GESTIONAME_LAS_VACACIONES.Profesionales p
 	WHERE c.id  = t.idTurno and t.medicoDni  =p.documento
-	group by c.id, pa.id, p.id , c.fecha
+	group by c.id, pa.id, p.id , c.fecha, t.especialidadDescripcion
+	HAVING PA.ID IS NOT NULL
 	
-
+	
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, fecha,  idTurno,diagnostico,sintomas)
 	SELECT t.idBono, t.fecha,t.id, t.diagnostico,t.sintomas from  #ConsultasTemporal t where t.fecha is not null and t.id is not null
 
@@ -554,7 +555,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan)
 	group by c.idBono, p.id, m.idPlan 
 	
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin) VALUES  (3,6, '2016-03-03 07:00:00.000', '2016-12-12 11:00:00.000', 2, 6)
-INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idProfesional, fecha, especialidad) VALUES (0, 3, '2016-04-04 07:30:00.000', 6)
+--INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idProfesional, fecha, especialidad) VALUES (0, 3, '2016-04-04 07:30:00.000', 6)
 
 GO
 --////////////////////////////////////--
@@ -713,21 +714,6 @@ go
 
 
 SELECT * FROM GESTIONAME_LAS_VACACIONES.Profesionales
-GO
-
-SELECT * FROM GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional
-
-
-
-
-SELECT * FROM GESTIONAME_LAS_VACACIONES.PACIENTES
-SELECT * FROM GESTIONAME_LAS_VACACIONES.joinearEspecialidadYProfesional()
-GO
-
-SELECT * FROM GESTIONAME_LAS_VACACIONES.Profesionales
-SELECT * FROM GESTIONAME_LAS_VACACIONES.buscarProfesionales ('', '', '', 3)
-
-drop fUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100))
@@ -1052,12 +1038,16 @@ RETURNS TABLE
 AS
 RETURN SELECT  p.id FROM GESTIONAME_LAS_VACACIONES.Profesionales p where p.nombre like @nombre or p.apellido like @apellido;
 GO
+
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional(@nombreProf  varchar(255),@apellidoProf  VARCHAR(255), @especialidadProf VARCHAR(255), @idTurno INT)
 RETURNS TABLE 
 AS 
-RETURN SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos t where (t.idProfesional  = any (select * from GESTIONAME_LAS_VACACIONES.obtenerIdProfesional( @nombreProf ,  @apellidoProf) ) and t.especialidad = @especialidadProf)  or t.id = @idTurno;
+RETURN SELECT id , fecha, idPaciente, especialidad, idProfesional FROM GESTIONAME_LAS_VACACIONES.Turnos t 
+where (t.idProfesional  in 
+					(select id from GESTIONAME_LAS_VACACIONES.obtenerIdProfesional( @nombreProf ,  @apellidoProf))
+and t.especialidad like @especialidadProf) OR t.id = @idTurno
 GO
-
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@numAfiliado INT, @matricula INT, @especialidad VARCHAR(30))
 AS
 BEGIN
@@ -1317,4 +1307,3 @@ GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional x ON e.id = x.idEspecialida
 GESTIONAME_LAS_VACACIONES.Profesionales p ON x.idProfesional = p.id WHERE p.id = @id 
 AND tipoEspecialidad NOT IN (SELECT idEspecialidad FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @id)) 
 GO
-

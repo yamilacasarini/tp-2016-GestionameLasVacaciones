@@ -170,7 +170,6 @@
     <Compile Include="Registro Llegada\buscarTurno.Designer.cs">
       <DependentUpon>buscarTurno.cs</DependentUpon>
     </Compile>
-    <Compile Include="Registro Llegada\llegadaMananger.cs" />
     <Compile Include="Registro Llegada\Turno.cs" />
     <Compile Include="Registro Llegada\TurnosManager.cs" />
     <Compile Include="Validacion.cs" />
@@ -266,6 +265,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Registro Llegada\buscarTurno.resx">
       <DependentUpon>buscarTurno.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registro Llegada\Principal.resx">
+      <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ValidacionDeRol.resx">
       <DependentUpon>ValidacionDeRol.cs</DependentUpon>
