@@ -44,30 +44,7 @@ namespace ClinicaFrba.Abm_Afiliado
             algo = '%' + algo +'%';
         }
 
-        public static Afiliado BuscarAfiliado(string nombre, string apellido, int id)
-        {
-            Afiliado afil = new Afiliado();
-            Server server = Server.getInstance();
-            SqlDataReader reader = server.query("exec GESTIONAME_LAS_VACACIONES.buscarAfiliados '%" + nombre + "'%,'%" + apellido + "%'," + id);
-
-            while (reader.Read())
-            {
-                afiliadoSeleccionado.id = Convert.ToInt32(reader["id"]);
-                afiliadoSeleccionado.nombre = reader["nombre"].ToString();
-                afiliadoSeleccionado.apellido = reader["apellido"].ToString();
-                afiliadoSeleccionado.tipoDocumento = reader["tipoDocumento"].ToString();
-                afiliadoSeleccionado.documento = Convert.ToInt32(reader["documento"]);
-                afiliadoSeleccionado.direccion = reader["direccion"].ToString();
-                afiliadoSeleccionado.telefono = Convert.ToInt32(reader["telefono"]);
-                afiliadoSeleccionado.email = reader["email"].ToString();
-                afiliadoSeleccionado.fechaNacimiento = Convert.ToDateTime(reader["fechaNacimiento"]);
-                afiliadoSeleccionado.sexo = reader["sexo"].ToString();
-                afiliadoSeleccionado.estadoCivil = reader["estadoCivil"].ToString();
-                afiliadoSeleccionado.cantFamiliares = Convert.ToInt32(reader["cantFamiliares"]);
-            }
-            reader.Close();
-            return afil;
-        }
+ 
 
         public static void ModificarAfiliado(int id, String nombre, String apellido, int documento,
             String direccion, int telefono, String mail, char sexo, String estadoCivil, int CantidadFamiliares)

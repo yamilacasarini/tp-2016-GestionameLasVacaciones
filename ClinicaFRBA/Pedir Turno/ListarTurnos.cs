@@ -53,5 +53,10 @@ namespace ClinicaFrba.Pedir_Turno
         {
           
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

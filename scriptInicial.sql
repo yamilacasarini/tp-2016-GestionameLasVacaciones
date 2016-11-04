@@ -389,6 +389,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   tipoCancelacion INT, -- 0 Paciente, 1 Profesional
   motivo VARCHAR(255),
   )
+  CREATE INDEX ix1_turnos ON GESTIONAME_LAS_VACACIONES.Turnos (idPaciente)
 CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultasMedicas(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   idBono INT, --REFERENCES GESTIONAME_LAS_VACACIONES.Bonos(id),
@@ -1039,7 +1040,6 @@ AS
 RETURN SELECT  p.id FROM GESTIONAME_LAS_VACACIONES.Profesionales p where p.nombre like @nombre or p.apellido like @apellido;
 GO
 
-
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional(@nombreProf  varchar(255),@apellidoProf  VARCHAR(255), @especialidadProf VARCHAR(255), @idTurno INT)
 RETURNS TABLE 
 AS 
@@ -1113,6 +1113,29 @@ WHERE idPaciente = @numAfiliado AND (idProfesional = @matricula or especialidad 
 END
 GO
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerIdPaciente(@nombre  VARCHAR(255), @apellido VARCHAR(255), @dni INT)
+RETURNS INT
+AS
+BEGIN
+DECLARE @id INT
+SELECT  @id = p.id FROM GESTIONAME_LAS_VACACIONES.Pacientes p where p.nombre=@nombre AND p.apellido=@apellido AND p.documento=@dni
+RETURN @id
+END
+GO
+select * from GESTIONAME_LAS_VACACIONES.Pacientes
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelAfiliadoSegunId(@idAfiliado INT)
+RETURNS TABLE
+AS
+RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos turnos 
+WHERE turnos.idPaciente = @idAfiliado)
+GO
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelAfiliado(@nombreAfiliado NVARCHAR(50), @apellido NVARCHAR(50), @dni INT)
+RETURNS TABLE
+AS
+RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos turnos 
+WHERE turnos.idPaciente = (GESTIONAME_LAS_VACACIONES.obtenerIdPaciente(@nombreAfiliado, @apellido, @dni)))
+GO
 
 --////////////////////////////////////--
 --PROFESIONAL--

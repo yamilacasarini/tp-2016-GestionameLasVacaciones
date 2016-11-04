@@ -30,16 +30,14 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.botonDeModificacion = new System.Windows.Forms.Button();
-            this.botonDeBaja = new System.Windows.Forms.Button();
-            this.botonDeAlta = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.label1.Location = new System.Drawing.Point(57, 18);
+            this.label1.Location = new System.Drawing.Point(54, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(165, 24);
             this.label1.TabIndex = 11;
@@ -47,52 +45,33 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 214);
+            this.button1.Location = new System.Drawing.Point(36, 79);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(260, 30);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Consultar";
+            this.button1.Size = new System.Drawing.Size(210, 41);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Medico";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // botonDeModificacion
+            // button2
             // 
-            this.botonDeModificacion.Location = new System.Drawing.Point(12, 165);
-            this.botonDeModificacion.Name = "botonDeModificacion";
-            this.botonDeModificacion.Size = new System.Drawing.Size(260, 30);
-            this.botonDeModificacion.TabIndex = 9;
-            this.botonDeModificacion.Text = "Modificación";
-            this.botonDeModificacion.UseVisualStyleBackColor = true;
-            // 
-            // botonDeBaja
-            // 
-            this.botonDeBaja.Location = new System.Drawing.Point(12, 110);
-            this.botonDeBaja.Name = "botonDeBaja";
-            this.botonDeBaja.Size = new System.Drawing.Size(260, 30);
-            this.botonDeBaja.TabIndex = 8;
-            this.botonDeBaja.Text = "Baja";
-            this.botonDeBaja.UseVisualStyleBackColor = true;
-            // 
-            // botonDeAlta
-            // 
-            this.botonDeAlta.Location = new System.Drawing.Point(12, 61);
-            this.botonDeAlta.Name = "botonDeAlta";
-            this.botonDeAlta.Size = new System.Drawing.Size(260, 30);
-            this.botonDeAlta.TabIndex = 7;
-            this.botonDeAlta.Text = "Alta";
-            this.botonDeAlta.UseVisualStyleBackColor = true;
+            this.button2.Location = new System.Drawing.Point(36, 159);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(210, 41);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "Afiliado";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Principal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.botonDeModificacion);
-            this.Controls.Add(this.botonDeBaja);
-            this.Controls.Add(this.botonDeAlta);
+            this.Controls.Add(this.label1);
             this.Name = "Principal";
-            this.Text = "Form1";
+            this.Text = "Cancelacion";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -102,8 +81,6 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button botonDeModificacion;
-        private System.Windows.Forms.Button botonDeBaja;
-        private System.Windows.Forms.Button botonDeAlta;
+        private System.Windows.Forms.Button button2;
     }
 }

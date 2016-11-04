@@ -16,5 +16,15 @@ namespace ClinicaFrba.Cancelar_Atencion
         {
             InitializeComponent();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Abm_Afiliado.BuscarAfiliados buscador = new Abm_Afiliado.BuscarAfiliados();
+            buscador.ShowDialog();
+            Abm_Afiliado.Afiliado afiliado = buscador.afiliadoBuscado;
+            int afiliadoID = afiliado.id;
+
+            new CancelacionAfiliado(afiliadoID).ShowDialog();
+        }
     }
 }
