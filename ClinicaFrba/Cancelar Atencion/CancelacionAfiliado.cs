@@ -41,7 +41,10 @@ namespace ClinicaFrba.Cancelar_Atencion
                 break;
                 case 1:
                 if (cancelarTurnoDelDiaCorriente(Convert.ToDateTime(dataGridView1.CurrentRow.Cells[4].Value)))
+                {
                     MessageBox.Show("Error, no puede cancelar un turno de hoy");
+                    return;
+                }
                 else
                 {
                     try
