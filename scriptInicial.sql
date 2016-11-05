@@ -534,10 +534,6 @@ return select idProf, GESTIONAME_LAS_VACACIONES.getDescEspecialidad(idEsp) as es
 WHERE a.nombre like @nombre or a.idProf = @matricula or a.apellido like @apellido or a.idEsp = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad)
 go
 
-
-SELECT * FROM GESTIONAME_LAS_VACACIONES.Profesionales
-GO
-
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100))
 RETURNS TABLE
 AS
