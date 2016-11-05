@@ -11,12 +11,14 @@ using System.Windows.Forms;
 namespace ClinicaFrba.Pedir_Turno
 {
 
-    public partial class PrincipalProf : Form
+    public partial class BuscarProfesional : Form
     {
-        public PrincipalProf()
+        public BuscarProfesional()
         {
             InitializeComponent();
         }
+
+        public Profesional profesional;
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -46,13 +48,12 @@ namespace ClinicaFrba.Pedir_Turno
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
-                Profesional profesional = new Profesional();
+                profesional = new Profesional();
                 profesional.matricula = Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value);
                 profesional.nombre = dataGridView1.CurrentRow.Cells[1].Value.ToString();
                 profesional.apellido = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                 profesional.especialidad = dataGridView1.CurrentRow.Cells[3].Value.ToString();
-                ListarTurnos fafa = new ListarTurnos(profesional);
-                fafa.ShowDialog();
+                this.Close();
             }
             else
             {

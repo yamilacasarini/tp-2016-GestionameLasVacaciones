@@ -64,7 +64,7 @@ namespace ClinicaFrba
                         new Compra_Bono.Principal().ShowDialog();
                         break;
                     case "PEDIDO DE TURNO":
-                        new Pedir_Turno.PrincipalProf().ShowDialog();
+                        new Pedir_Turno.Principal().ShowDialog();
                         break;
                     case "REGISTRO DE LLEGADA":
                         new Registro_Llegada.Principal().ShowDialog();

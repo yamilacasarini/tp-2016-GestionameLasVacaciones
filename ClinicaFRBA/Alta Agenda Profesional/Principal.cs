@@ -23,6 +23,7 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
             cargarDias(diaSemanaFinal);
         }
 
+        Pedir_Turno.Profesional prof = new Pedir_Turno.Profesional();
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
 
@@ -60,7 +61,7 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                 && validarDia(diaFinal.Text, mesFinal.Text, anioFinal.Text)
                 && validacion48Horas()
                 && aInt(anioInicio.Text) <= aInt(anioFinal.Text)
-                && validarVacio();
+                ;
         }
 
         private bool validarMes(string mes)
@@ -124,17 +125,24 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (validarDatos())
+            if (validarVacio())
             {
-               Server server = Server.getInstance();
-                DateTime fechaA = new DateTime (aInt(anioInicio.Text),aInt(mesInicio.Text),aInt(DiaInicio.Text), aInt(listaHorasInicio.Text), aInt(listaMinutosInicio.Text), 0);
-                DateTime fechaB = new DateTime (aInt(anioFinal.Text),aInt(mesFinal.Text),aInt(diaFinal.Text), aInt(listaHorasFinal.Text), aInt(listaMinutosFinal.Text), 0);
-                server.query("exec GESTIONAME_LAS_VACACIONES.altaAgendaProfesional " + matr + "," + "'" + esp + "','" + fechaA.ToString() + "','" + fechaB.ToString() + "'," + diaNumericoDeLaSemana(diaSemanaInicio.Text) + "," + diaNumericoDeLaSemana(diaSemanaFinal.Text));
+                if (validarDatos())
+                {
+                    Server server = Server.getInstance();
+                    DateTime fechaA = new DateTime(aInt(anioInicio.Text), aInt(mesInicio.Text), aInt(DiaInicio.Text), aInt(listaHorasInicio.Text), aInt(listaMinutosInicio.Text), 0);
+                    DateTime fechaB = new DateTime(aInt(anioFinal.Text), aInt(mesFinal.Text), aInt(diaFinal.Text), aInt(listaHorasFinal.Text), aInt(listaMinutosFinal.Text), 0);
+                    server.query("exec GESTIONAME_LAS_VACACIONES.altaAgendaProfesional " + matr + "," + "'" + esp + "','" + fechaA.ToString() + "','" + fechaB.ToString() + "'," + diaNumericoDeLaSemana(diaSemanaInicio.Text) + "," + diaNumericoDeLaSemana(diaSemanaFinal.Text));
 
-                System.Windows.Forms.MessageBox.Show("Muy bien amiguito");
+                    System.Windows.Forms.MessageBox.Show("Muy bien amiguito");
+                }
+                else
+                    System.Windows.Forms.MessageBox.Show("Muy mal amiguito");
             }
             else
-                System.Windows.Forms.MessageBox.Show("Muy mal amiguito");
+            {
+                System.Windows.Forms.MessageBox.Show("Llename los datos amiguito"); 
+            }
         }
 
         private bool validarVacio()
@@ -150,15 +158,18 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                     && Validacion.estaVacioSinNotificar(listaMinutosInicio)
                     && Validacion.estaVacioSinNotificar(listaMinutosFinal)
                     && Validacion.estaVacioSinNotificar(diaSemanaInicio)
-                    && Validacion.estaVacioSinNotificar(diaSemanaFinal));
+                    && Validacion.estaVacioSinNotificar(diaSemanaFinal)
+                    && Validacion.estaVacioSinNotificar(profesional));
         }
 
        
 
         private void button1_Click(object sender, EventArgs e)
         {
-            BuscarProf buscador = new BuscarProf(this);
+            Pedir_Turno.BuscarProfesional buscador = new Pedir_Turno.BuscarProfesional();
             buscador.ShowDialog();
+            prof = buscador.profesional;
+            setearLabelProf(prof);
         }
         
 
