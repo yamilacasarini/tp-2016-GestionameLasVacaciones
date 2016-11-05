@@ -40,9 +40,15 @@ namespace ClinicaFrba
                             foreach (Byte b in result)
                                 Sb.Append(b.ToString("x2"));
                         }
-
-                       server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + Sb.ToString() + "'");
-                    new ValidacionDeRol(txtUsuario.Text.Trim()).ShowDialog();
+                        try
+                        {
+                            server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + Sb.ToString() + "'");
+                            new ValidacionDeRol(txtUsuario.Text.Trim()).ShowDialog();
+                        }
+                        catch (SqlException)
+                        {
+                            System.Windows.Forms.MessageBox.Show("Contraseña y/o usuario incorrectos");
+                        }
               
                 }
             }
