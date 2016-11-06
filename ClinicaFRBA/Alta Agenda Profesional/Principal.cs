@@ -127,21 +127,24 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
         {
             if (validarVacio())
             {
-                if (validarDatos())
+                if (validarSoloNumeros())
                 {
-                    Server server = Server.getInstance();
-                    DateTime fechaA = new DateTime(aInt(anioInicio.Text), aInt(mesInicio.Text), aInt(DiaInicio.Text), aInt(listaHorasInicio.Text), aInt(listaMinutosInicio.Text), 0);
-                    DateTime fechaB = new DateTime(aInt(anioFinal.Text), aInt(mesFinal.Text), aInt(diaFinal.Text), aInt(listaHorasFinal.Text), aInt(listaMinutosFinal.Text), 0);
-                    server.query("exec GESTIONAME_LAS_VACACIONES.altaAgendaProfesional " + matr + "," + "'" + esp + "','" + fechaA.ToString() + "','" + fechaB.ToString() + "'," + diaNumericoDeLaSemana(diaSemanaInicio.Text) + "," + diaNumericoDeLaSemana(diaSemanaFinal.Text));
+                    if (validarDatos())
+                    {
+                        Server server = Server.getInstance();
+                        DateTime fechaA = new DateTime(aInt(anioInicio.Text), aInt(mesInicio.Text), aInt(DiaInicio.Text), aInt(listaHorasInicio.Text), aInt(listaMinutosInicio.Text), 0);
+                        DateTime fechaB = new DateTime(aInt(anioFinal.Text), aInt(mesFinal.Text), aInt(diaFinal.Text), aInt(listaHorasFinal.Text), aInt(listaMinutosFinal.Text), 0);
+                        server.query("exec GESTIONAME_LAS_VACACIONES.altaAgendaProfesional " + matr + "," + "'" + esp + "','" + fechaA.ToString() + "','" + fechaB.ToString() + "'," + diaNumericoDeLaSemana(diaSemanaInicio.Text) + "," + diaNumericoDeLaSemana(diaSemanaFinal.Text));
 
-                    System.Windows.Forms.MessageBox.Show("Muy bien amiguito");
+                        System.Windows.Forms.MessageBox.Show("Muy bien amiguito");
+                    }
+                    else
+                        System.Windows.Forms.MessageBox.Show("Muy mal amiguito");
                 }
                 else
-                    System.Windows.Forms.MessageBox.Show("Muy mal amiguito");
-            }
-            else
-            {
-                System.Windows.Forms.MessageBox.Show("Llename los datos amiguito"); 
+                {
+                    System.Windows.Forms.MessageBox.Show("Llename los datos amiguito");
+                }
             }
         }
 
@@ -162,7 +165,22 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                     && Validacion.estaVacioSinNotificar(profesional));
         }
 
-       
+
+        private bool validarSoloNumeros()
+        {
+            return Validacion.soloNumeros(DiaInicio, "dia Inicio")
+                    && Validacion.soloNumeros(diaFinal, "dia Final")
+                    && Validacion.soloNumeros(mesInicio, "Mes Inicio")
+                    && Validacion.soloNumeros(mesFinal, "Mes Final")
+                    && Validacion.soloNumeros(anioInicio, "Año inicio")
+                    && Validacion.soloNumeros(anioFinal, "Año final")
+                    && Validacion.soloNumeros(listaHorasInicio, "Hora inicio")
+                    && Validacion.soloNumeros(listaHorasFinal, "Horas Final" )
+                    && Validacion.soloNumeros(listaMinutosInicio, "Minutos Inicio")
+                    && Validacion.soloNumeros(listaMinutosFinal, "Minutos Final")
+                    && Validacion.soloNumeros(diaSemanaInicio, "Dia Semana Inicio")
+                    && Validacion.soloNumeros(diaSemanaFinal, "Dia Semana Fin");
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {

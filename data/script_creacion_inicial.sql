@@ -970,7 +970,15 @@ RETURN (SELECT id, idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaIn
 FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @matricula AND baja=0)
 GO
 
-
+DROP  FUNCTION GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha(@fecha DATETIME, @delta INT)
+RETURNS VARCHAR(100)
+AS
+BEGIN
+SET @fecha = DATEADD(day,@delta, @fecha)
+RETURN CAST(@fecha AS datetime) 
+END
+GO 
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarDiaPorProfesional(@matricula INT, @especialidad VARCHAR(255), @diaACancelar DATETIME, @motivo VARCHAR(255))
 AS
@@ -1004,17 +1012,17 @@ WHERE idProfesional = @matricula AND especialidad = @especialidad AND fecha = @d
 
 IF (@diaACancelar != @inicioAux AND @diaACancelar != @finalAux)
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
-VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1, @diaACancelar), @diaInicialAux, @diaFinalAux)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha(@diaACancelar, -1), @diaInicialAux, @diaFinalAux)
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
-VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(day,+1, @diaACancelar), @finalAux, @diaInicialAux, @diaFinalAux)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad),  GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha(@diaACancelar, +1), @finalAux, @diaInicialAux, @diaFinalAux)
 
 IF (@diaACancelar = @inicioAux)
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
-VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(day,+1, @inicioAux), @finalAux, @diaInicialAux, @diaFinalAux)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad),GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha(@inicioAux, +1), @finalAux, @diaInicialAux, @diaFinalAux)
 
 IF (@diaACancelar = @finalAux)
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
-VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1, @finalAux), @diaInicialAux, @diaFinalAux)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha(@finalAux, -1), @diaInicialAux, @diaFinalAux)
 
 END
 END
