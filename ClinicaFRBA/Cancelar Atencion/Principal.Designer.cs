@@ -51,6 +51,7 @@
             this.button1.TabIndex = 12;
             this.button1.Text = "Medico";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -72,6 +73,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Principal";
             this.Text = "Cancelacion";
+            this.Load += new System.EventHandler(this.Principal_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

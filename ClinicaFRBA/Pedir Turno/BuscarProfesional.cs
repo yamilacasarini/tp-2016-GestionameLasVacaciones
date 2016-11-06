@@ -13,6 +13,7 @@ namespace ClinicaFrba.Pedir_Turno
 
     public partial class BuscarProfesional : Form
     {
+        public int abrirCancelacion = 0;
         public BuscarProfesional()
         {
             InitializeComponent();
@@ -38,6 +39,7 @@ namespace ClinicaFrba.Pedir_Turno
             {
                 MessageBox.Show("Ingrese al menos un campo");
             }
+            
         }
         bool validarDatos()
         {
@@ -58,7 +60,19 @@ namespace ClinicaFrba.Pedir_Turno
             else
             {
                 MessageBox.Show("Seleccione una unica fila");
+                return;
             }
+            if (abrirCancelacion == 1)
+            {
+                Cancelar_Atencion.CancelacionMedico cancelacion = new Cancelar_Atencion.CancelacionMedico(profesional.matricula, profesional.especialidad);
+                cancelacion.ShowDialog();
+            }
+            this.Close();
+        }
+
+        private void BuscarProfesional_Load(object sender, EventArgs e)
+        {
+
         }
         }
     

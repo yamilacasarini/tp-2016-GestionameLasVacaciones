@@ -116,6 +116,7 @@
     <Compile Include="Alta Agenda Profesional\Principal.Designer.cs">
       <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
+    <Compile Include="Cancelar Atencion\Agenda.cs" />
     <Compile Include="Cancelar Atencion\CancelacionAfiliado.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +124,12 @@
       <DependentUpon>CancelacionAfiliado.cs</DependentUpon>
     </Compile>
     <Compile Include="Cancelar Atencion\CancelacionManager.cs" />
+    <Compile Include="Cancelar Atencion\CancelacionMedico.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cancelar Atencion\CancelacionMedico.Designer.cs">
+      <DependentUpon>CancelacionMedico.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cancelar Atencion\Principal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -255,6 +262,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cancelar Atencion\CancelacionAfiliado.resx">
       <DependentUpon>CancelacionAfiliado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Cancelar Atencion\CancelacionMedico.resx">
+      <DependentUpon>CancelacionMedico.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Cancelar Atencion\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>

@@ -12,6 +12,7 @@ namespace ClinicaFrba.Cancelar_Atencion
 {
     public partial class Principal : Form
     {
+        public Pedir_Turno.Profesional profesional = new Pedir_Turno.Profesional();
         public Principal()
         {
             InitializeComponent();
@@ -25,6 +26,21 @@ namespace ClinicaFrba.Cancelar_Atencion
            
            
             
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Pedir_Turno.BuscarProfesional buscador = new Pedir_Turno.BuscarProfesional();
+            buscador.abrirCancelacion = 1;
+            buscador.ShowDialog();
+            profesional = buscador.profesional;
+
+            
+        }
+
+        private void Principal_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
