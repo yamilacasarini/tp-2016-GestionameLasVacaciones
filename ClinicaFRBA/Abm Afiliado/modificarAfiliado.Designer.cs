@@ -72,7 +72,7 @@
             // buttonSalir
             // 
             this.buttonSalir.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.buttonSalir.Location = new System.Drawing.Point(330, 362);
+            this.buttonSalir.Location = new System.Drawing.Point(454, 362);
             this.buttonSalir.Name = "buttonSalir";
             this.buttonSalir.Size = new System.Drawing.Size(76, 30);
             this.buttonSalir.TabIndex = 65;
@@ -83,7 +83,7 @@
             // btAceptar
             // 
             this.btAceptar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.btAceptar.Location = new System.Drawing.Point(62, 362);
+            this.btAceptar.Location = new System.Drawing.Point(12, 362);
             this.btAceptar.Name = "btAceptar";
             this.btAceptar.Size = new System.Drawing.Size(76, 30);
             this.btAceptar.TabIndex = 64;
@@ -93,6 +93,7 @@
             // 
             // cBestadoCivil
             // 
+            this.cBestadoCivil.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cBestadoCivil.FormattingEnabled = true;
             this.cBestadoCivil.Items.AddRange(new object[] {
             "Soltero",
@@ -102,22 +103,24 @@
             "Divorciado"});
             this.cBestadoCivil.Location = new System.Drawing.Point(219, 284);
             this.cBestadoCivil.Name = "cBestadoCivil";
-            this.cBestadoCivil.Size = new System.Drawing.Size(121, 21);
+            this.cBestadoCivil.Size = new System.Drawing.Size(199, 21);
             this.cBestadoCivil.TabIndex = 62;
             // 
             // cBsexo
             // 
+            this.cBsexo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cBsexo.FormattingEnabled = true;
             this.cBsexo.Items.AddRange(new object[] {
             "Femenino",
             "Masculino"});
             this.cBsexo.Location = new System.Drawing.Point(219, 260);
             this.cBsexo.Name = "cBsexo";
-            this.cBsexo.Size = new System.Drawing.Size(121, 21);
+            this.cBsexo.Size = new System.Drawing.Size(199, 21);
             this.cBsexo.TabIndex = 61;
             // 
             // cBtipoDocumento
             // 
+            this.cBtipoDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cBtipoDocumento.Enabled = false;
             this.cBtipoDocumento.FormattingEnabled = true;
             this.cBtipoDocumento.Items.AddRange(new object[] {
@@ -127,7 +130,7 @@
             "LD"});
             this.cBtipoDocumento.Location = new System.Drawing.Point(219, 105);
             this.cBtipoDocumento.Name = "cBtipoDocumento";
-            this.cBtipoDocumento.Size = new System.Drawing.Size(121, 21);
+            this.cBtipoDocumento.Size = new System.Drawing.Size(199, 21);
             this.cBtipoDocumento.TabIndex = 60;
             // 
             // label13
@@ -145,7 +148,7 @@
             this.txFamiliaresACargo.Location = new System.Drawing.Point(219, 308);
             this.txFamiliaresACargo.MaxLength = 2;
             this.txFamiliaresACargo.Name = "txFamiliaresACargo";
-            this.txFamiliaresACargo.Size = new System.Drawing.Size(144, 20);
+            this.txFamiliaresACargo.Size = new System.Drawing.Size(199, 20);
             this.txFamiliaresACargo.TabIndex = 57;
             // 
             // label9
@@ -183,7 +186,7 @@
             this.txTelefono.Location = new System.Drawing.Point(219, 188);
             this.txTelefono.MaxLength = 15;
             this.txTelefono.Name = "txTelefono";
-            this.txTelefono.Size = new System.Drawing.Size(144, 20);
+            this.txTelefono.Size = new System.Drawing.Size(199, 20);
             this.txTelefono.TabIndex = 53;
             // 
             // txMail
@@ -191,7 +194,7 @@
             this.txMail.Location = new System.Drawing.Point(219, 212);
             this.txMail.MaxLength = 100;
             this.txMail.Name = "txMail";
-            this.txMail.Size = new System.Drawing.Size(144, 20);
+            this.txMail.Size = new System.Drawing.Size(199, 20);
             this.txMail.TabIndex = 52;
             // 
             // label5
@@ -209,7 +212,7 @@
             this.txDireccion.Location = new System.Drawing.Point(219, 162);
             this.txDireccion.MaxLength = 100;
             this.txDireccion.Name = "txDireccion";
-            this.txDireccion.Size = new System.Drawing.Size(144, 20);
+            this.txDireccion.Size = new System.Drawing.Size(199, 20);
             this.txDireccion.TabIndex = 50;
             // 
             // label3
@@ -238,7 +241,7 @@
             this.txDocumento.Location = new System.Drawing.Point(219, 136);
             this.txDocumento.MaxLength = 10;
             this.txDocumento.Name = "txDocumento";
-            this.txDocumento.Size = new System.Drawing.Size(144, 20);
+            this.txDocumento.Size = new System.Drawing.Size(199, 20);
             this.txDocumento.TabIndex = 47;
             // 
             // label2
@@ -267,7 +270,7 @@
             this.txApellido.Location = new System.Drawing.Point(219, 79);
             this.txApellido.MaxLength = 30;
             this.txApellido.Name = "txApellido";
-            this.txApellido.Size = new System.Drawing.Size(144, 20);
+            this.txApellido.Size = new System.Drawing.Size(199, 20);
             this.txApellido.TabIndex = 44;
             // 
             // txNombre
@@ -277,7 +280,7 @@
             this.txNombre.Location = new System.Drawing.Point(219, 53);
             this.txNombre.MaxLength = 30;
             this.txNombre.Name = "txNombre";
-            this.txNombre.Size = new System.Drawing.Size(144, 20);
+            this.txNombre.Size = new System.Drawing.Size(199, 20);
             this.txNombre.TabIndex = 43;
             this.txNombre.TextChanged += new System.EventHandler(this.txNombre_TextChanged_1);
             // 
@@ -304,9 +307,9 @@
             // btBuscar
             // 
             this.btBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.btBuscar.Location = new System.Drawing.Point(155, 366);
+            this.btBuscar.Location = new System.Drawing.Point(218, 362);
             this.btBuscar.Name = "btBuscar";
-            this.btBuscar.Size = new System.Drawing.Size(145, 26);
+            this.btBuscar.Size = new System.Drawing.Size(145, 30);
             this.btBuscar.TabIndex = 69;
             this.btBuscar.Text = "Buscar Afiliado";
             this.btBuscar.UseVisualStyleBackColor = true;
@@ -324,10 +327,10 @@
             // 
             // btCambiarPlan
             // 
-            this.btCambiarPlan.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.btCambiarPlan.Location = new System.Drawing.Point(369, 327);
+            this.btCambiarPlan.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.btCambiarPlan.Location = new System.Drawing.Point(369, 334);
             this.btCambiarPlan.Name = "btCambiarPlan";
-            this.btCambiarPlan.Size = new System.Drawing.Size(115, 30);
+            this.btCambiarPlan.Size = new System.Drawing.Size(115, 22);
             this.btCambiarPlan.TabIndex = 72;
             this.btCambiarPlan.Text = "Cambiar Plan";
             this.btCambiarPlan.UseVisualStyleBackColor = true;
@@ -345,7 +348,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(487, 404);
+            this.ClientSize = new System.Drawing.Size(542, 404);
             this.Controls.Add(this.txPlanMedico);
             this.Controls.Add(this.btCambiarPlan);
             this.Controls.Add(this.label11);
@@ -376,6 +379,7 @@
             this.Controls.Add(this.txNombre);
             this.Name = "modificarAfiliado";
             this.Text = "modificarAfiliado";
+            this.Load += new System.EventHandler(this.modificarAfiliado_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

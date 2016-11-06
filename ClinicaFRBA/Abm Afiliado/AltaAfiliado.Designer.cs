@@ -85,7 +85,7 @@
             this.txApellido.Location = new System.Drawing.Point(171, 104);
             this.txApellido.MaxLength = 30;
             this.txApellido.Name = "txApellido";
-            this.txApellido.Size = new System.Drawing.Size(144, 20);
+            this.txApellido.Size = new System.Drawing.Size(200, 20);
             this.txApellido.TabIndex = 11;
             this.txApellido.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
@@ -95,7 +95,7 @@
             this.txNombre.Location = new System.Drawing.Point(171, 79);
             this.txNombre.MaxLength = 30;
             this.txNombre.Name = "txNombre";
-            this.txNombre.Size = new System.Drawing.Size(144, 20);
+            this.txNombre.Size = new System.Drawing.Size(200, 20);
             this.txNombre.TabIndex = 10;
             this.txNombre.TextChanged += new System.EventHandler(this.txNombre_TextChanged);
             // 
@@ -114,7 +114,7 @@
             this.txDocumento.Location = new System.Drawing.Point(171, 155);
             this.txDocumento.MaxLength = 10;
             this.txDocumento.Name = "txDocumento";
-            this.txDocumento.Size = new System.Drawing.Size(144, 20);
+            this.txDocumento.Size = new System.Drawing.Size(200, 20);
             this.txDocumento.TabIndex = 15;
             this.txDocumento.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
@@ -143,7 +143,7 @@
             this.txDireccion.Location = new System.Drawing.Point(171, 180);
             this.txDireccion.MaxLength = 100;
             this.txDireccion.Name = "txDireccion";
-            this.txDireccion.Size = new System.Drawing.Size(144, 20);
+            this.txDireccion.Size = new System.Drawing.Size(200, 20);
             this.txDireccion.TabIndex = 18;
             this.txDireccion.TextChanged += new System.EventHandler(this.txDireccion_TextChanged);
             // 
@@ -162,7 +162,7 @@
             this.txMail.Location = new System.Drawing.Point(171, 230);
             this.txMail.MaxLength = 100;
             this.txMail.Name = "txMail";
-            this.txMail.Size = new System.Drawing.Size(144, 20);
+            this.txMail.Size = new System.Drawing.Size(200, 20);
             this.txMail.TabIndex = 20;
             this.txMail.TextChanged += new System.EventHandler(this.txMail_TextChanged);
             // 
@@ -181,7 +181,7 @@
             this.txTelefono.Location = new System.Drawing.Point(171, 205);
             this.txTelefono.MaxLength = 12;
             this.txTelefono.Name = "txTelefono";
-            this.txTelefono.Size = new System.Drawing.Size(144, 20);
+            this.txTelefono.Size = new System.Drawing.Size(200, 20);
             this.txTelefono.TabIndex = 22;
             // 
             // label8
@@ -229,38 +229,41 @@
             this.txFamiliaresACargo.Location = new System.Drawing.Point(171, 332);
             this.txFamiliaresACargo.MaxLength = 2;
             this.txFamiliaresACargo.Name = "txFamiliaresACargo";
-            this.txFamiliaresACargo.Size = new System.Drawing.Size(144, 20);
+            this.txFamiliaresACargo.Size = new System.Drawing.Size(200, 20);
             this.txFamiliaresACargo.TabIndex = 30;
             this.txFamiliaresACargo.TextChanged += new System.EventHandler(this.txFamiliaresACargo_TextChanged);
             // 
             // cBtipoDocumento
             // 
+            this.cBtipoDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cBtipoDocumento.FormattingEnabled = true;
             this.cBtipoDocumento.Items.AddRange(new object[] {
             "DNI",
             "LI",
             "LC",
             "LD"});
-            this.cBtipoDocumento.Location = new System.Drawing.Point(171, 129);
+            this.cBtipoDocumento.Location = new System.Drawing.Point(171, 130);
             this.cBtipoDocumento.Name = "cBtipoDocumento";
-            this.cBtipoDocumento.Size = new System.Drawing.Size(121, 21);
+            this.cBtipoDocumento.Size = new System.Drawing.Size(200, 21);
             this.cBtipoDocumento.TabIndex = 36;
             this.cBtipoDocumento.SelectedIndexChanged += new System.EventHandler(this.cBtipoDocumento_SelectedIndexChanged);
             // 
             // cBsexo
             // 
+            this.cBsexo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cBsexo.FormattingEnabled = true;
             this.cBsexo.Items.AddRange(new object[] {
             "Femenino",
             "Masculino"});
             this.cBsexo.Location = new System.Drawing.Point(171, 280);
             this.cBsexo.Name = "cBsexo";
-            this.cBsexo.Size = new System.Drawing.Size(121, 21);
+            this.cBsexo.Size = new System.Drawing.Size(200, 21);
             this.cBsexo.TabIndex = 37;
             this.cBsexo.SelectedIndexChanged += new System.EventHandler(this.cBsexo_SelectedIndexChanged);
             // 
             // cBestadoCivil
             // 
+            this.cBestadoCivil.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cBestadoCivil.FormattingEnabled = true;
             this.cBestadoCivil.Items.AddRange(new object[] {
             "Soltero",
@@ -270,7 +273,7 @@
             "Divorciado"});
             this.cBestadoCivil.Location = new System.Drawing.Point(171, 306);
             this.cBestadoCivil.Name = "cBestadoCivil";
-            this.cBestadoCivil.Size = new System.Drawing.Size(121, 21);
+            this.cBestadoCivil.Size = new System.Drawing.Size(200, 21);
             this.cBestadoCivil.TabIndex = 38;
             this.cBestadoCivil.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
@@ -299,6 +302,7 @@
             // 
             // dateTimePicker1
             // 
+            this.dateTimePicker1.Enabled = false;
             this.dateTimePicker1.Location = new System.Drawing.Point(171, 255);
             this.dateTimePicker1.MaxDate = new System.DateTime(2016, 12, 31, 0, 0, 0, 0);
             this.dateTimePicker1.MinDate = new System.DateTime(1910, 1, 1, 0, 0, 0, 0);
@@ -320,10 +324,11 @@
             // 
             // cBplanMedico
             // 
+            this.cBplanMedico.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cBplanMedico.FormattingEnabled = true;
             this.cBplanMedico.Location = new System.Drawing.Point(171, 357);
             this.cBplanMedico.Name = "cBplanMedico";
-            this.cBplanMedico.Size = new System.Drawing.Size(121, 21);
+            this.cBplanMedico.Size = new System.Drawing.Size(200, 21);
             this.cBplanMedico.TabIndex = 39;
             this.cBplanMedico.SelectedIndexChanged += new System.EventHandler(this.comboBox4_SelectedIndexChanged);
             // 

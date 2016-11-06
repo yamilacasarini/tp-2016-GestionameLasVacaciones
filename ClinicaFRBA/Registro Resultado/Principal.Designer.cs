@@ -43,9 +43,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(199, 74);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 13);
+            this.label1.Size = new System.Drawing.Size(169, 13);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Sintomas";
+            this.label1.Text = "Sintomas (Máximo 255 caracteres)";
             // 
             // txSintomas
             // 
@@ -60,9 +60,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 74);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(63, 13);
+            this.label2.Size = new System.Drawing.Size(182, 13);
             this.label2.TabIndex = 5;
-            this.label2.Text = "Diagnostico";
+            this.label2.Text = "Diagnostico (Máximo 255 caracteres)";
             // 
             // txDiagnostico
             // 
@@ -122,7 +122,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txSintomas);
             this.Name = "Principal";
-            this.Text = "Form1";
+            this.Text = "Registrar Resultado de atención";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -100,7 +100,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 cBestadoCivil.Text = afiliado.estadoCivil;
                 cBsexo.Text = afiliado.sexo;
                 cBtipoDocumento.Text = afiliado.tipoDocumento;
-                txPlanMedico.Text = AfiliadoManager.planMedico(form.afiliadoBuscado.id); // espero que funcione
+                txPlanMedico.Text = AfiliadoManager.planMedico(afiliado.servicio); // espero que funcione
                 btAceptar.Show();
                 btCambiarPlan.Show();
             }
@@ -123,6 +123,11 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
         private void txNombre_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void modificarAfiliado_Load(object sender, EventArgs e)
         {
 
         }

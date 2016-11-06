@@ -17,7 +17,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 Server server = Server.getInstance();
                 AfiliadoManager.validarDato(nombre);
                 AfiliadoManager.validarDato(apellido);
-                SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('" + nombre + "','" + apellido + "'," + id + ")");
+                SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('%" + nombre + "%','%" + apellido + "%'," + id + ")");
                 while (reader.Read())
                 {
                     Afiliado afiliado = new Afiliado();
@@ -54,13 +54,15 @@ namespace ClinicaFrba.Abm_Afiliado
             reader.Close();
 
         }
-        public static string planMedico(int idServicio)
+        public static String planMedico(int idServicio)
         {
             Server server = Server.getInstance();
 
-            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes WHERE id =" + idServicio);
+            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes WHERE id =" + idServicio.ToString());
+            reader.Read();
+            String descripcion = Convert.ToString(reader["descripcion"]);
             reader.Close();
-            return Convert.ToString(reader["descripcion"]);
+            return descripcion;
         }
         public static int idPlanMedico(String descripcion)
         {
@@ -110,8 +112,5 @@ namespace ClinicaFrba.Abm_Afiliado
             ",'" + mail + "','" + nacimiento + "','" + sexo + "','" + civil + "'," +familiares +
             ", " + AfiliadoManager.idPlanMedico(descPlanMedico));
         }
-        /*         CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id as int,@nombre as nvarchar(50), @apellido as nvarchar(50), 
-     @doc as int, @direc as varchar(100), @tel as int, @mail as varchar(255), @sexo as char, @civil as varchar(10),
-     @cantFami as int)*/
     }
 }

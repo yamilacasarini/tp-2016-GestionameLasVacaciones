@@ -25,7 +25,15 @@ namespace ClinicaFrba.Compra_Bono
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            etiquetaMonto.Text = (cantidad.Value * precioBono).ToString();
+            if (etiquetaPaciente.Text.Trim() =="")
+            {
+                MessageBox.Show("Todavia no ingreso ningun paciente");
+                cantidad.Value = 0;
+            }
+            else
+            {
+                etiquetaMonto.Text = (cantidad.Value * precioBono).ToString();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -43,8 +51,14 @@ namespace ClinicaFrba.Compra_Bono
 
         private void botonAceptar_Click(object sender, EventArgs e)
         {
-            SqlDataReader read = server.query("EXEC GESTIONAME_LAS_VACACIONES.compraDeBonos '" + afiliadoBuscado.id.ToString() + "', '" + cantidad.Value.ToString()+"'");
-            read.Close();
+            if (cantidad.Value > 0)
+            {
+                SqlDataReader read = server.query("EXEC GESTIONAME_LAS_VACACIONES.compraDeBonos '" + afiliadoBuscado.id.ToString() + "', '" + cantidad.Value.ToString() + "'");
+                read.Close();
+            }
+            else {
+                MessageBox.Show("La cantidad de bonos a comprar tiene que ser al menos 1");
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -54,7 +68,7 @@ namespace ClinicaFrba.Compra_Bono
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (etiquetaPaciente.Text == null)
+            if (etiquetaPaciente.Text.Trim() =="")
             {
                 MessageBox.Show("Todavia no ingreso ningun paciente");
             }

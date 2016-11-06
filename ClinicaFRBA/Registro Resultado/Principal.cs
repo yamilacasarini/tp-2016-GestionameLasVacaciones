@@ -28,7 +28,7 @@ namespace ClinicaFrba.Registro_Resultado
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (txSintomas.Text.Trim() != "" && txDiagnostico.Text.Trim() != "")
+            if (txSintomas.Text.Trim() != "" && txDiagnostico.Text.Trim() != "" && txDiagnostico.Text.Trim().Length < 255 && txSintomas.Text.Trim() != "")
             {
                 Server server = Server.getInstance();
                 SqlDataReader reader = server.query("UPDATE GESTIONAME_LAS_VACACIONES.ConsultasMedicas set diagnostico = '" + txDiagnostico.Text.Trim() + "', sintomas ='" + txSintomas.Text.Trim() + "' WHERE idTurno =" + idTurno.Text.ToString());

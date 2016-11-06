@@ -516,7 +516,7 @@ GO
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre varchar(20),@apellido varchar(20), @numAfiliado int )
 returns table 
 as 
-return select * from GESTIONAME_LAS_VACACIONES.Pacientes where (nombre like @nombre or id = @numAfiliado or apellido like @apellido) AND baja = 0
+return select * from GESTIONAME_LAS_VACACIONES.Pacientes where (nombre like @nombre and apellido like @apellido or id = @numAfiliado ) AND baja = 0
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.joinearEspecialidadYProfesional()

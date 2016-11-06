@@ -30,7 +30,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
            
-            if (validarDatos() && (String.Compare(AfiliadoManager.planMedico(afiliado.servicio), cBplanMedico.Text) != 0))
+            if (validarDatos() && (String.Compare(AfiliadoManager.planMedico(afiliado.servicio), cBplanMedico.Text) != 0)&& txtMotivo.Text.Trim().Length <255)
             {
                 afiliado.servicio = AfiliadoManager.idPlanMedico(cBplanMedico.Text);
                 AfiliadoManager.cambioPlan(afiliado.id,cBplanMedico.Text,txtMotivo.Text.Trim());
@@ -38,7 +38,7 @@ namespace ClinicaFrba.Abm_Afiliado
             }
             else
             {
-                MessageBox.Show("Faltan algun dato o es el mismo plan");
+                MessageBox.Show("Faltan algun dato o es el mismo plan o el motivo posee mas de 255 caracteres");
             }
         }
 

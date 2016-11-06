@@ -79,7 +79,7 @@ namespace ClinicaFrba.Abm_Afiliado
             }
             else
             {
-                MessageBox.Show("Faltan datos");
+                MessageBox.Show("Datos inconsistentes");
             }
 
         }

@@ -29,9 +29,9 @@ namespace ClinicaFrba.Cancelar_Atencion
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(txtMotivo.Text.Trim()))
+            if (String.IsNullOrEmpty(txtMotivo.Text.Trim()) && txtMotivo.Text.Trim().Length <255)
             {
-                MessageBox.Show("Por favor, indique el motivo de la cancelacion");
+                MessageBox.Show("Por favor, indique el motivo de la cancelacion, recuerde que este debe ser menor a 255 caracteres");
                 return;
             }
             switch (this.dataGridView1.SelectedRows.Count)

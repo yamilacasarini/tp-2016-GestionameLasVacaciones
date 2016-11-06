@@ -37,6 +37,7 @@
             // 
             // RolComboBox
             // 
+            this.RolComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.RolComboBox.FormattingEnabled = true;
             this.RolComboBox.Location = new System.Drawing.Point(12, 66);
             this.RolComboBox.Name = "RolComboBox";
@@ -75,6 +76,7 @@
             // 
             // FuncionalidadComboBox
             // 
+            this.FuncionalidadComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.FuncionalidadComboBox.FormattingEnabled = true;
             this.FuncionalidadComboBox.Location = new System.Drawing.Point(12, 144);
             this.FuncionalidadComboBox.Name = "FuncionalidadComboBox";

@@ -67,9 +67,12 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             if (validarDatos())
             {
+                String auxID;
                 if (txId.Text.Trim() == "")
-                    txId.Text = "-1";
-                this.dataGridView1.DataSource = AfiliadoManager.BuscarAfiliados(txNombre.Text.Trim(),txApellido.Text.Trim(), Convert.ToInt32(txId.Text.Trim()));
+                    auxID = "-1";
+                else
+                    auxID = txId.Text.Trim();
+                this.dataGridView1.DataSource = AfiliadoManager.BuscarAfiliados(txNombre.Text.Trim(),txApellido.Text.Trim(), Convert.ToInt32(auxID));
             }
             else
             {

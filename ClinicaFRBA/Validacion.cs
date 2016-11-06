@@ -40,7 +40,7 @@ namespace ClinicaFrba
 
         public static bool esAlfanumerico(Control Box, string nombre)
         {
-            if (Regex.IsMatch(Box.Text, "^[A-Za-z0-9]+$")) return true;
+            if (Regex.IsMatch(Box.Text, "^[A-Za-z0-9 ]+$")) return true;
             MessageBox.Show("El campo " + nombre + " solo puede contener caracteres alfanuméricos");
             return false;
         }

@@ -59,6 +59,7 @@
             // 
             // cBplanMedico
             // 
+            this.cBplanMedico.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cBplanMedico.FormattingEnabled = true;
             this.cBplanMedico.Location = new System.Drawing.Point(117, 25);
             this.cBplanMedico.Name = "cBplanMedico";
