@@ -46,7 +46,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         void llenarPlanes()
         {
-           Server server = Server.getInstance();
+            Server server = Server.getInstance();
             SqlDataReader reader = server.query("SELECT DISTINCT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes");
 
             while (reader.Read())
@@ -63,18 +63,23 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btAgregar_Click(object sender, EventArgs e)
         {
             if (validarDatos())
-            {       
-                AfiliadoManager.altaAfiliado(txNombre.Text.Trim(),txApellido.Text.Trim(),
-                    Convert.ToInt32(txDocumento.Text.Trim()), txDireccion.Text.Trim(), Convert.ToInt32(txTelefono.Text.Trim()),
-                    txMail.Text.Trim(),Convert.ToDateTime(dateTimePicker1.Value),cBsexo.Text.Trim(),
-                    cBestadoCivil.Text.Trim(),Convert.ToInt32(txFamiliaresACargo.Text.Trim()),cBplanMedico.Text.Trim());
-                btAgregar.Hide(); //TRY CATCH EN CASO DE QUE NO SE PUEDA AGREGAR
-                if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
+            {
+                try
                 {
-                    btAgregarFam.Show();
-                    afiliadoFamiliar.nombre = txNombre.Text.Trim();
-                    afiliadoFamiliar.apellido = txApellido.Text.Trim();
-                    afiliadoFamiliar.id = AfiliadoManager.id(txDocumento.Text.Trim());
+                    AfiliadoManager.altaAfiliado(txNombre.Text.Trim(), txApellido.Text.Trim(),
+                        Convert.ToInt32(txDocumento.Text.Trim()), txDireccion.Text.Trim(), Convert.ToInt32(txTelefono.Text.Trim()),
+                        txMail.Text.Trim(), Convert.ToDateTime(dateTimePicker1.Value), cBsexo.Text.Trim(),
+                        cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()), cBplanMedico.Text.Trim());
+                    btAgregar.Hide();
+                    if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
+                    {
+                        btAgregarFam.Show();
+                        afiliadoFamiliar.nombre = txNombre.Text.Trim();
+                        afiliadoFamiliar.apellido = txApellido.Text.Trim();
+                        afiliadoFamiliar.id = AfiliadoManager.id(txDocumento.Text.Trim());
+                    }
+                } catch(SqlException ex){
+                    MessageBox.Show(ex.Message);
                 }
             }
             else

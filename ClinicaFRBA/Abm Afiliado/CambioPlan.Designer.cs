@@ -91,7 +91,7 @@
             // 
             this.txtMotivo.ForeColor = System.Drawing.SystemColors.WindowText;
             this.txtMotivo.Location = new System.Drawing.Point(82, 56);
-            this.txtMotivo.MaxLength = 30;
+            this.txtMotivo.MaxLength = 255;
             this.txtMotivo.Name = "txtMotivo";
             this.txtMotivo.Size = new System.Drawing.Size(304, 20);
             this.txtMotivo.TabIndex = 43;

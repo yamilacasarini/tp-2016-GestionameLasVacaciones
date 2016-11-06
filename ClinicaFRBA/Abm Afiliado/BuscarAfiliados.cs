@@ -95,6 +95,11 @@ namespace ClinicaFrba.Abm_Afiliado
         {
 
         }
+
+        private void txId_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
