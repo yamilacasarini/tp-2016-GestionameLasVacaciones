@@ -41,12 +41,15 @@ namespace ClinicaFrba.Compra_Bono
             Abm_Afiliado.BuscarAfiliados busqueda = new Abm_Afiliado.BuscarAfiliados();
             busqueda.ShowDialog();
             afiliadoBuscado = busqueda.afiliadoBuscado;
-            etiquetaPaciente.Text = afiliadoBuscado.id.ToString();
-            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerPlanAcutalAfiliado(" + afiliadoBuscado.id.ToString() + ")");
-            reader.Read();
-            EtiquetaPlan.Text = reader["descripcion"].ToString();
-            precioBono = Convert.ToInt16(reader["precioBono"]);
-            reader.Close();
+            if (afiliadoBuscado.id != 0)
+            {
+                etiquetaPaciente.Text = afiliadoBuscado.id.ToString();
+                SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerPlanAcutalAfiliado(" + afiliadoBuscado.id.ToString() + ")");
+                reader.Read();
+                EtiquetaPlan.Text = reader["descripcion"].ToString();
+                precioBono = Convert.ToInt16(reader["precioBono"]);
+                reader.Close();
+            }
         }
 
         private void botonAceptar_Click(object sender, EventArgs e)
