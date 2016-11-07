@@ -4,6 +4,12 @@
 	EXEC('CREATE SCHEMA [GESTIONAME_LAS_VACACIONES]');
 GO
 
+
+IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.TablaTemporalListado', N'U') IS NOT NULL 
+DROP TABLE GESTIONAME_LAS_VACACIONES.TablaTemporalListado;
+GO
+
+
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional', N'U') IS NOT NULL 
 DROP TABLE GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional;
 GO
@@ -1144,7 +1150,7 @@ GO
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadMasAtendida(@planes INT, @fechaInicio DATETIME,@fechaFin DATETIME)
 RETURNS TABLE AS
 RETURN (SELECT a.idProf AS profesional, COUNT(t.especialidad) AS vecesEspecialidad
-FROM  GESTIONAME_LAS_VACACIONES.getTop5Profesionales(@planes,@fechaInicio,@fechaFin)
+FROM  GESTIONAME_LAS_VACACIONES.getTop5Profesionales(@planes,@fechaInicio,@fechaFin) a
 JOIN GESTIONAME_LAS_VACACIONES.Turnos t
 ON a.idProf = t.idProfesional
 GROUP BY a.idProf, t.especialidad)
