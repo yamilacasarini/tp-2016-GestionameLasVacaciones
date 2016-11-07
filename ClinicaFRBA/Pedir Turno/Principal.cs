@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace ClinicaFrba.Pedir_Turno
 {
@@ -20,8 +21,16 @@ namespace ClinicaFrba.Pedir_Turno
         Profesional profesionalSeleccionado = new Profesional();
         private void button2_Click(object sender, EventArgs e)
         {
-            ListarTurnos listado = new ListarTurnos(profesionalSeleccionado);
-            listado.ShowDialog();
+              
+            try
+            {
+                ListarTurnos listado = new ListarTurnos(profesionalSeleccionado);
+                listado.ShowDialog();
+            }
+            catch (Exception)
+            {
+                System.Windows.Forms.MessageBox.Show("El profesional no tiene ninguna agenda cargada");
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

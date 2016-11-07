@@ -125,7 +125,7 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (validarVacio())
+            if (!validarVacio())
             {
                 if (validarSoloNumeros())
                 {
@@ -136,21 +136,21 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                         DateTime fechaB = new DateTime(aInt(anioFinal.Text), aInt(mesFinal.Text), aInt(diaFinal.Text), aInt(listaHorasFinal.Text), aInt(listaMinutosFinal.Text), 0);
                         server.query("exec GESTIONAME_LAS_VACACIONES.altaAgendaProfesional " + matr + "," + "'" + esp + "','" + fechaA.ToString() + "','" + fechaB.ToString() + "'," + diaNumericoDeLaSemana(diaSemanaInicio.Text) + "," + diaNumericoDeLaSemana(diaSemanaFinal.Text));
 
-                        System.Windows.Forms.MessageBox.Show("Muy bien amiguito");
+                        System.Windows.Forms.MessageBox.Show("Agenda dada de alta exitosamente");
                     }
                     else
-                        System.Windows.Forms.MessageBox.Show("Muy mal amiguito");
+                        System.Windows.Forms.MessageBox.Show("Faltan datos o los formatos no son correctos");
                 }
-                else
-                {
-                    System.Windows.Forms.MessageBox.Show("Llename los datos amiguito");
-                }
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("Llename los datos amiguito");
             }
         }
 
         private bool validarVacio()
         {
-            return  !(Validacion.estaVacioSinNotificar(DiaInicio)
+            return  Validacion.estaVacioSinNotificar(DiaInicio)
                     && Validacion.estaVacioSinNotificar(diaFinal)
                     && Validacion.estaVacioSinNotificar(mesInicio)
                     && Validacion.estaVacioSinNotificar(mesFinal)
@@ -162,7 +162,7 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                     && Validacion.estaVacioSinNotificar(listaMinutosFinal)
                     && Validacion.estaVacioSinNotificar(diaSemanaInicio)
                     && Validacion.estaVacioSinNotificar(diaSemanaFinal)
-                    && Validacion.estaVacioSinNotificar(profesional));
+                    && Validacion.estaVacioSinNotificar(profesional);
         }
 
 
