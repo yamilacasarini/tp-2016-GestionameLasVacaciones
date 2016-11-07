@@ -23,17 +23,37 @@ namespace ClinicaFrba.AbmRol
             if (string.IsNullOrEmpty(this.txtNombre.Text) || this.dataGridView1.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Por favor introduzca un nombre o seleccione una funcionalidad para agregar");
+                
             }
             else
             {
                 DataGridViewSelectedRowCollection seleccion = this.dataGridView1.SelectedRows;
+                if (!RolManager.existeElRol(txtNombre.Text.Trim()))
+                    RolManager.agregarRol(this.txtNombre.Text.Trim());
+                else
+                {
+                    if (RolManager.obtenerBaja(txtNombre.Text.Trim()) == 1)
+                    {
+                        MessageBox.Show("El rol ya existe");
+                        return;
+                    }
+
+                }
                 foreach (DataGridViewRow funcionalidad in seleccion)
                 {
-                    RolManager.agregarRolYFuncionalidad(this.txtNombre.Text, Convert.ToString(funcionalidad.Cells[1].Value));
+                    RolManager.agregarFuncionalidad(this.txtNombre.Text.Trim(), Convert.ToString(funcionalidad.Cells[1].Value));
                 }
 
-                MessageBox.Show("Las funcionalidades han sido agregadas al rol exitosamente");
+                MessageBox.Show("Se agregaron las funcionalidades, dirijase a modificacion en caso de desearlo");
+                this.button2.Enabled = false;
+                this.dataGridView1.DataSource = RolManager.obtenerFuncionalidadesNoAgregadasEnRol(txtNombre.Text.Trim());
+                return;
             }
+        }
+
+        private void AltaRol_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

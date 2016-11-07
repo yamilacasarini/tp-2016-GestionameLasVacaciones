@@ -43,16 +43,14 @@ namespace ClinicaFrba.AbmRol
                 }
                else
                {
-            try
-            {
-                RolManager.noExisteElRol(txtNombre.Text.Trim());
-            }
-            catch (Exception b)
-            {
-                MessageBox.Show("Error, el Rol buscado no existe");
-                txtNombre.Clear();
-                return;
-            }
+
+                   if (!RolManager.existeElRol(txtNombre.Text.Trim()))
+                   {
+                       MessageBox.Show("Error, el Rol buscado no existe");
+                       txtNombre.Clear();
+                       return;
+                   }
+            
              
                     this.dataGridView1.DataSource = RolManager.mostrarFuncionalidades(txtNombre.Text.Trim());
                     this.dataGridView2.DataSource = RolManager.obtenerFuncionalidadesNoAgregadasEnRol(txtNombre.Text.Trim());
@@ -87,7 +85,7 @@ namespace ClinicaFrba.AbmRol
                 this.dataGridView2.DataSource = RolManager.obtenerFuncionalidadesNoAgregadasEnRol(txtNombre.Text.Trim());
                     break;
                 default:
-                    MessageBox.Show("Selecciona de a una funcionalidad");
+                         MessageBox.Show("Selecciona de a una funcionalidad");
                     break;
 
             }
@@ -112,7 +110,7 @@ namespace ClinicaFrba.AbmRol
                 DataGridViewSelectedRowCollection seleccion = this.dataGridView2.SelectedRows;
                 foreach (DataGridViewRow funcionalidad in seleccion)
                 {
-                    RolManager.agregarRolYFuncionalidad(this.txtNombre.Text, Convert.ToString(funcionalidad.Cells[1].Value));
+                    RolManager.agregarFuncionalidad(this.txtNombre.Text, Convert.ToString(funcionalidad.Cells[1].Value));
                 }
 
         
@@ -158,7 +156,11 @@ namespace ClinicaFrba.AbmRol
                 }
                 RolManager.mofidicarNombre(txtNombre.Text.Trim(), txtNuevoNombre.Text.Trim());
                 MessageBox.Show("Nombre modificado exitosamente");
+                txtNombre.Text = txtNuevoNombre.Text.Trim();
+                this.dataGridView1.DataSource = RolManager.mostrarFuncionalidades(txtNombre.Text.Trim());
+                this.dataGridView2.DataSource = RolManager.obtenerFuncionalidadesNoAgregadasEnRol(txtNombre.Text.Trim());
                 txtNuevoNombre.Clear();
+                
             }
 
             

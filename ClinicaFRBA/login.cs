@@ -15,7 +15,7 @@ namespace ClinicaFrba
 {
     public partial class login : Form
     {
-
+        public static String usuario {get; set;}
         Sesion sesion;
         public login()
         {
@@ -26,6 +26,7 @@ namespace ClinicaFrba
         }
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
+            usuario = txtUsuario.Text.Trim();
             if (validarDatos())
             {
                 {

@@ -51,6 +51,20 @@ namespace ClinicaFrba.AbmRol
             reader.Close();
 
         }
+        public static void agregarRol(String rol)
+        {
+
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.crearRol '" + rol + "'");
+            reader.Close();
+          
+        }
+        public static void agregarFuncionalidad(String rol, String funcionalidad)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.agregarFuncionalidadAUnRol '" + rol + "','" + funcionalidad + "'");
+            reader.Close();
+        }
         public static void agregarRolYFuncionalidad(String rol, String funcionalidad)
         {
             Server server = Server.getInstance();
@@ -104,11 +118,17 @@ namespace ClinicaFrba.AbmRol
             reader.Close();
         }
 
-        public static void noExisteElRol(String rol)
+        public static bool existeElRol(String rol)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.elRolNoExiste '" + rol + "'");
+            bool retorno;
+            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.Roles WHERE descripcion = '" + rol + "'");
+            if (reader.Read())
+                retorno = true;
+            else
+                retorno = false;
             reader.Close();
+            return retorno;
         }
 
     }

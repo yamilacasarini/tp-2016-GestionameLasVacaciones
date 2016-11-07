@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.txtNombre = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.comboEliminar = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -43,14 +43,6 @@
             this.label1.TabIndex = 47;
             this.label1.Text = "Rol a eliminar:";
             // 
-            // txtNombre
-            // 
-            this.txtNombre.Location = new System.Drawing.Point(162, 35);
-            this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(168, 20);
-            this.txtNombre.TabIndex = 53;
-            this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
-            // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(121, 110);
@@ -61,16 +53,27 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // comboEliminar
+            // 
+            this.comboEliminar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboEliminar.FormattingEnabled = true;
+            this.comboEliminar.Location = new System.Drawing.Point(160, 33);
+            this.comboEliminar.Name = "comboEliminar";
+            this.comboEliminar.Size = new System.Drawing.Size(165, 21);
+            this.comboEliminar.TabIndex = 56;
+            this.comboEliminar.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // BajaRol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(351, 262);
+            this.Controls.Add(this.comboEliminar);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.label1);
             this.Name = "BajaRol";
             this.Text = "BajaRol";
+            this.Load += new System.EventHandler(this.BajaRol_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -79,7 +82,8 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ComboBox comboEliminar;
+     
     }
 }

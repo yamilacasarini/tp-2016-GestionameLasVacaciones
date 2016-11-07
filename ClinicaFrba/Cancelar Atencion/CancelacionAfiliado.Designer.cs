@@ -80,6 +80,7 @@
             // txtMotivo
             // 
             this.txtMotivo.Location = new System.Drawing.Point(109, 9);
+            this.txtMotivo.MaxLength = 255;
             this.txtMotivo.Name = "txtMotivo";
             this.txtMotivo.Size = new System.Drawing.Size(301, 96);
             this.txtMotivo.TabIndex = 56;

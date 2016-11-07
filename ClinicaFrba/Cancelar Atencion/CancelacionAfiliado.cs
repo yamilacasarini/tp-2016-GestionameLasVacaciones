@@ -31,7 +31,7 @@ namespace ClinicaFrba.Cancelar_Atencion
         {
             if (String.IsNullOrEmpty(txtMotivo.Text.Trim()) && txtMotivo.Text.Trim().Length <255)
             {
-                MessageBox.Show("Por favor, indique el motivo de la cancelacion, recuerde que este debe ser menor a 255 caracteres");
+                MessageBox.Show("Por favor, indique el motivo de la cancelacion");
                 return;
             }
             switch (this.dataGridView1.SelectedRows.Count)
