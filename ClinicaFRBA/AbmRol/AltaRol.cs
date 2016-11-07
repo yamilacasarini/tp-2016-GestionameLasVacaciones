@@ -32,7 +32,7 @@ namespace ClinicaFrba.AbmRol
                     RolManager.agregarRol(this.txtNombre.Text.Trim(), login.usuario.ToString());
                 else
                 {
-                    if (RolManager.obtenerBaja(txtNombre.Text.Trim()) == 1)
+                    if (RolManager.obtenerBaja(txtNombre.Text.Trim()) == 1 || RolManager.existeElRol(txtNombre.Text.Trim()))
                     {
                         MessageBox.Show("El rol ya existe");
                         return;
