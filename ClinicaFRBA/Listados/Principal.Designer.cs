@@ -41,7 +41,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(260, 31);
             this.button1.TabIndex = 0;
-            this.button1.Text = "TOP ESPECIALIDADES CON MAS CONSULTAS";
+            this.button1.Text = "Top 5 de las especialidades con más bonos";
             this.button1.UseVisualStyleBackColor = true;
             // 
             // button2
@@ -77,7 +77,7 @@
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(260, 31);
             this.button5.TabIndex = 4;
-            this.button5.Text = "TOP PACIENTES CON  BONOS COMPRADOS";
+            this.button5.Text = "Top 5 de los afiliados con mayor cantidad de bonos comprados";
             this.button5.UseVisualStyleBackColor = true;
             // 
             // Principal
