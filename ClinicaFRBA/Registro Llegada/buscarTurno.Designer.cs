@@ -69,6 +69,7 @@
             // txEspecialidad
             // 
             this.txEspecialidad.Location = new System.Drawing.Point(142, 69);
+            this.txEspecialidad.MaxLength = 50;
             this.txEspecialidad.Name = "txEspecialidad";
             this.txEspecialidad.Size = new System.Drawing.Size(100, 20);
             this.txEspecialidad.TabIndex = 34;
@@ -87,6 +88,7 @@
             // txApellido
             // 
             this.txApellido.Location = new System.Drawing.Point(411, 67);
+            this.txApellido.MaxLength = 25;
             this.txApellido.Name = "txApellido";
             this.txApellido.Size = new System.Drawing.Size(100, 20);
             this.txApellido.TabIndex = 32;
@@ -104,6 +106,7 @@
             // txNombre
             // 
             this.txNombre.Location = new System.Drawing.Point(142, 41);
+            this.txNombre.MaxLength = 25;
             this.txNombre.Name = "txNombre";
             this.txNombre.Size = new System.Drawing.Size(100, 20);
             this.txNombre.TabIndex = 30;
@@ -154,6 +157,7 @@
             // idText
             // 
             this.idText.Location = new System.Drawing.Point(411, 41);
+            this.idText.MaxLength = 10;
             this.idText.Name = "idText";
             this.idText.Size = new System.Drawing.Size(100, 20);
             this.idText.TabIndex = 42;
