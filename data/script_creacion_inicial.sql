@@ -68,6 +68,10 @@ IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.Funcionalidades', N'U') IS NOT NULL
 DROP TABLE GESTIONAME_LAS_VACACIONES.Funcionalidades
 GO
 
+IF OBJECT_ID(N'GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha', N'U') IS NOT NULL 
+DROP TABLE GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha
+GO
+
 DECLARE @name VARCHAR(128)
 DECLARE @SQL VARCHAR(254)
 
@@ -684,7 +688,7 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre nvarchar(50), @a
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 BEGIN 
-IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE apellido LIKE @apellido AND documento = @doc) 
+IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE (apellido LIKE @apellido AND nombre LIKE @nombre) OR documento = @doc) 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre, apellido, documento, direccion, telefono, email, 
 fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes) VALUES (GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado(),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes)
 ELSE
@@ -970,7 +974,6 @@ RETURN (SELECT id, idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaIn
 FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @matricula AND baja=0)
 GO
 
-DROP  FUNCTION GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha(@fecha DATETIME, @delta INT)
 RETURNS VARCHAR(100)
 AS
