@@ -77,5 +77,10 @@ namespace ClinicaFrba
         {
             return txtUsuario.Text.Trim() != "" && txtPassword.Text.Trim() != "";
         }
+
+        private void login_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

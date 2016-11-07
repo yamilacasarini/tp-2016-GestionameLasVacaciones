@@ -607,12 +607,16 @@ RETURN (SELECT funcionalidad.id, funcionalidad.descripcion
  WHERE funcionalidad.id = rolxfun.idFuncionalidad
  AND rolxfun.idRol = GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol))
  GO
- 
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.crearRol(@nombre VARCHAR(30))
+
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.crearRol(@nombreRol VARCHAR(30), @nombreUsuario VARCHAR(30))
 AS 
 BEGIN
-IF  NOT EXISTS   (SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Roles WHERE  descripcion LIKE @nombre)
-INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES(@nombre)
+IF  NOT EXISTS   (SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Roles WHERE  descripcion LIKE @nombreRol)
+BEGIN
+INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES(@nombreRol)
+INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol, idUsuario) VALUES (GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol), @nombreUsuario)
+END
 ELSE
 RAISERROR('El Rol ya existe',16,217) WITH SETERROR 
 END

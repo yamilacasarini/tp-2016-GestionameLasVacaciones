@@ -29,7 +29,7 @@ namespace ClinicaFrba.AbmRol
             {
                 DataGridViewSelectedRowCollection seleccion = this.dataGridView1.SelectedRows;
                 if (!RolManager.existeElRol(txtNombre.Text.Trim()))
-                    RolManager.agregarRol(this.txtNombre.Text.Trim());
+                    RolManager.agregarRol(this.txtNombre.Text.Trim(), login.usuario.ToString());
                 else
                 {
                     if (RolManager.obtenerBaja(txtNombre.Text.Trim()) == 1)

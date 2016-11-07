@@ -51,11 +51,11 @@ namespace ClinicaFrba.AbmRol
             reader.Close();
 
         }
-        public static void agregarRol(String rol)
+        public static void agregarRol(String rol, String usuario)
         {
 
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.crearRol '" + rol + "'");
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.crearRol '" + rol + "','" + usuario + "' ");
             reader.Close();
           
         }
