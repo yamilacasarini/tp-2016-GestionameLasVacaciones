@@ -31,25 +31,30 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-
-            if (validarDatos())
+            try
             {
-                if (afiliado.servicio == 0)
+                if (validarDatos())
                 {
-                    afiliado.servicio = AfiliadoManager.idPlanMedico(cBplanMedico.Text);
-                    AfiliadoManager.cambioPlan(afiliado.id, cBplanMedico.Text, txtMotivo.Text.Trim());
-                    this.Close();
+                    if (afiliado.servicio == 0)
+                    {
+                        afiliado.servicio = AfiliadoManager.idPlanMedico(cBplanMedico.Text);
+                        AfiliadoManager.cambioPlan(afiliado.id, cBplanMedico.Text, txtMotivo.Text.Trim());
+                        this.Close();
+                    }
+                    else if (String.Compare(AfiliadoManager.planMedico(afiliado.servicio), cBplanMedico.Text) != 0)
+                    {
+                        afiliado.servicio = AfiliadoManager.idPlanMedico(cBplanMedico.Text);
+                        AfiliadoManager.cambioPlan(afiliado.id, cBplanMedico.Text, txtMotivo.Text.Trim());
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ya posee ese plan");
+                    }
                 }
-                else if (String.Compare(AfiliadoManager.planMedico(afiliado.servicio), cBplanMedico.Text) != 0)
-                {
-                    afiliado.servicio = AfiliadoManager.idPlanMedico(cBplanMedico.Text);
-                    AfiliadoManager.cambioPlan(afiliado.id, cBplanMedico.Text, txtMotivo.Text.Trim());
-                    this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("Ya posee ese plan");
-                }
+            }
+            catch(SqlException ex){
+                this.Close();
             }
         }
 

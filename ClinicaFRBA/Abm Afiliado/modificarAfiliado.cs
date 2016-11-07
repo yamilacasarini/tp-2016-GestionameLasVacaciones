@@ -21,6 +21,7 @@ namespace ClinicaFrba.Abm_Afiliado
             btAceptar.Hide();
             btCambiarPlan.Hide();
             afiliado.id = -1;
+            btAgregar.Hide();
         }
 
         private void label6_Click(object sender, EventArgs e)
@@ -35,22 +36,8 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
-        {
-            if (validarDatos())
-            {
-                Server server = Server.getInstance();
-                server.query("UPDATE GESTIONAME_LAS_VACACIONES.Paciente SET direccion =" +
-             txDireccion.Text.Trim() + ", telefono =" + txTelefono.Text.Trim() + ", email =" + txMail.Text.Trim() + ", sexo=" +
-             cBsexo.Text.Trim() + ", estadoCivil = " + cBestadoCivil.Text.Trim() + ", cantFamiliares = " + txFamiliaresACargo.Text.Trim() +
-                 "WHERE id =" + afiliado.id);
-                this.Close();
+        { }
 
-            }
-            else
-            {
-                MessageBox.Show("Falta algun dato");
-            }
-        }
 
         private void txDocumento_TextChanged(object sender, EventArgs e)
         {
@@ -81,8 +68,22 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btAceptar_Click(object sender, EventArgs e)
         {
+                if (validarDatos())
+                {
+                    Server server = Server.getInstance();
+                    server.realizarQuery("UPDATE GESTIONAME_LAS_VACACIONES.Paciente SET direccion ='" +
+                 txDireccion.Text.Trim() + "', telefono =" + txTelefono.Text.Trim() + ", email ='" + txMail.Text.Trim() + "', sexo='" +
+                 AfiliadoManager.genero(cBsexo.Text.Trim()) + "', estadoCivil = '" + cBestadoCivil.Text.Trim() + "', cantFamiliares = " + txFamiliaresACargo.Text.Trim() +
+                     "WHERE id =" + afiliado.id);
+                    this.Close();
 
-        }
+                }
+                else
+                {
+                    MessageBox.Show("Falta algun dato");
+                }
+            }
+  
 
         private void btBuscar_Click_1(object sender, EventArgs e)
         {
@@ -103,17 +104,20 @@ namespace ClinicaFrba.Abm_Afiliado
                 cBtipoDocumento.Text = afiliado.tipoDocumento;
                 if (afiliado.servicio != 0)
                 {
-                    txPlanMedico.Text = AfiliadoManager.planMedico(afiliado.servicio); // espero que funcione
+                    txPlanMedico.Text = AfiliadoManager.planMedico(afiliado.servicio);
+                    btAgregar.Show();
                     btAceptar.Show();
                     btCambiarPlan.Show();
                 }
-                else {
+                else
+                {
                     MessageBox.Show("No posee plan medico vigente a la fecha");
                     txPlanMedico.Hide();
+                    btAgregar.Show();
                     btAceptar.Show();
                     btCambiarPlan.Show();
                 }
-               
+
             }
 
         }
@@ -130,7 +134,11 @@ namespace ClinicaFrba.Abm_Afiliado
             this.Hide();
             form.ShowDialog();
             btCambiarPlan.Hide();
-            this.Show(); // hipoteticamente dicen que esto sucede recien cuando el form se cierra
+            txPlanMedico.Show();
+            this.Show();
+            if (afiliado.servicio != 0)
+                txPlanMedico.Text = AfiliadoManager.planMedico(afiliado.servicio);
+
         }
 
         private void txNombre_TextChanged_1(object sender, EventArgs e)
@@ -141,6 +149,13 @@ namespace ClinicaFrba.Abm_Afiliado
         private void modificarAfiliado_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btAgregar_Click(object sender, EventArgs e)
+        {
+            AltaAfiliado form = new AltaAfiliado();
+            form.afiliadoFamiliar = afiliado;
+            form.ShowDialog();
         }
     }
 }

@@ -56,6 +56,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.btCambiarPlan = new System.Windows.Forms.Button();
             this.txPlanMedico = new System.Windows.Forms.TextBox();
+            this.btAgregar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // dateTimePicker1
@@ -307,9 +308,9 @@
             // btBuscar
             // 
             this.btBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.btBuscar.Location = new System.Drawing.Point(218, 362);
+            this.btBuscar.Location = new System.Drawing.Point(279, 362);
             this.btBuscar.Name = "btBuscar";
-            this.btBuscar.Size = new System.Drawing.Size(145, 30);
+            this.btBuscar.Size = new System.Drawing.Size(160, 30);
             this.btBuscar.TabIndex = 69;
             this.btBuscar.Text = "Buscar Afiliado";
             this.btBuscar.UseVisualStyleBackColor = true;
@@ -344,11 +345,23 @@
             this.txPlanMedico.Size = new System.Drawing.Size(144, 20);
             this.txPlanMedico.TabIndex = 73;
             // 
+            // btAgregar
+            // 
+            this.btAgregar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.btAgregar.Location = new System.Drawing.Point(94, 362);
+            this.btAgregar.Name = "btAgregar";
+            this.btAgregar.Size = new System.Drawing.Size(164, 30);
+            this.btAgregar.TabIndex = 74;
+            this.btAgregar.Text = "Agregar Familiar";
+            this.btAgregar.UseVisualStyleBackColor = true;
+            this.btAgregar.Click += new System.EventHandler(this.btAgregar_Click);
+            // 
             // modificarAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(542, 404);
+            this.Controls.Add(this.btAgregar);
             this.Controls.Add(this.txPlanMedico);
             this.Controls.Add(this.btCambiarPlan);
             this.Controls.Add(this.label11);
@@ -415,6 +428,7 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button btCambiarPlan;
         private System.Windows.Forms.TextBox txPlanMedico;
+        private System.Windows.Forms.Button btAgregar;
 
     }
 }

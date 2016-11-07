@@ -14,7 +14,7 @@ namespace ClinicaFrba.Abm_Afiliado
 {
     public partial class AltaAfiliado : Form
     {
-        Afiliado afiliadoFamiliar = new Afiliado();
+        public Afiliado afiliadoFamiliar = new Afiliado();
 
         public AltaAfiliado()
         {
@@ -64,11 +64,9 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             if (validarDatos())
             {
-                try
-                {
                     AfiliadoManager.altaAfiliado(txNombre.Text.Trim(), txApellido.Text.Trim(),
                         Convert.ToInt32(txDocumento.Text.Trim()), txDireccion.Text.Trim(), Convert.ToInt32(txTelefono.Text.Trim()),
-                        txMail.Text.Trim(), Convert.ToDateTime(dateTimePicker1.Value), cBsexo.Text.Trim(),
+                        txMail.Text.Trim(), Convert.ToDateTime(dateTimePicker1.Value),cBsexo.Text.Trim(),
                         cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()), cBplanMedico.Text.Trim());
                     btAgregar.Hide();
                     if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
@@ -78,9 +76,6 @@ namespace ClinicaFrba.Abm_Afiliado
                         afiliadoFamiliar.apellido = txApellido.Text.Trim();
                         afiliadoFamiliar.id = AfiliadoManager.id(txDocumento.Text.Trim());
                     }
-                } catch(SqlException ex){
-                    MessageBox.Show(ex.Message);
-                }
             }
             else
             {

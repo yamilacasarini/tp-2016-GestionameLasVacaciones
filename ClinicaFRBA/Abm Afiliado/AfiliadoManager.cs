@@ -110,8 +110,13 @@ namespace ClinicaFrba.Abm_Afiliado
             Server server = Server.getInstance();
             server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.altaPaciente '" +
             nombre + "', '" + apellido + "'," + documento+ ",'" + direccion + "'," + telefono +
-            ",'" + mail + "','" + nacimiento + "','" + sexo + "','" + civil + "'," +familiares +
+            ",'" + mail + "','" + nacimiento + "','" + genero(sexo) + "','" + civil + "'," +familiares +
             ", " + AfiliadoManager.idPlanMedico(descPlanMedico));
+        }
+        public static char genero(string genero) {
+            if (String.Compare(genero, "femenino") != 0)
+                return 'f';
+            return 'm';
         }
     }
 }
