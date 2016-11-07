@@ -161,6 +161,7 @@
             this.idText.Name = "idText";
             this.idText.Size = new System.Drawing.Size(100, 20);
             this.idText.TabIndex = 42;
+            this.idText.TextChanged += new System.EventHandler(this.idText_TextChanged);
             // 
             // label5
             // 

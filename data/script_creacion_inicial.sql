@@ -152,7 +152,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
   telefono INT NOT NULL,
   email VARCHAR(255),
   fechaNacimiento DATETIME NOT NULL,
-  sexo VARCHAR(10),
+  sexo CHAR,
   estadoCivil VARCHAR(10),
   cantFamiliares INT DEFAULT 0,
   cantConsultas INT DEFAULT 0,
@@ -172,7 +172,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Profesionales (
   telefono INT NOT NULL,
   email VARCHAR(255),
   fechaNacimiento DATETIME NOT NULL,
-  sexo VARCHAR(10),
+  sexo CHAR,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Especialidades(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
@@ -618,11 +618,14 @@ RAISERROR('El Rol ya existe',16,217) WITH SETERROR
 END
 GO
 
+
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerBaja(@nombreRol VARCHAR(30))
 RETURNS TABLE
 AS
 RETURN (SELECT baja FROM GESTIONAME_LAS_VACACIONES.Roles WHERE descripcion = @nombreRol)
 GO
+
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.existeRol(@nombreRol VARCHAR(30))
 RETURNS INT
@@ -682,7 +685,7 @@ GO
 --ABM PACIENTES--
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre nvarchar(50), @apellido nvarchar(50), 
-@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo VARCHAR(10), @civil VARCHAR(10),
+@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
 @cantFami INT, @planes INT)
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
@@ -696,7 +699,7 @@ END
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaFamiliar(@idFamiliar INT,@nombre nvarchar(50), @apellido nvarchar(50), 
-@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo VARCHAR(10), @civil VARCHAR(10),
+@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
 @cantFami INT,@planes INT)
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
@@ -718,7 +721,7 @@ END
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id INT,@direc VARCHAR(100),
- @tel INT, @mail VARCHAR(255), @sexo VARCHAR(10), @civil VARCHAR(10),@cantFami INT,@plan INT)
+ @tel INT, @mail VARCHAR(255), @sexo char, @civil VARCHAR(10),@cantFami INT,@plan INT)
 AS
 BEGIN
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes
@@ -737,6 +740,7 @@ GO
 
 --////////////////////////////////////--
 --ABM FUNCIONALIDADES A ROL --
+
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.agregarFuncionalidadAUnRol (@nombreRol VARCHAR(30),@nombreFuncionalidad VARCHAR(30))
 AS
