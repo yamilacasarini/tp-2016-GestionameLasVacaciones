@@ -152,7 +152,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
   telefono INT NOT NULL,
   email VARCHAR(255),
   fechaNacimiento DATETIME NOT NULL,
-  sexo CHAR,
+  sexo VARCHAR(10),
   estadoCivil VARCHAR(10),
   cantFamiliares INT DEFAULT 0,
   cantConsultas INT DEFAULT 0,
@@ -172,7 +172,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Profesionales (
   telefono INT NOT NULL,
   email VARCHAR(255),
   fechaNacimiento DATETIME NOT NULL,
-  sexo CHAR,
+  sexo VARCHAR(10),
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Especialidades(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
@@ -681,7 +681,7 @@ GO
 --ABM PACIENTES--
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre nvarchar(50), @apellido nvarchar(50), 
-@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
+@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo VARCHAR(10), @civil VARCHAR(10),
 @cantFami INT, @planes INT)
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
@@ -695,7 +695,7 @@ END
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaFamiliar(@idFamiliar INT,@nombre nvarchar(50), @apellido nvarchar(50), 
-@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
+@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo VARCHAR(10), @civil VARCHAR(10),
 @cantFami INT,@planes INT)
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
@@ -717,7 +717,7 @@ END
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id INT,@direc VARCHAR(100),
- @tel INT, @mail VARCHAR(255), @sexo char, @civil VARCHAR(10),@cantFami INT,@plan INT)
+ @tel INT, @mail VARCHAR(255), @sexo VARCHAR(10), @civil VARCHAR(10),@cantFami INT,@plan INT)
 AS
 BEGIN
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes
