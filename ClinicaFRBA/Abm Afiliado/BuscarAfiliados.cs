@@ -48,10 +48,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     Cancelar_Atencion.CancelacionAfiliado cancelacion = new Cancelar_Atencion.CancelacionAfiliado(afiliadoBuscado.id);
                     cancelacion.ShowDialog();
                 }
-                else
-                formAnterior.afiliado = afiliadoBuscado;
-
-                   
+         
                 this.Close();
 
             }

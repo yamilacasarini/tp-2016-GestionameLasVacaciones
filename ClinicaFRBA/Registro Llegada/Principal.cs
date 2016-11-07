@@ -26,7 +26,10 @@ namespace ClinicaFrba.Registro_Llegada
         {
             buscarTurno buscador = new buscarTurno();
             buscador.ShowDialog();
-            textBox2.Text = buscador.turnoSelect.id.ToString();
+            if (buscador.turnoSelect != null)
+            {
+                textBox2.Text = buscador.turnoSelect.id.ToString();
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
