@@ -1094,33 +1094,33 @@ GO
 --NUMERO 14--
 --LISTADO ESTRATEGICO--
 --TOP 5 ESPECIALIDADES CON MAS CANCELACIONES--
-CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
+
+CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones(@fechaInicio DATETIME,@fechaFin DATETIME)
 RETURNS TABLE 
 AS
-RETURN (SELECT GESTIONAME_LAS_VACACIONES.getIdEspecialidad(t.especialidad) AS especialidades, a.idEspecialidad AS especialidades2 FROM GESTIONAME_LAS_VACACIONES.Turnos t JOIN GESTIONAME_LAS_VACACIONES.Agendas a ON t.baja = 1 AND a.baja = 1)
+RETURN (SELECT GESTIONAME_LAS_VACACIONES.getIdEspecialidad(t.especialidad) AS especialidades, a.idEspecialidad AS especialidades2 
+FROM GESTIONAME_LAS_VACACIONES.Turnos t JOIN GESTIONAME_LAS_VACACIONES.Agendas a ON (t.baja = 1 or a.baja = 1) AND t.fecha BETWEEN @fechaInicio AND @fechaFin)
 GO
 
-CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones()
+CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones(@fechaInicio DATETIME,@fechaFin DATETIME)
 RETURNS TABLE 
 AS
-RETURN (SELECT especialidades FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones()
+RETURN (SELECT especialidades FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones(@fechaInicio,@fechaFin)
 UNION ALL
-SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones())
+SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones(@fechaInicio,@fechaFin))
 --ORDER BY especialidades, especialidades2)
 GO
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones()
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones(@fechaInicio DATETIME,@fechaFin DATETIME)
 RETURNS TABLE 
 AS
-RETURN (SELECT TOP 5 especialidades 
-FROM GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones());
+RETURN (SELECT TOP 5 GESTIONAME_LAS_VACACIONES.getDescEspecialidad(especialidades) as especialidades
+FROM GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones(@fechaInicio,@fechaFin) where especialidades is not null);
 GO
 
 --TOP 5 PROFESIONALES MAS CONSULTADOS POR PLAN ESPECIFICANDO ESPECIALIDAD--
 
-
-
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@planes INT)
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@planes INT,@fechaInicio as DATETIME,@fechaFin as DATETIME)
 RETURNS TABLE AS
 RETURN (SELECT p.id AS idProf, COUNT(p.id) AS cantConsultas
 FROM GESTIONAME_LAS_VACACIONES.ConsultasMedicas c JOIN GESTIONAME_LAS_VACACIONES.Turnos t 
@@ -1128,51 +1128,85 @@ ON c.idTurno = t.id
 JOIN GESTIONAME_LAS_VACACIONES.Profesionales p
 ON t.idProfesional = p.id
 JOIN GESTIONAME_LAS_VACACIONES.Pacientes pac
-ON t.idPaciente = pac.id AND pac.planes = @planes
+ON t.idPaciente = pac.id AND pac.planes = @planes and c.fecha between @fechaInicio and @fechaFin
 GROUP BY p.id)
 GO
 
-
-
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTop5Profesionales(@planes INT)
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTop5Profesionales(@planes INT,@fechaInicio DATETIME,@fechaFin DATETIME)
 RETURNS TABLE AS
 RETURN SELECT TOP 5 cantConsultas, idProf
-FROM GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@planes)
+FROM GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@planes,@fechaInicio,@fechaFin)
 ORDER BY cantConsultas
 GO
 
 
-
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadMasAtendida(@planes INT)
+--Top 5 de las especialidades de médicos con más bonos de consultas utilizados--
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadMasAtendida(@planes INT, @fechaInicio DATETIME,@fechaFin DATETIME)
 RETURNS TABLE AS
 RETURN (SELECT a.idProf AS profesional, COUNT(t.especialidad) AS vecesEspecialidad
-FROM  GESTIONAME_LAS_VACACIONES.getTop5Profesionales(@planes) a
+FROM  GESTIONAME_LAS_VACACIONES.getTop5Profesionales(@planes,@fechaInicio,@fechaFin)
 JOIN GESTIONAME_LAS_VACACIONES.Turnos t
 ON a.idProf = t.idProfesional
 GROUP BY a.idProf, t.especialidad)
 GO
 
--- CHEQUEAR PORQUE NO SE SI ME ESTA TIRANDO VALORES BIEN--
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getPacientesConMasCompras()
+-- Pacientes con mas compras--
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getPacientesConMasCompras(@fechaInicio DATETIME,@fechaFin  DATETIME)
 RETURNS TABLE AS
-RETURN (SELECT TOP 5 unPaciente.id , unPaciente.nombre, unPaciente.apellido , (SELECT sum(id) FROM GESTIONAME_LAS_VACACIONES.Pacientes familiar WHERE familiar.id/100  = unPaciente.id/100 AND familiar.id <> unPaciente.id) AS 'Cantidad de familiares'
+RETURN (SELECT TOP 5 unPaciente.id , unPaciente.nombre, unPaciente.apellido , (SELECT count(id) FROM GESTIONAME_LAS_VACACIONES.Pacientes familiar WHERE familiar.id/100  = unPaciente.id/100 AND familiar.id <> unPaciente.id) AS 'Cantidad de familiares'
 FROM GESTIONAME_LAS_VACACIONES.Pacientes  unPaciente 
-JOIN GESTIONAME_LAS_VACACIONES.ComprasBonos compra ON  unPaciente.id/100 = compra.idPaciente/100
+JOIN GESTIONAME_LAS_VACACIONES.ComprasBonos compra ON  unPaciente.id/100 = compra.idPaciente/100 and compra.fecha between @fechaInicio and @fechaFin
 GROUP BY unPaciente.id, unPaciente.nombre,unPaciente.apellido  
 ORDER BY COUNT(compra.idPaciente))
 GO
 
--- IDEM AL DE ARRIBA, SOY UN CAGON LO SE-- 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.topDeEspecialidadesConMasConsultas()
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.topDeEspecialidadesConMasConsultas(@fechaInicio DATETIME, @fechaFin DATETIME)
 RETURNS TABLE AS 
-RETURN (SELECT TOP 5 especialidad.id FROM GESTIONAME_LAS_VACACIONES.Especialidades especialidad
+RETURN (SELECT TOP 5 GESTIONAME_LAS_VACACIONES.getDescEspecialidad(especialidad.id) as especialidad FROM GESTIONAME_LAS_VACACIONES.Especialidades especialidad
 JOIN (GESTIONAME_LAS_VACACIONES.ConsultasMedicas consulta
 JOIN GESTIONAME_LAS_VACACIONES.Turnos turno
-ON turno.id = consulta.idTurno)
-ON turno.especialidad = especialidad.id
+ON turno.id = consulta.idTurno and consulta.fecha between @fechaInicio and @fechaFin)
+ON turno.especialidad = especialidad.descripcion
 GROUP BY especialidad.id
 ORDER BY COUNT(consulta.id))
 GO
+
+create table GESTIONAME_LAS_VACACIONES.TablaTemporalListado(
+idProfesional INT, 
+cantidadDeHoras INT
+) 
+go
+go
+create procedure GESTIONAME_LAS_VACACIONES.profesionalesConMasHoras
+as BEGIN
+declare @horaInicio  TIME , @horaFin TIME
+declare @idProfesional int
+declare @diaInicio int, @diaFin int
+
+DECLARE cursoram cursor for select  idProfesional,Cast(fechaInicio as time),cast(fechaFinal as time), diaInicio,diaFin from GESTIONAME_LAS_VACACIONES.Agendas
+OPEN cursoram fetch next from 
+cursoram into @idProfesional,@horaInicio,@horaFin, @diaInicio , @diaFin 
+while (@@FETCH_STATUS =0 )
+begin 
+insert into GESTIONAME_LAS_VACACIONES.TablaTemporalListado values (@idProfesional,  DATEPART(HOUR, @horaFin)*100+DATEPART(MINUTE,@horaFin)-DATEPART(HOUR, @horaInicio)*100 +DATEPART(MINUTE,@horaInicio) * (@diaFin-@diaInicio+1))
+fetch next from cursoram into @idProfesional,@horaInicio,@horaFin, @diaInicio , @diaFin 
+end 
+close cursoram
+deallocate cursoram
+END
+GO
+
+exec GESTIONAME_LAS_VACACIONES.profesionalesConMasHoras 
+go
+
+create function GESTIONAME_LAS_VACACIONES.topprofesionalesConMasHoras(@plan INT, @especialidad INT, @fechaInicio datetime,@fechafin datetime)
+returns table as 
+return (select top 5 sum(temp.cantidadDeHoras) cantidadDeHorasTotales, p.nombre, p.apellido from GESTIONAME_LAS_VACACIONES.TablaTemporalListado temp 
+join GESTIONAME_LAS_VACACIONES.Profesionales p 
+on p.id = temp.idProfesional
+group by p.nombre , p.apellido)
+go
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada(@id INTEGER)
 RETURNS TABLE AS
@@ -1180,4 +1214,5 @@ RETURN (SELECT tipoEspecialidad FROM GESTIONAME_LAS_VACACIONES.Especialidades e 
 GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional x ON e.id = x.idEspecialidad JOIN 
 GESTIONAME_LAS_VACACIONES.Profesionales p ON x.idProfesional = p.id WHERE p.id = @id 
 AND tipoEspecialidad NOT IN (SELECT idEspecialidad FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @id)) 
+
 GO

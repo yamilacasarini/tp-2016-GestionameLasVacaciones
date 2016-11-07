@@ -12,7 +12,7 @@ namespace ClinicaFrba.Listados
 {
     public partial class ProfesionalesConMenosHoras : Form
     {
-        public ProfesionalesConMenosHoras()
+        public ProfesionalesConMenosHoras(DateTime dia)
         {
             InitializeComponent();
         }

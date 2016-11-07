@@ -12,7 +12,7 @@ namespace ClinicaFrba.Listados
 {
     public partial class ProfesionalesMasConsultados : Form
     {
-        public ProfesionalesMasConsultados()
+        public ProfesionalesMasConsultados(DateTime dia)
         {
             InitializeComponent();
             llenarPlanes();
@@ -28,5 +28,21 @@ namespace ClinicaFrba.Listados
             reader.Close();
         
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+             Server server = Server.getInstance();
+            SqlDataReader reader = server.query("select  * from GESTIONAME_LAS_VACACIONES.getTop5Profesionales('" + fecha.ToString() + "','" + fecha.AddMonths(6).ToString() + "')");
+            List<ProfesionalesPorConsulta> especialidades = new List<ProfesionalesPorConsulta>();
+            while (reader.Read())
+            {
+                ProfesionalesPorConsulta prof = new ProfesionalesPorConsulta();
+                prof.idProfesional = Convert.ToInt32(reader["idProf"]);
+                prof.cantidadDeConsultas  = Convert.ToInt32(reader["cantConsultas"]);
+                especialidades.Add(prof);
+            }
+            reader.Close();
+            dataGridView1.DataSource = especialidades;
+        }
+        }
     }
-}
