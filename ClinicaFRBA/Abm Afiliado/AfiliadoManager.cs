@@ -54,13 +54,14 @@ namespace ClinicaFrba.Abm_Afiliado
             reader.Close();
 
         }
+
         public static String planMedico(int idServicio)
         {
             Server server = Server.getInstance();
 
             SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes WHERE id =" + idServicio.ToString());
             reader.Read();
-            String descripcion = Convert.ToString(reader["descripcion"]);
+            String descripcion = Convert.ToString(reader[0]);
             reader.Close();
             return descripcion;
         }

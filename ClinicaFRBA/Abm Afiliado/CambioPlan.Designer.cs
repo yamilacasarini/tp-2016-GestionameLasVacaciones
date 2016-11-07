@@ -45,6 +45,7 @@
             this.buttonSalir.TabIndex = 67;
             this.buttonSalir.Text = "Salir";
             this.buttonSalir.UseVisualStyleBackColor = true;
+            this.buttonSalir.Click += new System.EventHandler(this.buttonSalir_Click);
             // 
             // buttonAceptar
             // 

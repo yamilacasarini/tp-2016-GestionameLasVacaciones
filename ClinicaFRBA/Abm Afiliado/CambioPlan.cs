@@ -25,20 +25,31 @@ namespace ClinicaFrba.Abm_Afiliado
                 cBplanMedico.Items.Add(reader["descripcion"].ToString());
             }
             reader.Close();
+           // if (afiliado.servicio == 0)
+           //     txMotivo.Hide();
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)
         {
-           
-            if (validarDatos() && (String.Compare(AfiliadoManager.planMedico(afiliado.servicio), cBplanMedico.Text) != 0)&& txtMotivo.Text.Trim().Length <255)
+
+            if (validarDatos())
             {
-                afiliado.servicio = AfiliadoManager.idPlanMedico(cBplanMedico.Text);
-                AfiliadoManager.cambioPlan(afiliado.id,cBplanMedico.Text,txtMotivo.Text.Trim());
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("Faltan algun dato o es el mismo plan o el motivo posee mas de 255 caracteres");
+                if (afiliado.servicio == 0)
+                {
+                    afiliado.servicio = AfiliadoManager.idPlanMedico(cBplanMedico.Text);
+                    AfiliadoManager.cambioPlan(afiliado.id, cBplanMedico.Text, txtMotivo.Text.Trim());
+                    this.Close();
+                }
+                else if (String.Compare(AfiliadoManager.planMedico(afiliado.servicio), cBplanMedico.Text) != 0)
+                {
+                    afiliado.servicio = AfiliadoManager.idPlanMedico(cBplanMedico.Text);
+                    AfiliadoManager.cambioPlan(afiliado.id, cBplanMedico.Text, txtMotivo.Text.Trim());
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Ya posee ese plan");
+                }
             }
         }
 
@@ -48,7 +59,7 @@ namespace ClinicaFrba.Abm_Afiliado
         }
         bool validarDatos()
         {
-            return txtMotivo.Text.Trim() != "" && cBplanMedico.Text.Trim() != "" && Validacion.esAlfanumerico(txMotivo,"motivo");
+            return !Validacion.estaVacio(txMotivo,"Motivo") && !Validacion.noTieneSeleccion(cBplanMedico,"Plan medico");// && (!Validacion.esAlfanumerico(txMotivo, "motivo"));
         }
 
         private void cBplanMedico_SelectedIndexChanged_1(object sender, EventArgs e)
@@ -59,6 +70,11 @@ namespace ClinicaFrba.Abm_Afiliado
         private void txtMotivo_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonSalir_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

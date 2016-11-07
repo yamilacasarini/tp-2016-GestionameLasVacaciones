@@ -14,12 +14,13 @@ namespace ClinicaFrba.Abm_Afiliado
 
     public partial class modificarAfiliado : Form
     {
-        Afiliado afiliado = new Afiliado();
+        public Afiliado afiliado = new Afiliado();
         public modificarAfiliado()
         {
             InitializeComponent();
             btAceptar.Hide();
             btCambiarPlan.Hide();
+            afiliado.id = -1;
         }
 
         private void label6_Click(object sender, EventArgs e)
@@ -86,10 +87,10 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btBuscar_Click_1(object sender, EventArgs e)
         {
             BuscarAfiliados form = new BuscarAfiliados();
+            form.formAnterior = this;
             form.ShowDialog();
-            if (form.afiliadoBuscado.id != -1)
+            if (afiliado.id != -1)
             {
-                afiliado = form.afiliadoBuscado;
                 txApellido.Text = afiliado.apellido;
                 txNombre.Text = afiliado.nombre;
                 txDireccion.Text = afiliado.direccion;
@@ -100,9 +101,19 @@ namespace ClinicaFrba.Abm_Afiliado
                 cBestadoCivil.Text = afiliado.estadoCivil;
                 cBsexo.Text = afiliado.sexo;
                 cBtipoDocumento.Text = afiliado.tipoDocumento;
-                txPlanMedico.Text = AfiliadoManager.planMedico(afiliado.servicio); // espero que funcione
-                btAceptar.Show();
-                btCambiarPlan.Show();
+                if (afiliado.servicio != 0)
+                {
+                    txPlanMedico.Text = AfiliadoManager.planMedico(afiliado.servicio); // espero que funcione
+                    btAceptar.Show();
+                    btCambiarPlan.Show();
+                }
+                else {
+                    MessageBox.Show("No posee plan medico vigente a la fecha");
+                    txPlanMedico.Hide();
+                    btAceptar.Show();
+                    btCambiarPlan.Show();
+                }
+               
             }
 
         }
