@@ -47,11 +47,14 @@ namespace ClinicaFrba.Abm_Afiliado
 
  
 
-        public static void ModificarAfiliado(int id, String nombre, String apellido, int documento,
-            String direccion, int telefono, String mail, char sexo, String estadoCivil, int CantidadFamiliares)
+        public static void ModificarAfiliado(int id,String direccion, int telefono, String mail,
+            string sexo, String estadoCivil, int CantidadFamiliares,int idPlan)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.modificarPaciente '" + id.ToString() + "','%" + nombre + "%','%" + apellido + "%'," + documento + ",'%" + direccion + "%'," + telefono.ToString() + ",'%" + mail + "%','%" + sexo.ToString() + "%','%" + estadoCivil + "%'");
+            string q = "EXEC GESTIONAME_LAS_VACACIONES.modificarPaciente " + id.ToString() +
+                ",'" + direccion + "'," + telefono.ToString() + ",'" + mail + "','" + sexo.ToString() +
+                "','" + estadoCivil + "'," + CantidadFamiliares + "," + idPlan;
+            SqlDataReader reader = server.query(q);
             reader.Close();
 
         }

@@ -339,8 +339,9 @@
             // 
             // txPlanMedico
             // 
+            this.txPlanMedico.Enabled = false;
             this.txPlanMedico.Location = new System.Drawing.Point(219, 334);
-            this.txPlanMedico.MaxLength = 2;
+            this.txPlanMedico.MaxLength = 10;
             this.txPlanMedico.Name = "txPlanMedico";
             this.txPlanMedico.Size = new System.Drawing.Size(144, 20);
             this.txPlanMedico.TabIndex = 73;
