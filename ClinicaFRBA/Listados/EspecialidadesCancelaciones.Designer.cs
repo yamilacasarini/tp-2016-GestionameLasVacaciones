@@ -1,6 +1,6 @@
 ﻿namespace ClinicaFrba.Listados
 {
-    partial class Resultado
+    partial class EspecialidadesCancelaciones
     {
         /// <summary>
         /// Required designer variable.
@@ -28,33 +28,45 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(18, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(254, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Top 5 de las especialidades con mas cancelaciones";
+            // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 55);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 70);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(442, 215);
-            this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.Size = new System.Drawing.Size(260, 180);
+            this.dataGridView1.TabIndex = 1;
             // 
-            // Resultado
+            // EspecialidadesCancelaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(466, 282);
+            this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.dataGridView1);
-            this.Name = "Resultado";
-            this.Text = "Resultado";
+            this.Controls.Add(this.label1);
+            this.Name = "EspecialidadesCancelaciones";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
+        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dataGridView1;
     }
 }

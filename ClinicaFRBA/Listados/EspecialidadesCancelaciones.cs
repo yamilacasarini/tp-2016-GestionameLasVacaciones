@@ -7,13 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
 
 namespace ClinicaFrba.Listados
 {
-    public partial class Resultado : Form
+    public partial class EspecialidadesCancelaciones : Form
     {
-        public Resultado(String tittle,SqlDataReader reader)
+        public EspecialidadesCancelaciones()
         {
             InitializeComponent();
         }
