@@ -716,14 +716,13 @@ UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET baja = 1, fechaBaja = CURRENT_TIM
 END
 GO
 
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id INT,@nombre nvarchar(50), @apellido nvarchar(50), 
-@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(255), @sexo char, @civil VARCHAR(10),
-@cantFami INT)
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id INT,@direc VARCHAR(100),
+ @tel INT, @mail VARCHAR(255), @sexo char, @civil VARCHAR(10),@cantFami INT,@plan INT)
 AS
 BEGIN
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes
-SET nombre = @nombre, apellido  = @apellido , documento = @doc, direccion = @direc, telefono = @tel, email = @mail, sexo = @sexo, 
-estadoCivil = @civil, cantFamiliares = @cantFami WHERE id = @id
+SET direccion = @direc, telefono = @tel, email = @mail, sexo = @sexo, 
+estadoCivil = @civil, cantFamiliares = @cantFami,planes = @plan WHERE id = @id
 END
 GO
 
