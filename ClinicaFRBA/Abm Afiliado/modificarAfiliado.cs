@@ -88,8 +88,9 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btBuscar_Click_1(object sender, EventArgs e)
         {
             BuscarAfiliados form = new BuscarAfiliados();
-            form.formAnterior = this;
+
             form.ShowDialog();
+            afiliado = form.afiliadoBuscado;
             if (afiliado.id != -1)
             {
                 txApellido.Text = afiliado.apellido;

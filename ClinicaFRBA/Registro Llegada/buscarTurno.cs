@@ -31,7 +31,7 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (txApellido.Text.Trim() != "" || txNombre.Text.Trim() != "" || txEspecialidad.Text.Trim() != "")
+            if (txApellido.Text.Trim() != "" || txNombre.Text.Trim() != "" || txEspecialidad.Text.Trim() != "" || idText.Text.Trim() != "")
             {
                 this.dataGridView1.DataSource = TurnosManager.BuscarTurnos(txApellido.Text.Trim(), txNombre.Text.Trim(),txEspecialidad.Text.Trim(),idText.Text.Trim());
                 btSeleccionar.Show();
