@@ -93,7 +93,6 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox2);
-            this.Enabled = false;
             this.Name = "Principal";
             this.Text = "Registro de llegada";
             this.ResumeLayout(false);
