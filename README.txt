@@ -7,4 +7,4 @@ Integrantes:
 - Casarini, Yamila 152.643-1
 - Janin, Francisco 152.280-2
 - Pebes, Maria Luz 152.451-3
-Mail de Responsable: yamilacasarini@gmail.com
+Mail de Responsable: fransiscoj.iglesias@hotmail.com
