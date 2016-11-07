@@ -39,7 +39,6 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void button1_Click(object sender, EventArgs e)
         {
-           
         }
     }
 }
