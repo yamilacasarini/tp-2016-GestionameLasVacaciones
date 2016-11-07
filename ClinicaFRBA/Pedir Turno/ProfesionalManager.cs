@@ -79,9 +79,15 @@ namespace ClinicaFrba.Pedir_Turno
             List<DateTime> turnosNoDisponibles = new List<DateTime>();
             List<DateTime> turnosAMostrar = new List<DateTime>();
 
-            while (reader2.Read())
+            try
             {
-                turnosNoDisponibles.Add(Convert.ToDateTime(reader2[0]));
+                while (reader2.Read())
+                {
+                    turnosNoDisponibles.Add(Convert.ToDateTime(reader2[0]));
+                }
+            }
+            catch (Exception)
+            {
             }
 
             reader2.Close();
