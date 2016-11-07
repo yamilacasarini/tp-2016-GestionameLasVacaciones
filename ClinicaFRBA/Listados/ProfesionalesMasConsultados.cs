@@ -12,8 +12,10 @@ namespace ClinicaFrba.Listados
 {
     public partial class ProfesionalesMasConsultados : Form
     {
+        DateTime diaSeleccionado;
         public ProfesionalesMasConsultados(DateTime dia)
         {
+            diaSeleccionado = dia;
             InitializeComponent();
             llenarPlanes();
         }
@@ -32,7 +34,7 @@ namespace ClinicaFrba.Listados
         private void button1_Click(object sender, EventArgs e)
         {
              Server server = Server.getInstance();
-            SqlDataReader reader = server.query("select  * from GESTIONAME_LAS_VACACIONES.getTop5Profesionales('" + fecha.ToString() + "','" + fecha.AddMonths(6).ToString() + "')");
+            SqlDataReader reader = server.query("select  * from GESTIONAME_LAS_VACACIONES.getTop5Profesionales('" + diaSeleccionado.ToString() + "','" + diaSeleccionado.AddMonths(6).ToString() + "')");
             List<ProfesionalesPorConsulta> especialidades = new List<ProfesionalesPorConsulta>();
             while (reader.Read())
             {

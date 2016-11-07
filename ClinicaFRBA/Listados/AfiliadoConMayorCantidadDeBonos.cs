@@ -28,6 +28,8 @@ namespace ClinicaFrba.Listados
                 afiliado.cantFamiliares = Convert.ToInt32(reader["Cantidad de familiares"]);
                 afiliados.Add(afiliado);
             }
+
+            reader.Close();
             dataGridView1.DataSource = afiliados;
         }
     }

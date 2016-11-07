@@ -14,17 +14,23 @@ namespace ClinicaFrba.Listados
     {
         public EspecialidadesConMasConsultas(DateTime fecha)
         {
-            InitializeComponent();
-            Server server = Server.getInstance();
-            SqlDataReader reader = server.query("select  * from GESTIONAME_LAS_VACACIONES.topDeEspecialidadesConMasConsultas('" + fecha.ToString() + "','" + fecha.AddMonths(6).ToString() + "')");
-            List<String> especialidades = new List<string>();
-            while (reader.Read())
+            try
             {
-                String nombreDeEspecialidad = reader["descripcion"].ToString();
-                especialidades.Add(nombreDeEspecialidad);
+                InitializeComponent();
+                Server server = Server.getInstance();
+                SqlDataReader reader = server.query("select  * from GESTIONAME_LAS_VACACIONES.topDeEspecialidadesConMasConsultas('" + fecha.ToString() + "','" + fecha.AddMonths(6).ToString() + "')");
+                List<String> especialidades = new List<string>();
+                while (reader.Read())
+                {
+                    String nombreDeEspecialidad = reader[0].ToString();
+                    especialidades.Add(nombreDeEspecialidad);
+                }
+                reader.Close();
+                dataGridView1.DataSource = especialidades;
             }
-            reader.Close();
-            dataGridView1.DataSource = especialidades;
+            catch (Exception ex) {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
