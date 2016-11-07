@@ -523,7 +523,8 @@ GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre varchar(20),@apellido varchar(20), @numAfiliado int )
 returns table as
-return select * from GESTIONAME_LAS_VACACIONES.Pacientes where @numAfiliado <> -1 and  id = @numAfiliado and baja =0																or @numAfiliado = -1 and  nombre  like @nombre and apellido like @apellido AND baja = 0
+return select * from GESTIONAME_LAS_VACACIONES.Pacientes where @numAfiliado <> -1 and  id = @numAfiliado and baja =0																
+or @numAfiliado = -1 and  nombre  like @nombre and apellido like @apellido AND baja = 0
 GO	
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.joinearEspecialidadYProfesional()
 returns table 
@@ -533,7 +534,7 @@ ON e.idProfesional = p.id
 go
 
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarProfesionales(@nombre varchar(20),@apellido varchar(20), @especialidad varchar(20), @matricula int )
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarProfesionales(@nombre varchar(20),@apellido varchar(20), @especialidad varchar(255), @matricula int )
 returns table 
 as 
 return select idProf, GESTIONAME_LAS_VACACIONES.getDescEspecialidad(idEsp) as especialidad, nombre, apellido from GESTIONAME_LAS_VACACIONES.joinearEspecialidadYProfesional() a
