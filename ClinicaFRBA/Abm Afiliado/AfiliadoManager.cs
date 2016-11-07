@@ -29,6 +29,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     afiliado.direccion = reader["direccion"].ToString();
                     afiliado.telefono = Convert.ToInt32(reader["telefono"]);
                     afiliado.email = reader["email"].ToString();
+                    afiliado.servicio = Convert.ToInt32(reader["planes"]);
                     afiliado.fechaNacimiento = Convert.ToDateTime(reader["fechaNacimiento"]);
                     afiliado.sexo = reader["sexo"].ToString();
                     afiliado.estadoCivil = reader["estadoCivil"].ToString();
