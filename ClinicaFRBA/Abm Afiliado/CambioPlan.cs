@@ -18,7 +18,7 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             InitializeComponent();
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT DISTINCT descripcion FROM GESTIONAME_LAS_VACACIONES.Servicio");
+            SqlDataReader reader = server.query("SELECT DISTINCT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes");
 
             while (reader.Read())
             {
@@ -54,6 +54,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 }
             }
             catch(SqlException ex){
+                MessageBox.Show(ex.Message);
                 this.Close();
             }
         }

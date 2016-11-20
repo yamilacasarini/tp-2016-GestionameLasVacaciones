@@ -517,15 +517,15 @@ AS
 			WHERE @idAfiliado = p.id) 
 END
 GO
-
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdPlanMedico (@descripcion VARCHAR(30))
 RETURNS INT 
 AS
  BEGIN 
- RETURN (SELECT id FROM GESTIONAME_LAS_VACACIONES.Planes s
+ RETURN (SELECT s.id FROM GESTIONAME_LAS_VACACIONES.Planes s
 			WHERE @descripcion = s.descripcion) 
 END
 GO
+select * from GESTIONAME_LAS_VACACIONES.getIdPlanMedico("Plan medico 110")
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre varchar(20),@apellido varchar(20), @numAfiliado int )
 returns table as
@@ -738,15 +738,16 @@ SET direccion = @direc, telefono = @tel, email = @mail, sexo = @sexo,
 estadoCivil = @civil, cantFamiliares = @cantFami,planes = @plan WHERE id = @id
 END
 GO
-
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cambioPlan(@idPaciente INT,@descripcionPlan VARCHAR(30), @motivo VARCHAR(50))
 AS
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Modificaciones(idPaciente,idPlan,motivo)
 VALUES(@idPaciente,GESTIONAME_LAS_VACACIONES.getIdPlanMedico(@descripcionPlan),@motivo)
+UPDATE GESTIONAME_LAS_VACACIONES.Pacientes
+SET planes = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descripcionPlan)
+WHERE id = @idPaciente
 END
 GO
-
 --////////////////////////////////////--
 --ABM FUNCIONALIDADES A ROL --
 

@@ -104,8 +104,9 @@ namespace ClinicaFrba.Abm_Afiliado
         public static void cambioPlan(int id, string plan, string motivo)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.cambioPlan" + id +
-                ",'" + plan + "','" + motivo + "'");
+            String query = "EXEC GESTIONAME_LAS_VACACIONES.cambioPlan " + id +
+                ",'" + plan + "','" + motivo + "'";
+            SqlDataReader reader = server.query(query);
             reader.Close();
         }
         public static void altaAfiliado(string nombre,string apellido,int documento,string direccion,int telefono,
