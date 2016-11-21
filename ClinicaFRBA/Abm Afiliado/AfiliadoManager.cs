@@ -45,8 +45,17 @@ namespace ClinicaFrba.Abm_Afiliado
             algo = '%' + algo +'%';
         }
 
- 
 
+        public static Boolean noTieneTurnosSinCancelar(int idAfiliado)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSegunId( '" + idAfiliado + "' )");
+            bool pudoLeer = reader.Read();
+             reader.Close();
+            if (!pudoLeer)
+                return true;
+            return false;
+        }
         public static void ModificarAfiliado(int id,String direccion, int telefono, String mail,
             string sexo, String estadoCivil, int CantidadFamiliares,int idPlan)
         {

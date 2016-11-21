@@ -30,6 +30,7 @@ IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.Modificaciones', N'U') IS NOT NULL
 DROP TABLE GESTIONAME_LAS_VACACIONES.Modificaciones
 GO
 
+
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.ComprasBonos', N'U') IS NOT NULL 
 DROP TABLE GESTIONAME_LAS_VACACIONES.ComprasBonos
 GO
@@ -299,9 +300,10 @@ dni INT
 GO
 
 insert into #ConsultasTemporal(id,fecha,idBono,fechaBono,precioBono,sintomas,diagnostico,dni)
-SELECT	 Turno_Numero, Turno_Fecha,Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion,Plan_Med_Precio_Bono_Consulta, 
+SELECT	Turno_Numero, Turno_Fecha,Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion,Plan_Med_Precio_Bono_Consulta, 
 Consulta_Sintomas,Consulta_Enfermedades, Paciente_Dni
 FROM gd_esquema.Maestra
+
 INSERT INTO #PacienteTemporal (nombre,apellido,dni,direccion,telefono,email,fechaNacimiento,idPlan,descripcionPlan,precioBono,idTurno,fechaTurno,fechaBono,idBono)
 SELECT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direccion, Paciente_Telefono, Paciente_Mail,Paciente_Fecha_Nac,
 				Plan_Med_Codigo,Plan_Med_Descripcion,Plan_Med_Precio_Bono_Consulta, Turno_Numero,Turno_Fecha ,Compra_Bono_Fecha,Bono_Consulta_Numero
@@ -310,6 +312,7 @@ SELECT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direccion, Paci
 INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(nombre,apellido,direccion,documento,email,fechaNacimiento,telefono,planes)
 SELECT  nombre,apellido,direccion,dni,email,fechaNacimiento,telefono ,idPlan
 from #PacienteTemporal group by nombre,apellido,direccion,dni,email,fechaNacimiento,telefono,idPlan
+
 
 INSERT INTO #TemporalProfesional (consultaEnfermedad,consultaSintoma,especialidadDescripcion,especialidadDescripcion2,fechaTurno,
 						idEspecialidad,idEspecialidad2,idTurno,medicoApellido,medicoDni,medicoMail,medicoNacimiento,medicoNombre,medicoTelefono,medicoDir)
@@ -367,11 +370,11 @@ SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional,especialidad, fecha, idAgenda)
 	select DISTINCT c.id, pa.id, p.id ,t.especialidadDescripcion, c.fecha, a.id
 	FROM #ConsultasTemporal c join GESTIONAME_LAS_VACACIONES.Pacientes pa on pa.documento = c.dni
-	, #TemporalProfesional t , GESTIONAME_LAS_VACACIONES.Profesionales p, 
-	GESTIONAME_LAS_VACACIONES.Agendas a
-	WHERE c.id  = t.idTurno and t.medicoDni  =p.documento and p.id = a.idProfesional
+	JOIN #TemporalProfesional t ON c.id = t.idTurno JOIN GESTIONAME_LAS_VACACIONES.Profesionales p
+	ON t.medicoDni = p.documento JOIN GESTIONAME_LAS_VACACIONES.Agendas a ON a.idProfesional = p.id
 	group by c.id, pa.id, p.id , c.fecha, t.especialidadDescripcion, a.id, c.idBono
 	HAVING PA.ID IS NOT NULL AND c.idBono IS NOT NULL
+
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Especialidades(descripcion, tipoEspecialidad)
 	SELECT DISTINCT especialidadDescripcion, idEspecialidad
@@ -387,9 +390,10 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional(idEspecialidad,
 	on esp.descripcion = p.especialidadDescripcion
 	
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad) 
-SELECT p.id, e.idProfesional FROM GESTIONAME_LAS_VACACIONES.Profesionales p 
+SELECT DISTINCT p.id, e.idProfesional FROM GESTIONAME_LAS_VACACIONES.Profesionales p 
 JOIN GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e
 ON p.id = e.idProfesional
+
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan)
 	SELECT c.idBono, p.id, m.id from #ConsultasTemporal c

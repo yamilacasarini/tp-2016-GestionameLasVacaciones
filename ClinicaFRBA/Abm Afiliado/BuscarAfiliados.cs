@@ -45,6 +45,11 @@ namespace ClinicaFrba.Abm_Afiliado
                 afiliadoBuscado.servicio = Convert.ToInt32(dataGridView1.CurrentRow.Cells[13].Value);
                 if (abrirCancelacion == 1)
                 {
+                    if(AfiliadoManager.noTieneTurnosSinCancelar(afiliadoBuscado.id))
+                    {
+                        MessageBox.Show("El Afiliado no tiene turnos para cancelar");
+                        return;
+                    }
                     Cancelar_Atencion.CancelacionAfiliado cancelacion = new Cancelar_Atencion.CancelacionAfiliado(afiliadoBuscado.id);
                     cancelacion.ShowDialog();
                 }
