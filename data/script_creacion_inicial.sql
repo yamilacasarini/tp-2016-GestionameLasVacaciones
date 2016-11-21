@@ -366,16 +366,18 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional,especialidad, fecha, idAgenda)
-	select c.id, pa.id, p.id ,t.especialidadDescripcion, c.fecha, a.id
+	select DISTINCT c.id, pa.id, p.id ,t.especialidadDescripcion, c.fecha, a.id
 	FROM #ConsultasTemporal c join GESTIONAME_LAS_VACACIONES.Pacientes pa on pa.documento = c.dni
-	, #TemporalProfesional t , GESTIONAME_LAS_VACACIONES.Profesionales p 
-	JOIN GESTIONAME_LAS_VACACIONES.Agendas a
-	ON a.idProfesional = p.id
-	JOIN GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e
-	ON a.idEspecialidad = e.idEspecialidad
-	WHERE c.id  = t.idTurno and t.medicoDni  =p.documento
-	group by c.id, pa.id, p.id , c.fecha, t.especialidadDescripcion, a.id
-	HAVING PA.ID IS NOT NULL
+	, #TemporalProfesional t , GESTIONAME_LAS_VACACIONES.Profesionales p, 
+	GESTIONAME_LAS_VACACIONES.Agendas a
+
+	WHERE c.id  = t.idTurno and t.medicoDni  =p.documento and p.id = a.idProfesional
+	group by c.id, pa.id, p.id , c.fecha, t.especialidadDescripcion, a.id, c.idBono
+	HAVING PA.ID IS NOT NULL AND c.idBono IS NOT NULL
+
+SELECT * FROM GESTIONAME_LAS_VACACIONES.Agendas
+SELECT * FROM GESTIONAME_LAS_VACACIONES.turnos
+SELECT * FROM #ConsultasTemporal WHERE id = 56565
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Especialidades(descripcion, tipoEspecialidad)
 	SELECT DISTINCT especialidadDescripcion, idEspecialidad
@@ -392,13 +394,13 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional(idEspecialidad,
 
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan)
-	SELECT c.idBono, p.id, m.idPlan from #ConsultasTemporal c join (GESTIONAME_LAS_VACACIONES.Modificaciones m 
+	SELECT c.idBono, p.id, m.id from #ConsultasTemporal c
+	join (GESTIONAME_LAS_VACACIONES.Planes m 
 	join GESTIONAME_LAS_VACACIONES.Pacientes p
-	on p.id = m.id)
+	on p.planes = m.id)
 	on p.documento	 = c.dni 
 	where c.idBono is not null
-	group by c.idBono, p.id, m.idPlan 
-	
+	group by c.idBono, p.id, m.id 
 
 --INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idProfesional, fecha, especialidad) VALUES (0, 3, '2016-04-04 07:30:00.000', 6)
 
