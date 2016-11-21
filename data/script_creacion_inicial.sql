@@ -364,16 +364,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (7,1)
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (8,1)
 
-	
-SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional,especialidad, fecha, idAgenda)
-	select DISTINCT c.id, pa.id, p.id ,t.especialidadDescripcion, c.fecha, a.id
-	FROM #ConsultasTemporal c join GESTIONAME_LAS_VACACIONES.Pacientes pa on pa.documento = c.dni
-	JOIN #TemporalProfesional t ON c.id = t.idTurno JOIN GESTIONAME_LAS_VACACIONES.Profesionales p
-	ON t.medicoDni = p.documento JOIN GESTIONAME_LAS_VACACIONES.Agendas a ON a.idProfesional = p.id
-	group by c.id, pa.id, p.id , c.fecha, t.especialidadDescripcion, a.id, c.idBono
-	HAVING PA.ID IS NOT NULL AND c.idBono IS NOT NULL
 
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Especialidades(descripcion, tipoEspecialidad)
@@ -394,6 +385,16 @@ SELECT DISTINCT p.id, e.idProfesional FROM GESTIONAME_LAS_VACACIONES.Profesional
 JOIN GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e
 ON p.id = e.idProfesional
 
+	
+SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
+
+INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional,especialidad, fecha, idAgenda)
+	select DISTINCT c.id, pa.id, p.id ,t.especialidadDescripcion, c.fecha, a.id
+	FROM #ConsultasTemporal c join GESTIONAME_LAS_VACACIONES.Pacientes pa on pa.documento = c.dni
+	JOIN #TemporalProfesional t ON c.id = t.idTurno JOIN GESTIONAME_LAS_VACACIONES.Profesionales p
+	ON t.medicoDni = p.documento JOIN GESTIONAME_LAS_VACACIONES.Agendas a ON a.idProfesional = p.id
+	group by c.id, pa.id, p.id , c.fecha, t.especialidadDescripcion, a.id, c.idBono
+	HAVING PA.ID IS NOT NULL AND c.idBono IS NOT NULL
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan)
 	SELECT c.idBono, p.id, m.id from #ConsultasTemporal c
