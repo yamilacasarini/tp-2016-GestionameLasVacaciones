@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace ClinicaFrba.AbmRol
 {
@@ -16,6 +17,7 @@ namespace ClinicaFrba.AbmRol
         {
             InitializeComponent();
             this.label4.Text = "";
+            rellenarListaConRoles(Convert.ToString(login.usuario));
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -27,6 +29,16 @@ namespace ClinicaFrba.AbmRol
         {
 
         }
+        public void rellenarListaConRoles(String id)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.RolesxUsuario u JOIN GESTIONAME_LAS_VACACIONES.Roles r ON u.idRol = r.id WHERE u.idUsuario = " + "'" + id.ToString() + "'");
+            while (reader.Read())
+            {
+                txtNombre.Items.Add(reader["descripcion"].ToString());
+            }
+            reader.Close();
+        }
 
         private void txNombre_TextChanged(object sender, EventArgs e)
         {
@@ -36,22 +48,13 @@ namespace ClinicaFrba.AbmRol
 
         private void button1_Click(object sender, EventArgs e)
         {
-               if (String.IsNullOrEmpty(txtNombre.Text.Trim()))
-                {
-                    MessageBox.Show("Llene el campo para realizar la busqueda");
-                    return;
-                }
-               else
-               {
-
-                   if (!RolManager.existeElRol(txtNombre.Text.Trim()))
-                   {
-                       MessageBox.Show("Error, el Rol buscado no existe");
-                       txtNombre.Clear();
-                       return;
-                   }
+              
+            if(!RolManager.existeElRol(txtNombre.Text.Trim()))
+            {
+                MessageBox.Show("Error, el rol buscado ya no existe");
+                return;
             
-             
+            }
                     this.dataGridView1.DataSource = RolManager.mostrarFuncionalidades(txtNombre.Text.Trim());
                     this.dataGridView2.DataSource = RolManager.obtenerFuncionalidadesNoAgregadasEnRol(txtNombre.Text.Trim());
                     int baja = RolManager.obtenerBaja(txtNombre.Text.Trim());
@@ -64,7 +67,7 @@ namespace ClinicaFrba.AbmRol
                         if (baja == 1)
                             this.label4.Text = "INHABILITADO";
                     }
-                }
+                
             
            
 
@@ -159,6 +162,7 @@ namespace ClinicaFrba.AbmRol
                 txtNombre.Text = txtNuevoNombre.Text.Trim();
                 this.dataGridView1.DataSource = RolManager.mostrarFuncionalidades(txtNombre.Text.Trim());
                 this.dataGridView2.DataSource = RolManager.obtenerFuncionalidadesNoAgregadasEnRol(txtNombre.Text.Trim());
+                rellenarListaConRoles(Convert.ToString(login.usuario));
                 txtNuevoNombre.Clear();
                 
             }
@@ -167,6 +171,11 @@ namespace ClinicaFrba.AbmRol
         }
 
         private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ModificacionRol_Load(object sender, EventArgs e)
         {
 
         }

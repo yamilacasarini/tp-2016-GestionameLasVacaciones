@@ -43,7 +43,7 @@ namespace ClinicaFrba.AbmRol
 
         private void BajaRol_Load(object sender, EventArgs e)
         {
-
+            
         }
         public void rellenarListaConRoles(String id)
         {

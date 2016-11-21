@@ -15,7 +15,7 @@ namespace ClinicaFrba.AbmRol
         public AltaRol()
         {
             InitializeComponent();
-            this.dataGridView1.DataSource = RolManager.mostrarTodasLasFuncionalidades();
+            this.dataGridView1.DataSource = RolManager.mostrarTodasLasFuncionalidades(); //MUESTRA TODAS LAS FUNCIONALIDADES DEL SISTEMA
         }
 
         private void button2_Click(object sender, EventArgs e)

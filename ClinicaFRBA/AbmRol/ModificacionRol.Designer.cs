@@ -32,7 +32,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
-            this.txtNombre = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
@@ -42,6 +41,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.txtNuevoNombre = new System.Windows.Forms.TextBox();
             this.btnModificar = new System.Windows.Forms.Button();
+            this.txtNombre = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -88,14 +88,6 @@
             this.button1.Text = "Buscar";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // txtNombre
-            // 
-            this.txtNombre.Location = new System.Drawing.Point(172, 26);
-            this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(168, 20);
-            this.txtNombre.TabIndex = 52;
-            this.txtNombre.TextChanged += new System.EventHandler(this.txtNombre_TextChanged);
             // 
             // button2
             // 
@@ -185,11 +177,21 @@
             this.btnModificar.UseVisualStyleBackColor = true;
             this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
             // 
+            // txtNombre
+            // 
+            this.txtNombre.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.txtNombre.FormattingEnabled = true;
+            this.txtNombre.Location = new System.Drawing.Point(172, 25);
+            this.txtNombre.Name = "txtNombre";
+            this.txtNombre.Size = new System.Drawing.Size(168, 21);
+            this.txtNombre.TabIndex = 62;
+            // 
             // ModificacionRol
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(722, 379);
+            this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.btnModificar);
             this.Controls.Add(this.txtNuevoNombre);
             this.Controls.Add(this.label5);
@@ -199,13 +201,13 @@
             this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.txtNombre);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "ModificacionRol";
             this.Text = "ModificacionRol";
+            this.Load += new System.EventHandler(this.ModificacionRol_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
@@ -219,7 +221,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox txtNombre;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
@@ -230,5 +231,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtNuevoNombre;
         private System.Windows.Forms.Button btnModificar;
+        private System.Windows.Forms.ComboBox txtNombre;
     }
 }
