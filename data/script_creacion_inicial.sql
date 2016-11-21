@@ -189,10 +189,10 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Agendas(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesionales(id),
   idEspecialidad INT REFERENCES GESTIONAME_LAS_VACACIONES.Especialidades(id),
-  fechaInicio DATETIME NOT NULL,   -- ACA PARA FECHA DEL AÑO QUE TRABAJA Y HORARIO
-  fechaFinal DATETIME NOT NULL,
-  diaInicio INT,   -- LUNES 1 MARTES 2 MIERCOLES 3 JUEVES 4 VIERNES 5
-  diaFin INT,
+  fechaInicio DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,   -- ACA PARA FECHA DEL AÑO QUE TRABAJA Y HORARIO
+  fechaFinal DATETIME NOT NULL DEFAULT '2016-12-12 11:00:00.000',
+  diaInicio INT DEFAULT 1,   -- LUNES 1 MARTES 2 MIERCOLES 3 JUEVES 4 VIERNES 5
+  diaFin INT DEFAULT 6,
   baja INTEGER DEFAULT 0,
   motivo VARCHAR(255),
   )
@@ -221,6 +221,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesionales(id),
   especialidad VARCHAR(255),
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
+  idAgenda INT REFERENCES GESTIONAME_LAS_VACACIONES.Agendas(id),
   fecha DATETIME NOT NULL,
   baja INT default 0,
   tipoCancelacion INT, -- 0 Paciente, 1 Profesional
@@ -320,7 +321,10 @@ SELECT medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNomb
 FROM #TemporalProfesional where medicoApellido is not null 
 group by medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNombre,medicoTelefono 
 
-
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad) 
+SELECT p.id, e.idProfesional FROM GESTIONAME_LAS_VACACIONES.Profesionales p 
+JOIN GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e
+ON p.id = e.idProfesional
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Administrativo')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Afiliado')
@@ -361,21 +365,23 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol
 	
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional,especialidad, fecha)
-	select c.id, pa.id, p.id ,t.especialidadDescripcion, c.fecha
+INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional,especialidad, fecha, idAgenda)
+	select c.id, pa.id, p.id ,t.especialidadDescripcion, c.fecha, a.id
 	FROM #ConsultasTemporal c join GESTIONAME_LAS_VACACIONES.Pacientes pa on pa.documento = c.dni
-	, #TemporalProfesional t , GESTIONAME_LAS_VACACIONES.Profesionales p
+	, #TemporalProfesional t , GESTIONAME_LAS_VACACIONES.Profesionales p 
+	JOIN GESTIONAME_LAS_VACACIONES.Agendas a
+	ON a.idProfesional = p.id
+	JOIN GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e
+	ON a.idEspecialidad = e.idEspecialidad
 	WHERE c.id  = t.idTurno and t.medicoDni  =p.documento
-	group by c.id, pa.id, p.id , c.fecha, t.especialidadDescripcion
+	group by c.id, pa.id, p.id , c.fecha, t.especialidadDescripcion, a.id
 	HAVING PA.ID IS NOT NULL
-	
-	
-INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, fecha,  idTurno,diagnostico,sintomas)
-	SELECT t.idBono, t.fecha,t.id, t.diagnostico,t.sintomas from  #ConsultasTemporal t where t.fecha is not null and t.id is not null
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Especialidades(descripcion, tipoEspecialidad)
 	SELECT DISTINCT especialidadDescripcion, idEspecialidad
 	FROM #TemporalProfesional
+	WHERE especialidadDescripcion IS NOT NULL
+
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional(idEspecialidad, idProfesional)
 	SELECT DISTINCT esp.id, e.id FROM #TemporalProfesional p 
@@ -394,7 +400,6 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan)
 	group by c.idBono, p.id, m.idPlan 
 	
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin) VALUES  (3,6, '2016-03-03 07:00:00.000', '2016-12-12 11:00:00.000', 2, 6)
 --INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idProfesional, fecha, especialidad) VALUES (0, 3, '2016-04-04 07:30:00.000', 6)
 
 GO
