@@ -32,7 +32,8 @@ namespace ClinicaFrba
                 {
                     Server server = Server.getInstance();
                         StringBuilder Sb = new StringBuilder();
-
+                        int intentos = 0; 
+                        String pass = " ";
                         using (SHA256 hash = SHA256Managed.Create())
                         {
                             Encoding enc = Encoding.UTF8;
@@ -43,8 +44,25 @@ namespace ClinicaFrba
                         }
                         try
                         {
-                            server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + Sb.ToString() + "'");
-                            new ValidacionDeRol(txtUsuario.Text.Trim()).ShowDialog();
+                            SqlDataReader reader = server.query("SELECT intentos, pass FROM GESTIONAME_LAS_VACACIONES.Usuarios WHERE usuario LIKE '" + txtUsuario.Text.Trim() + "'");
+                            while (reader.Read())
+                            {
+                                intentos = Convert.ToInt32(reader[0]);
+                                pass = reader[1].ToString(); 
+                            }
+                            reader.Close();
+
+                            //Se desbloquea si vuelve a ingresar bien la contraseña 
+                            if (intentos >= 3 && pass != Sb.ToString())
+                            {
+                                System.Windows.Forms.MessageBox.Show("Usuario bloqueado");
+                                this.Close();
+                            }
+                            else
+                            {
+                                server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + Sb.ToString() + "'");
+                                new ValidacionDeRol(txtUsuario.Text.Trim()).ShowDialog();
+                            }
                         }
                         catch (SqlException)
                         {
