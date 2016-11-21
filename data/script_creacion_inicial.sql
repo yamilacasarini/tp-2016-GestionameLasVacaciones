@@ -151,6 +151,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Planes(
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
   id INT PRIMARY KEY IDENTITY(1,1),
+  usuario VARCHAR (255) REFERENCES GESTIONAME_LAS_VACACIONES.Usuarios(usuario),
   nombre NVARCHAR(50) NOT NULL ,
   apellido NVARCHAR(50) NOT NULL ,
   documento INT NOT NULL,
@@ -163,7 +164,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
   estadoCivil VARCHAR(10),
   cantFamiliares INT DEFAULT 0,
   cantConsultas INT DEFAULT 0,
-  planes INTEGER ,--INT REFERENCES GESTIONAME_LAS_VACACIONES.Planes(id)
+  planes INTEGER,
   baja INT DEFAULT 0,
   fechaBaja DATE,
    )
@@ -171,6 +172,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
 
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Profesionales (
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
+  usuario VARCHAR (255) REFERENCES GESTIONAME_LAS_VACACIONES.Usuarios(usuario),
   nombre NVARCHAR(50) NOT NULL ,
   apellido VARCHAR(50) NOT NULL,
   tipoDocumento VARCHAR,
@@ -211,30 +213,33 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Modificaciones(
   motivo VARCHAR(50),
   fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
    )
-CREATE TABLE GESTIONAME_LAS_VACACIONES.Bonos(
-  id INTEGER PRIMARY KEY,
-  idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
-  idPlan INT REFERENCES GESTIONAME_LAS_VACACIONES.Planes(id),
-  usado INT DEFAULT 0 --0 Sin usar, 1 usado
-   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   id INTEGER PRIMARY KEY IDENTITY (1,1),
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesionales(id),
   especialidad VARCHAR(255),
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   idAgenda INT REFERENCES GESTIONAME_LAS_VACACIONES.Agendas(id),
-  fecha DATETIME NOT NULL,
+  fecha DATETIME,
   baja INT default 0,
   tipoCancelacion INT, -- 0 Paciente, 1 Profesional
   motivo VARCHAR(255),
   )
 
   CREATE INDEX ix1_turnos ON GESTIONAME_LAS_VACACIONES.Turnos (idPaciente)
+
+  CREATE TABLE GESTIONAME_LAS_VACACIONES.Bonos(
+  id INTEGER PRIMARY KEY,
+  idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
+  idPlan INT REFERENCES GESTIONAME_LAS_VACACIONES.Planes(id),
+  usado INT DEFAULT 0, --0 Sin usar, 1 usado
+  idCompraBono INT REFERENCES GESTIONAME_LAS_VACACIONES.ComprasBonos(id),
+  idTurno INT REFERENCES GESTIONAME_LAS_VACACIONES.Turnos(id)
+   )
  
 CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultasMedicas(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
-  idBono INT, --REFERENCES GESTIONAME_LAS_VACACIONES.Bonos(id),
-  fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  idBono INT REFERENCES GESTIONAME_LAS_VACACIONES.Bonos(id),
+  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
   diagnostico VARCHAR(255),
   sintomas VARCHAR(255),
   idTurno INT REFERENCES GESTIONAME_LAS_VACACIONES.Turnos(id),
@@ -295,13 +300,15 @@ fechaBono DATETIME,
 precioBono INT,
 sintomas varchar(50),
 diagnostico varchar(50),
-dni INT
+dni INT,
+medicoDNI int,
+especialidad varchar(255)
 )
 GO
 
-insert into #ConsultasTemporal(id,fecha,idBono,fechaBono,precioBono,sintomas,diagnostico,dni)
+insert into #ConsultasTemporal(id,fecha,idBono,fechaBono,precioBono,sintomas,diagnostico,dni, medicoDNI, especialidad)
 SELECT	Turno_Numero, Turno_Fecha,Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion,Plan_Med_Precio_Bono_Consulta, 
-Consulta_Sintomas,Consulta_Enfermedades, Paciente_Dni
+Consulta_Sintomas,Consulta_Enfermedades, Paciente_Dni, Medico_Dni, Especialidad_Descripcion
 FROM gd_esquema.Maestra
 
 INSERT INTO #PacienteTemporal (nombre,apellido,dni,direccion,telefono,email,fechaNacimiento,idPlan,descripcionPlan,precioBono,idTurno,fechaTurno,fechaBono,idBono)
@@ -324,9 +331,6 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Profesionales(apellido,direccion,documento
 SELECT medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNombre,medicoTelefono 
 FROM #TemporalProfesional where medicoApellido is not null 
 group by medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNombre,medicoTelefono 
-
-
-
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Administrativo')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Afiliado')
@@ -365,8 +369,6 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (8,1)
 
 
-
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.Especialidades(descripcion, tipoEspecialidad)
 	SELECT DISTINCT especialidadDescripcion, idEspecialidad
 	FROM #TemporalProfesional
@@ -381,32 +383,58 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional(idEspecialidad,
 	on esp.descripcion = p.especialidadDescripcion
 	
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad) 
-SELECT DISTINCT p.id, e.idProfesional FROM GESTIONAME_LAS_VACACIONES.Profesionales p 
+SELECT DISTINCT p.id, e.idEspecialidad FROM GESTIONAME_LAS_VACACIONES.Profesionales p 
 JOIN GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e
 ON p.id = e.idProfesional
+GO
 
-	
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descEspecialidad VARCHAR(100))
+RETURNS INTEGER
+AS
+BEGIN
+	DECLARE @retorno INTEGER
+	SELECT
+		@retorno = id
+	FROM 
+		GESTIONAME_LAS_VACACIONES.Especialidades
+	WHERE
+		descripcion = @descEspecialidad
+	RETURN @retorno;
+END
+GO
+
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional,especialidad, fecha, idAgenda)
-	select DISTINCT c.id, pa.id, p.id ,t.especialidadDescripcion, c.fecha, a.id
-	FROM #ConsultasTemporal c join GESTIONAME_LAS_VACACIONES.Pacientes pa on pa.documento = c.dni
-	JOIN #TemporalProfesional t ON c.id = t.idTurno JOIN GESTIONAME_LAS_VACACIONES.Profesionales p
-	ON t.medicoDni = p.documento JOIN GESTIONAME_LAS_VACACIONES.Agendas a ON a.idProfesional = p.id
-	group by c.id, pa.id, p.id , c.fecha, t.especialidadDescripcion, a.id, c.idBono
-	HAVING PA.ID IS NOT NULL AND c.idBono IS NOT NULL
+INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idPaciente, idProfesional, fecha, especialidad, idAgenda)
+SELECT DISTINCT c.id, pa.id, pr.id, c.fecha, c.especialidad, a.id FROM #ConsultasTemporal c
+JOIN GESTIONAME_LAS_VACACIONES.Pacientes pa
+ON c.dni = pa.documento
+JOIN GESTIONAME_LAS_VACACIONES.Profesionales pr
+ON pr.documento = c.medicoDNI
+JOIN GESTIONAME_LAS_VACACIONES.Agendas a
+ON a.idProfesional = pr.id 
+	AND a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(c.especialidad)
+WHERE c.id is not null
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan)
-	SELECT c.idBono, p.id, m.id from #ConsultasTemporal c
+INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan, idCompraBono, idTurno)
+	SELECT DISTINCT c.idBono, p.id, m.id, b.id, t.id from #ConsultasTemporal c
 	join (GESTIONAME_LAS_VACACIONES.Planes m 
 	join GESTIONAME_LAS_VACACIONES.Pacientes p
 	on p.planes = m.id)
 	on p.documento	 = c.dni 
+	JOIN GESTIONAME_LAS_VACACIONES.ComprasBonos b
+	ON b.idPaciente = p.id AND b.fecha = c.fechaBono
+	JOIN GESTIONAME_LAS_VACACIONES.Turnos t
+	ON t.id = c.id
 	where c.idBono is not null
-	group by c.idBono, p.id, m.id 
+	group by c.idBono, p.id, m.id, b.id, t.id
+GO
 
---INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idProfesional, fecha, especialidad) VALUES (0, 3, '2016-04-04 07:30:00.000', 6)
-
+INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, idTurno, fecha)
+SELECT b.id, c.id, c.fecha FROM #ConsultasTemporal c
+JOIN GESTIONAME_LAS_VACACIONES.Bonos b
+ON c.idBono = b.id
+WHERE c.fecha IS NOT NULL
 GO
 
 
@@ -451,20 +479,6 @@ RETURN @ret +1;
 end
 GO
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descEspecialidad VARCHAR(100))
-RETURNS INTEGER
-AS
-BEGIN
-	DECLARE @retorno INTEGER
-	SELECT
-		@retorno = id
-	FROM 
-		GESTIONAME_LAS_VACACIONES.Especialidades
-	WHERE
-		descripcion = @descEspecialidad
-	RETURN @retorno;
-END
-GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDescEspecialidad(@idEspecialidad int)
 RETURNS VARCHAR(200)
