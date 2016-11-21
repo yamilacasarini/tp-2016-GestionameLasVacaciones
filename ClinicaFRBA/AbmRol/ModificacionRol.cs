@@ -158,11 +158,11 @@ namespace ClinicaFrba.AbmRol
                     return;
                 }
                 RolManager.mofidicarNombre(txtNombre.Text.Trim(), txtNuevoNombre.Text.Trim());
-                MessageBox.Show("Nombre modificado exitosamente");
-                txtNombre.Text = txtNuevoNombre.Text.Trim();
+                MessageBox.Show("Nombre modificado exitosamente, vuelva a seleccionar un Rol");
+                txtNombre.Items.Clear();
+                rellenarListaConRoles(Convert.ToString(login.usuario));
                 this.dataGridView1.DataSource = RolManager.mostrarFuncionalidades(txtNombre.Text.Trim());
                 this.dataGridView2.DataSource = RolManager.obtenerFuncionalidadesNoAgregadasEnRol(txtNombre.Text.Trim());
-                rellenarListaConRoles(Convert.ToString(login.usuario));
                 txtNuevoNombre.Clear();
                 
             }
