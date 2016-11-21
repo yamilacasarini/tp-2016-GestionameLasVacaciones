@@ -227,8 +227,9 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   tipoCancelacion INT, -- 0 Paciente, 1 Profesional
   motivo VARCHAR(255),
   )
+
   CREATE INDEX ix1_turnos ON GESTIONAME_LAS_VACACIONES.Turnos (idPaciente)
-  
+ 
 CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultasMedicas(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   idBono INT, --REFERENCES GESTIONAME_LAS_VACACIONES.Bonos(id),
@@ -321,10 +322,8 @@ SELECT medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNomb
 FROM #TemporalProfesional where medicoApellido is not null 
 group by medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNombre,medicoTelefono 
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad) 
-SELECT p.id, e.idProfesional FROM GESTIONAME_LAS_VACACIONES.Profesionales p 
-JOIN GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e
-ON p.id = e.idProfesional
+
+
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Administrativo')
 INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Afiliado')
@@ -370,14 +369,9 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id,idPaciente, idProfesional,especi
 	FROM #ConsultasTemporal c join GESTIONAME_LAS_VACACIONES.Pacientes pa on pa.documento = c.dni
 	, #TemporalProfesional t , GESTIONAME_LAS_VACACIONES.Profesionales p, 
 	GESTIONAME_LAS_VACACIONES.Agendas a
-
 	WHERE c.id  = t.idTurno and t.medicoDni  =p.documento and p.id = a.idProfesional
 	group by c.id, pa.id, p.id , c.fecha, t.especialidadDescripcion, a.id, c.idBono
 	HAVING PA.ID IS NOT NULL AND c.idBono IS NOT NULL
-
-SELECT * FROM GESTIONAME_LAS_VACACIONES.Agendas
-SELECT * FROM GESTIONAME_LAS_VACACIONES.turnos
-SELECT * FROM #ConsultasTemporal WHERE id = 56565
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Especialidades(descripcion, tipoEspecialidad)
 	SELECT DISTINCT especialidadDescripcion, idEspecialidad
@@ -391,7 +385,11 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional(idEspecialidad,
 	on (p.medicoDni = e.documento and p.medicoNombre like e.nombre and p.medicoApellido like e.apellido)
 	join GESTIONAME_LAS_VACACIONES.Especialidades esp
 	on esp.descripcion = p.especialidadDescripcion
-
+	
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad) 
+SELECT p.id, e.idProfesional FROM GESTIONAME_LAS_VACACIONES.Profesionales p 
+JOIN GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e
+ON p.id = e.idProfesional
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan)
 	SELECT c.idBono, p.id, m.id from #ConsultasTemporal c
@@ -532,7 +530,7 @@ AS
 			WHERE @descripcion = s.descripcion) 
 END
 GO
-select * from GESTIONAME_LAS_VACACIONES.getIdPlanMedico("Plan medico 110")
+
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados(@nombre varchar(20),@apellido varchar(20), @numAfiliado int )
 returns table as
