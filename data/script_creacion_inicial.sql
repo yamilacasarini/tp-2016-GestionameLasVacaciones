@@ -758,24 +758,25 @@ END
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id INT,@direc VARCHAR(100),
- @tel INT, @mail VARCHAR(255), @sexo char, @civil VARCHAR(10),@cantFami INT,@plan INT)
+ @tel INT, @mail VARCHAR(255), @sexo char, @civil VARCHAR(10),@cantFami INT)
 AS
 BEGIN
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes
 SET direccion = @direc, telefono = @tel, email = @mail, sexo = @sexo, 
-estadoCivil = @civil, cantFamiliares = @cantFami,planes = @plan WHERE id = @id
+estadoCivil = @civil, cantFamiliares = @cantFami WHERE id = @id
 END
 GO
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cambioPlan(@idPaciente INT,@descripcionPlan VARCHAR(30), @motivo VARCHAR(50))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cambioPlan(@idPaciente INT,@idPlan INT, @motivo VARCHAR(50))
 AS
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Modificaciones(idPaciente,idPlan,motivo)
-VALUES(@idPaciente,GESTIONAME_LAS_VACACIONES.getIdPlanMedico(@descripcionPlan),@motivo)
+VALUES(@idPaciente,@idPlan,@motivo)
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes
-SET planes = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descripcionPlan)
+SET planes = @idPlan
 WHERE id = @idPaciente
 END
 GO
+
 --////////////////////////////////////--
 --ABM FUNCIONALIDADES A ROL --
 
