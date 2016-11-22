@@ -144,6 +144,43 @@
       <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
     <Compile Include="ConeccionSql.cs" />
+    <Compile Include="Listados\AfiliadoConMayorCantidadDeBonos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Listados\AfiliadoConMayorCantidadDeBonos.Designer.cs">
+      <DependentUpon>AfiliadoConMayorCantidadDeBonos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Listados\EspecialidadesCancelaciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Listados\EspecialidadesCancelaciones.Designer.cs">
+      <DependentUpon>EspecialidadesCancelaciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Listados\EspecialidadesConMasConsultas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Listados\EspecialidadesConMasConsultas.Designer.cs">
+      <DependentUpon>EspecialidadesConMasConsultas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Listados\Principal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Listados\Principal.Designer.cs">
+      <DependentUpon>Principal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Listados\ProfesionalesConMenosHoras.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Listados\ProfesionalesConMenosHoras.Designer.cs">
+      <DependentUpon>ProfesionalesConMenosHoras.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Listados\ProfesionalesMasConsultados.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Listados\ProfesionalesMasConsultados.Designer.cs">
+      <DependentUpon>ProfesionalesMasConsultados.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Listados\ProfesionalesPorConsulta.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
@@ -200,12 +237,6 @@
     </Compile>
     <Compile Include="login.Designer.cs">
       <DependentUpon>login.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Listados\Principal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Listados\Principal.Designer.cs">
-      <DependentUpon>Principal.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -268,6 +299,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Cancelar Atencion\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listados\EspecialidadesCancelaciones.resx">
+      <DependentUpon>EspecialidadesCancelaciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listados\Principal.resx">
+      <DependentUpon>Principal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listados\ProfesionalesMasConsultados.resx">
+      <DependentUpon>ProfesionalesMasConsultados.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pedir Turno\Confirmacion.resx">
       <DependentUpon>Confirmacion.cs</DependentUpon>

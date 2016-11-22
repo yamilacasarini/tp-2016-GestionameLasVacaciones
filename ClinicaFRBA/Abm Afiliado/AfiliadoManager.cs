@@ -57,7 +57,7 @@ namespace ClinicaFrba.Abm_Afiliado
             return false;
         }
         public static void ModificarAfiliado(int id,String direccion, int telefono, String mail,
-            string sexo, String estadoCivil, int CantidadFamiliares,int idPlan)
+            string sexo, String estadoCivil, int CantidadFamiliares)
         {
             Server server = Server.getInstance();
             string q = "EXEC GESTIONAME_LAS_VACACIONES.modificarPaciente " + id +
@@ -78,16 +78,7 @@ namespace ClinicaFrba.Abm_Afiliado
             reader.Close();
             return descripcion;
         }
-        public static String planMedico(int idServicio)
-        {
-            Server server = Server.getInstance();
 
-            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes WHERE id =" + idServicio.ToString());
-            reader.Read();
-            String descripcion = Convert.ToString(reader[0]);
-            reader.Close();
-            return descripcion;
-        }
         public static int idPlanMedico(String descripcion)
         {
             Server server = Server.getInstance();
