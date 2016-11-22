@@ -31,7 +31,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     afiliado.email = reader["email"].ToString();
                     afiliado.servicio = Convert.ToInt32(reader["planes"]);
                     afiliado.fechaNacimiento = Convert.ToDateTime(reader["fechaNacimiento"]);
-                    afiliado.sexo = reader["sexo"].ToString();
+                    afiliado.sexo = reader[9].ToString(); 
                     afiliado.estadoCivil = reader["estadoCivil"].ToString();
                     afiliado.cantFamiliares = Convert.ToInt32(reader["cantFamiliares"]);
                     afiliados.Add(afiliado);
@@ -60,14 +60,24 @@ namespace ClinicaFrba.Abm_Afiliado
             string sexo, String estadoCivil, int CantidadFamiliares,int idPlan)
         {
             Server server = Server.getInstance();
-            string q = "EXEC GESTIONAME_LAS_VACACIONES.modificarPaciente " + id.ToString() +
-                ",'" + direccion + "'," + telefono.ToString() + ",'" + mail + "','" + sexo.ToString() +
-                "','" + estadoCivil + "'," + CantidadFamiliares + "," + idPlan;
+            string q = "EXEC GESTIONAME_LAS_VACACIONES.modificarPaciente " + id +
+                ",'" + direccion + "'," + telefono + ",'" + mail + "','" + AfiliadoManager.genero(sexo) +
+                "','" + estadoCivil + "'," + CantidadFamiliares;
             SqlDataReader reader = server.query(q);
             reader.Close();
 
         }
 
+        public static String planMedico(int idServicio)
+        {
+            Server server = Server.getInstance();
+
+            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes WHERE id =" + idServicio.ToString());
+            reader.Read();
+            String descripcion = Convert.ToString(reader[0]);
+            reader.Close();
+            return descripcion;
+        }
         public static String planMedico(int idServicio)
         {
             Server server = Server.getInstance();
@@ -110,25 +120,27 @@ namespace ClinicaFrba.Abm_Afiliado
             reader.Close();
 
         }
-        public static void cambioPlan(int id, string plan, string motivo)
+        public static void cambioPlan(int id, string planMedico, string motivo)
         {
+            int plan = AfiliadoManager.idPlanMedico(planMedico);
             Server server = Server.getInstance();
             String query = "EXEC GESTIONAME_LAS_VACACIONES.cambioPlan " + id +
                 ",'" + plan + "','" + motivo + "'";
             SqlDataReader reader = server.query(query);
             reader.Close();
         }
-        public static void altaAfiliado(string nombre,string apellido,int documento,string direccion,int telefono,
-            string mail,DateTime nacimiento,string sexo,string civil,int familiares,string descPlanMedico)
+        public static void altaAfiliado(string nombre, string apellido, int documento, string direccion, int telefono,
+            string mail, DateTime nacimiento, string sexo, string civil, int familiares, string descPlanMedico)
         {
             Server server = Server.getInstance();
             server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.altaPaciente '" +
-            nombre + "', '" + apellido + "'," + documento+ ",'" + direccion + "'," + telefono +
-            ",'" + mail + "','" + nacimiento + "','" + genero(sexo) + "','" + civil + "'," +familiares +
+            nombre + "', '" + apellido + "'," + documento + ",'" + direccion + "'," + telefono +
+            ",'" + mail + "','" + nacimiento + "','" + genero(sexo) + "','" + civil + "'," + familiares +
             ", " + AfiliadoManager.idPlanMedico(descPlanMedico));
         }
-        public static char genero(string genero) {
-            if (String.Compare(genero, "femenino") != 0)
+        public static char genero(string genero)
+        {
+            if (String.Compare(genero, "femenino") == 0)
                 return 'f';
             return 'm';
         }

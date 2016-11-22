@@ -70,11 +70,8 @@ namespace ClinicaFrba.Abm_Afiliado
         {
                 if (validarDatos())
                 {
-                    Server server = Server.getInstance();
-                    server.realizarQuery("UPDATE GESTIONAME_LAS_VACACIONES.Paciente SET direccion ='" +
-                 txDireccion.Text.Trim() + "', telefono =" + txTelefono.Text.Trim() + ", email ='" + txMail.Text.Trim() + "', sexo='" +
-                 AfiliadoManager.genero(cBsexo.Text.Trim()) + "', estadoCivil = '" + cBestadoCivil.Text.Trim() + "', cantFamiliares = " + txFamiliaresACargo.Text.Trim() +
-                     "WHERE id =" + afiliado.id);
+                    AfiliadoManager.ModificarAfiliado(afiliado.id,txDireccion.Text.Trim(),Convert.ToInt32(txTelefono.Text.Trim()),txMail.Text.Trim(),
+                        cBsexo.Text.Trim(), cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()));
                     this.Close();
 
                 }
@@ -101,7 +98,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 txMail.Text = afiliado.email;
                 txTelefono.Text = Convert.ToString(afiliado.telefono);
                 cBestadoCivil.Text = afiliado.estadoCivil;
-                cBsexo.Text = afiliado.sexo;
+                cBsexo.Text = sexo(afiliado.sexo);
                 cBtipoDocumento.Text = afiliado.tipoDocumento;
                 if (afiliado.servicio != 0)
                 {
@@ -121,6 +118,11 @@ namespace ClinicaFrba.Abm_Afiliado
 
             }
 
+        }
+        private String sexo(string genero) {
+            if (String.Compare(genero,"f")==0);
+                return "femenino";
+            return "masculino";
         }
 
         private void buttonSalir_Click(object sender, EventArgs e)

@@ -64,9 +64,11 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             if (validarDatos())
             {
+                try
+                {
                     AfiliadoManager.altaAfiliado(txNombre.Text.Trim(), txApellido.Text.Trim(),
                         Convert.ToInt32(txDocumento.Text.Trim()), txDireccion.Text.Trim(), Convert.ToInt32(txTelefono.Text.Trim()),
-                        txMail.Text.Trim(), Convert.ToDateTime(dateTimePicker1.Value),cBsexo.Text.Trim(),
+                        txMail.Text.Trim(), Convert.ToDateTime(dateTimePicker1.Value), cBsexo.Text.Trim(),
                         cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()), cBplanMedico.Text.Trim());
                     btAgregar.Hide();
                     if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
@@ -76,6 +78,11 @@ namespace ClinicaFrba.Abm_Afiliado
                         afiliadoFamiliar.apellido = txApellido.Text.Trim();
                         afiliadoFamiliar.id = AfiliadoManager.id(txDocumento.Text.Trim());
                     }
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
             else
             {
@@ -107,7 +114,8 @@ namespace ClinicaFrba.Abm_Afiliado
                 cBsexo.Text.Trim() != "" && cBtipoDocumento.Text.Trim() != "" &&
             Validacion.soloLetras(txNombre, "nombre") && Validacion.soloLetras(txApellido, "apellido") &&
             Validacion.soloNumeros(txTelefono, "telefono") && Validacion.emailValido(txMail) &&
-            Validacion.esAlfanumerico(txDireccion, "direccion") && Validacion.soloNumeros(txDocumento, "documento");
+            Validacion.esAlfanumerico(txDireccion, "direccion") && Validacion.soloNumeros(txDocumento, "documento") &&
+            Validacion.soloNumeros(txFamiliaresACargo, "familiares") && Convert.ToInt32(txFamiliaresACargo.Text.Trim()) >= 0;
         }
 
         private void cBtipoDocumento_SelectedIndexChanged(object sender, EventArgs e)
