@@ -122,7 +122,9 @@ namespace ClinicaFrba.Abm_Afiliado
         private String sexo(string genero) {
             if (String.Compare(genero,"f")==0);
                 return "femenino";
-            return "masculino";
+            if (String.Compare(genero,"m")==0);
+                return "masculino";
+            return "";
         }
 
         private void buttonSalir_Click(object sender, EventArgs e)
