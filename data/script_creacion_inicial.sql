@@ -497,7 +497,6 @@ END
 GO
 
 
-
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdFuncionalidad (@descripcion VARCHAR(30))
 RETURNS INT
  AS
@@ -564,12 +563,14 @@ return select p.id as idProf, e.id as idEsp, p.nombre, p.apellido from GESTIONAM
 ON e.idProfesional = p.id 
 go
 
-
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.buscarProfesionales(@nombre varchar(20),@apellido varchar(20), @especialidad varchar(255), @matricula int )
 returns table 
 as 
-return select idProf, GESTIONAME_LAS_VACACIONES.getDescEspecialidad(idEsp) as especialidad, nombre, apellido from GESTIONAME_LAS_VACACIONES.joinearEspecialidadYProfesional() a
-WHERE a.nombre like @nombre or a.idProf = @matricula or a.apellido like @apellido or a.idEsp = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad)
+return select p.id, GESTIONAME_LAS_VACACIONES.getDescEspecialidad(e.idEspecialidad) as especialidad, nombre, apellido 
+from GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e
+JOIN GESTIONAME_LAS_VACACIONES.Profesionales p
+ON p.id = e.idProfesional
+WHERE p.nombre like @nombre or p.id = @matricula or p.apellido like @apellido or e.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad)
 go
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100))
@@ -606,6 +607,10 @@ BEGIN
 	DECLARE @intentos INT
 	SELECT @intentos = intentos FROM GESTIONAME_LAS_VACACIONES.Usuarios
 								WHERE usuario LIKE @username
+
+	IF (@intentos >= 3)
+	RAISERROR('El usuario se encuentra bloqueado por tener 3 intentos de logueo fallidos',16,217) WITH SETERROR
+
 			
 	SELECT @usuario = usuario FROM GESTIONAME_LAS_VACACIONES.Usuarios WHERE usuario LIKE @username AND pass LIKE @pass
 	IF (@usuario IS NULL)
@@ -613,7 +618,7 @@ BEGIN
 		UPDATE GESTIONAME_LAS_VACACIONES.Usuarios
 		SET intentos = @intentos +1 
 		WHERE usuario = @username 
-		RAISERROR(@pass,16,217) WITH SETERROR
+		RAISERROR('Contraseña y/o usuario incorrectas',16,217) WITH SETERROR
 	END
 	ELSE
 	BEGIN
@@ -628,6 +633,8 @@ GO
 --////////////////////////////////////--
 --NUMERO 1--
 --ABM ROLES--
+SELECT * FROM GESTIONAME_LAS_VACACIONES.Especialidades
+SELECT * FROM GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(3, 'Cirugía General y del Aparato Digestivo')
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerFuncionalidades(@nombreRol VARCHAR(30))
 RETURNS TABLE
@@ -789,7 +796,7 @@ END
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDescripcionFuncionalidad(@id INTEGER)
-RETURNS NVARCHAR(50)
+RETURNS NVARCHAR(255)
 AS
 BEGIN
 RETURN (SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Funcionalidades WHERE id = @id)

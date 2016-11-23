@@ -19,7 +19,7 @@ namespace ClinicaFrba.Pedir_Turno
             while (reader.Read())
             {
                 Profesional prof = new Profesional();
-                prof.matricula = Convert.ToInt32(reader["idProf"]);
+                prof.matricula = Convert.ToInt32(reader["id"]);
                 prof.nombre = reader["nombre"].ToString();
                 prof.apellido = reader["apellido"].ToString();
                 prof.especialidad = reader["especialidad"].ToString();

@@ -144,25 +144,25 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
             }
             else
             {
-                System.Windows.Forms.MessageBox.Show("Llename los datos amiguito");
+                System.Windows.Forms.MessageBox.Show("Faltan datos por completar");
             }
         }
 
         private bool validarVacio()
         {
             return  Validacion.estaVacioSinNotificar(DiaInicio)
-                    && Validacion.estaVacioSinNotificar(diaFinal)
-                    && Validacion.estaVacioSinNotificar(mesInicio)
-                    && Validacion.estaVacioSinNotificar(mesFinal)
-                    && Validacion.estaVacioSinNotificar(anioInicio)
-                    && Validacion.estaVacioSinNotificar(anioFinal)
-                    && Validacion.estaVacioSinNotificar(listaHorasInicio)
-                    && Validacion.estaVacioSinNotificar(listaHorasFinal)
-                    && Validacion.estaVacioSinNotificar(listaMinutosInicio)
-                    && Validacion.estaVacioSinNotificar(listaMinutosFinal)
-                    && Validacion.estaVacioSinNotificar(diaSemanaInicio)
-                    && Validacion.estaVacioSinNotificar(diaSemanaFinal)
-                    && Validacion.estaVacioSinNotificar(profesional);
+                    || Validacion.estaVacioSinNotificar(diaFinal)
+                    || Validacion.estaVacioSinNotificar(mesInicio)
+                    || Validacion.estaVacioSinNotificar(mesFinal)
+                    || Validacion.estaVacioSinNotificar(anioInicio)
+                    || Validacion.estaVacioSinNotificar(anioFinal)
+                    || Validacion.estaVacioSinNotificar(listaHorasInicio)
+                    || Validacion.estaVacioSinNotificar(listaHorasFinal)
+                    || Validacion.estaVacioSinNotificar(listaMinutosInicio)
+                    || Validacion.estaVacioSinNotificar(listaMinutosFinal)
+                    || Validacion.estaVacioSinNotificar(diaSemanaInicio)
+                    || Validacion.estaVacioSinNotificar(diaSemanaFinal)
+                    || Validacion.estaVacioSinNotificar(profesional);
         }
 
 
