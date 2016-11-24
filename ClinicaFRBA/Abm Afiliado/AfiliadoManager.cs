@@ -31,7 +31,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     afiliado.email = reader["email"].ToString();
                     afiliado.servicio = Convert.ToInt32(reader["planes"]);
                     afiliado.fechaNacimiento = Convert.ToDateTime(reader["fechaNacimiento"]);
-                    afiliado.sexo = reader[9].ToString(); 
+                    afiliado.sexo = reader[10].ToString(); 
                     afiliado.estadoCivil = reader["estadoCivil"].ToString();
                     afiliado.cantFamiliares = Convert.ToInt32(reader["cantFamiliares"]);
                     afiliados.Add(afiliado);
@@ -61,8 +61,8 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             Server server = Server.getInstance();
             string q = "EXEC GESTIONAME_LAS_VACACIONES.modificarPaciente " + id +
-                ",'" + direccion + "'," + telefono + ",'" + mail + "','" + AfiliadoManager.genero(sexo) +
-                "','" + estadoCivil + "'," + CantidadFamiliares;
+                ",'" + direccion + "'," + telefono + ",'" + mail + "'," + AfiliadoManager.genero(sexo) +
+                ",'" + estadoCivil + "'," + CantidadFamiliares;
             SqlDataReader reader = server.query(q);
             reader.Close();
 
@@ -72,9 +72,9 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             Server server = Server.getInstance();
 
-            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes WHERE id =" + idServicio.ToString());
+            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.Planes WHERE id =" + idServicio.ToString());
             reader.Read();
-            String descripcion = Convert.ToString(reader[0]);
+            String descripcion = Convert.ToString(reader[3]);
             reader.Close();
             return descripcion;
         }
@@ -116,7 +116,7 @@ namespace ClinicaFrba.Abm_Afiliado
             int plan = AfiliadoManager.idPlanMedico(planMedico);
             Server server = Server.getInstance();
             String query = "EXEC GESTIONAME_LAS_VACACIONES.cambioPlan " + id +
-                ",'" + plan + "','" + motivo + "'";
+                "," + plan + ",'" + motivo + "'";
             SqlDataReader reader = server.query(query);
             reader.Close();
         }

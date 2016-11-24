@@ -141,9 +141,10 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
   estadoCivil VARCHAR(10),
   cantFamiliares INT DEFAULT 0,
   cantConsultas INT DEFAULT 0,
-  planes INTEGER,
+  planes INTEGER REFERENCES GESTIONAME_LAS_VACACIONES.planes(id),
   baja INT DEFAULT 0,
   fechaBaja DATE,
+  CHECK (sexo IN('f','m'))
    )
 
 
@@ -734,7 +735,6 @@ UPDATE GESTIONAME_LAS_VACACIONES.Turnos SET baja = 1 WHERE idPaciente = @numAfil
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET baja = 1, fechaBaja = CURRENT_TIMESTAMP WHERE id = @numAfiliado
 END
 GO
-
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id INT,@direc VARCHAR(100),
  @tel INT, @mail VARCHAR(255), @sexo char, @civil VARCHAR(10),@cantFami INT)
 AS
@@ -744,14 +744,11 @@ SET direccion = @direc, telefono = @tel, email = @mail, sexo = @sexo,
 estadoCivil = @civil, cantFamiliares = @cantFami WHERE id = @id
 END
 GO
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cambioPlan(@idPaciente INT,@descripcionPlan VARCHAR(30), @motivo VARCHAR(50))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cambioPlan(@idPaciente INT,@plan INT, @motivo VARCHAR(50))
 AS
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Modificaciones(idPaciente,idPlan,motivo)
-VALUES(@idPaciente,GESTIONAME_LAS_VACACIONES.getIdPlanMedico(@descripcionPlan),@motivo)
-UPDATE GESTIONAME_LAS_VACACIONES.Pacientes
-SET planes = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descripcionPlan)
-WHERE id = @idPaciente
+VALUES(@idPaciente,@plan,@motivo)
 END
 GO
 --////////////////////////////////////--
@@ -1229,3 +1226,13 @@ GESTIONAME_LAS_VACACIONES.Profesionales p ON x.idProfesional = p.id WHERE p.id =
 AND tipoEspecialidad NOT IN (SELECT idEspecialidad FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @id)) 
 
 GO
+DROP TRIGGER GESTIONAME_LAS_VACACIONES.seModificoPlan 
+CREATE TRIGGER GESTIONAME_LAS_VACACIONES.seModificoPlan ON GESTIONAME_LAS_VACACIONES.modificaciones
+AFTER INSERT
+AS
+DECLARE @idPaciente INT
+DECLARE @idPlan INT
+select idPaciente,idPlan FROM inserted
+UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET planes = @idPlan WHERE id = @idPaciente
+GO
+SELECT * from GESTIONAME_LAS_VACACIONES.Planes
