@@ -44,7 +44,7 @@ namespace ClinicaFrba.Compra_Bono
             if (afiliadoBuscado.id > 0)
             {
                 etiquetaPaciente.Text = afiliadoBuscado.id.ToString();
-                SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerPlanAcutalAfiliado(" + afiliadoBuscado.id.ToString() + ",'" + Program.horarioSistema +"')");
+                SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerPlanAcutalAfiliado(" + afiliadoBuscado.id.ToString() + ")");
                 reader.Read();
                 EtiquetaPlan.Text = reader["descripcion"].ToString();
                 precioBono = Convert.ToInt16(reader["precioBono"]);
@@ -56,8 +56,9 @@ namespace ClinicaFrba.Compra_Bono
         {
             if (cantidad.Value > 0)
             {
-                SqlDataReader read = server.query("EXEC GESTIONAME_LAS_VACACIONES.compraDeBonos '" + afiliadoBuscado.id.ToString() + "', '" + cantidad.Value.ToString() + "'");
+                SqlDataReader read = server.query("EXEC GESTIONAME_LAS_VACACIONES.compraDeBonos '" + afiliadoBuscado.id.ToString() + "', '" + cantidad.Value.ToString() + "','" + Program.horarioSistema + "'");
                 read.Close();
+                MessageBox.Show("Compra realizada exitosamente!");
             }
             else {
                 MessageBox.Show("La cantidad de bonos a comprar tiene que ser al menos 1");

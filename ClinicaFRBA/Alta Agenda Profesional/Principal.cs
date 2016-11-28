@@ -175,11 +175,10 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                     && Validacion.soloNumeros(anioInicio, "Año inicio")
                     && Validacion.soloNumeros(anioFinal, "Año final")
                     && Validacion.soloNumeros(listaHorasInicio, "Hora inicio")
-                    && Validacion.soloNumeros(listaHorasFinal, "Horas Final" )
+                    && Validacion.soloNumeros(listaHorasFinal, "Horas Final")
                     && Validacion.soloNumeros(listaMinutosInicio, "Minutos Inicio")
-                    && Validacion.soloNumeros(listaMinutosFinal, "Minutos Final")
-                    && Validacion.soloNumeros(diaSemanaInicio, "Dia Semana Inicio")
-                    && Validacion.soloNumeros(diaSemanaFinal, "Dia Semana Fin");
+                    && Validacion.soloNumeros(listaMinutosFinal, "Minutos Final");
+                    
         }
 
         private void button1_Click(object sender, EventArgs e)

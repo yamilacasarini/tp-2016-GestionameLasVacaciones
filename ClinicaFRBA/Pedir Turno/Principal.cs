@@ -27,9 +27,10 @@ namespace ClinicaFrba.Pedir_Turno
                 ListarTurnos listado = new ListarTurnos(profesionalSeleccionado);
                 listado.ShowDialog();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("El profesional no tiene ninguna agenda cargada");
+                System.Windows.Forms.MessageBox.Show(ex.StackTrace); 
+                //System.Windows.Forms.MessageBox.Show("El profesional no tiene ninguna agenda cargada");
             }
         }
 

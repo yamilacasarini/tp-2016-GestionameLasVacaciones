@@ -49,7 +49,7 @@ namespace ClinicaFrba.Abm_Afiliado
         public static Boolean noTieneTurnosSinCancelar(int idAfiliado)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSegunId( '" + idAfiliado + "' )");
+            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSegunId(" + idAfiliado + ",'" + Program.horarioSistema + "')");
             bool pudoLeer = reader.Read();
              reader.Close();
             if (!pudoLeer)
@@ -99,7 +99,7 @@ namespace ClinicaFrba.Abm_Afiliado
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("SELECT id FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE documento =" + dni);
             reader.Read();
-            int retornito = Convert.ToInt32(reader["id"]); // santi esto es por vos!!!!!
+            int retornito = Convert.ToInt32(reader["id"]); 
             reader.Close();
             return retornito;
         }

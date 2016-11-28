@@ -22,9 +22,10 @@ namespace ClinicaFrba.Registro_Llegada
 
         }
 
+        buscarTurno buscador = new buscarTurno();
+
         private void button2_Click(object sender, EventArgs e)
         {
-            buscarTurno buscador = new buscarTurno();
             buscador.ShowDialog();
             if (buscador.turnoSelect != null)
             {
@@ -39,6 +40,8 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void button1_Click(object sender, EventArgs e)
         {
+            TurnosManager.PersistirCambios(buscador.turnoSelect);
+            MessageBox.Show("Se registro la llegada del turno exitosamente!");
         }
     }
 }

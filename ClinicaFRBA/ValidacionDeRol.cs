@@ -86,6 +86,7 @@ namespace ClinicaFrba
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+            FuncionalidadComboBox.Items.Clear();
             SqlDataReader reader = server.query("select f.descripcion from GESTIONAME_LAS_VACACIONES.Funcionalidades f  join GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad r on f.id = r.idFuncionalidad  join GESTIONAME_LAS_VACACIONES.Roles rol on r.idRol = rol.id where rol.descripcion= " + "'" + RolComboBox.SelectedItem.ToString() + "'");
             while (reader.Read())
             {
