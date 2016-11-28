@@ -1099,27 +1099,21 @@ GO
 --LISTADO ESTRATEGICO--
 --TOP 5 ESPECIALIDADES CON MAS CANCELACIONES--
 
-CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones(@fechaInicio DATETIME,@fechaFin DATETIME)
-RETURNS TABLE 
-AS
-RETURN (SELECT GESTIONAME_LAS_VACACIONES.getIdEspecialidad(t.especialidad) AS especialidades, a.idEspecialidad AS especialidades2 
-FROM GESTIONAME_LAS_VACACIONES.Turnos t JOIN GESTIONAME_LAS_VACACIONES.Agendas a ON (t.baja = 1 or a.baja = 1) AND t.fecha BETWEEN @fechaInicio AND @fechaFin)
-GO
-
 CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones(@fechaInicio DATETIME,@fechaFin DATETIME)
 RETURNS TABLE 
 AS
-RETURN (SELECT especialidades FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones(@fechaInicio,@fechaFin)
+RETURN ((SELECT GESTIONAME_LAS_VACACIONES.getIdEspecialidad(t.especialidad) as especialidad
+		FROM GESTIONAME_LAS_VACACIONES.Turnos t WHERE t.baja = 1 AND (cast(t.fecha AS DATE)) BETWEEN
+		CAST(@fechaInicio AS DATE) AND CAST(@fechaFin AS DATE))
 UNION ALL
-SELECT especialidades2 FROM GESTIONAME_LAS_VACACIONES.getTablaDeCancelaciones(@fechaInicio,@fechaFin))
---ORDER BY especialidades, especialidades2)
+(SELECT a.idEspecialidad as especialidad FROM GESTIONAME_LAS_VACACIONES.Agendas a WHERE a.baja = 1))  -- comparamos fecha?
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones(@fechaInicio DATETIME,@fechaFin DATETIME)
 RETURNS TABLE 
 AS
-RETURN (SELECT TOP 5 GESTIONAME_LAS_VACACIONES.getDescEspecialidad(especialidades) as especialidades
-FROM GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones(@fechaInicio,@fechaFin) where especialidades is not null);
+RETURN (SELECT DISTINCT TOP 5 GESTIONAME_LAS_VACACIONES.getDescEspecialidad(especialidad) as especialidades
+FROM GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones(@fechaInicio,@fechaFin) where especialidad is not null);
 GO
 
 --TOP 5 PROFESIONALES MAS CONSULTADOS POR PLAN ESPECIFICANDO ESPECIALIDAD--

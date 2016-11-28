@@ -16,11 +16,12 @@ namespace ClinicaFrba.Listados
         {
             InitializeComponent();
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("select  * from GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones('"+fecha.ToString()+"','"+fecha.AddMonths(6).ToString()+"')");
+            String query = "select  * from GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones('" + fecha.ToString() + "','" + fecha.AddMonths(6).ToString() + "')";
+            SqlDataReader reader = server.query(query);
             List<String> especialidades = new List<String>();
             while (reader.Read())
             {
-                String nombreDeEspecialidad = reader["descripcion"].ToString();
+                String nombreDeEspecialidad = reader["especialidades"].ToString();
                 especialidades.Add(nombreDeEspecialidad);
             }
             reader.Close();
