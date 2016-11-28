@@ -37,6 +37,20 @@ namespace ClinicaFrba.Listados
             reader.Close();
             return planes;
         }
-        
+        public static List<Especialidad> obtenerEspecialidadesMedicas()
+        {
+
+            List<Especialidad> especialidades = new List<Especialidad>();
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("select  id,descripcion from GESTIONAME_LAS_VACACIONES.Planes");
+            while (reader.Read())
+            {
+                Especialidad esp = new Especialidad();
+            }
+            reader.Close();
+            return especialidades;
+        }
+           
+           
+           }
     }
-}

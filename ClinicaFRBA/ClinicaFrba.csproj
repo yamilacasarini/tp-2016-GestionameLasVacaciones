@@ -150,6 +150,7 @@
     <Compile Include="Listados\AfiliadoConMayorCantidadDeBonos.Designer.cs">
       <DependentUpon>AfiliadoConMayorCantidadDeBonos.cs</DependentUpon>
     </Compile>
+    <Compile Include="Listados\Especialidad.cs" />
     <Compile Include="Listados\EspecialidadesCancelaciones.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -310,6 +311,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Listados\ProfesionalesConMasConsultas.resx">
       <DependentUpon>ProfesionalesConMasConsultas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listados\ProfesionalesConMenosHoras.resx">
+      <DependentUpon>ProfesionalesConMenosHoras.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pedir Turno\Confirmacion.resx">
       <DependentUpon>Confirmacion.cs</DependentUpon>
