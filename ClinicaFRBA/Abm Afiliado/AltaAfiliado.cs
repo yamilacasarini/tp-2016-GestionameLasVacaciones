@@ -22,11 +22,6 @@ namespace ClinicaFrba.Abm_Afiliado
             llenarPlanes();
             btAgregarFam.Hide();
             labelFamiliar.Hide();
-            if (afiliadoFamiliar.id != 0)
-            {
-                labelFamiliar.Text = "Ingresando familiar de:" + afiliadoFamiliar.apellido;
-                labelFamiliar.Show();
-            }
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -66,17 +61,17 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 try
                 {
-                    AfiliadoManager.altaAfiliado(txNombre.Text.Trim(), txApellido.Text.Trim(),
-                        Convert.ToInt32(txDocumento.Text.Trim()), txDireccion.Text.Trim(), Convert.ToInt32(txTelefono.Text.Trim()),
-                        txMail.Text.Trim(), Convert.ToDateTime(dateTimePicker1.Value), cBsexo.Text.Trim(),
-                        cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()), cBplanMedico.Text.Trim());
-                    btAgregar.Hide();
+                        AfiliadoManager.altaAfiliado(txNombre.Text.Trim(), txApellido.Text.Trim(),
+                            Convert.ToInt32(txDocumento.Text.Trim()), txDireccion.Text.Trim(), Convert.ToInt32(txTelefono.Text.Trim()),
+                            txMail.Text.Trim(), Convert.ToDateTime(dateTimePicker1.Value), cBsexo.Text.Trim(),
+                            cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()), cBplanMedico.Text.Trim(),this.afiliadoFamiliar.id);
+                  btAgregar.Hide();
                     if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
                     {
                         btAgregarFam.Show();
-                        afiliadoFamiliar.nombre = txNombre.Text.Trim();
-                        afiliadoFamiliar.apellido = txApellido.Text.Trim();
-                        afiliadoFamiliar.id = AfiliadoManager.id(txDocumento.Text.Trim());
+                        this.afiliadoFamiliar.nombre = txNombre.Text.Trim();
+                        this.afiliadoFamiliar.apellido = txApellido.Text.Trim();
+                        this.afiliadoFamiliar.id = AfiliadoManager.id(txDocumento.Text.Trim());
                     }
                 }
                 catch (SqlException ex)
@@ -158,8 +153,16 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btAgregarFam_Click(object sender, EventArgs e)
         {
             AltaAfiliado form = new AltaAfiliado();
-            form.afiliadoFamiliar = afiliadoFamiliar;
+            form.setAfiliado(afiliadoFamiliar.id,afiliadoFamiliar.apellido);
             form.ShowDialog();
+        }
+        public void setAfiliado(int id, string ape)
+        {
+            afiliadoFamiliar.id = id;
+            afiliadoFamiliar.apellido = ape;
+            labelFamiliar.Text = "Ingresando familiar de:" + afiliadoFamiliar.apellido;
+            labelFamiliar.Show();
+            btAgregarFam.Text = "Agregar otro familiar";
         }
 
     }

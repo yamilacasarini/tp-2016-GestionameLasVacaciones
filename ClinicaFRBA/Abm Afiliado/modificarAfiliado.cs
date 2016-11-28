@@ -159,7 +159,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btAgregar_Click(object sender, EventArgs e)
         {
             AltaAfiliado form = new AltaAfiliado();
-            form.afiliadoFamiliar = afiliado;
+            form.setAfiliado(afiliado.id, afiliado.apellido);
             form.ShowDialog();
         }
     }

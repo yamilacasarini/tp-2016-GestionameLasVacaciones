@@ -121,13 +121,19 @@ namespace ClinicaFrba.Abm_Afiliado
             reader.Close();
         }
         public static void altaAfiliado(string nombre, string apellido, int documento, string direccion, int telefono,
-            string mail, DateTime nacimiento, string sexo, string civil, int familiares, string descPlanMedico)
+            string mail, DateTime nacimiento, string sexo, string civil, int familiares, string descPlanMedico,int idFamiliar)
         {
             Server server = Server.getInstance();
-            server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.altaPaciente '" +
-            nombre + "', '" + apellido + "'," + documento + ",'" + direccion + "'," + telefono +
-            ",'" + mail + "','" + nacimiento + "','" + genero(sexo) + "','" + civil + "'," + familiares +
-            ", " + AfiliadoManager.idPlanMedico(descPlanMedico));
+            string query = "'" + nombre + "', '" + apellido + "'," + documento + ",'" + direccion + "'," + telefono +
+                ",'" + mail + "','" + nacimiento + "','" + genero(sexo) + "','" + civil + "'," + familiares +
+                ", " + AfiliadoManager.idPlanMedico(descPlanMedico);
+            if (idFamiliar == 0)
+            {
+                server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.altaPaciente " + query);
+            }
+            else {
+                server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.altaFamiliar " +idFamiliar + "," + query);
+            }
         }
         public static char genero(string genero)
         {
