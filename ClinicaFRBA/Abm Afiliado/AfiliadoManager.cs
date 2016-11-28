@@ -107,7 +107,7 @@ namespace ClinicaFrba.Abm_Afiliado
         public static void borrarAfiliado(int id)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.borrarPaciente " + id);
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.borrarPaciente " + id + ",'" + Program.horarioSistema + "'");
             reader.Close();
 
         }

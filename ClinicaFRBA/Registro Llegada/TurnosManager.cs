@@ -31,7 +31,7 @@ namespace ClinicaFrba.Registro_Llegada
         }
         public void persistirCambios(Turno unTurno) {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.registrarLlegada "+unTurno.idPaciente+","+unTurno.idProfesional+",'"+unTurno.especialidad+"'");
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.registrarLlegada "+unTurno.idPaciente+","+unTurno.idProfesional+",'"+unTurno.especialidad+"','" + Program.horarioSistema + "'" );
             reader.Close();
         }
     }

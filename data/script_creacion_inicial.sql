@@ -176,8 +176,8 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Agendas(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   idProfesional INT REFERENCES GESTIONAME_LAS_VACACIONES.Profesionales(id),
   idEspecialidad INT REFERENCES GESTIONAME_LAS_VACACIONES.Especialidades(id),
-  fechaInicio DATETIME NOT NULL DEFAULT '2016-01-03 09:00:00.000',   -- ACA PARA FECHA DEL AÑO QUE TRABAJA Y HORARIO
-  fechaFinal DATETIME NOT NULL DEFAULT '2016-12-12 15:00:00.000',
+  fechaInicio DATETIME NOT NULL DEFAULT '2015-01-03 09:00:00.000',   -- ACA PARA FECHA DEL AÑO QUE TRABAJA Y HORARIO
+  fechaFinal DATETIME NOT NULL DEFAULT '2015-12-12 15:00:00.000',
   diaInicio INT DEFAULT 1,   -- LUNES 1 MARTES 2 MIERCOLES 3 JUEVES 4 VIERNES 5
   diaFin INT DEFAULT 5,
   baja INTEGER DEFAULT 0,
@@ -555,18 +555,18 @@ ON p.id = e.idProfesional
 WHERE p.nombre like @nombre or p.id = @matricula or p.apellido like @apellido or e.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad)
 go
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100))
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100), @hora as varchar(100))
 RETURNS TABLE
 AS
 RETURN select a.fechaInicio, a.fechaFinal FROM GESTIONAME_LAS_VACACIONES.Agendas a
-WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and CURRENT_TIMESTAMP between fechaInicio and fechaFinal
+WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and @hora between fechaInicio and fechaFinal
 GO
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100))
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100), @hora as varchar(100))
 RETURNS TABLE
 AS
 RETURN select a.diaInicio, a.diaFin FROM GESTIONAME_LAS_VACACIONES.Agendas a
-WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and CURRENT_TIMESTAMP between fechaInicio and fechaFinal
+WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and @hora between fechaInicio and fechaFinal
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(@matricula int, @especialidad as varchar(100))
@@ -731,11 +731,11 @@ RAISERROR( 'El paciente ya existe',16,217)
 END 
 GO
 
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarPaciente(@numAfiliado INT)
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarPaciente(@numAfiliado INT, @hora as varchar(100))
 AS
 BEGIN
 UPDATE GESTIONAME_LAS_VACACIONES.Turnos SET baja = 1 WHERE idPaciente = @numAfiliado
-UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET baja = 1, fechaBaja = CURRENT_TIMESTAMP WHERE id = @numAfiliado
+UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET baja = 1, fechaBaja = @hora WHERE id = @numAfiliado
 END
 GO
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id INT,@direc VARCHAR(100),
@@ -837,7 +837,7 @@ join GESTIONAME_LAS_VACACIONES.Planes pl
 on p.planes = pl.id
 where   @numAfiliado = p.id)
 GO
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.compraDeBonos(@numAfiliado INT, @cantidad INT)
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.compraDeBonos(@numAfiliado INT, @cantidad INT, @hora as varchar(100))
 AS
 BEGIN
 DECLARE @aux INT
@@ -849,7 +849,7 @@ VALUES (@numAfiliado, @cantidad, GESTIONAME_LAS_VACACIONES.calcularMontoSegunPla
 WHILE (@aux < @cantidad)
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan) 
-VALUES ((SELECT id FROM GESTIONAME_LAS_VACACIONES.ComprasBonos WHERE idPaciente = @numAfiliado AND fecha = CURRENT_TIMESTAMP) , @numAfiliado, (SELECT p.planes FROM GESTIONAME_LAS_VACACIONES.Pacientes p WHERE id = @numAfiliado))
+VALUES ((SELECT id FROM GESTIONAME_LAS_VACACIONES.ComprasBonos WHERE idPaciente = @numAfiliado AND fecha = @hora) , @numAfiliado, (SELECT p.planes FROM GESTIONAME_LAS_VACACIONES.Pacientes p WHERE id = @numAfiliado))
 SET @aux = @aux + 1
 END
 END
@@ -889,7 +889,7 @@ where (t.idProfesional  in
 					(select id from GESTIONAME_LAS_VACACIONES.obtenerIdProfesional( @nombreProf ,  @apellidoProf))
 and t.especialidad like @especialidadProf) OR t.id = @idTurno
 GO
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@numAfiliado INT, @matricula INT, @especialidad VARCHAR(30))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@numAfiliado INT, @matricula INT, @especialidad VARCHAR(30), @hora as varchar(100))
 AS
 BEGIN
 
@@ -898,7 +898,7 @@ DECLARE @turnoID INT
 
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idPaciente = @numAfiliado	
 						AND idProfesional = @matricula
-						AND  CAST(fecha AS DATE) = CAST(CURRENT_TIMESTAMP AS DATE))
+						AND  CAST(fecha AS DATE) = CAST(@hora AS DATE))
 RAISERROR('No existe el turno',16,217)
 ELSE
 
@@ -908,10 +908,10 @@ ON p.id/100 = b.idPaciente/100 AND b.usado = 0
 
 SELECT @TurnoID = id FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idPaciente = @numAfiliado	
 						AND idProfesional = @matricula
-						AND  CAST(fecha AS DATE) = CAST(CURRENT_TIMESTAMP AS DATE)
+						AND  CAST(fecha AS DATE) = CAST(@hora AS DATE)
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, fecha, idTurno) 
-VALUES (@bonoID, CURRENT_TIMESTAMP, @turnoID)
+VALUES (@bonoID, @hora, @turnoID)
 
 UPDATE GESTIONAME_LAS_VACACIONES.Bonos
 SET usado = 1
@@ -939,12 +939,12 @@ GO
 --CANCELACION DE TURNOS--
 --PACIENTE--
 	
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado(@numAfiliado INT, @matricula INT, @especialidad VARCHAR(30), @fecha DATETIME, @motivo VARCHAR(255))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado(@numAfiliado INT, @matricula INT, @especialidad VARCHAR(30), @fecha DATETIME, @motivo VARCHAR(255), @hora as varchar(100))
 AS
 BEGIN
 IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idPaciente = @numAfiliado 
 				AND (idProfesional = @matricula or especialidad LIKE @especialidad) 
-				AND fecha = @fecha AND CAST(fecha AS DATE) < CAST(CURRENT_TIMESTAMP AS DATE) ))
+				AND fecha = @fecha AND CAST(fecha AS DATE) < CAST(@hora AS DATE) ))
 	
 RAISERROR( 'Como va a cancelar un turno que nunca agendo usted es hijo de primos',16,217)
 ELSE 

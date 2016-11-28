@@ -77,7 +77,7 @@ namespace ClinicaFrba.Cancelar_Atencion
        public static void cancelarTurno(int idAfiliado, int idProfesional, String especialidad, String fecha, String motivo)
        {
            Server server = Server.getInstance();
-           SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado " + idAfiliado + "," + idProfesional + ",'" + especialidad + "','" + fecha + "','" + motivo + "'");
+           SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado " + idAfiliado + "," + idProfesional + ",'" + especialidad + "','" + fecha + "','" + motivo + "','" + Program.horarioSistema +"'");
            reader.Close();
           
        

@@ -44,7 +44,7 @@ namespace ClinicaFrba.Compra_Bono
             if (afiliadoBuscado.id > 0)
             {
                 etiquetaPaciente.Text = afiliadoBuscado.id.ToString();
-                SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerPlanAcutalAfiliado(" + afiliadoBuscado.id.ToString() + ")");
+                SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerPlanAcutalAfiliado(" + afiliadoBuscado.id.ToString() + ",'" + Program.horarioSistema +"')");
                 reader.Read();
                 EtiquetaPlan.Text = reader["descripcion"].ToString();
                 precioBono = Convert.ToInt16(reader["precioBono"]);

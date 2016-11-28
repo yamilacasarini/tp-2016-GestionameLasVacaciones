@@ -32,7 +32,7 @@ namespace ClinicaFrba.Pedir_Turno
         public static List<DateTime> MostrarTurnosDeProfesional(int id, string especialidad)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(" + id + ", '" + especialidad + "')");
+            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(" + id + ", '" + especialidad + "', '" + Program.horarioSistema + "')");
           
             DateTime inicio = DateTime.Now;
             DateTime fin = DateTime.Now;
@@ -46,7 +46,7 @@ namespace ClinicaFrba.Pedir_Turno
 
             reader.Close();
 
-            SqlDataReader reader3 = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(" + id + ", '" + especialidad + "')");
+            SqlDataReader reader3 = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(" + id + ", '" + especialidad + "', '" + Program.horarioSistema + "')");
 
             int diaInicio = 0;
             int diaFin = 0;
