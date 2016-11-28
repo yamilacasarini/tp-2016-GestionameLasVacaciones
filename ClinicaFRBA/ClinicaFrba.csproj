@@ -162,11 +162,19 @@
     <Compile Include="Listados\EspecialidadesConMasConsultas.Designer.cs">
       <DependentUpon>EspecialidadesConMasConsultas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Listados\ListadosManager.cs" />
+    <Compile Include="Listados\Plan.cs" />
     <Compile Include="Listados\Principal.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Listados\Principal.Designer.cs">
       <DependentUpon>Principal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Listados\ProfesionalesConMasConsultas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Listados\ProfesionalesConMasConsultas.Designer.cs">
+      <DependentUpon>ProfesionalesConMasConsultas.cs</DependentUpon>
     </Compile>
     <Compile Include="Listados\ProfesionalesConMenosHoras.cs">
       <SubType>Form</SubType>
@@ -305,6 +313,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Listados\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Listados\ProfesionalesConMasConsultas.resx">
+      <DependentUpon>ProfesionalesConMasConsultas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Listados\ProfesionalesMasConsultados.resx">
       <DependentUpon>ProfesionalesMasConsultados.cs</DependentUpon>

@@ -8,7 +8,7 @@ namespace ClinicaFrba.Listados
 {
     class ProfesionalesPorConsulta
     {
-       public Int32 idProfesional;
-        public Int32 cantidadDeConsultas;
+        public Int32 idProfesional { get; set; }
+        public Int32 cantidadDeConsultas { get; set; }
     }
 }
