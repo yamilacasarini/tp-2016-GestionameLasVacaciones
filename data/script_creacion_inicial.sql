@@ -193,8 +193,8 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.ComprasBonos(
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Modificaciones(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
-  idPlan INT REFERENCES GESTIONAME_LAS_VACACIONES.Planes(id),
-  motivo VARCHAR(50),
+  idPlan INT,
+  motivo VARCHAR(255),
   fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
@@ -555,14 +555,14 @@ ON p.id = e.idProfesional
 WHERE p.nombre like @nombre or p.id = @matricula or p.apellido like @apellido or e.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad)
 go
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100), @hora as varchar(100))
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100), @hora as datetime)
 RETURNS TABLE
 AS
 RETURN select a.fechaInicio, a.fechaFinal FROM GESTIONAME_LAS_VACACIONES.Agendas a
 WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and @hora between fechaInicio and fechaFinal
 GO
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100), @hora as varchar(100))
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100), @hora as datetime)
 RETURNS TABLE
 AS
 RETURN select a.diaInicio, a.diaFin FROM GESTIONAME_LAS_VACACIONES.Agendas a
@@ -731,7 +731,7 @@ RAISERROR( 'El paciente ya existe',16,217)
 END 
 GO
 
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarPaciente(@numAfiliado INT, @hora as varchar(100))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarPaciente(@numAfiliado INT, @hora as datetime)
 AS
 BEGIN
 UPDATE GESTIONAME_LAS_VACACIONES.Turnos SET baja = 1 WHERE idPaciente = @numAfiliado
@@ -837,7 +837,7 @@ join GESTIONAME_LAS_VACACIONES.Planes pl
 on p.planes = pl.id
 where   @numAfiliado = p.id)
 GO
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.compraDeBonos(@numAfiliado INT, @cantidad INT, @hora as varchar(100))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.compraDeBonos(@numAfiliado INT, @cantidad INT, @hora as datetime)
 AS
 BEGIN
 DECLARE @aux INT
@@ -889,26 +889,18 @@ where (t.idProfesional  in
 					(select id from GESTIONAME_LAS_VACACIONES.obtenerIdProfesional( @nombreProf ,  @apellidoProf))
 and t.especialidad like @especialidadProf) OR t.id = @idTurno
 GO
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@numAfiliado INT, @matricula INT, @especialidad VARCHAR(30), @hora as varchar(100))
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@turnoID INT, @numAfiliado INT, @hora as datetime)
 AS
 BEGIN
 
 DECLARE @bonoID INT
-DECLARE @turnoID INT
 
-IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idPaciente = @numAfiliado	
-						AND idProfesional = @matricula
-						AND  CAST(fecha AS DATE) = CAST(@hora AS DATE))
-RAISERROR('No existe el turno',16,217)
-ELSE
 
 SELECT @bonoID = min(b.id) 
 FROM GESTIONAME_LAS_VACACIONES.Pacientes p JOIN GESTIONAME_LAS_VACACIONES.Bonos b 
-ON p.id/100 = b.idPaciente/100 AND b.usado = 0
+ON p.id/100 = b.idPaciente/100 AND b.usado = 0 AND p.id = @numAfiliado
 
-SELECT @TurnoID = id FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idPaciente = @numAfiliado	
-						AND idProfesional = @matricula
-						AND  CAST(fecha AS DATE) = CAST(@hora AS DATE)
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, fecha, idTurno) 
 VALUES (@bonoID, @hora, @turnoID)
@@ -919,7 +911,6 @@ WHERE id = @bonoID
 
 END
 GO
-
 --////////////////////////////////////--
 --NUMERO 12--
 --CARGA DE SINTOMAS Y DIAGNOSTICO A LA CONSULTA MEDICA--
@@ -939,7 +930,7 @@ GO
 --CANCELACION DE TURNOS--
 --PACIENTE--
 	
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado(@numAfiliado INT, @matricula INT, @especialidad VARCHAR(30), @fecha DATETIME, @motivo VARCHAR(255), @hora as varchar(100))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado(@numAfiliado INT, @matricula INT, @especialidad VARCHAR(30), @fecha DATETIME, @motivo VARCHAR(255), @hora as datetime)
 AS
 BEGIN
 IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idPaciente = @numAfiliado 
@@ -964,11 +955,11 @@ RETURN @id
 END
 GO
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSegunId(@idAfiliado INT)
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSegunId(@idAfiliado INT, @hora as DATETIME)
 RETURNS TABLE
 AS
 RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos turnos 
-WHERE turnos.idPaciente = @idAfiliado AND turnos.tipoCancelacion IS NULL)
+WHERE turnos.idPaciente = @idAfiliado AND turnos.tipoCancelacion IS NULL AND CAST(turnos.fecha AS DATE) < CAST(@hora AS DATE) )
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelAfiliado(@nombreAfiliado NVARCHAR(50), @apellido NVARCHAR(50), @dni INT)
@@ -1133,9 +1124,9 @@ GO
 
 --TOP 5 PROFESIONALES MAS CONSULTADOS POR PLAN ESPECIFICANDO ESPECIALIDAD--
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@planes INT,@fechaInicio as DATETIME,@fechaFin as DATETIME)
+create FUNCTION GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@planes INT,@fechaInicio as DATETIME,@fechaFin as DATETIME)
 RETURNS TABLE AS
-RETURN (SELECT p.id AS idProf, COUNT(p.id) AS cantConsultas
+RETURN (SELECT p.id idProf, COUNT(p.id) cantConsultas
 FROM GESTIONAME_LAS_VACACIONES.ConsultasMedicas c JOIN GESTIONAME_LAS_VACACIONES.Turnos t 
 ON c.idTurno = t.id
 JOIN GESTIONAME_LAS_VACACIONES.Profesionales p

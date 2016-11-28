@@ -12,6 +12,8 @@ namespace ClinicaFrba.Listados
 {
     public partial class ProfesionalesMasConsultados : Form
     {
+        List<Plan> planes = new List<Plan>();
+        List<ProfesionalesPorConsulta> especialidades = new List<ProfesionalesPorConsulta>();
         DateTime diaSeleccionado;
         public ProfesionalesMasConsultados(DateTime dia)
         {
@@ -19,32 +21,44 @@ namespace ClinicaFrba.Listados
             InitializeComponent();
             llenarPlanes();
         }
-        private void llenarPlanes() {
+        private void llenarPlanes()
+        {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT DISTINCT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes");
-
+            SqlDataReader reader = server.query("SELECT id, descripcion FROM GESTIONAME_LAS_VACACIONES.Planes");
+            
             while (reader.Read())
             {
-                comboBox1.Items.Add(reader["descripcion"].ToString());
+                Plan plan = new Plan();
+                plan.descripcion = reader["descripcion"].ToString();
+                plan.id = Convert.ToInt32(reader["id"]);
+                planes.Add(plan);
             }
             reader.Close();
-        
+            planes.ForEach(agregarAlCombobox);
         }
-
+        private void agregarAlCombobox(Plan plan) {
+            comboBox1.Items.Add(plan.descripcion.ToString());
+        }
+        
         private void button1_Click(object sender, EventArgs e)
         {
-             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("select  * from GESTIONAME_LAS_VACACIONES.getTop5Profesionales('" + diaSeleccionado.ToString() + "','" + diaSeleccionado.AddMonths(6).ToString() + "')");
-            List<ProfesionalesPorConsulta> especialidades = new List<ProfesionalesPorConsulta>();
-            while (reader.Read())
+            if (comboBox1.SelectedItem == null)
             {
-                ProfesionalesPorConsulta prof = new ProfesionalesPorConsulta();
-                prof.idProfesional = Convert.ToInt32(reader["idProf"]);
-                prof.cantidadDeConsultas  = Convert.ToInt32(reader["cantConsultas"]);
-                especialidades.Add(prof);
+                MessageBox.Show("No ha seleccionado ningun plan");
             }
-            reader.Close();
-            dataGridView1.DataSource = especialidades;
-        }
+            else
+            {
+                try
+                {
+                    Plan planSeleccionaddo = planes.Find((x => x.descripcion == comboBox1.SelectedItem.ToString()));
+                   
+                    dataGridView1.DataSource = ListadosManager.ObtenerProfesionalesMasConsultados(planSeleccionaddo.id,diaSeleccionado,diaSeleccionado.AddMonths(6)).ToList();
+                    }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
     }
+}

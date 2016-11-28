@@ -26,6 +26,7 @@ namespace ClinicaFrba.Listados
                     especialidades.Add(nombreDeEspecialidad);
                 }
                 reader.Close();
+                MessageBox.Show(especialidades.Count().ToString());
                 dataGridView1.DataSource = especialidades;
             }
             catch (Exception ex) {
