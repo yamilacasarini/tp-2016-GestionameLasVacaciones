@@ -8,10 +8,6 @@ namespace ClinicaFrba.Listados
 {
     class ListadosManager
     {
-<<<<<<< HEAD
-        public static List<ProfesionalesPorConsulta> ObtenerProfesionalesMasConsultados(int plan, DateTime desde, DateTime hasta)
-        {
-=======
         public static List<Especialidad> ObtenerProfesionalesConMasBonos(DateTime fecha)
         {
             Server server = Server.getInstance();
@@ -30,7 +26,6 @@ namespace ClinicaFrba.Listados
 
         }
         public static List<ProfesionalesPorConsulta> ObtenerProfesionalesMasConsultados(int plan, DateTime desde, DateTime hasta) {
->>>>>>> 648bcba7fd3124412cdc9c0da59683468f4129ba
 
             List<ProfesionalesPorConsulta> profs = new List<ProfesionalesPorConsulta>();
             Server server = Server.getInstance();

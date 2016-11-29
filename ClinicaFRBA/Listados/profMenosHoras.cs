@@ -9,7 +9,7 @@ namespace ClinicaFrba.Listados
     public class profMenosHoras
     {
         public int horas { get; set; }
-        public string nombre { get; set; }
-        public string apellido { get; set; }
+        public String nombre { get; set; }
+        public String apellido { get; set; }
     }
 }
