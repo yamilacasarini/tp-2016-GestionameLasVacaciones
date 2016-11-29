@@ -18,17 +18,18 @@ namespace ClinicaFrba.Listados
             {
                 InitializeComponent();
                 Server server = Server.getInstance();
-                SqlDataReader reader = server.query("select  id, especialidad from GESTIONAME_LAS_VACACIONES.topDeEspecialidadesConMasConsultas('" + fecha.ToString() + "','" + fecha.AddMonths(6).ToString() + "')");
+                SqlDataReader reader = server.query("select  id, cantidadDeConsultas, especialidad from GESTIONAME_LAS_VACACIONES.topDeEspecialidadesConMasConsultas('" + fecha.ToString() + "','" + fecha.AddMonths(6).ToString() + "')");
                 List<Especialidad> especialidades = new List<Especialidad>();
                 while (reader.Read())
                 {
                     Especialidad unaEspecialidad = new Especialidad();
                     unaEspecialidad.id = Convert.ToInt32(reader["id"]);
+                    unaEspecialidad.cantidadConsultas = Convert.ToInt32(reader["cantidadDeConsultas"]);
                     unaEspecialidad.descripcion = reader["especialidad"].ToString();
                     especialidades.Add(unaEspecialidad);
                 }
                 reader.Close();
-                MessageBox.Show("La cantidad de especialidades es " + especialidades.Count());
+                MessageBox.Show("La cantidad de especialidades son " + especialidades.Count());
                 dataGridView1.DataSource = especialidades;
             }
             catch (Exception ex) {

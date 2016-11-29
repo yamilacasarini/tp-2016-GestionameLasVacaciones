@@ -10,5 +10,6 @@ namespace ClinicaFrba.Listados
     {
          public  Int32 id { get; set; }
      public String descripcion { get; set; }
+     public Int32 cantidadConsultas { get; set; }
     }
 }
