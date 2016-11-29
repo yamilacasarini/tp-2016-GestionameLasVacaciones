@@ -1108,7 +1108,6 @@ RETURN ((SELECT GESTIONAME_LAS_VACACIONES.getIdEspecialidad(t.especialidad) as e
 UNION ALL
 (SELECT a.idEspecialidad as especialidad FROM GESTIONAME_LAS_VACACIONES.Agendas a WHERE a.baja = 1))  -- comparamos fecha?
 GO
-
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones(@fechaInicio DATETIME,@fechaFin DATETIME)
 RETURNS TABLE 
 AS
@@ -1120,7 +1119,7 @@ GO
 
 create FUNCTION GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@planes INT,@fechaInicio as DATETIME,@fechaFin as DATETIME)
 RETURNS TABLE AS
-RETURN (SELECT p.id idProf, COUNT(p.id) cantConsultas
+RETURN (SELECT p.id idProf,p.apellido, COUNT(p.id) cantConsultas
 FROM GESTIONAME_LAS_VACACIONES.ConsultasMedicas c JOIN GESTIONAME_LAS_VACACIONES.Turnos t 
 ON c.idTurno = t.id
 JOIN GESTIONAME_LAS_VACACIONES.Profesionales p
