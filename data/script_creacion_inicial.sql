@@ -1160,13 +1160,13 @@ GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.topDeEspecialidadesConMasConsultas(@fechaInicio DATETIME, @fechaFin DATETIME)
 RETURNS TABLE AS 
-RETURN (SELECT TOP 5 GESTIONAME_LAS_VACACIONES.getDescEspecialidad(especialidad.id) as especialidad FROM GESTIONAME_LAS_VACACIONES.Especialidades especialidad
+RETURN (SELECT TOP 5 especialidad.id as id, GESTIONAME_LAS_VACACIONES.getDescEspecialidad(especialidad.id) as especialidad, COUNT(consulta.id) cantidadDeConsultas FROM GESTIONAME_LAS_VACACIONES.Especialidades especialidad
 JOIN (GESTIONAME_LAS_VACACIONES.ConsultasMedicas consulta
 JOIN GESTIONAME_LAS_VACACIONES.Turnos turno
 ON turno.id = consulta.idTurno and consulta.fecha between @fechaInicio and @fechaFin)
 ON turno.especialidad = especialidad.descripcion
 GROUP BY especialidad.id
-ORDER BY COUNT(consulta.id))
+ORDER BY COUNT(consulta.id) DESC)
 GO
 
 create table GESTIONAME_LAS_VACACIONES.TablaTemporalListado(
