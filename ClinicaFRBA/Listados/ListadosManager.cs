@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +8,10 @@ namespace ClinicaFrba.Listados
 {
     class ListadosManager
     {
+<<<<<<< HEAD
+        public static List<ProfesionalesPorConsulta> ObtenerProfesionalesMasConsultados(int plan, DateTime desde, DateTime hasta)
+        {
+=======
         public static List<Especialidad> ObtenerProfesionalesConMasBonos(DateTime fecha)
         {
             Server server = Server.getInstance();
@@ -26,10 +30,11 @@ namespace ClinicaFrba.Listados
 
         }
         public static List<ProfesionalesPorConsulta> ObtenerProfesionalesMasConsultados(int plan, DateTime desde, DateTime hasta) {
+>>>>>>> 648bcba7fd3124412cdc9c0da59683468f4129ba
 
             List<ProfesionalesPorConsulta> profs = new List<ProfesionalesPorConsulta>();
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("select  * from GESTIONAME_LAS_VACACIONES.getTop5Profesionales(" + plan + ",'" + desde.ToString() + "','" + hasta.ToString()+ "')");
+            SqlDataReader reader = server.query("select  * from GESTIONAME_LAS_VACACIONES.getTop5Profesionales(" + plan + ",'" + desde.ToString() + "','" + hasta.ToString() + "')");
             while (reader.Read())
             {
                 ProfesionalesPorConsulta prof = new ProfesionalesPorConsulta();
@@ -40,7 +45,8 @@ namespace ClinicaFrba.Listados
             reader.Close();
             return profs;
         }
-        public static List<Plan> obtenerLaListaDePlanes() {
+        public static List<Plan> obtenerLaListaDePlanes()
+        {
             List<Plan> planes = new List<Plan>();
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("select  id,descripcion from GESTIONAME_LAS_VACACIONES.Planes");
@@ -98,7 +104,5 @@ namespace ClinicaFrba.Listados
             reader3.Close();
             return profs;
         }
-           
-           
-           }
     }
+}
