@@ -1137,6 +1137,14 @@ FROM GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@planes,@fechaIn
 ORDER BY cantConsultas
 GO
 
+create function GESTIONAME_LAS_VACACIONES.topProfesionalesConMenosHoras(@plan INT, @especialidad INT, @fechaInicio datetime,@fechafin datetime)
+returns table as 
+return (select top 5 sum(temp.cantidadDeHoras) cantidadDeHorasTotales, p.nombre, p.apellido from GESTIONAME_LAS_VACACIONES.TablaTemporalListado temp 
+join GESTIONAME_LAS_VACACIONES.Profesionales p 
+on p.id = temp.idProfesional
+group by p.nombre , p.apellido
+order by sum(temp.cantidadDeHoras) asc)
+go
 
 --Top 5 de las especialidades de médicos con más bonos de consultas utilizados--
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadMasAtendida(@planes INT, @fechaInicio DATETIME,@fechaFin DATETIME)
@@ -1149,6 +1157,7 @@ GROUP BY a.idProf, t.especialidad)
 GO
 
 -- Pacientes con mas compras--
+
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getPacientesConMasCompras(@fechaInicio DATETIME,@fechaFin  DATETIME)
 RETURNS TABLE AS
