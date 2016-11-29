@@ -80,7 +80,7 @@ namespace ClinicaFrba.Listados
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        public void button1_Click(object sender, EventArgs e)
         {
             if (comboBox1.SelectedItem == null)
             {
@@ -88,8 +88,19 @@ namespace ClinicaFrba.Listados
             }
             else
             {
+                List<Especialidad> especialidades = ListadosManager.ObtenerProfesionalesConMasBonos(Convert.ToDateTime(comboBox1.SelectedItem));
+                if (especialidades.Count() == 0)
+                {
+                    MessageBox.Show("La cantidad de profesionales es 0");
+                    return;
+                }
                 new EspecialidadesConMasConsultas(Convert.ToDateTime(comboBox1.SelectedItem)).Show();
             }
+        }
+
+        private void Principal_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
