@@ -31,6 +31,18 @@ namespace ClinicaFrba.Listados
 
             reader.Close();
             dataGridView1.DataSource = afiliados;
+            dataGridView1.Columns["documento"].Visible = false;
+            dataGridView1.Columns["tipoDocumento"].Visible = false;
+            dataGridView1.Columns["direccion"].Visible = false;
+            dataGridView1.Columns["telefono"].Visible = false;
+            dataGridView1.Columns["email"].Visible = false;
+            dataGridView1.Columns["fechaNacimiento"].Visible = false;
+            dataGridView1.Columns["sexo"].Visible = false;
+            dataGridView1.Columns["estadoCivil"].Visible = false;
+            dataGridView1.Columns["cantConsultas"].Visible = false;
+            dataGridView1.Columns["servicio"].Visible = false;
+
+
         }
     }
 }
