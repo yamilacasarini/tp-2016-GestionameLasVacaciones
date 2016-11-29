@@ -85,8 +85,10 @@ namespace ClinicaFrba.Listados
             reader1.Read();
             int especialidad = Convert.ToInt32(reader1["id"]);
             reader1.Close();
+            SqlDataReader reader4 = server.query("exec GESTIONAME_LAS_VACACIONES.cargarTablaTemporalHorasProfesionales");
+            reader4.Close();
             query = "select  * from GESTIONAME_LAS_VACACIONES.topProfesionalesConMenosHoras(" + plan + "," +
-                  especialidad + ",'" + desde.ToString() + "','" + hasta.ToString() + "')";
+                especialidad + ",'" + desde.ToString() + "','" + hasta.ToString() + "')";
             SqlDataReader reader3 = server.query(query);
             while (reader3.Read())
             {

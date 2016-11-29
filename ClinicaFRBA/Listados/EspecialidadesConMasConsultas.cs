@@ -18,7 +18,7 @@ namespace ClinicaFrba.Listados
             try
             {
                 InitializeComponent();
-                 MessageBox.Show("La cantidad de especialidades son " + especialidades.Count());
+               //  MessageBox.Show("La cantidad de especialidades son " + especialidades.Count());
               
             dataGridView1.DataSource = especialidades;
           
