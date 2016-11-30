@@ -157,6 +157,12 @@ namespace ClinicaFrba.AbmRol
                     MessageBox.Show("Ingrese el nombre a querer modificar");
                     return;
                 }
+                if(RolManager.existeElRol(txtNuevoNombre.Text.Trim()))
+                {
+                    MessageBox.Show("Ya existe un Rol con este nombre");
+                    txtNuevoNombre.Clear();
+                    return;
+                }
                 RolManager.mofidicarNombre(txtNombre.Text.Trim(), txtNuevoNombre.Text.Trim());
                 MessageBox.Show("Nombre modificado exitosamente, vuelva a seleccionar un Rol");
                 txtNombre.Items.Clear();
