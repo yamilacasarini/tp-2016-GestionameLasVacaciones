@@ -23,7 +23,7 @@ namespace ClinicaFrba
 
         public void rellenarListaConRoles(String id)
         {server=Server.getInstance();
-            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.RolesxUsuario u JOIN GESTIONAME_LAS_VACACIONES.Roles r ON u.idRol = r.id WHERE u.idUsuario = " + "'" + id.ToString() + "'");
+            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.RolesxUsuario u JOIN GESTIONAME_LAS_VACACIONES.Roles r ON u.idRol = r.id WHERE u.idUsuario = " + "'" + id.ToString() + "' and r.baja = 0");
             while (reader.Read())
             {
                 RolComboBox.Items.Add(reader["descripcion"].ToString());
@@ -87,7 +87,7 @@ namespace ClinicaFrba
         {
 
             FuncionalidadComboBox.Items.Clear();
-            SqlDataReader reader = server.query("select f.descripcion from GESTIONAME_LAS_VACACIONES.Funcionalidades f  join GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad r on f.id = r.idFuncionalidad  join GESTIONAME_LAS_VACACIONES.Roles rol on r.idRol = rol.id where rol.descripcion= " + "'" + RolComboBox.SelectedItem.ToString() + "' r.baja =0");
+            SqlDataReader reader = server.query("select f.descripcion from GESTIONAME_LAS_VACACIONES.Funcionalidades f  join GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad r on f.id = r.idFuncionalidad  join GESTIONAME_LAS_VACACIONES.Roles rol on r.idRol = rol.id where rol.descripcion= " + "'" + RolComboBox.SelectedItem.ToString() + "'");
             while (reader.Read())
             {
                 FuncionalidadComboBox.Items.Add(reader["descripcion"].ToString());
