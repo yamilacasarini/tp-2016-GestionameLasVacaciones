@@ -1177,8 +1177,6 @@ GO
 
 -- Mergea agendas de la misma especialidad de un mismo profesional de la TablaTemporalListado --
 
-DROP FUNCTION GESTIONAME_LAS_VACACIONES.MergearAgendas
-GO
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.MergearAgendas()
 returns table as
 return (select idProfesional, sum(cantidadDeHoras) as cantidadDeHoras, especialidad 
@@ -1214,10 +1212,10 @@ GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getPacientesConMasCompras(@fechaInicio DATETIME,@fechaFin  DATETIME)
 RETURNS TABLE AS
-RETURN (SELECT TOP 5 unPaciente.id , unPaciente.nombre, unPaciente.apellido , (SELECT count(id) FROM GESTIONAME_LAS_VACACIONES.Pacientes familiar WHERE familiar.id/100  = unPaciente.id/100 AND familiar.id <> unPaciente.id) AS 'Cantidad de familiares'
+RETURN (SELECT TOP 5 unPaciente.id , unPaciente.nombre, unPaciente.apellido , unPaciente.cantFamiliares
 FROM GESTIONAME_LAS_VACACIONES.Pacientes  unPaciente 
 JOIN GESTIONAME_LAS_VACACIONES.ComprasBonos compra ON  unPaciente.id/100 = compra.idPaciente/100 and compra.fecha between @fechaInicio and @fechaFin
-GROUP BY unPaciente.id, unPaciente.nombre,unPaciente.apellido  
+GROUP BY unPaciente.id, unPaciente.nombre,unPaciente.apellido,unPaciente.cantFamiliares
 ORDER BY COUNT(compra.idPaciente))
 GO
 

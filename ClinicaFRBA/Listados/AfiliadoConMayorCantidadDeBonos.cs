@@ -25,7 +25,7 @@ namespace ClinicaFrba.Listados
                 afiliado.id = Convert.ToInt32(reader["id"]);
                 afiliado.nombre = Convert.ToString(reader["nombre"]);
                 afiliado.apellido = Convert.ToString(reader["apellido"]);
-                afiliado.cantFamiliares = Convert.ToInt32(reader["Cantidad de familiares"]);
+                afiliado.cantFamiliares = Convert.ToInt32(reader["CantFamiliares"]);
                 afiliados.Add(afiliado);
             }
 
