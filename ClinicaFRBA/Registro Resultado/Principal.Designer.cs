@@ -83,6 +83,7 @@
             // 
             // idTurno
             // 
+            this.idTurno.Enabled = false;
             this.idTurno.Location = new System.Drawing.Point(132, 26);
             this.idTurno.Name = "idTurno";
             this.idTurno.Size = new System.Drawing.Size(135, 20);
