@@ -32,6 +32,7 @@ namespace ClinicaFrba.Registro_Resultado
             {
                 Server server = Server.getInstance();
                 SqlDataReader reader = server.query("UPDATE GESTIONAME_LAS_VACACIONES.ConsultasMedicas set diagnostico = '" + txDiagnostico.Text.Trim() + "', sintomas ='" + txSintomas.Text.Trim() + "' WHERE idTurno =" + idTurno.Text.ToString());
+                MessageBox.Show("Datos cargados correctamente!");
                 reader.Close();
             }
             else

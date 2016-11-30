@@ -78,6 +78,9 @@ namespace ClinicaFrba
                     case "ALTA AGENDA PROFESIONAL":
                         new Alta_Agenda_Profesional.Principal().ShowDialog();
                         break;
+                    case "RESULTADO DE CONSULTA":
+                        new Registro_Resultado.Principal().ShowDialog();
+                        break;
                 }
 
             }
