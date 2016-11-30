@@ -48,7 +48,7 @@ namespace ClinicaFrba.Cancelar_Atencion
        public static List<Turno> mostrarTurnosAfiliado(int idAfiliado)
        {
            Server server = Server.getInstance();
-           SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSegunId( '" + idAfiliado + "' )");
+           SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSegunId(" + idAfiliado + ",'" + Program.horarioSistema + "')");
            List<Turno> turnos = new List<Turno>();
 
            while (reader.Read())
