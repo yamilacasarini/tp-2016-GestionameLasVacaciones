@@ -792,9 +792,10 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarFuncionalidadAUnRol (@nombreRol
 AS
 BEGIN
 DELETE FROM GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad 
-WHERE idFuncionalidad = GESTIONAME_LAS_VACACIONES.getIdFuncionalidad(@nombreFuncionalidad)
+WHERE idFuncionalidad = GESTIONAME_LAS_VACACIONES.getIdFuncionalidad(@nombreFuncionalidad) AND idRol = GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol)
 END
 GO
+
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarFuncionalidadAUnRol (@nombreRol VARCHAR(30), @nombreFuncionalidadVieja VARCHAR(30), @nombreFuncionalidadNueva VARCHAR(30))
 AS
