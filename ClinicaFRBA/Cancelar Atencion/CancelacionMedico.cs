@@ -20,8 +20,7 @@ namespace ClinicaFrba.Cancelar_Atencion
             matricula = id;
             InitializeComponent();
             this.dataAgenda.DataSource = CancelacionManager.mostrarAgendaProfesional(id);
-            if (this.dataAgenda.DataSource == null)
-                MessageBox.Show("El Profesional no turnos por cancelar");
+            
         }
 
         private void CancelacionMedico_Load(object sender, EventArgs e)
