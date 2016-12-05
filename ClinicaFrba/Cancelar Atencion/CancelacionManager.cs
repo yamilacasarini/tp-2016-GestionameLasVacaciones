@@ -27,11 +27,8 @@ namespace ClinicaFrba.Cancelar_Atencion
            Server server = Server.getInstance();
            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelProfesionalSegunId( '" + idProfesional + "' )");
            List<Agenda> agendas = new List<Agenda>();
-           //if (!reader.Read())
-           //{
-             //  reader.Close();
-              // return null;
-           //}
+
+
            while (reader.Read())
            {
                Agenda agenda = new Agenda();
@@ -46,8 +43,11 @@ namespace ClinicaFrba.Cancelar_Atencion
                agendas.Add(agenda);
            }
            reader.Close();
-           return agendas;       
-       
+           if (agendas.Count == 0)
+               return null;
+
+           return agendas;
+
        }
        public static List<Turno> mostrarTurnosAfiliado(int idAfiliado)
        {

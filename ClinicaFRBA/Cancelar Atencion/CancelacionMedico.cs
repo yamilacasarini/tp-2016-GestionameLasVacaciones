@@ -12,15 +12,29 @@ namespace ClinicaFrba.Cancelar_Atencion
 {
     public partial class CancelacionMedico : Form
     {
+        public int noAbrir = 0;
         public int matricula;
         public String especialidadMedico;
-        public CancelacionMedico(int id, String especialidad, List<Agenda> agenda)
+        public CancelacionMedico(int id, String especialidad)
         {
+            InitializeComponent();
             especialidadMedico = especialidad;
             matricula = id;
-            InitializeComponent();
-            this.dataAgenda.DataSource = agenda;
-            
+            List<Agenda> agenda = CancelacionManager.mostrarAgendaProfesional(matricula);
+            if (agenda == null)
+            {
+                MessageBox.Show("El profesional no tiene turnos recientes");
+                noAbrir = 1;
+                this.Close();
+            }
+            else
+            {
+
+
+                this.dataAgenda.DataSource = agenda;
+            }
+
+
         }
 
         private void CancelacionMedico_Load(object sender, EventArgs e)

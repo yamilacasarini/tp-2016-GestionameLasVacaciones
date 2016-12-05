@@ -1000,9 +1000,6 @@ RETURN (SELECT id, idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaIn
 FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @matricula AND baja=0 AND fechaInicio >= GETDATE())
 GO
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin, baja)
-VALUES(1,20,GETDATE(), '2016-20-12 15:00:00.000', 1,5,0)
-
 GO
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha(@fecha DATETIME, @delta INT)
 RETURNS VARCHAR(100)
