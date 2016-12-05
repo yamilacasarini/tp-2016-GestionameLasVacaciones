@@ -62,19 +62,7 @@ namespace ClinicaFrba.Pedir_Turno
                 MessageBox.Show("Seleccione una unica fila");
                 return;
             }
-            List<Cancelar_Atencion.Agenda> agenda = Cancelar_Atencion.CancelacionManager.mostrarAgendaProfesional(profesional.matricula);
-
-            if (abrirCancelacion == 1 && agenda != null)
-            {
-                Cancelar_Atencion.CancelacionMedico cancelacion = new Cancelar_Atencion.CancelacionMedico(profesional.matricula, profesional.especialidad, agenda);
-                cancelacion.ShowDialog();
-            }
-            else
-            {
-                if (agenda == null)
-                    MessageBox.Show("El profesional no tiene turnos recientes");
-            }
-            this.Close();
+                        this.Close();
         }
 
         private void BuscarProfesional_Load(object sender, EventArgs e)
