@@ -66,7 +66,7 @@ namespace ClinicaFrba.Pedir_Turno
 
             if (abrirCancelacion == 1 && agenda != null)
             {
-                Cancelar_Atencion.CancelacionMedico cancelacion = new Cancelar_Atencion.CancelacionMedico(profesional.matricula, profesional.especialidad);
+                Cancelar_Atencion.CancelacionMedico cancelacion = new Cancelar_Atencion.CancelacionMedico(profesional.matricula, profesional.especialidad, agenda);
                 cancelacion.ShowDialog();
             }
             else

@@ -14,12 +14,12 @@ namespace ClinicaFrba.Cancelar_Atencion
     {
         public int matricula;
         public String especialidadMedico;
-        public CancelacionMedico(int id, String especialidad)
+        public CancelacionMedico(int id, String especialidad, List<Agenda> agenda)
         {
             especialidadMedico = especialidad;
             matricula = id;
             InitializeComponent();
-            this.dataAgenda.DataSource = CancelacionManager.mostrarAgendaProfesional(id);
+            this.dataAgenda.DataSource = agenda;
             
         }
 
