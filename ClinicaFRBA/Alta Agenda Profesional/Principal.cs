@@ -12,6 +12,13 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
 {
     public partial class Principal : Form
     {
+
+        static DateTime horaDelSistema;
+
+        private string diaDelSistema;
+        private string mesDelSistema;
+        private string anioDelSistema;
+
         public Principal()
         {
             InitializeComponent();
@@ -21,6 +28,13 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
             cargarMinutos(listaMinutosFinal);
             cargarDias(diaSemanaInicio);
             cargarDias(diaSemanaFinal);
+            horaDelSistema = DateTime.ParseExact(Program.horarioSistema, "yyyy-dd-MM HH:mm:ss.fff",
+                                      System.Globalization.CultureInfo.InvariantCulture);
+
+            diaDelSistema = horaDelSistema.Day.ToString();
+            mesDelSistema = horaDelSistema.Month.ToString();
+            anioDelSistema = horaDelSistema.Year.ToString();
+
         }
 
         Pedir_Turno.Profesional prof = new Pedir_Turno.Profesional();
@@ -60,13 +74,46 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                 && validarDia(DiaInicio.Text, mesInicio.Text, anioInicio.Text)
                 && validarDia(diaFinal.Text, mesFinal.Text, anioFinal.Text)
                 && validacion48Horas()
-                && aInt(anioInicio.Text) <= aInt(anioFinal.Text)
+                && validarQueSeaFechaFutura(anioInicio.Text, anioFinal.Text, 
+                mesInicio.Text, mesFinal.Text, DiaInicio.Text, diaFinal.Text)
+                && validarQueSeaFechaFutura(anioDelSistema, anioInicio.Text,
+                mesDelSistema, mesInicio.Text, diaDelSistema, DiaInicio.Text)
+                && validarQueSeaFechaFutura(anioDelSistema, anioFinal.Text,
+                mesDelSistema, mesFinal.Text, diaDelSistema, diaFinal.Text)
+                && validarSabadoHastaLas15(DiaInicio.Text, listaHorasInicio.Text)
+                && validarSabadoHastaLas15(diaFinal.Text, listaHorasInicio.Text)
+                && validarSabadoHastaLas15(DiaInicio.Text, listaHorasFinal.Text)
+                && validarSabadoHastaLas15(diaFinal.Text, listaHorasFinal.Text)
                 ;
+        }
+
+        private bool validarSabadoHastaLas15(string dia, string hora)
+        {
+            if (diaNumericoDeLaSemana(dia) == 6 && aInt(hora) <= 15)
+                return true;
+
+            return false;
         }
 
         private bool validarMes(string mes)
         {
             return aInt(mes) >= 1 && aInt(mes) <= 12;
+        }
+
+        private bool validarQueSeaFechaFutura(string anioInicio,
+            string anioFinal, string mesInicio, string mesFinal,
+            string diaInicio, string diaFinal)
+        {
+            if (aInt(anioInicio) >= aInt(anioFinal))
+                return false;
+            if (aInt(anioInicio) == aInt(anioFinal) &&
+                aInt(mesInicio) >= aInt(mesFinal))
+                return false;
+            if (aInt(mesInicio) == aInt(mesFinal) &&
+                aInt(diaInicio) >= aInt(diaFinal))
+                return false;
+
+            return true;
         }
 
         private bool validarDia(string dia, string mes, string anio)
@@ -111,8 +158,8 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
         {
             int horarioInicio = aInt(listaHorasInicio.Text) * 100 + aInt(listaMinutosInicio.Text);
             int horarioFin = aInt(listaHorasFinal.Text) * 100 + aInt(listaMinutosFinal.Text);
-
-           return horarioFin - horarioInicio * (diaNumericoDeLaSemana(diaSemanaFinal.Text) - diaNumericoDeLaSemana(diaSemanaInicio.Text) + 1) <= 4800;
+            int suma = (horarioFin - horarioInicio) * (diaNumericoDeLaSemana(diaSemanaFinal.Text) - diaNumericoDeLaSemana(diaSemanaInicio.Text) + 1);
+           return suma <= 4800;
         }
 
         int matr = 0;
