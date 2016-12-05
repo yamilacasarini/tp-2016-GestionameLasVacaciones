@@ -53,6 +53,7 @@
             this.label3.Size = new System.Drawing.Size(70, 24);
             this.label3.TabIndex = 56;
             this.label3.Text = "Motivo:";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // txtMotivo
             // 
