@@ -25,6 +25,17 @@ namespace ClinicaFrba.Pedir_Turno
             profesional = prof;
             InitializeComponent();
             this.dataGridView1.DataSource = ProfesionalManager.MostrarTurnosDeProfesional(matr, esp);
+            dataGridView1.Columns["Ticks"].Visible = false;
+            dataGridView1.Columns["Year"].Visible = false;
+            dataGridView1.Columns["Month"].Visible = false;
+            dataGridView1.Columns["Day"].Visible = false;
+            dataGridView1.Columns["Second"].Visible = false;
+            dataGridView1.Columns["Millisecond"].Visible = false;
+            dataGridView1.Columns["DayOfWeek"].Visible = false;
+            dataGridView1.Columns["DayOfYear"].Visible = false;
+            dataGridView1.Columns["Kind"].Visible = false;
+            dataGridView1.Columns["Minute"].Visible = false;
+            dataGridView1.Columns["Hour"].Visible = false;
 
         }
 
@@ -55,6 +66,11 @@ namespace ClinicaFrba.Pedir_Turno
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

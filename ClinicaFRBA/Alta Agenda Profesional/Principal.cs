@@ -80,16 +80,17 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                 mesDelSistema, mesInicio.Text, diaDelSistema, DiaInicio.Text)
                 && validarQueSeaFechaFutura(anioDelSistema, anioFinal.Text,
                 mesDelSistema, mesFinal.Text, diaDelSistema, diaFinal.Text)
-                && validarSabadoHastaLas15(diaSemanaInicio.Text, listaHorasInicio.Text)
-                && validarSabadoHastaLas15(diaSemanaFinal.Text, listaHorasInicio.Text)
-                && validarSabadoHastaLas15(diaSemanaInicio.Text, listaHorasFinal.Text)
-                && validarSabadoHastaLas15(diaSemanaFinal.Text, listaHorasFinal.Text)
+                && validarHorarioSabados(diaSemanaInicio.Text, listaHorasInicio.Text)
+                && validarHorarioSabados(diaSemanaFinal.Text, listaHorasInicio.Text)
+                && validarHorarioSabados(diaSemanaInicio.Text, listaHorasFinal.Text)
+                && validarHorarioSabados(diaSemanaFinal.Text, listaHorasFinal.Text)
                 ;
         }
 
-        private bool validarSabadoHastaLas15(string dia, string hora)
+        private bool validarHorarioSabados(string dia, string hora)
         {
-            if (diaNumericoDeLaSemana(dia) == 6 && aInt(hora) >= 15)
+            if ((diaNumericoDeLaSemana(dia) == 6 && aInt(hora) >= 15) 
+                || (diaNumericoDeLaSemana(dia) == 6 && aInt(hora) < 10))
                 return false;
 
             return true;
