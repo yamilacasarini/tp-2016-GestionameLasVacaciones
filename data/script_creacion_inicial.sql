@@ -993,12 +993,11 @@ GO
 --////////////////////////////////////--
 --PROFESIONAL--
 
-
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelProfesionalSegunId(@matricula INT)
 RETURNS TABLE
 AS
 RETURN (SELECT id, idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin 
-FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @matricula AND baja=0)
+FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @matricula AND baja=0 AND fechaInicio >= CONVERT(date, GETDATE()))
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha(@fecha DATETIME, @delta INT)

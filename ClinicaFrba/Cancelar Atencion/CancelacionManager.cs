@@ -27,7 +27,8 @@ namespace ClinicaFrba.Cancelar_Atencion
            Server server = Server.getInstance();
            SqlDataReader reader = server.query("SELECT id, idProfesional, idEspecialidad, fechaInicio, fechafinal, diaInicio, diaFin FROM GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelProfesionalSegunId( '" + idProfesional + "' )");
            List<Agenda> agendas = new List<Agenda>();
-
+           if (!reader.Read())
+               return null;
            while (reader.Read())
            {
                Agenda agenda = new Agenda();
