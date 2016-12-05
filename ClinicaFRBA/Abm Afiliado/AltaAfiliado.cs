@@ -61,11 +61,11 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 try
                 {
-                        AfiliadoManager.altaAfiliado(txNombre.Text.Trim(), txApellido.Text.Trim(),
-                            Convert.ToInt32(txDocumento.Text.Trim()), txDireccion.Text.Trim(), Convert.ToInt32(txTelefono.Text.Trim()),
-                            txMail.Text.Trim(), Convert.ToDateTime(dateTimePicker1.Value), cBsexo.Text.Trim(),
-                            cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()), cBplanMedico.Text.Trim(),this.afiliadoFamiliar.id);
-                  btAgregar.Hide();
+                    AfiliadoManager.altaAfiliado(txNombre.Text.Trim(), txApellido.Text.Trim(),
+                        Convert.ToInt32(txDocumento.Text.Trim()), txDireccion.Text.Trim(), Convert.ToInt32(txTelefono.Text.Trim()),
+                        txMail.Text.Trim(), Convert.ToDateTime(dateTimePicker1.Value), cBsexo.Text.Trim(),
+                        cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()), cBplanMedico.Text.Trim(), this.afiliadoFamiliar.id);
+                    btAgregar.Hide();
                     if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
                     {
                         btAgregarFam.Show();
@@ -102,15 +102,22 @@ namespace ClinicaFrba.Abm_Afiliado
         }
         bool validarDatos()
         {
-            return txNombre.Text.Trim() != "" && txApellido.Text.Trim() != "" &&
-                txTelefono.Text.Trim() != "" && txMail.Text.Trim() != "" &&
-                txDireccion.Text.Trim() != "" && txDocumento.Text.Trim() != "" &&
-                cBestadoCivil.Text.Trim() != "" && cBplanMedico.Text.Trim() != "" &&
-                cBsexo.Text.Trim() != "" && cBtipoDocumento.Text.Trim() != "" &&
-            Validacion.soloLetras(txNombre, "nombre") && Validacion.soloLetras(txApellido, "apellido") &&
-            Validacion.soloNumeros(txTelefono, "telefono") && Validacion.emailValido(txMail) &&
-            Validacion.esAlfanumerico(txDireccion, "direccion") && Validacion.soloNumeros(txDocumento, "documento") &&
-            Validacion.soloNumeros(txFamiliaresACargo, "familiares") && Convert.ToInt32(txFamiliaresACargo.Text.Trim()) >= 0;
+            try
+            {
+                return txNombre.Text.Trim() != "" && txApellido.Text.Trim() != "" &&
+                    txTelefono.Text.Trim() != "" && txMail.Text.Trim() != "" &&
+                    txDireccion.Text.Trim() != "" && txDocumento.Text.Trim() != "" &&
+                    cBestadoCivil.Text.Trim() != "" && cBplanMedico.Text.Trim() != "" &&
+                    cBsexo.Text.Trim() != "" && cBtipoDocumento.Text.Trim() != "" &&
+                Validacion.soloLetras(txNombre, "nombre") && Validacion.soloLetras(txApellido, "apellido") &&
+                Validacion.soloNumeros(txTelefono, "telefono") && Validacion.emailValido(txMail) &&
+                Validacion.esAlfanumerico(txDireccion, "direccion") && Validacion.soloNumeros(txDocumento, "documento") &&
+                Validacion.soloNumeros(txFamiliaresACargo, "familiares") && Convert.ToInt32(txFamiliaresACargo.Text.Trim()) >= 0;
+            }
+            catch (FormatException ex) {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
         }
 
         private void cBtipoDocumento_SelectedIndexChanged(object sender, EventArgs e)
@@ -153,7 +160,7 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btAgregarFam_Click(object sender, EventArgs e)
         {
             AltaAfiliado form = new AltaAfiliado();
-            form.setAfiliado(afiliadoFamiliar.id,afiliadoFamiliar.apellido);
+            form.setAfiliado(afiliadoFamiliar.id, afiliadoFamiliar.apellido);
             form.ShowDialog();
         }
         public void setAfiliado(int id, string ape)

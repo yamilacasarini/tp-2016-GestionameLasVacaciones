@@ -17,7 +17,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 Server server = Server.getInstance();
                 AfiliadoManager.validarDato(nombre);
                 AfiliadoManager.validarDato(apellido);
-                SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('%" + nombre + "%','%" + apellido + "%'," + id + ")");
+                SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('" + nombre + "','" + apellido + "'," + id + ")");
                 while (reader.Read())
                 {
                     Afiliado afiliado = new Afiliado();
