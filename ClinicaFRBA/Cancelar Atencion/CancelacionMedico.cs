@@ -14,14 +14,13 @@ namespace ClinicaFrba.Cancelar_Atencion
     {
         public int matricula;
         public String especialidadMedico;
-        public CancelacionMedico(int id, String especialidad)
+        public CancelacionMedico(int id, String especialidad, List<Agenda> agenda)
         {
             especialidadMedico = especialidad;
             matricula = id;
             InitializeComponent();
-            this.dataAgenda.DataSource = CancelacionManager.mostrarAgendaProfesional(id);
-            if (this.dataAgenda.DataSource == null)
-                MessageBox.Show("El Profesional no turnos por cancelar");
+            this.dataAgenda.DataSource = agenda;
+            
         }
 
         private void CancelacionMedico_Load(object sender, EventArgs e)
