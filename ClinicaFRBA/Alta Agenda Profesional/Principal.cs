@@ -80,19 +80,19 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                 mesDelSistema, mesInicio.Text, diaDelSistema, DiaInicio.Text)
                 && validarQueSeaFechaFutura(anioDelSistema, anioFinal.Text,
                 mesDelSistema, mesFinal.Text, diaDelSistema, diaFinal.Text)
-                && validarSabadoHastaLas15(DiaInicio.Text, listaHorasInicio.Text)
-                && validarSabadoHastaLas15(diaFinal.Text, listaHorasInicio.Text)
-                && validarSabadoHastaLas15(DiaInicio.Text, listaHorasFinal.Text)
-                && validarSabadoHastaLas15(diaFinal.Text, listaHorasFinal.Text)
+                && validarSabadoHastaLas15(diaSemanaInicio.Text, listaHorasInicio.Text)
+                && validarSabadoHastaLas15(diaSemanaFinal.Text, listaHorasInicio.Text)
+                && validarSabadoHastaLas15(diaSemanaInicio.Text, listaHorasFinal.Text)
+                && validarSabadoHastaLas15(diaSemanaFinal.Text, listaHorasFinal.Text)
                 ;
         }
 
         private bool validarSabadoHastaLas15(string dia, string hora)
         {
-            if (diaNumericoDeLaSemana(dia) == 6 && aInt(hora) <= 15)
-                return true;
+            if (diaNumericoDeLaSemana(dia) == 6 && aInt(hora) >= 15)
+                return false;
 
-            return false;
+            return true;
         }
 
         private bool validarMes(string mes)
@@ -104,13 +104,13 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
             string anioFinal, string mesInicio, string mesFinal,
             string diaInicio, string diaFinal)
         {
-            if (aInt(anioInicio) >= aInt(anioFinal))
+            if (aInt(anioInicio) > aInt(anioFinal))
                 return false;
             if (aInt(anioInicio) == aInt(anioFinal) &&
-                aInt(mesInicio) >= aInt(mesFinal))
+                aInt(mesInicio) > aInt(mesFinal))
                 return false;
             if (aInt(mesInicio) == aInt(mesFinal) &&
-                aInt(diaInicio) >= aInt(diaFinal))
+                aInt(diaInicio) > aInt(diaFinal))
                 return false;
 
             return true;
