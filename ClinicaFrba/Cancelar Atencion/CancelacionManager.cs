@@ -9,6 +9,16 @@ namespace ClinicaFrba.Cancelar_Atencion
 {
    public class CancelacionManager
     {
+       public static String obtenerRolDeUsuario(String idUsuario)
+       {
+           Server server = Server.getInstance();
+           SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerRolDeUsuario ('" + idUsuario + "')");
+           reader.Read();
+           String rol = reader["descripcion"].ToString();
+           reader.Close();
+           return rol;
+           
+       }
        public static void cancelarDiaProfesional(int idProfesional, DateTime dia, String motivo, String especialidad)
        {
            Server server = Server.getInstance();

@@ -17,7 +17,7 @@ namespace ClinicaFrba
     {
         public static String usuario {get; set;}
         Sesion sesion;
-        public login()
+             public login()
         {
             InitializeComponent();
         }

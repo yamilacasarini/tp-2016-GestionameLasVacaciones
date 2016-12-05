@@ -15,7 +15,25 @@ namespace ClinicaFrba.Cancelar_Atencion
         public Pedir_Turno.Profesional profesional = new Pedir_Turno.Profesional();
         public Principal()
         {
+            String rol = CancelacionManager.obtenerRolDeUsuario(login.usuario);
+            
             InitializeComponent();
+            if (rol == "Afiliado")
+            {
+                
+                button1.Visible = false; ;
+
+            }
+            else
+            {
+                if (rol == "Profesional")
+                {
+                  
+                    button2.Visible = false;
+                }
+            }
+            
+
         }
 
         private void button2_Click(object sender, EventArgs e)

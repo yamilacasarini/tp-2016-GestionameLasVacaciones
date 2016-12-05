@@ -997,10 +997,19 @@ CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelProfesiona
 RETURNS TABLE
 AS
 RETURN (SELECT id, idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin 
-FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @matricula AND baja=0 AND fechaInicio >= GETDATE())
+FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @matricula AND baja=0 AND CONVERT(date,fechaInicio) >= CONVERT(date,GETDATE()))
 GO
 
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerRolDeUsuario(@idUsuario VARCHAR(255))
+RETURNS TABLE
+AS
+RETURN (SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Roles r JOIN
+GESTIONAME_LAS_VACACIONES.RolesxUsuario rxu ON r.id = rxu.id 
+WHERE rxu.idUsuario = @idUsuario)
+
 GO
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha(@fecha DATETIME, @delta INT)
 RETURNS VARCHAR(100)
 AS
