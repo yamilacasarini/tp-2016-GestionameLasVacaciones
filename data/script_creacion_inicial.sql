@@ -947,7 +947,7 @@ GO
 --NUMERO 13--
 --CANCELACION DE TURNOS--
 --PACIENTE--
-	
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado(@numAfiliado INT, @matricula INT, @especialidad VARCHAR(30), @fecha DATETIME, @motivo VARCHAR(255), @hora as datetime)
 AS
 BEGIN
@@ -955,7 +955,7 @@ IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idPaciente 
 				AND (idProfesional = @matricula or especialidad LIKE @especialidad) 
 				AND fecha = @fecha AND CAST(fecha AS DATE) < CAST(@hora AS DATE) ))
 	
-RAISERROR( 'Como va a cancelar un turno que nunca agendo usted es hijo de primos',16,217)
+RAISERROR( 'No puede cancelar turnos nunca agendados',16,217)
 ELSE 
 UPDATE GESTIONAME_LAS_VACACIONES.Turnos 
 SET baja = 1, tipoCancelacion = 0, motivo = @motivo
@@ -996,8 +996,9 @@ GO
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelProfesionalSegunId(@matricula INT)
 RETURNS TABLE
 AS
-RETURN (SELECT id, idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin 
-FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @matricula AND baja=0 AND CONVERT(date,fechaInicio) >= CONVERT(date,GETDATE()))
+RETURN (SELECT a.id, idProfesional, e.descripcion, fechaInicio, fechaFinal, diaInicio, diaFin 
+FROM GESTIONAME_LAS_VACACIONES.Agendas a JOIN GESTIONAME_LAS_VACACIONES.Especialidades e ON a.idEspecialidad = e.id
+ WHERE idProfesional = @matricula AND baja=0 AND CONVERT(date,fechaInicio) >= CONVERT(date,GETDATE()))
 GO
 
 
@@ -1075,11 +1076,9 @@ DECLARE @finalAux AS DATETIME
 DECLARE @diaInicialAux AS INT
 DECLARE @diaFinalAux AS INT
 
-
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE idProfesional = @matricula 
 				AND @diaInicialACancelar BETWEEN fechaInicio AND fechaFinal
-				AND @diaFinalACancelar BETWEEN fechaInicio AND fechaFinal
-				AND GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad )
+				AND @diaFinalACancelar BETWEEN fechaInicio AND fechaFinal)
 RAISERROR( 'El rango de fechas no se encuentra agendado',16,217)
 ELSE
 

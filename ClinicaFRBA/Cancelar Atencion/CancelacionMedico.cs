@@ -104,7 +104,7 @@ namespace ClinicaFrba.Cancelar_Atencion
             }
             catch (Exception b)
             {
-                MessageBox.Show("El rango de fechas no se encuentra agendado");
+                MessageBox.Show(b.Message);
                 return;
             }
             MessageBox.Show("Periodo cancelado correctamente");

@@ -44,7 +44,7 @@ namespace ClinicaFrba.Cancelar_Atencion
                Agenda agenda = new Agenda();
                agenda.id = Convert.ToInt32(reader["id"]);
                agenda.idProfesional = Convert.ToInt32(reader["idProfesional"]);
-               agenda.idEspecialidad = Convert.ToInt32(reader["idEspecialidad"]);
+               agenda.especialidad = (reader["descripcion"]).ToString();
                agenda.fechaInicio = Convert.ToDateTime(reader["fechaInicio"]);
                agenda.fechaFinal = Convert.ToDateTime(reader["fechaFinal"]);
                agenda.diaInicio = Convert.ToInt32(reader["diaInicio"]);

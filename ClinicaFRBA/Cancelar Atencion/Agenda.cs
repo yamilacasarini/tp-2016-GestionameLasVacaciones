@@ -12,7 +12,7 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         public int id { get; set; }
         public int idProfesional { get; set; }
-        public int idEspecialidad { get; set; }
+        public String especialidad { get; set; }
         public DateTime fechaInicio { get; set; }
         public DateTime fechaFinal { get; set; }
         public int diaInicio { get; set; }
