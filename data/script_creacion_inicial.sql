@@ -726,7 +726,7 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre nvarchar(50), @a
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 BEGIN 
-IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE documento = @doc 
+IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE documento = @doc) 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre, apellido, documento, direccion, telefono, email, 
 fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes,usuario) VALUES (GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado(),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes,'afiliado')
 ELSE
@@ -740,7 +740,7 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaFamiliar(@idFamiliar INT,@nombre 
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 BEGIN 
-IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE  documento = @doc 
+IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE  documento = @doc) 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre, apellido, documento, direccion, telefono, email, 
 fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes,usuario) VALUES (GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar(@idFamiliar),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes,'afiliado')
 ELSE
@@ -993,14 +993,13 @@ GO
 --////////////////////////////////////--
 --PROFESIONAL--
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelProfesionalSegunId(@matricula INT)
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelProfesionalSegunId(@matricula INT, @fechaSistem DATETIME)
 RETURNS TABLE
 AS
 RETURN (SELECT a.id, idProfesional, e.descripcion, fechaInicio, fechaFinal, diaInicio, diaFin 
 FROM GESTIONAME_LAS_VACACIONES.Agendas a JOIN GESTIONAME_LAS_VACACIONES.Especialidades e ON a.idEspecialidad = e.id
- WHERE idProfesional = @matricula AND baja=0 AND CONVERT(date,fechaInicio) >= CONVERT(date,GETDATE()))
+ WHERE idProfesional = @matricula AND baja=0 AND CONVERT(date,fechaFinal) >= CONVERT(date,@fechaSistem))
 GO
-
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerRolDeUsuario(@idUsuario VARCHAR(255))
 RETURNS TABLE
@@ -1012,7 +1011,7 @@ WHERE rxu.idUsuario = @idUsuario)
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha(@fecha DATETIME, @delta INT)
-RETURNS VARCHAR(100)
+RETURNS DATETIME
 AS
 BEGIN
 SET @fecha = DATEADD(day,@delta, @fecha)
@@ -1041,6 +1040,7 @@ FROM GESTIONAME_LAS_VACACIONES.Agendas
 WHERE idProfesional = @matricula 
 	AND @diaACancelar BETWEEN fechaInicio AND fechaFinal
 	  AND GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad
+	  AND baja = 0
 
 UPDATE GESTIONAME_LAS_VACACIONES.Agendas 
 SET baja = 1, motivo = @motivo
@@ -1088,6 +1088,7 @@ WHERE idProfesional = @matricula
 	  AND @diaInicialACancelar BETWEEN fechaInicio AND fechaFinal
 	  AND @diaFinalACancelar BETWEEN fechaInicio AND fechaFinal
 	  AND GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad
+	  AND baja = 0
 
 UPDATE GESTIONAME_LAS_VACACIONES.Agendas 
 SET baja = 1, motivo = @motivo
@@ -1095,6 +1096,7 @@ WHERE idProfesional = @matricula
 	AND @diaInicialACancelar BETWEEN fechaInicio AND fechaFinal
 	AND @diaFinalACancelar BETWEEN fechaInicio AND fechaFinal 
 	AND GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad
+	AND baja = 0
 
 UPDATE GESTIONAME_LAS_VACACIONES.Turnos
 SET baja = 1, tipoCancelacion = 1, motivo = @motivo
@@ -1102,29 +1104,27 @@ WHERE idProfesional = @matricula
 	AND especialidad = @especialidad 
 	AND fecha BETWEEN  @diaInicialACancelar AND @diaFinalACancelar
 
-IF (@diaInicialACancelar != @inicioAux AND @diaFinalACancelar != @finalAux)
+
+IF (CAST(@diaInicialACancelar AS DATE) = CAST(@inicioAux AS DATE))
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(day,+1, @diaFinalACancelar), @finalAux, @diaInicialAux, @diaFinalAux)
+
+IF (CAST(@diaFinalACancelar AS DATE) = CAST(@finalAux AS DATE))
+INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1, @diaInicialACancelar), @diaInicialAux, @diaFinalAux)
+
+IF (CAST (@diaInicialACancelar AS DATE) != CAST(@inicioAux AS DATE) AND CAST(@diaFinalACancelar AS DATE) != CAST(@finalAux AS DATE))
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
 VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1,  @diaInicialACancelar ), @diaInicialAux, @diaFinalAux)
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
 VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(day,+1, @diaFinalACancelar), @finalAux, @diaInicialAux, @diaFinalAux)
 
-IF (@diaInicialACancelar = @inicioAux)
-INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
-VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(day,+1, @diaFinalACancelar), @finalAux, @diaInicialAux, @diaFinalAux)
-
-IF (@diaFinalACancelar = @finalAux)
-INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
-VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1, @diaInicialACancelar), @diaInicialAux, @diaFinalAux)
-
 END
 GO
-
 
 --////////////////////////////////////--
 --NUMERO 14--
 --LISTADO ESTRATEGICO--
--- LISTADO #1 --
---TOP 5 ESPECIALIDADES CON MAS CANCELACIONES--
 
 CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones(@fechaInicio DATETIME,@fechaFin DATETIME)
 RETURNS TABLE 

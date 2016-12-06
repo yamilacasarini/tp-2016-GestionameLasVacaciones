@@ -41,6 +41,12 @@
             this.txtHasta = new System.Windows.Forms.MaskedTextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.horaInicio = new System.Windows.Forms.TextBox();
+            this.minutosInicio = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.minutosFinal = new System.Windows.Forms.TextBox();
+            this.horaFinal = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataAgenda)).BeginInit();
             this.SuspendLayout();
             // 
@@ -101,7 +107,7 @@
             this.txtDia.Location = new System.Drawing.Point(253, 336);
             this.txtDia.Mask = "00/00/0000";
             this.txtDia.Name = "txtDia";
-            this.txtDia.Size = new System.Drawing.Size(152, 20);
+            this.txtDia.Size = new System.Drawing.Size(79, 20);
             this.txtDia.TabIndex = 61;
             this.txtDia.ValidatingType = typeof(System.DateTime);
             this.txtDia.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextBox1_MaskInputRejected);
@@ -122,7 +128,7 @@
             this.txtDesde.Location = new System.Drawing.Point(253, 398);
             this.txtDesde.Mask = "00/00/0000";
             this.txtDesde.Name = "txtDesde";
-            this.txtDesde.Size = new System.Drawing.Size(152, 20);
+            this.txtDesde.Size = new System.Drawing.Size(79, 20);
             this.txtDesde.TabIndex = 63;
             this.txtDesde.ValidatingType = typeof(System.DateTime);
             // 
@@ -150,7 +156,7 @@
             this.txtHasta.Location = new System.Drawing.Point(253, 435);
             this.txtHasta.Mask = "00/00/0000";
             this.txtHasta.Name = "txtHasta";
-            this.txtHasta.Size = new System.Drawing.Size(152, 20);
+            this.txtHasta.Size = new System.Drawing.Size(79, 20);
             this.txtHasta.TabIndex = 66;
             this.txtHasta.ValidatingType = typeof(System.DateTime);
             // 
@@ -173,11 +179,64 @@
             this.label6.TabIndex = 68;
             this.label6.Text = "ó";
             // 
+            // horaInicio
+            // 
+            this.horaInicio.Location = new System.Drawing.Point(338, 398);
+            this.horaInicio.Name = "horaInicio";
+            this.horaInicio.Size = new System.Drawing.Size(40, 20);
+            this.horaInicio.TabIndex = 69;
+            // 
+            // minutosInicio
+            // 
+            this.minutosInicio.Location = new System.Drawing.Point(397, 398);
+            this.minutosInicio.Name = "minutosInicio";
+            this.minutosInicio.Size = new System.Drawing.Size(40, 20);
+            this.minutosInicio.TabIndex = 70;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(381, 401);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(10, 13);
+            this.label7.TabIndex = 71;
+            this.label7.Text = ":";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(381, 438);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(10, 13);
+            this.label8.TabIndex = 74;
+            this.label8.Text = ":";
+            // 
+            // minutosFinal
+            // 
+            this.minutosFinal.Location = new System.Drawing.Point(397, 435);
+            this.minutosFinal.Name = "minutosFinal";
+            this.minutosFinal.Size = new System.Drawing.Size(40, 20);
+            this.minutosFinal.TabIndex = 73;
+            // 
+            // horaFinal
+            // 
+            this.horaFinal.Location = new System.Drawing.Point(338, 435);
+            this.horaFinal.Name = "horaFinal";
+            this.horaFinal.Size = new System.Drawing.Size(40, 20);
+            this.horaFinal.TabIndex = 72;
+            // 
             // CancelacionMedico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(466, 475);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.minutosFinal);
+            this.Controls.Add(this.horaFinal);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.minutosInicio);
+            this.Controls.Add(this.horaInicio);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtHasta);
@@ -215,5 +274,11 @@
         private System.Windows.Forms.MaskedTextBox txtHasta;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox horaInicio;
+        private System.Windows.Forms.TextBox minutosInicio;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox minutosFinal;
+        private System.Windows.Forms.TextBox horaFinal;
     }
 }

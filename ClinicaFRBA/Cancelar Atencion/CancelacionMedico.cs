@@ -61,7 +61,7 @@ namespace ClinicaFrba.Cancelar_Atencion
             }
             try
             {
-                CancelacionManager.cancelarDiaProfesional(matricula, Convert.ToDateTime(txtDia.Text.Trim()), txtMotivo.Text.Trim(), especialidadMedico);
+                    CancelacionManager.cancelarDiaProfesional(matricula, Convert.ToDateTime(txtDia.Text.Trim()), txtMotivo.Text.Trim(), especialidadMedico);
             }
             catch (Exception b)
             {
@@ -91,16 +91,18 @@ namespace ClinicaFrba.Cancelar_Atencion
                 MessageBox.Show("Ingrese ambas fechas del período");
                 return;
             }
-            if (DateTime.Compare(Convert.ToDateTime(txtDesde.Text), Convert.ToDateTime(txtHasta.Text)) > 0)
+           /* if (DateTime.Compare(Convert.ToDateTime(txtDesde.Text), Convert.ToDateTime(txtHasta.Text)) > 0)
             {
                 MessageBox.Show("La fecha inicio del periodo es mayor a la final");
                 txtDesde.Clear();
                 txtHasta.Clear();
                 return;
-            }
+            }*/
             try
             {
-                CancelacionManager.cancelarPeriodoProfesional(matricula, Convert.ToDateTime(txtDesde.Text.Trim()), Convert.ToDateTime(txtHasta.Text.Trim()), txtMotivo.Text.Trim(), especialidadMedico);
+                DateTime fechaInicio = Convert.ToDateTime(txtDesde.Text.Trim()).AddHours(Convert.ToInt32(horaInicio.Text)).AddMinutes(Convert.ToInt32(minutosInicio.Text));
+                DateTime fechaFinal = Convert.ToDateTime(txtHasta.Text.Trim()).AddHours(Convert.ToInt32(horaFinal.Text)).AddMinutes(Convert.ToInt32(minutosFinal.Text));
+                CancelacionManager.cancelarPeriodoProfesional(matricula, fechaInicio, fechaFinal, txtMotivo.Text.Trim(), especialidadMedico);
             }
             catch (Exception b)
             {
@@ -114,6 +116,11 @@ namespace ClinicaFrba.Cancelar_Atencion
         }
 
         private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
         {
 
         }
