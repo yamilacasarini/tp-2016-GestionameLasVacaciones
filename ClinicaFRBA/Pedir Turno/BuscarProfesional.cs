@@ -13,7 +13,7 @@ namespace ClinicaFrba.Pedir_Turno
 
     public partial class BuscarProfesional : Form
     {
-        public int abrirCancelacion = 0;
+      
         public BuscarProfesional()
         {
             InitializeComponent();
@@ -55,7 +55,7 @@ namespace ClinicaFrba.Pedir_Turno
                 profesional.nombre = dataGridView1.CurrentRow.Cells[1].Value.ToString();
                 profesional.apellido = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                 profesional.especialidad = dataGridView1.CurrentRow.Cells[3].Value.ToString();
-                abrirCancelacion = 1;
+              
                 this.Close();
             }
             else
