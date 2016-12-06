@@ -739,12 +739,21 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaFamiliar(@idFamiliar INT,@nombre 
 @cantFami INT,@planes INT)
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
-BEGIN 
-IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE  documento = @doc) 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre, apellido, documento, direccion, telefono, email, 
-fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes,usuario) VALUES (GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar(@idFamiliar),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes,'afiliado')
-ELSE
-RAISERROR( 'El paciente ya existe',16,217)
+	BEGIN 
+	IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE  documento = @doc)
+		begin 
+		IF NOT EXISTS (SELECT * from GESTIONAME_LAS_VACACIONES.Pacientes where id = GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar(@idFamiliar))
+			begin
+			INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre, apellido, documento, direccion, telefono, email, 
+			fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes,usuario) VALUES (GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar(@idFamiliar),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes,'afiliado')
+			end
+		else
+			begin
+			EXEC GESTIONAME_LAS_VACACIONES.altaPaciente @nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes)
+			end
+		END
+	ELSE
+		RAISERROR( 'El paciente ya existe',16,217)
 END 
 GO
 
