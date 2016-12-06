@@ -15,7 +15,7 @@ namespace ClinicaFrba.Listados
         DateTime fecha;
         public ProfesionalesConMenosHoras(DateTime dia)
         {
-            
+          
             InitializeComponent();
             fecha = dia;
             ListadosManager.obtenerLaListaDePlanes().ForEach(agregarAlCombobox);

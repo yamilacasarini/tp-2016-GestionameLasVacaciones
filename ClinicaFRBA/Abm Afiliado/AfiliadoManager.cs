@@ -13,36 +13,84 @@ namespace ClinicaFrba.Abm_Afiliado
         public static List<Afiliado> BuscarAfiliados(String nombre, String apellido, int id)
         {
             List<Afiliado> afiliados = new List<Afiliado>();
-           
-                Server server = Server.getInstance();
-                AfiliadoManager.validarDato(nombre);
-                AfiliadoManager.validarDato(apellido);
-                SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('" + nombre + "','" + apellido + "'," + id + ")");
-                while (reader.Read())
-                {
-                    Afiliado afiliado = new Afiliado();
-                    afiliado.id = Convert.ToInt32(reader["id"]);
-                    afiliado.nombre = reader["nombre"].ToString();
-                    afiliado.apellido = reader["apellido"].ToString();
-                    afiliado.tipoDocumento = reader["tipoDocumento"].ToString();
-                    afiliado.documento = Convert.ToInt32(reader["documento"]);
-                    afiliado.direccion = reader["direccion"].ToString();
-                    afiliado.telefono = Convert.ToInt32(reader["telefono"]);
-                    afiliado.email = reader["email"].ToString();
-                    afiliado.servicio = Convert.ToInt32(reader["planes"]);
-                    afiliado.fechaNacimiento = Convert.ToDateTime(reader["fechaNacimiento"]);
-                    afiliado.sexo = reader[10].ToString(); 
-                    afiliado.estadoCivil = reader["estadoCivil"].ToString();
-                    afiliado.cantFamiliares = Convert.ToInt32(reader["cantFamiliares"]);
-                    afiliados.Add(afiliado);
-                }
-                reader.Close();
-                return afiliados;
+
+            Server server = Server.getInstance();
+            AfiliadoManager.validarDato(nombre);
+            AfiliadoManager.validarDato(apellido);
+            SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('" + nombre + "','" + apellido + "'," + id + ")");
+            while (reader.Read())
+            {
+                Afiliado afiliado = new Afiliado();
+                afiliado.id = Convert.ToInt32(reader["id"]);
+                afiliado.nombre = reader["nombre"].ToString();
+                afiliado.apellido = reader["apellido"].ToString();
+                afiliado.tipoDocumento = reader["tipoDocumento"].ToString();
+                afiliado.documento = Convert.ToInt32(reader["documento"]);
+                afiliado.direccion = reader["direccion"].ToString();
+                afiliado.telefono = Convert.ToInt32(reader["telefono"]);
+                afiliado.email = reader["email"].ToString();
+                afiliado.servicio = Convert.ToInt32(reader["planes"]);
+                afiliado.fechaNacimiento = Convert.ToDateTime(reader["fechaNacimiento"]);
+                afiliado.sexo = reader[10].ToString();
+                afiliado.estadoCivil = reader["estadoCivil"].ToString();
+                afiliado.cantFamiliares = Convert.ToInt32(reader["cantFamiliares"]);
+                afiliados.Add(afiliado);
+            }
+            reader.Close();
+            return afiliados;
+        }
+        public static List<Modificacion> BuscarModificaciones(String nombre, String apellido, int idPaciente, int idPlan)
+        {
+            List<Modificacion> modificaciones = new List<Modificacion>();
+            string query;
+            int parametros = 0;
+
+            Server server = Server.getInstance();
+            AfiliadoManager.validarDato(apellido);
+            query = "select * from GESTIONAME_LAS_VACACIONES.Modificaciones m join GESTIONAME_LAS_VACACIONES.Pacientes p ON (p.id = m.idPaciente) where ";
+
+            if (nombre != "")
+            {
+                parametros++;
+                query += " p.nombre like '" + nombre + "'";
+            }
+            if (apellido != "")
+            {
+                if (parametros > 0) { query += " and "; }
+                parametros++;
+                query += "p.apellido like '" + apellido + "'";
+            }
+            if (idPaciente != -1)
+            {
+                if (parametros > 0) { query += " and "; }
+                parametros++;
+                query += " m.idPaciente = " + idPaciente;
+            }
+            if (idPlan != -1)
+            {
+                if (parametros > 0) { query += " and "; }
+                parametros++;
+                query += " m.idPlan = " + idPlan;
+            }
+
+            SqlDataReader reader = server.query(query);
+            while (reader.Read())
+            {
+                Modificacion modif = new Modificacion();
+                modif.id = Convert.ToInt32(reader["id"]);
+                modif.idPaciente = Convert.ToInt32(reader["idPaciente"]);
+                modif.idPlan = Convert.ToInt32(reader["idPlan"]);
+                modif.motivo = reader["motivo"].ToString();
+                modif.fecha = Convert.ToDateTime(reader["fecha"]);
+                modificaciones.Add(modif);
+            }
+            reader.Close();
+            return modificaciones;
         }
         public static void validarDato(String algo)
         {
             if (algo == "")
-            algo = '%' + algo +'%';
+                algo = '%' + algo + '%';
         }
 
 
@@ -51,12 +99,12 @@ namespace ClinicaFrba.Abm_Afiliado
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSegunId(" + idAfiliado + ",'" + Program.horarioSistema + "')");
             bool pudoLeer = reader.Read();
-             reader.Close();
+            reader.Close();
             if (!pudoLeer)
                 return true;
             return false;
         }
-        public static void ModificarAfiliado(int id,String direccion, int telefono, String mail,
+        public static void ModificarAfiliado(int id, String direccion, int telefono, String mail,
             string sexo, String estadoCivil, int CantidadFamiliares)
         {
             Server server = Server.getInstance();
@@ -99,7 +147,7 @@ namespace ClinicaFrba.Abm_Afiliado
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("SELECT id FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE documento =" + dni);
             reader.Read();
-            int retornito = Convert.ToInt32(reader["id"]); 
+            int retornito = Convert.ToInt32(reader["id"]);
             reader.Close();
             return retornito;
         }
@@ -121,7 +169,7 @@ namespace ClinicaFrba.Abm_Afiliado
             reader.Close();
         }
         public static void altaAfiliado(string nombre, string apellido, int documento, string direccion, int telefono,
-            string mail, DateTime nacimiento, string sexo, string civil, int familiares, string descPlanMedico,int idFamiliar)
+            string mail, DateTime nacimiento, string sexo, string civil, int familiares, string descPlanMedico, int idFamiliar)
         {
             Server server = Server.getInstance();
             string query = "'" + nombre + "', '" + apellido + "'," + documento + ",'" + direccion + "'," + telefono +
@@ -131,8 +179,9 @@ namespace ClinicaFrba.Abm_Afiliado
             {
                 server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.altaPaciente " + query);
             }
-            else {
-                server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.altaFamiliar " +idFamiliar + "," + query);
+            else
+            {
+                server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.altaFamiliar " + idFamiliar + "," + query);
             }
         }
         public static char genero(string genero)

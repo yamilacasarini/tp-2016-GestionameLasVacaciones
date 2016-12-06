@@ -78,6 +78,10 @@ namespace ClinicaFrba.Abm_Afiliado
                 {
                     MessageBox.Show(ex.Message);
                 }
+                catch (FormatException fx)
+                {
+                    MessageBox.Show(fx.Message);
+                }
             }
             else
             {

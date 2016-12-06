@@ -74,12 +74,19 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             if (validarDatos())
             {
-                String auxID;
-                if (txId.Text.Trim() == "")
-                    auxID = "-1";
-                else
-                    auxID = txId.Text.Trim();
-                this.dataGridView1.DataSource = AfiliadoManager.BuscarAfiliados(txNombre.Text.Trim(),txApellido.Text.Trim(), Convert.ToInt32(auxID));
+                try
+                {
+                    String auxID;
+                    if (txId.Text.Trim() == "")
+                        auxID = "-1";
+                    else
+                        auxID = txId.Text.Trim();
+                    this.dataGridView1.DataSource = AfiliadoManager.BuscarAfiliados(txNombre.Text.Trim(), txApellido.Text.Trim(), Convert.ToInt32(auxID));
+                }
+                catch (FormatException fx)
+                {
+                    MessageBox.Show(fx.Message);
+                }
             }
             else
             {
@@ -104,6 +111,31 @@ namespace ClinicaFrba.Abm_Afiliado
         }
 
         private void txId_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txApellido_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
         {
 
         }

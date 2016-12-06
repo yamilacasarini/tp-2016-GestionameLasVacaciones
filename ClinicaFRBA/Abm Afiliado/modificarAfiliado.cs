@@ -70,9 +70,15 @@ namespace ClinicaFrba.Abm_Afiliado
         {
                 if (validarDatos())
                 {
+                    try{
                     AfiliadoManager.ModificarAfiliado(afiliado.id,txDireccion.Text.Trim(),Convert.ToInt32(txTelefono.Text.Trim()),txMail.Text.Trim(),
                         cBsexo.Text.Trim(), cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()));
                     this.Close();
+                    }
+                    catch (FormatException fx)
+                    {
+                        MessageBox.Show(fx.Message);
+                    }
 
                 }
                 else

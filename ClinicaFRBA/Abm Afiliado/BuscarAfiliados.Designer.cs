@@ -93,6 +93,7 @@
             this.label2.Size = new System.Drawing.Size(44, 13);
             this.label2.TabIndex = 7;
             this.label2.Text = "Nombre";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // txApellido
             // 
@@ -101,6 +102,7 @@
             this.txApellido.Name = "txApellido";
             this.txApellido.Size = new System.Drawing.Size(100, 20);
             this.txApellido.TabIndex = 10;
+            this.txApellido.TextChanged += new System.EventHandler(this.txApellido_TextChanged);
             // 
             // label1
             // 
@@ -110,6 +112,7 @@
             this.label1.Size = new System.Drawing.Size(44, 13);
             this.label1.TabIndex = 9;
             this.label1.Text = "Apellido";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // txId
             // 
@@ -128,6 +131,7 @@
             this.label3.Size = new System.Drawing.Size(16, 13);
             this.label3.TabIndex = 11;
             this.label3.Text = "Id";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label4
             // 
@@ -138,6 +142,7 @@
             this.label4.Size = new System.Drawing.Size(123, 20);
             this.label4.TabIndex = 13;
             this.label4.Text = "Buscar Afiliados";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // button1
             // 

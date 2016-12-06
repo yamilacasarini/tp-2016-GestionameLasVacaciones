@@ -24,17 +24,34 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void button1_Click(object sender, EventArgs e)
         {
+            try{
             new Baja().ShowDialog();
+            }
+            catch (FormatException fx)
+            {
+                MessageBox.Show(fx.Message);
+            }
         }
 
         private void botonDeModificacion_Click(object sender, EventArgs e)
         {
+            try{
             new modificarAfiliado().ShowDialog();
+            }
+            catch (FormatException fx)
+            {
+                MessageBox.Show(fx.Message);
+            }
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
             new BuscarAfiliados().ShowDialog();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            new BuscarModificaciones().ShowDialog();
         }
 
 

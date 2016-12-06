@@ -65,12 +65,19 @@
     <Compile Include="Abm Afiliado\BuscarAfiliados.Designer.cs">
       <DependentUpon>BuscarAfiliados.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Afiliado\BuscarModificaciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abm Afiliado\BuscarModificaciones.Designer.cs">
+      <DependentUpon>BuscarModificaciones.cs</DependentUpon>
+    </Compile>
     <Compile Include="Abm Afiliado\CambioPlan.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Abm Afiliado\CambioPlan.Designer.cs">
       <DependentUpon>CambioPlan.cs</DependentUpon>
     </Compile>
+    <Compile Include="Abm Afiliado\Modificacion.cs" />
     <Compile Include="Abm Afiliado\modificarAfiliado.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -270,6 +277,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\BuscarAfiliados.resx">
       <DependentUpon>BuscarAfiliados.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abm Afiliado\BuscarModificaciones.resx">
+      <DependentUpon>BuscarModificaciones.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Abm Afiliado\CambioPlan.resx">
       <DependentUpon>CambioPlan.cs</DependentUpon>
