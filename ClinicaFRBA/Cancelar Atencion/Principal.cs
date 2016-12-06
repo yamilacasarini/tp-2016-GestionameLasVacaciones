@@ -51,11 +51,11 @@ namespace ClinicaFrba.Cancelar_Atencion
             Pedir_Turno.BuscarProfesional buscador = new Pedir_Turno.BuscarProfesional();
             buscador.ShowDialog();
             profesional = buscador.profesional;
-            if (buscador.abrirCancelacion == 1)
+            if (profesional != null)
             {
                 Cancelar_Atencion.CancelacionMedico cancelacion = new Cancelar_Atencion.CancelacionMedico(profesional.matricula, profesional.especialidad);
-
-                if (cancelacion.noAbrir != 1)
+                List<Agenda> agenda = cancelacion.agenda;
+                if (agenda != null)
                     cancelacion.ShowDialog();
             }
             

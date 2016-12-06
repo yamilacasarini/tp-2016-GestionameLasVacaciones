@@ -993,12 +993,12 @@ GO
 --////////////////////////////////////--
 --PROFESIONAL--
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelProfesionalSegunId(@matricula INT, @fechaSistem DATETIME)
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelProfesionalSegunId(@matricula INT, @fechaSistem DATETIME, @descripcion VARCHAR(50))
 RETURNS TABLE
 AS
 RETURN (SELECT a.id, idProfesional, e.descripcion, fechaInicio, fechaFinal, diaInicio, diaFin 
 FROM GESTIONAME_LAS_VACACIONES.Agendas a JOIN GESTIONAME_LAS_VACACIONES.Especialidades e ON a.idEspecialidad = e.id
- WHERE idProfesional = @matricula AND baja=0 AND CONVERT(date,fechaFinal) >= CONVERT(date,@fechaSistem))
+ WHERE idProfesional = @matricula AND baja=0 AND e.descripcion = @descripcion AND CONVERT(date,fechaFinal) >= CONVERT(date,@fechaSistem))
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerRolDeUsuario(@idUsuario VARCHAR(255))
