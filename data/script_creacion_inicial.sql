@@ -1191,8 +1191,8 @@ CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerRolDeUsuario(@idUsuario VARCHAR
 RETURNS TABLE
 AS
 RETURN (SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Roles r JOIN
-GESTIONAME_LAS_VACACIONES.RolesxUsuario rxu ON r.id = rxu.id 
-WHERE rxu.idUsuario = @idUsuario)
+GESTIONAME_LAS_VACACIONES.RolesxUsuario rxu ON r.id = rxu.idRol
+WHERE rxu.idUsuario like @idUsuario)
 
 GO
 
