@@ -21,8 +21,10 @@ namespace ClinicaFrba.Cancelar_Atencion
             if (rol == "Afiliado")
             {
                 
-                button1.Visible = false; ;
-
+                button1.Visible = false;
+                CancelacionAfiliado form = new CancelacionAfiliado(Sesion.getInstance().afiliado.id);
+                form.ShowDialog();
+                this.Close();
             }
             else
             {
