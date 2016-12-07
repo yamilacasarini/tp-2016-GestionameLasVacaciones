@@ -15,9 +15,9 @@ namespace ClinicaFrba
 {
     public partial class login : Form
     {
-        public static String usuario {get; set;}
+        public static String usuario { get; set; }
         Sesion sesion;
-             public login()
+        public login()
         {
             InitializeComponent();
         }
@@ -31,27 +31,41 @@ namespace ClinicaFrba
             {
                 {
                     Server server = Server.getInstance();
-                        StringBuilder Sb = new StringBuilder();
-                        using (SHA256 hash = SHA256Managed.Create())
-                        {
-                            Encoding enc = Encoding.UTF8;
-                            Byte[] result = hash.ComputeHash(enc.GetBytes(txtPassword.Text.ToString()));
+                    StringBuilder Sb = new StringBuilder();
+                    using (SHA256 hash = SHA256Managed.Create())
+                    {
+                        Encoding enc = Encoding.UTF8;
+                        Byte[] result = hash.ComputeHash(enc.GetBytes(txtPassword.Text.ToString()));
 
-                            foreach (Byte b in result)
-                                Sb.Append(b.ToString("x2"));
-                        }
-                        try
+                        foreach (Byte b in result)
+                            Sb.Append(b.ToString("x2"));
+                    }
+                    try
+                    {
+
+                        server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + Sb.ToString() + "'");
+                        Sesion s = Sesion.getInstance();
+                        s.usuario = txtUsuario.Text.Trim();
+                        SqlDataReader reader = server.query("select id from GESTIONAME_LAS_VACACIONES.Pacientes where usuario like '" + txtUsuario.Text.Trim() + "'");
+                        while (reader.Read())
                         {
-                          
-                                server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.LoguearUsuario '" + txtUsuario.Text.Trim() + "', '" + Sb.ToString() + "'");
-                                new ValidacionDeRol(txtUsuario.Text.Trim()).ShowDialog();
-              
+                            s.afiliado.id = Convert.ToInt32(reader[0]);
                         }
-                        catch (SqlException ex)
+                        reader.Close();
+                        reader = server.query("select id from GESTIONAME_LAS_VACACIONES.Profesionales where usuario like '" + txtUsuario.Text.Trim() + "'");
+                        while (reader.Read())
                         {
-                            System.Windows.Forms.MessageBox.Show(ex.Message);
+                            s.profesional.matricula = Convert.ToInt32(reader[0]);
                         }
-              
+                        reader.Close();
+                        new ValidacionDeRol(txtUsuario.Text.Trim()).ShowDialog();
+
+                    }
+                    catch (SqlException ex)
+                    {
+                        System.Windows.Forms.MessageBox.Show(ex.Message);
+                    }
+
                 }
             }
             else

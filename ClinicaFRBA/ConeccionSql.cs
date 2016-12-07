@@ -16,6 +16,7 @@ namespace ClinicaFrba
         string db = ConfigurationManager.AppSettings["database"];
         string user = ConfigurationManager.AppSettings["username"];
         string password = ConfigurationManager.AppSettings["password"];
+       
 
         public static Server server;
         private SqlConnection connection;
