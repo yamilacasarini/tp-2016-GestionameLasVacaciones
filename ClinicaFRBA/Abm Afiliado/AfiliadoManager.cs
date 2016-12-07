@@ -182,7 +182,7 @@ namespace ClinicaFrba.Abm_Afiliado
             int plan = AfiliadoManager.idPlanMedico(planMedico);
             Server server = Server.getInstance();
             String query = "EXEC GESTIONAME_LAS_VACACIONES.cambioPlan " + id +
-                "," + plan + ",'" + motivo + "'";
+                "," + plan + ",'" + motivo + "','"+Program.horarioSistema +"'";
             SqlDataReader reader = server.query(query);
             reader.Close();
         }
