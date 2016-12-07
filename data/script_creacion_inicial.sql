@@ -1,4 +1,4 @@
--- Saque los GO, ahora aprentando el menos de la linea siguiente, no ves mas drops :D
+﻿-- Saque los GO, ahora aprentando el menos de la linea siguiente, no ves mas drops :D
 IF NOT EXISTS ( SELECT  *
 				FROM    sys.schemas
 				WHERE   name = N'GESTIONAME_LAS_VACACIONES' ) 
@@ -354,14 +354,14 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.ComprasBonos(
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   cantidad INT NOT NULL DEFAULT 1,
   monto INT NOT NULL,
-  fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  fecha DATETIME NOT NULL
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Modificaciones(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   idPlan INT,
   motivo VARCHAR(255),
-  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+  fecha DATETIME not null,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   id INTEGER PRIMARY KEY IDENTITY (1,1),
@@ -389,7 +389,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
 CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultasMedicas(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   idBono INT REFERENCES GESTIONAME_LAS_VACACIONES.Bonos(id),
-  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+  fecha DATETIME NOT NULL,
   diagnostico VARCHAR(255),
   sintomas VARCHAR(255),
   idTurno INT REFERENCES GESTIONAME_LAS_VACACIONES.Turnos(id),
