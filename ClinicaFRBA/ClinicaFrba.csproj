@@ -242,7 +242,7 @@
     <Compile Include="ValidacionDeRol.Designer.cs">
       <DependentUpon>ValidacionDeRol.cs</DependentUpon>
     </Compile>
-    <Compile Include="Seccion.cs" />
+    <Compile Include="Sesion.cs" />
     <Compile Include="login.cs">
       <SubType>Form</SubType>
     </Compile>

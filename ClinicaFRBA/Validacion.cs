@@ -107,7 +107,7 @@ namespace ClinicaFrba
 
         public static bool fechaMenorAlDiaDeHoy(DateTimePicker fecha, String queFecha)
         {
-           if (fecha.Value > ClinicaFrba.Sesion.getInstance.fecha)
+           if (fecha.Value > ClinicaFrba.Sesion.getInstance().fecha)
             {
                 MessageBox.Show("Usted ingreso mal la fecha de " + queFecha);
                 return false;
@@ -127,7 +127,7 @@ namespace ClinicaFrba
 
         public static bool fechaMayorAlDiaDeHoy(DateTimePicker fecha, String queFecha)
         {
-            if (fecha.Value < ClinicaFrba.Sesion.getInstance.fecha)
+            if (fecha.Value < ClinicaFrba.Sesion.getInstance().fecha)
             {
                 MessageBox.Show("Usted ingreso mal la fecha de " + queFecha);
                 return false;
