@@ -905,8 +905,14 @@ AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 BEGIN 
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE documento = @doc) 
+BEGIN
+DECLARE @IdUltimo INT = GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado()
+INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios(usuario) VALUES  ('Paciente_'+CONVERT(VARCHAR(10),@IdUltimo))
+INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario) VALUES(2,'Paciente_'+CONVERT(VARCHAR(10),@IdUltimo))
 INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre, apellido, documento, direccion, telefono, email, 
-fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes,usuario) VALUES (GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado(),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes,'afiliado')
+fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes,usuario) VALUES (GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado(),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes,'Paciente_'+CONVERT(VARCHAR(10),@IdUltimo))
+
+END
 ELSE
 RAISERROR( 'El paciente ya existe',16,217) WITH SETERROR
 END 
@@ -1109,13 +1115,14 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@turnoID INT, @numAf
 AS
 BEGIN
 
-DECLARE @bonoID INT
+DECLARE @bonoID INT = -1
 
 
 SELECT @bonoID = min(b.id) 
 FROM GESTIONAME_LAS_VACACIONES.Pacientes p JOIN GESTIONAME_LAS_VACACIONES.Bonos b 
 ON p.id/100 = b.idPaciente/100 AND b.usado = 0 AND p.id = @numAfiliado
-
+IF(@bonoID =-1)
+RAISERROR('El paciente no  posee bonos actualmente',6,210)
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, fecha, idTurno) 
 VALUES (@bonoID, @hora, @turnoID)
