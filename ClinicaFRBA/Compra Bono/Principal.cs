@@ -88,11 +88,16 @@ namespace ClinicaFrba.Compra_Bono
                 MessageBox.Show("Todavia no ingreso ningun paciente");
             }
             else
-            {
-                SqlDataReader reader = server.query("Select sum(b.cantidad) from GESTIONAME_LAS_VACACIONES.ComprasBonos b where b.idPaciente =" + etiquetaPaciente.Text);
+            {   
+                SqlDataReader reader = null ;
+                try{
+                reader = server.query("Select sum(b.cantidad) from GESTIONAME_LAS_VACACIONES.ComprasBonos b where b.idPaciente/100 =" + etiquetaPaciente.Text+"/100");
                 reader.Read();
                 MessageBox.Show("El usuario ahora poseee: " + reader.GetInt32(0).ToString()
                     + " bonos");
+            }catch(Exception ex){
+                MessageBox.Show(ex.Message); 
+            }
                 reader.Close();
             }
         }

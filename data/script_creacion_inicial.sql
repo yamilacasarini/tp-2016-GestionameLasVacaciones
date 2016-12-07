@@ -395,7 +395,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultasMedicas(
   fecha DATETIME NOT NULL,
   diagnostico VARCHAR(255),
   sintomas VARCHAR(255),
-  idTurno INT REFERENCES GESTIONAME_LAS_VACACIONES.Turnos(id),
+  idTurno INT REFERENCES GESTIONAME_LAS_VACACIONES.Turnos(id) ,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional(
   id INTEGER  IDENTITY(1,1) PRIMARY KEY,
@@ -929,7 +929,7 @@ SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 		IF NOT EXISTS (SELECT * from GESTIONAME_LAS_VACACIONES.Pacientes where id = GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar(@idFamiliar))
 			begin
 			INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre, apellido, documento, direccion, telefono, email, 
-			fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes,usuario) VALUES (GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar(@idFamiliar),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes,'afiliado')
+			fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes,usuario) VALUES (GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar(@idFamiliar),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes,'Paciente_'+convert(varchar(10),@idFamiliar))
 			end
 		else
 			begin
@@ -940,7 +940,7 @@ SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 		RAISERROR( 'El paciente ya existe',16,217)
 END 
 GO
-
+select * from GESTIONAME_LAS_VACACIONES.Usuarios where usuario like  '%_5600'
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarPaciente(@numAfiliado INT, @hora as datetime)
 AS
 BEGIN
@@ -1049,10 +1049,11 @@ join GESTIONAME_LAS_VACACIONES.Planes pl
 on p.planes = pl.id
 where   @numAfiliado = p.id)
 GO
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.compraDeBonos(@numAfiliado INT, @cantidad INT, @hora as datetime)
 AS
 BEGIN
-DECLARE @aux INT
+DECLARE @aux INT = 0
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE id = @numAfiliado)
 RAISERROR ('No existe el afiliado',16,217)
 ELSE 
@@ -1061,7 +1062,7 @@ VALUES (@numAfiliado, @cantidad, GESTIONAME_LAS_VACACIONES.calcularMontoSegunPla
 WHILE (@aux < @cantidad)
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan) 
-VALUES ((SELECT id FROM GESTIONAME_LAS_VACACIONES.ComprasBonos WHERE idPaciente = @numAfiliado AND fecha = @hora) , @numAfiliado, (SELECT p.planes FROM GESTIONAME_LAS_VACACIONES.Pacientes p WHERE id = @numAfiliado))
+VALUES ((SELECT top 1 id FROM GESTIONAME_LAS_VACACIONES.ComprasBonos WHERE idPaciente = @numAfiliado AND fecha = @hora order by id desc) , @numAfiliado, (SELECT p.planes FROM GESTIONAME_LAS_VACACIONES.Pacientes p WHERE id = @numAfiliado))
 SET @aux = @aux + 1
 END
 END
@@ -1127,7 +1128,7 @@ VALUES (@bonoID, @hora, @turnoID)
 UPDATE GESTIONAME_LAS_VACACIONES.Bonos
 SET usado = 1
 WHERE id = @bonoID
-END 
+END
 END
 GO
 

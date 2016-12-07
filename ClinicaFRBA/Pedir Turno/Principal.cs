@@ -21,16 +21,20 @@ namespace ClinicaFrba.Pedir_Turno
         Profesional profesionalSeleccionado = new Profesional();
         private void button2_Click(object sender, EventArgs e)
         {
-
-            try
+            if (!label2.Text.StartsWith("Ningun"))
             {
-                ListarTurnos listado = new ListarTurnos(profesionalSeleccionado);
-                listado.ShowDialog();
+                try
+                {
+                    ListarTurnos listado = new ListarTurnos(profesionalSeleccionado);
+                    listado.ShowDialog();
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.Forms.MessageBox.Show(ex.StackTrace);
+                }
             }
-            catch (Exception ex)
-            {
-                System.Windows.Forms.MessageBox.Show(ex.StackTrace);
-                //System.Windows.Forms.MessageBox.Show("El profesional no tiene ninguna agenda cargada");
+            else {
+                MessageBox.Show("No ha seleccionado ningun profesional");
             }
         }
 

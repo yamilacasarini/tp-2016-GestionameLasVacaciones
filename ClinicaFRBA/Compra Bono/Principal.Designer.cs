@@ -100,7 +100,7 @@
             // etiquetaPaciente
             // 
             this.etiquetaPaciente.AutoSize = true;
-            this.etiquetaPaciente.Location = new System.Drawing.Point(175, 39);
+            this.etiquetaPaciente.Location = new System.Drawing.Point(158, 36);
             this.etiquetaPaciente.Name = "etiquetaPaciente";
             this.etiquetaPaciente.Size = new System.Drawing.Size(0, 13);
             this.etiquetaPaciente.TabIndex = 6;
