@@ -1,4 +1,4 @@
-﻿-- Saque los GO, ahora aprentando el menos de la linea siguiente, no ves mas drops :D
+-- Saque los GO, ahora aprentando el menos de la linea siguiente, no ves mas drops :D
 IF NOT EXISTS ( SELECT  *
 				FROM    sys.schemas
 				WHERE   name = N'GESTIONAME_LAS_VACACIONES' ) 
@@ -500,12 +500,14 @@ SELECT medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNomb
 FROM #TemporalProfesional where medicoApellido is not null 
 group by medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNombre,medicoTelefono 
 
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios(usuario)
-select 'Profesional_'+Convert(varchar(10),id) from GESTIONAME_LAS_VACACIONES.Profesionales
+select 'Profesional_'+Convert(varchar(10),id) from GESTIONAME_LAS_VACACIONES.Profesionales 
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario)
-select 3,usuario from GESTIONAME_LAS_VACACIONES.Usuarios where usuario like 'Profesional_%'
+select 3,usuario from GESTIONAME_LAS_VACACIONES.Profesionales where usuario like 'Profesional_%'
+
+UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET usuario = 'Paciente_'+convert(varchar(10),id)
+UPDATE GESTIONAME_LAS_VACACIONES.Profesionales SET usuario = 'Profesional_'+convert(varchar(10),id)
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios (usuario, pass) VALUES ('admin','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7')
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario) values(1,'admin') 
@@ -534,6 +536,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (8,1)
 
 --FUNCIONALIDADES PARA AFILIADO--
+
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (3,2)
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (4,2)
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (6,2)
@@ -1095,15 +1098,13 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@turnoID INT, @numAf
 AS
 BEGIN
 
-DECLARE @bonoID INT = -1;
-
+DECLARE @bonoID INT
 
 
 SELECT @bonoID = min(b.id) 
 FROM GESTIONAME_LAS_VACACIONES.Pacientes p JOIN GESTIONAME_LAS_VACACIONES.Bonos b 
 ON p.id/100 = b.idPaciente/100 AND b.usado = 0 AND p.id = @numAfiliado
-IF(@bonoID = -1)
-RAISERROR('El paciente no tiene bonos para realizar la consulta',6,210)
+
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, fecha, idTurno) 
 VALUES (@bonoID, @hora, @turnoID)
@@ -1190,7 +1191,7 @@ CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerRolDeUsuario(@idUsuario VARCHAR
 RETURNS TABLE
 AS
 RETURN (SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Roles r JOIN
-GESTIONAME_LAS_VACACIONES.RolesxUsuario rxu ON r.id = rxu.idRol
+GESTIONAME_LAS_VACACIONES.RolesxUsuario rxu ON r.id = rxu.idRol 
 WHERE rxu.idUsuario like @idUsuario)
 
 GO
@@ -1270,16 +1271,16 @@ ELSE
 SELECT @inicioAux= fechaInicio,  @finalAux = fechaFinal, @diaInicialAux = diaInicio, @diaFinalAux = diaFin
 FROM GESTIONAME_LAS_VACACIONES.Agendas 
 WHERE idProfesional = @matricula 
-	  AND @diaInicialACancelar BETWEEN fechaInicio AND fechaFinal
-	  AND @diaFinalACancelar BETWEEN fechaInicio AND fechaFinal
+	  AND CAST(@diaInicialACancelar AS DATE) BETWEEN fechaInicio AND fechaFinal
+	  AND CAST(@diaFinalACancelar AS DATE) BETWEEN fechaInicio AND fechaFinal
 	  AND GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad
 	  AND baja = 0
 
 UPDATE GESTIONAME_LAS_VACACIONES.Agendas 
 SET baja = 1, motivo = @motivo
 WHERE idProfesional = @matricula 
-	AND @diaInicialACancelar BETWEEN fechaInicio AND fechaFinal
-	AND @diaFinalACancelar BETWEEN fechaInicio AND fechaFinal 
+	AND CAST(@diaInicialACancelar AS DATE) BETWEEN fechaInicio AND fechaFinal
+	AND CAST(@diaFinalACancelar AS DATE) BETWEEN fechaInicio AND fechaFinal 
 	AND GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) = idEspecialidad
 	AND baja = 0
 
@@ -1299,10 +1300,12 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fec
 VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1, @diaInicialACancelar), @diaInicialAux, @diaFinalAux)
 
 IF (CAST (@diaInicialACancelar AS DATE) != CAST(@inicioAux AS DATE) AND CAST(@diaFinalACancelar AS DATE) != CAST(@finalAux AS DATE))
+BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
 VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1,  @diaInicialACancelar ), @diaInicialAux, @diaFinalAux)
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
 VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(day,+1, @diaFinalACancelar), @finalAux, @diaInicialAux, @diaFinalAux)
+END
 
 END
 GO
