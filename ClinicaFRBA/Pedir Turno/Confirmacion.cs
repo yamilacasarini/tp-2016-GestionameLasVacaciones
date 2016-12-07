@@ -26,6 +26,7 @@ namespace ClinicaFrba.Pedir_Turno
             label2.Text = fecha.ToString();
             label5.Text = afiliado.apellido + "," + afiliado.nombre + ". Num De Afiliado: " + afiliado.id.ToString();
             label6.Text = profesional.apellido + "," + profesional.nombre + ". Especialidad: " + profesional.especialidad;
+            
         }
 
         private void label2_Click(object sender, EventArgs e)

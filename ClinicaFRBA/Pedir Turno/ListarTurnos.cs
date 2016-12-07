@@ -49,20 +49,31 @@ namespace ClinicaFrba.Pedir_Turno
             if (dataGridView1.SelectedRows.Count == 1)
             {
                 fechaElegida = new DateTime(Convert.ToInt32(dataGridView1.CurrentRow.Cells[12].Value), Convert.ToInt32(dataGridView1.CurrentRow.Cells[8].Value), Convert.ToInt32(dataGridView1.CurrentRow.Cells[1].Value), Convert.ToInt32(dataGridView1.CurrentRow.Cells[4].Value), Convert.ToInt32(dataGridView1.CurrentRow.Cells[7].Value), 0);
-                
-                Abm_Afiliado.BuscarAfiliados buscador = new Abm_Afiliado.BuscarAfiliados();
-                buscador.ShowDialog();
-                Abm_Afiliado.Afiliado afiliado = buscador.afiliadoBuscado;
+                Sesion s = Sesion.getInstance();
+                Abm_Afiliado.Afiliado afiliado;
+                if (s.rol != "Afiliado")
+                {
+                    Abm_Afiliado.BuscarAfiliados buscador = new Abm_Afiliado.BuscarAfiliados();
+                    buscador.ShowDialog();
+                    afiliado = buscador.afiliadoBuscado;
+                }
+                else
+                {
+                    afiliado = s.afiliado;
+                }
                 int afiliadoID = afiliado.id;
-          
-                Confirmacion conf = new Confirmacion(fechaElegida, afiliado, profesional);
-                conf.ShowDialog();
+                if (afiliado.id != 0)
+                {
+                    Confirmacion conf = new Confirmacion(fechaElegida, afiliado, profesional);
+                    conf.ShowDialog();
+                }
             }
+            this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-          
+
         }
 
         private void label1_Click(object sender, EventArgs e)
