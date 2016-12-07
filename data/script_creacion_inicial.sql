@@ -1,4 +1,4 @@
-﻿-- Saque los GO, ahora aprentando el menos de la linea siguiente, no ves mas drops :D
+-- Saque los GO, ahora aprentando el menos de la linea siguiente, no ves mas drops :D
 IF NOT EXISTS ( SELECT  *
 				FROM    sys.schemas
 				WHERE   name = N'GESTIONAME_LAS_VACACIONES' ) 
@@ -354,14 +354,14 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.ComprasBonos(
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   cantidad INT NOT NULL DEFAULT 1,
   monto INT NOT NULL,
-  fecha DATETIME NOT NULL
+  fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Modificaciones(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   idPlan INT,
   motivo VARCHAR(255),
-  fecha DATETIME not null,
+  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   id INTEGER PRIMARY KEY IDENTITY (1,1),
@@ -389,7 +389,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
 CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultasMedicas(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   idBono INT REFERENCES GESTIONAME_LAS_VACACIONES.Bonos(id),
-  fecha DATETIME NOT NULL,
+  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
   diagnostico VARCHAR(255),
   sintomas VARCHAR(255),
   idTurno INT REFERENCES GESTIONAME_LAS_VACACIONES.Turnos(id),
@@ -1063,15 +1063,24 @@ GO
 --NUMERO 10--
 --RESERVA DE TURNOS--
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdAgenda(@especialidad varchar(255), @matricula int)
+RETURNS INT
+AS BEGIN
+RETURN (SELECT a.id FROM GESTIONAME_LAS_VACACIONES.Agendas a 
+WHERE a.idProfesional = @matricula 
+AND a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad))
+END
+GO
+
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.reservarTurno(@matricula INT, @numAfiliado INT, @especialidad VARCHAR(255), @fecha DATETIME)
 AS
 BEGIN
-IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idProfesional = @matricula AND fecha = @fecha))
-	INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos (idPaciente, idProfesional, especialidad, fecha) 
-	VALUES (@numAfiliado, @matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) , @fecha) 
+IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idProfesional = @matricula AND fecha = @fecha AND idPaciente = @numAfiliado))
+	INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos (idPaciente, idProfesional, especialidad, idAgenda, fecha) 
+	VALUES (@numAfiliado, @matricula, @especialidad , GESTIONAME_LAS_VACACIONES.getIdAgenda(@especialidad, @matricula), @fecha) 
 END
 GO
 
@@ -1115,6 +1124,7 @@ WHERE id = @bonoID
 
 END
 GO
+
 --////////////////////////////////////--
 --NUMERO 12--
 --CARGA DE SINTOMAS Y DIAGNOSTICO A LA CONSULTA MEDICA--
