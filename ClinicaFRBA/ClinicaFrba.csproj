@@ -314,6 +314,9 @@
     <EmbeddedResource Include="Cancelar Atencion\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Compra Bono\Principal.resx">
+      <DependentUpon>Principal.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Listados\EspecialidadesCancelaciones.resx">
       <DependentUpon>EspecialidadesCancelaciones.cs</DependentUpon>
     </EmbeddedResource>

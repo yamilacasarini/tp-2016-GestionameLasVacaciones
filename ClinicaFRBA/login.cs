@@ -52,6 +52,8 @@ namespace ClinicaFrba
                             s.afiliado.id = Convert.ToInt32(reader[0]);
                         }
                         reader.Close();
+                        if (s.afiliado.id != -1)
+                            s.afiliado = Abm_Afiliado.AfiliadoManager.BuscarUnAfiliado(s.afiliado.id);
                         reader = server.query("select id from GESTIONAME_LAS_VACACIONES.Profesionales where usuario like '" + txtUsuario.Text.Trim() + "'");
                         while (reader.Read())
                         {

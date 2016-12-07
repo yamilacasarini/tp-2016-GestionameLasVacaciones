@@ -16,16 +16,26 @@ namespace ClinicaFrba.Compra_Bono
         int idPlan;
         int precioBono;
         Server server = Server.getInstance();
-
+        Sesion sesion = Sesion.getInstance();
         public Principal()
         {
             InitializeComponent();
+            if (sesion.rol == "Afiliado") {
+                btBuscar.Hide();
+                afiliadoBuscado = sesion.afiliado;
+                etiquetaPaciente.Text = afiliadoBuscado.id.ToString();
+                SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerPlanAcutalAfiliado(" + afiliadoBuscado.id.ToString() + ")");
+                reader.Read();
+                EtiquetaPlan.Text = reader["descripcion"].ToString();
+                precioBono = Convert.ToInt16(reader["precioBono"]);
+                reader.Close();
+            }
 
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
-            if (etiquetaPaciente.Text.Trim() =="")
+            if (etiquetaPaciente.Text.Trim() == "")
             {
                 MessageBox.Show("Todavia no ingreso ningun paciente");
                 cantidad.Value = 0;
@@ -60,7 +70,8 @@ namespace ClinicaFrba.Compra_Bono
                 read.Close();
                 MessageBox.Show("Compra realizada exitosamente!");
             }
-            else {
+            else
+            {
                 MessageBox.Show("La cantidad de bonos a comprar tiene que ser al menos 1");
             }
         }
@@ -72,15 +83,16 @@ namespace ClinicaFrba.Compra_Bono
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (etiquetaPaciente.Text.Trim() =="")
+            if (etiquetaPaciente.Text.Trim() == "")
             {
                 MessageBox.Show("Todavia no ingreso ningun paciente");
             }
-            else {
+            else
+            {
                 SqlDataReader reader = server.query("Select sum(b.cantidad) from GESTIONAME_LAS_VACACIONES.ComprasBonos b where b.idPaciente =" + etiquetaPaciente.Text);
                 reader.Read();
-                MessageBox.Show("El usuario ahora poseee: "+reader.GetInt32(0).ToString()
-                    +" bonos");
+                MessageBox.Show("El usuario ahora poseee: " + reader.GetInt32(0).ToString()
+                    + " bonos");
                 reader.Close();
             }
         }

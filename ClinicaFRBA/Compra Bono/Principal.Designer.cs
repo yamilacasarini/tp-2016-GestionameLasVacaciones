@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.txIdPaciente = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -37,20 +37,20 @@
             this.etiquetaPaciente = new System.Windows.Forms.Label();
             this.EtiquetaPlan = new System.Windows.Forms.Label();
             this.etiquetaMonto = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btBuscar = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.cantidad)).BeginInit();
             this.SuspendLayout();
             // 
-            // label1
+            // txIdPaciente
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(39, 36);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Id paciente";
+            this.txIdPaciente.AutoSize = true;
+            this.txIdPaciente.Location = new System.Drawing.Point(39, 36);
+            this.txIdPaciente.Name = "txIdPaciente";
+            this.txIdPaciente.Size = new System.Drawing.Size(60, 13);
+            this.txIdPaciente.TabIndex = 0;
+            this.txIdPaciente.Text = "Id paciente";
             // 
             // label2
             // 
@@ -121,15 +121,15 @@
             this.etiquetaMonto.Size = new System.Drawing.Size(0, 13);
             this.etiquetaMonto.TabIndex = 8;
             // 
-            // button1
+            // btBuscar
             // 
-            this.button1.Location = new System.Drawing.Point(197, 31);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Buscar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btBuscar.Location = new System.Drawing.Point(197, 31);
+            this.btBuscar.Name = "btBuscar";
+            this.btBuscar.Size = new System.Drawing.Size(75, 23);
+            this.btBuscar.TabIndex = 9;
+            this.btBuscar.Text = "Buscar";
+            this.btBuscar.UseVisualStyleBackColor = true;
+            this.btBuscar.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -158,7 +158,7 @@
             this.ClientSize = new System.Drawing.Size(284, 207);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btBuscar);
             this.Controls.Add(this.etiquetaMonto);
             this.Controls.Add(this.EtiquetaPlan);
             this.Controls.Add(this.etiquetaPaciente);
@@ -167,7 +167,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txIdPaciente);
             this.Name = "Principal";
             this.Text = "Comprar Bonos";
             ((System.ComponentModel.ISupportInitialize)(this.cantidad)).EndInit();
@@ -178,7 +178,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label txIdPaciente;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -187,7 +187,7 @@
         private System.Windows.Forms.Label etiquetaPaciente;
         private System.Windows.Forms.Label EtiquetaPlan;
         private System.Windows.Forms.Label etiquetaMonto;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btBuscar;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
     }
