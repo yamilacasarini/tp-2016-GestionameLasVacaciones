@@ -50,8 +50,9 @@ namespace ClinicaFrba
         {
             if (FuncionalidadComboBox.SelectedItem != "")
             {
-            //    Sesion.getInstance.rol = FuncionalidadComboBox.Text.Trim();
+                Sesion.getInstance().rol = RolComboBox.Text.Trim();
                 this.Close();
+
                 switch (FuncionalidadComboBox.Text.ToString())
                 {
                     case "ABM ROL":

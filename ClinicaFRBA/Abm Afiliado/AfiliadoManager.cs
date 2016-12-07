@@ -208,5 +208,30 @@ namespace ClinicaFrba.Abm_Afiliado
                 return 'f';
             return 'm';
         }
+        public static Afiliado BuscarUnAfiliado(int id)
+        {
+            Afiliado afiliado = new Afiliado();
+            string query = "select * from GESTIONAME_LAS_VACACIONES.Pacientes where id = " +id;
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query(query);
+            while (reader.Read())
+            {
+                afiliado.id = Convert.ToInt32(reader["id"]);
+                afiliado.nombre = reader["nombre"].ToString();
+                afiliado.apellido = reader["apellido"].ToString();
+                afiliado.tipoDocumento = reader["tipoDocumento"].ToString();
+                afiliado.documento = Convert.ToInt32(reader["documento"]);
+                afiliado.direccion = reader["direccion"].ToString();
+                afiliado.telefono = Convert.ToInt32(reader["telefono"]);
+                afiliado.email = reader["email"].ToString();
+                afiliado.servicio = Convert.ToInt32(reader["planes"]);
+                afiliado.fechaNacimiento = Convert.ToDateTime(reader["fechaNacimiento"]);
+                afiliado.sexo = reader[10].ToString();
+                afiliado.estadoCivil = reader["estadoCivil"].ToString();
+                afiliado.cantFamiliares = Convert.ToInt32(reader["cantFamiliares"]);
+            }
+            reader.Close();
+            return afiliado;
+        }
     }
 }

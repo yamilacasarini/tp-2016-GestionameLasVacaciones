@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace ClinicaFrba
 {
-    class Sesion
+    public class Sesion
     {
         public string rol{get;set;}
         public string usuario{get;set;}
