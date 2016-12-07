@@ -276,7 +276,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Roles(
   )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Usuarios (
   usuario VARCHAR(255) PRIMARY KEY,
-pass VARCHAR(255),
+pass VARCHAR(255) DEFAULT 'e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7',
   baja INT default 0,
   fechaBaja DATETIME,
   intentos INT DEFAULT 0,
@@ -455,6 +455,20 @@ especialidad varchar(255)
 )
 GO
 
+INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Administrativo')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Afiliado')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Profesional')
+
+INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('ABM ROL')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('ABM AFILIADOS')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('COMPRA BONOS')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('PEDIDO DE TURNO')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('REGISTRO DE LLEGADA')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('CANCELAR TURNO')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('LISTADO ESTADISTICO')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('ALTA AGENDA PROFESIONAL')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('RESULTADO DE CONSULTA')
+
 insert into #ConsultasTemporal(id,fecha,idBono,fechaBono,precioBono,sintomas,diagnostico,dni, medicoDNI, especialidad)
 SELECT	Turno_Numero, Turno_Fecha,Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion,Plan_Med_Precio_Bono_Consulta, 
 Consulta_Sintomas,Consulta_Enfermedades, Paciente_Dni, Medico_Dni, Especialidad_Descripcion
@@ -469,6 +483,11 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(nombre,apellido,direccion,docume
 SELECT  nombre,apellido,direccion,dni,email,fechaNacimiento,telefono ,idPlan
 from #PacienteTemporal group by nombre,apellido,direccion,dni,email,fechaNacimiento,telefono,idPlan
 
+INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios(usuario) 
+SELECT 'Paciente_'+convert(VARCHAR(10),id) from GESTIONAME_LAS_VACACIONES.Pacientes
+
+INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario) 
+SELECT 2,usuario from GESTIONAME_LAS_VACACIONES.Usuarios where usuario like 'Paciente_%'
 
 INSERT INTO #TemporalProfesional (consultaEnfermedad,consultaSintoma,especialidadDescripcion,especialidadDescripcion2,fechaTurno,
 						idEspecialidad,idEspecialidad2,idTurno,medicoApellido,medicoDni,medicoMail,medicoNacimiento,medicoNombre,medicoTelefono,medicoDir)
@@ -481,25 +500,15 @@ SELECT medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNomb
 FROM #TemporalProfesional where medicoApellido is not null 
 group by medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNombre,medicoTelefono 
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Administrativo')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Afiliado')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Roles(descripcion) VALUES ('Profesional')
+INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios(usuario)
+select 'Profesional_'+Convert(varchar(10),id) from GESTIONAME_LAS_VACACIONES.Profesionales 
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('ABM ROL')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('ABM AFILIADOS')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('COMPRA BONOS')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('PEDIDO DE TURNO')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('REGISTRO DE LLEGADA')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('CANCELAR TURNO')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('LISTADO ESTADISTICO')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('ALTA AGENDA PROFESIONAL')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('RESULTADO DE CONSULTA')
+INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario)
+select 3,usuario from GESTIONAME_LAS_VACACIONES.Profesionales where usuario like 'Profesional_%'
+
 INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios (usuario, pass) VALUES ('admin','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios (usuario, pass) VALUES ('afiliado','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7')
-INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios (usuario, pass) VALUES ('profesional','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7')
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario) values(1,'admin') 
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario) values(2,'afiliado') 
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario) values(3,'profesional') 
+
 INSERT INTO GESTIONAME_LAS_VACACIONES.Planes(id,descripcion, precioCuota, precioBono)
 	SELECT DISTINCT idPlan,descripcionPlan, precioCuota, precioBono
 		FROM #PacienteTemporal
@@ -511,9 +520,6 @@ join GESTIONAME_LAS_VACACIONES.Pacientes p
 on t.dni = p.documento
 where t.fechaBono is not null
 GROUP BY p.id, fechaBono,precioBono 
-
-UPDATE GESTIONAME_LAS_VACACIONES.Pacientes set usuario = 'afiliado'
-UPDATE GESTIONAME_LAS_VACACIONES.Profesionales set usuario = 'profesional'
 
 --FUNCIONALIDADES PARA ADMIN--
 
