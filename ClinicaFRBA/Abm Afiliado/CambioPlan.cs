@@ -33,7 +33,7 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             try
             {
-                if (validarDatos())
+                if (!Validacion.estaVacio(txtMotivo,"Motivo"))
                 {
                     if (afiliado.servicio == 0)
                     {
@@ -62,10 +62,6 @@ namespace ClinicaFrba.Abm_Afiliado
         private void cBplanMedico_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-        }
-        bool validarDatos()
-        {
-            return !Validacion.estaVacio(txMotivo,"Motivo") && !Validacion.noTieneSeleccion(cBplanMedico,"Plan medico");// && (!Validacion.esAlfanumerico(txMotivo, "motivo"));
         }
 
         private void cBplanMedico_SelectedIndexChanged_1(object sender, EventArgs e)
