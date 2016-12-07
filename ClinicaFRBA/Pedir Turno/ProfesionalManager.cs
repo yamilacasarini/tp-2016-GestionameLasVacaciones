@@ -18,36 +18,45 @@ namespace ClinicaFrba.Pedir_Turno
                 " from GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e JOIN GESTIONAME_LAS_VACACIONES.Profesionales p" +
                 " ON p.id = e.idProfesional ";
             int parametros = 0;
-        
-            if (!(nombre.Replace(" ", "") == "")){
+
+            if (!(nombre.Replace(" ", "") == ""))
+            {
                 query += "where p.nombre like '" + nombre + "'";
                 parametros++;
             }
-            if (id != -1){
-                if(parametros>0){query += " and p.id = " + id;}
-                else {
-                parametros++;
-                    query+=" where p.id = " + id;
+            if (id != -1)
+            {
+                if (parametros > 0) { query += " and p.id = " + id; }
+                else
+                {
+                    parametros++;
+                    query += " where p.id = " + id;
                 }
             }
-                if (!(apellido.Replace(" ", "") == "")){
-                if(parametros>0){query += " and p.apellido like '" + apellido + "'";}
-                else {
-                parametros++;
-                    query+=" where p.apellido like '" + apellido + "'";
+            if (!(apellido.Replace(" ", "") == ""))
+            {
+                if (parametros > 0) { query += " and p.apellido like '" + apellido + "'"; }
+                else
+                {
+                    parametros++;
+                    query += " where p.apellido like '" + apellido + "'";
                 }
             }
-                if (!(especialidad.Replace(" ", "") == "")){
-                if(parametros>0){query += " and e.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad('" +especialidad+ "')";
-                }else {
-                parametros++;
-                    query+=" where e.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad('" +especialidad+ "')";
+            if (!(especialidad.Replace(" ", "") == ""))
+            {
+                if (parametros > 0)
+                {
+                    query += " and e.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad('" + especialidad + "')";
+                }
+                else
+                {
+                    parametros++;
+                    query += " where e.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad('" + especialidad + "')";
                 }
             }
-            
             Server server = Server.getInstance();
             SqlDataReader reader = server.query(query);
-            
+
             while (reader.Read())
             {
                 Profesional prof = new Profesional();
@@ -61,17 +70,36 @@ namespace ClinicaFrba.Pedir_Turno
             return profesionales;
         }
 
+        public static Profesional buscarUnProfesional(int id)
+        {
+            string query = "select * from GESTIONAME_LAS_VACACIONES.Profesionales where id = " + id;
+            int parametros = 0;
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query(query);
+            Profesional prof = new Profesional();
+
+            while (reader.Read())
+            {
+                prof.matricula = Convert.ToInt32(reader["id"]);
+                prof.nombre = reader["nombre"].ToString();
+                prof.apellido = reader["apellido"].ToString();
+                prof.especialidad = reader["especialidad"].ToString();
+            }
+            reader.Close();
+            return prof;
+        }
+
         public static List<DateTime> MostrarTurnosDeProfesional(int id, string especialidad)
         {
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(" + id + ", '" + especialidad + "', '" + Program.horarioSistema + "')");
-          
+
             DateTime inicio = DateTime.Now;
             DateTime fin = DateTime.Now;
 
             while (reader.Read())
             {
-               
+
                 inicio = (Convert.ToDateTime(reader["fechaInicio"].ToString()));
                 fin = (Convert.ToDateTime(reader["fechaFinal"].ToString()));
             }
@@ -95,7 +123,7 @@ namespace ClinicaFrba.Pedir_Turno
 
             List<DateTime> turnos = new List<DateTime>();
 
-            DateTime aux = inicio; 
+            DateTime aux = inicio;
 
             while (aux != fin)
             {
@@ -124,16 +152,16 @@ namespace ClinicaFrba.Pedir_Turno
 
             reader2.Close();
 
-            for(i = 0; i < turnos.Count(); i++)
-              {
+            for (i = 0; i < turnos.Count(); i++)
+            {
 
-                  if (((int)turnos[i].DayOfWeek >= diaInicio && (int)turnos[i].DayOfWeek <= diaFin) 
-                      && (!(turnos[i].Hour < inicio.Hour) && !(turnos[i].Hour >= fin.Hour)))
-                      {
-                          turnosAMostrar.Add(turnos[i]);
-                      }
-              }
-        
+                if (((int)turnos[i].DayOfWeek >= diaInicio && (int)turnos[i].DayOfWeek <= diaFin)
+                    && (!(turnos[i].Hour < inicio.Hour) && !(turnos[i].Hour >= fin.Hour)))
+                {
+                    turnosAMostrar.Add(turnos[i]);
+                }
+            }
+
             for (j = 0; j < turnosNoDisponibles.Count(); j++)
             {
                 if (turnosAMostrar.Contains(turnosNoDisponibles[j]))

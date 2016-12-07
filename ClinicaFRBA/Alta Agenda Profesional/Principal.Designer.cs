@@ -30,7 +30,7 @@
         {
             this.label1 = new System.Windows.Forms.Label();
             this.profesional = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btBuscar = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.anioInicio = new System.Windows.Forms.TextBox();
@@ -80,16 +80,16 @@
             this.profesional.TabIndex = 1;
             this.profesional.Click += new System.EventHandler(this.label2_Click);
             // 
-            // button1
+            // btBuscar
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(356, 17);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 27);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Buscar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btBuscar.Location = new System.Drawing.Point(356, 17);
+            this.btBuscar.Name = "btBuscar";
+            this.btBuscar.Size = new System.Drawing.Size(75, 27);
+            this.btBuscar.TabIndex = 2;
+            this.btBuscar.Text = "Buscar";
+            this.btBuscar.UseVisualStyleBackColor = true;
+            this.btBuscar.Click += new System.EventHandler(this.button1_Click);
             // 
             // label3
             // 
@@ -364,7 +364,7 @@
             this.Controls.Add(this.anioInicio);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btBuscar);
             this.Controls.Add(this.profesional);
             this.Controls.Add(this.label1);
             this.Name = "Principal";
@@ -378,7 +378,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label profesional;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btBuscar;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox anioInicio;

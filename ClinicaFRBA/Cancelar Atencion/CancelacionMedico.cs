@@ -25,7 +25,17 @@ namespace ClinicaFrba.Cancelar_Atencion
             if (agenda == null)
             {
                 MessageBox.Show("El profesional no tiene turnos recientes");
-                this.Close();
+                btnDia.Hide();
+                btnPeriodo.Hide();
+                label6.Hide();
+                txtDesde.Enabled = false;
+                txtDia.Enabled = false;
+                txtHasta.Enabled = false;
+                txtMotivo.Enabled = false;
+                horaInicio.Enabled = false;
+                horaFinal.Enabled = false;
+                minutosFinal.Enabled = false;
+                minutosInicio.Enabled = false;
             }
             else
             {
@@ -33,8 +43,6 @@ namespace ClinicaFrba.Cancelar_Atencion
 
                 this.dataAgenda.DataSource = agenda;
             }
-
-
         }
 
         private void CancelacionMedico_Load(object sender, EventArgs e)
@@ -123,6 +131,11 @@ namespace ClinicaFrba.Cancelar_Atencion
         private void label7_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void btSalir_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

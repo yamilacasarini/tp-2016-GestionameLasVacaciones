@@ -15,27 +15,7 @@ namespace ClinicaFrba.Cancelar_Atencion
         public Pedir_Turno.Profesional profesional = new Pedir_Turno.Profesional();
         public Principal()
         {
-            String rol = CancelacionManager.obtenerRolDeUsuario(login.usuario);
-            
             InitializeComponent();
-            if (rol == "Afiliado")
-            {
-                
-                button1.Visible = false;
-                CancelacionAfiliado form = new CancelacionAfiliado(Sesion.getInstance().afiliado.id);
-                form.ShowDialog();
-                this.Close();
-            }
-            else
-            {
-                if (rol == "Profesional")
-                {
-                  
-                    button2.Visible = false;
-                }
-            }
-            
-
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -43,9 +23,6 @@ namespace ClinicaFrba.Cancelar_Atencion
             Abm_Afiliado.BuscarAfiliados buscador = new Abm_Afiliado.BuscarAfiliados();
             buscador.abrirCancelacion = 1;
             buscador.ShowDialog();
-           
-           
-            
         }
 
         private void button1_Click(object sender, EventArgs e)

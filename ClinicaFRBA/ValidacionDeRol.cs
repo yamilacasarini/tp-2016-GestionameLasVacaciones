@@ -74,7 +74,13 @@ namespace ClinicaFrba
                         case "CANCELAR TURNO":
                             if (Sesion.getInstance().rol == "Afiliado")
                                 new Cancelar_Atencion.CancelacionAfiliado(Sesion.getInstance().afiliado.id).ShowDialog();
-                            break;
+                            else {
+                                if (Sesion.getInstance().rol == "Profesional")
+                                    new Cancelar_Atencion.CancelacionMedico(Sesion.getInstance().profesional.matricula, Sesion.getInstance().profesional.especialidad).ShowDialog();
+                                else
+                                    new Cancelar_Atencion.Principal().ShowDialog();
+                            }
+                                break;
                         case "LISTADO ESTADISTICO":
                             new Listados.Principal().ShowDialog();
                             break;

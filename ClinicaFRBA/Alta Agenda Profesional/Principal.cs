@@ -34,6 +34,12 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
             diaDelSistema = horaDelSistema.Day.ToString();
             mesDelSistema = horaDelSistema.Month.ToString();
             anioDelSistema = horaDelSistema.Year.ToString();
+            if (Sesion.getInstance().rol == "Profesional")
+            {
+                btBuscar.Hide();
+                prof = Sesion.getInstance().profesional;
+                setearLabelProf(prof);
+            }
 
         }
 

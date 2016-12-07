@@ -50,14 +50,14 @@ namespace ClinicaFrba
                         while (reader.Read())
                         {
                             s.afiliado.id = Convert.ToInt32(reader[0]);
+                            s.afiliado = Abm_Afiliado.AfiliadoManager.BuscarUnAfiliado(s.afiliado.id);
                         }
                         reader.Close();
-                        if (s.afiliado.id != -1)
-                            s.afiliado = Abm_Afiliado.AfiliadoManager.BuscarUnAfiliado(s.afiliado.id);
                         reader = server.query("select id from GESTIONAME_LAS_VACACIONES.Profesionales where usuario like '" + txtUsuario.Text.Trim() + "'");
                         while (reader.Read())
                         {
                             s.profesional.matricula = Convert.ToInt32(reader[0]);
+                            s.profesional = Pedir_Turno.ProfesionalManager.buscarUnProfesional(s.profesional.matricula); 
                         }
                         reader.Close();
                         new ValidacionDeRol(txtUsuario.Text.Trim()).ShowDialog();
