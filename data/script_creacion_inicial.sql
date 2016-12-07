@@ -500,14 +500,12 @@ SELECT medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNomb
 FROM #TemporalProfesional where medicoApellido is not null 
 group by medicoApellido,medicoDir,medicoDni,medicoMail,medicoNacimiento,medicoNombre,medicoTelefono 
 
+
 INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios(usuario)
-select 'Profesional_'+Convert(varchar(10),id) from GESTIONAME_LAS_VACACIONES.Profesionales 
+select 'Profesional_'+Convert(varchar(10),id) from GESTIONAME_LAS_VACACIONES.Profesionales
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario)
-select 3,usuario from GESTIONAME_LAS_VACACIONES.Profesionales where usuario like 'Profesional_%'
-
-UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET usuario = 'Paciente_'+convert(varchar(10),id)
-UPDATE GESTIONAME_LAS_VACACIONES.Profesionales SET usuario = 'Profesional_'+convert(varchar(10),id)
+select 3,usuario from GESTIONAME_LAS_VACACIONES.Usuarios where usuario like 'Profesional_%'
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios (usuario, pass) VALUES ('admin','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7')
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario) values(1,'admin') 
@@ -536,7 +534,6 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (8,1)
 
 --FUNCIONALIDADES PARA AFILIADO--
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (3,2)
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (4,2)
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (6,2)
