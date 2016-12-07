@@ -1,4 +1,4 @@
--- Saque los GO, ahora aprentando el menos de la linea siguiente, no ves mas drops :D
+﻿-- Saque los GO, ahora aprentando el menos de la linea siguiente, no ves mas drops :D
 IF NOT EXISTS ( SELECT  *
 				FROM    sys.schemas
 				WHERE   name = N'GESTIONAME_LAS_VACACIONES' ) 
@@ -184,6 +184,9 @@ DROP PROCEDURE GESTIONAME_LAS_VACACIONES.reservarTurno;
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.obtenerIdProfesional') IS NOT NULL
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerIdProfesional;
 
+IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.getIdAgenda') IS NOT NULL
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.getIdAgenda;
+
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional') IS NOT NULL
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional;
 
@@ -354,14 +357,14 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.ComprasBonos(
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   cantidad INT NOT NULL DEFAULT 1,
   monto INT NOT NULL,
-  fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  fecha DATETIME NOT NULL
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Modificaciones(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   idPlan INT,
   motivo VARCHAR(255),
-  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+  fecha DATETIME NOT NULL
    )
 CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   id INTEGER PRIMARY KEY IDENTITY (1,1),
@@ -389,7 +392,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
 CREATE TABLE GESTIONAME_LAS_VACACIONES.ConsultasMedicas(
   id INTEGER IDENTITY(1,1) PRIMARY KEY,
   idBono INT REFERENCES GESTIONAME_LAS_VACACIONES.Bonos(id),
-  fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
+  fecha DATETIME NOT NULL,
   diagnostico VARCHAR(255),
   sintomas VARCHAR(255),
   idTurno INT REFERENCES GESTIONAME_LAS_VACACIONES.Turnos(id),
@@ -766,9 +769,8 @@ CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(@matricu
 RETURNS TABLE
 AS
 RETURN select fecha from GESTIONAME_LAS_VACACIONES.Turnos t
-WHERE t.idProfesional = @matricula and t.especialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and baja = 0 
+WHERE t.idProfesional = @matricula and t.especialidad like @especialidad and baja = 0 
 GO
-
 
 --////////////////////////////////////--
 --PROCEDURES--
@@ -949,11 +951,11 @@ SET direccion = @direc, telefono = @tel, email = @mail, sexo = @sexo,
 estadoCivil = @civil, cantFamiliares = @cantFami WHERE id = @id
 END
 GO
-CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cambioPlan(@idPaciente INT,@plan INT, @motivo VARCHAR(50))
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cambioPlan(@idPaciente INT,@plan INT, @motivo VARCHAR(50),@fecha as datetime)
 AS
 BEGIN
-INSERT INTO GESTIONAME_LAS_VACACIONES.Modificaciones(idPaciente,idPlan,motivo)
-VALUES(@idPaciente,@plan,@motivo)
+INSERT INTO GESTIONAME_LAS_VACACIONES.Modificaciones(idPaciente,idPlan,motivo,fecha)
+VALUES(@idPaciente,@plan,@motivo,@fecha)
 END
 GO
 --////////////////////////////////////--
@@ -1048,8 +1050,8 @@ DECLARE @aux INT
 IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE id = @numAfiliado)
 RAISERROR ('No existe el afiliado',16,217)
 ELSE 
-INSERT INTO GESTIONAME_LAS_VACACIONES.ComprasBonos(idPaciente, cantidad, monto) 
-VALUES (@numAfiliado, @cantidad, GESTIONAME_LAS_VACACIONES.calcularMontoSegunPlan(@numAfiliado, @cantidad))
+INSERT INTO GESTIONAME_LAS_VACACIONES.ComprasBonos(idPaciente, cantidad, monto,fecha) 
+VALUES (@numAfiliado, @cantidad, GESTIONAME_LAS_VACACIONES.calcularMontoSegunPlan(@numAfiliado, @cantidad),@hora)
 WHILE (@aux < @cantidad)
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan) 
