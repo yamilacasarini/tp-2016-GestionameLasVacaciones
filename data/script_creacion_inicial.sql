@@ -1098,13 +1098,15 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@turnoID INT, @numAf
 AS
 BEGIN
 
-DECLARE @bonoID INT
+DECLARE @bonoID INT SET VALUE -1
+
 
 
 SELECT @bonoID = min(b.id) 
 FROM GESTIONAME_LAS_VACACIONES.Pacientes p JOIN GESTIONAME_LAS_VACACIONES.Bonos b 
 ON p.id/100 = b.idPaciente/100 AND b.usado = 0 AND p.id = @numAfiliado
-
+IF(@bonoID = -1)
+RAISERROR('El paciente no tiene bonos para realizar la consulta',6,210)
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, fecha, idTurno) 
 VALUES (@bonoID, @hora, @turnoID)
