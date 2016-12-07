@@ -512,6 +512,9 @@ on t.dni = p.documento
 where t.fechaBono is not null
 GROUP BY p.id, fechaBono,precioBono 
 
+UPDATE GESTIONAME_LAS_VACACIONES.Pacientes set usuario = 'afiliado'
+UPDATE GESTIONAME_LAS_VACACIONES.Profesionales set usuario = 'profesional'
+
 --FUNCIONALIDADES PARA ADMIN--
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (1,1)
