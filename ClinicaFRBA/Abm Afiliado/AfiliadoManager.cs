@@ -13,11 +13,29 @@ namespace ClinicaFrba.Abm_Afiliado
         public static List<Afiliado> BuscarAfiliados(String nombre, String apellido, int id)
         {
             List<Afiliado> afiliados = new List<Afiliado>();
+            string query = "select * from GESTIONAME_LAS_VACACIONES.Pacientes where ";
+            int parametros = 0;
+
+            if (nombre != "")
+            {
+                parametros++;
+                query += " nombre like '" + nombre + "'";
+            }
+            if (apellido != "")
+            {
+                if (parametros > 0) { query += " and "; }
+                parametros++;
+                query += "apellido like '" + apellido + "'";
+            }
+            if (id != -1)
+            {
+                if (parametros > 0) { query += " and "; }
+                parametros++;
+                query += " id = " + id;
+            }
 
             Server server = Server.getInstance();
-            AfiliadoManager.validarDato(nombre);
-            AfiliadoManager.validarDato(apellido);
-            SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarAfiliados('" + nombre + "','" + apellido + "'," + id + ")");
+            SqlDataReader reader = server.query(query);
             while (reader.Read())
             {
                 Afiliado afiliado = new Afiliado();

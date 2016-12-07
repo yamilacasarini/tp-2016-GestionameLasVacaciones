@@ -12,10 +12,25 @@ namespace ClinicaFrba.Registro_Llegada
 
         public static List<Turno> BuscarTurnos(String nombre, String apellido, String especialidad, String id)
         {
-            Server server = Server.getInstance();
-            if (id == "") { id = "-1"; }
-            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional (" + "'%" + nombre + "%'," + "'%" + apellido + "%'," + "'%" + especialidad + "%'," + id+ ")");
             List<Turno> turnos = new List<Turno>();
+            string query = "SELECT t.id , t.fecha, t.idPaciente, t.especialidad, t.idProfesional FROM GESTIONAME_LAS_VACACIONES.Turnos t WHERE t.baja = 0 and " +
+              "t.idProfesional  in (SELECT  p.id FROM GESTIONAME_LAS_VACACIONES.Profesionales p where p.nombre like ";
+            if (!(nombre.Replace(" ", "") == ""))
+                query += "'" + nombre + "'";
+            else
+                query += "'%'";
+            if (!(apellido.Replace(" ", "") == ""))
+                query += "and apellido like '" + apellido + "')";
+            else
+                query += "and apellido like '%')";
+            if (!(especialidad.Replace(" ", "") == ""))
+                query += " and t.especialidad like '" + especialidad + "'";
+            if (id != "")
+            {
+                query += " and t.id =" + id + "";
+            }
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query(query);
             while (reader.Read())
             {
                 Turno turno = new Turno();
