@@ -13,9 +13,41 @@ namespace ClinicaFrba.Pedir_Turno
 
         public static List<Profesional> BuscarProfesionales(String nombre, String apellido, String especialidad, int id)
         {
-            Server server = Server.getInstance();
-            SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarProfesionales('" + nombre + "','" + apellido + "', '" + especialidad + "'," + id + ")");
             List<Profesional> profesionales = new List<Profesional>();
+            string query = "select p.id, GESTIONAME_LAS_VACACIONES.getDescEspecialidad(e.idEspecialidad) as especialidad, nombre, apellido" +
+                " from GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e JOIN GESTIONAME_LAS_VACACIONES.Profesionales p" +
+                " ON p.id = e.idProfesional ";
+            int parametros = 0;
+        
+            if (!(nombre.Replace(" ", "") == "")){
+                query += "where p.nombre like '" + nombre + "'";
+                parametros++;
+            }
+            if (id != -1){
+                if(parametros>0){query += " and p.id = " + id;}
+                else {
+                parametros++;
+                    query+=" where p.id = " + id;
+                }
+            }
+                if (!(apellido.Replace(" ", "") == "")){
+                if(parametros>0){query += " and p.apellido like '" + apellido + "'";}
+                else {
+                parametros++;
+                    query+=" where p.apellido like '" + apellido + "'";
+                }
+            }
+                if (!(especialidad.Replace(" ", "") == "")){
+                if(parametros>0){query += " and e.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad('" +especialidad+ "')";
+                }else {
+                parametros++;
+                    query+=" where e.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad('" +especialidad+ "')";
+                }
+            }
+            
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query(query);
+            
             while (reader.Read())
             {
                 Profesional prof = new Profesional();
