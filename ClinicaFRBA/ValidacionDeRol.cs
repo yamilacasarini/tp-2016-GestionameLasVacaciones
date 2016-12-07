@@ -13,16 +13,17 @@ namespace ClinicaFrba
 {
     public partial class ValidacionDeRol : Form
     {
-        Server server=Server.getInstance();
+        Server server = Server.getInstance();
         public ValidacionDeRol(String id)
         {
             InitializeComponent();
             rellenarListaConRoles(id);
-            
+
         }
 
         public void rellenarListaConRoles(String id)
-        {server=Server.getInstance();
+        {
+            server = Server.getInstance();
             SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.RolesxUsuario u JOIN GESTIONAME_LAS_VACACIONES.Roles r ON u.idRol = r.id WHERE u.idUsuario = " + "'" + id.ToString() + "' and r.baja = 0");
             while (reader.Read())
             {
@@ -51,36 +52,43 @@ namespace ClinicaFrba
             if (FuncionalidadComboBox.SelectedItem != "")
             {
                 Sesion.getInstance().rol = RolComboBox.Text.Trim();
-
-                switch (FuncionalidadComboBox.Text.ToString())
+                try
                 {
-                    case "ABM ROL":
-                        new AbmRol.Principal().ShowDialog();
-                        break;
-                    case "ABM AFILIADOS":
-                        new Abm_Afiliado.Principal().ShowDialog();
-                        break;
-                    case "COMPRA BONOS":
-                        new Compra_Bono.Principal().ShowDialog();
-                        break;
-                    case "PEDIDO DE TURNO":
-                        new Pedir_Turno.Principal().ShowDialog();
-                        break;
-                    case "REGISTRO DE LLEGADA":
-                        new Registro_Llegada.Principal().ShowDialog();
-                        break;
-                    case "CANCELAR TURNO":
-                        new Cancelar_Atencion.Principal().ShowDialog();
-                        break;
-                    case "LISTADO ESTADISTICO":
-                        new Listados.Principal().ShowDialog();
-                        break;
-                    case "ALTA AGENDA PROFESIONAL":
-                        new Alta_Agenda_Profesional.Principal().ShowDialog();
-                        break;
-                    case "RESULTADO DE CONSULTA":
-                        new Registro_Resultado.Principal().ShowDialog();
-                        break;
+                    switch (FuncionalidadComboBox.Text.ToString())
+                    {
+                        case "ABM ROL":
+                            new AbmRol.Principal().ShowDialog();
+                            break;
+                        case "ABM AFILIADOS":
+                            new Abm_Afiliado.Principal().ShowDialog();
+                            break;
+                        case "COMPRA BONOS":
+                            new Compra_Bono.Principal().ShowDialog();
+                            break;
+                        case "PEDIDO DE TURNO":
+                            new Pedir_Turno.Principal().ShowDialog();
+                            break;
+                        case "REGISTRO DE LLEGADA":
+                            new Registro_Llegada.Principal().ShowDialog();
+                            break;
+                        case "CANCELAR TURNO":
+                            if (Sesion.getInstance().rol == "Afiliado")
+                                new Cancelar_Atencion.CancelacionAfiliado(Sesion.getInstance().afiliado.id).ShowDialog();
+                            break;
+                        case "LISTADO ESTADISTICO":
+                            new Listados.Principal().ShowDialog();
+                            break;
+                        case "ALTA AGENDA PROFESIONAL":
+                            new Alta_Agenda_Profesional.Principal().ShowDialog();
+                            break;
+                        case "RESULTADO DE CONSULTA":
+                            new Registro_Resultado.Principal().ShowDialog();
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
                 }
 
             }

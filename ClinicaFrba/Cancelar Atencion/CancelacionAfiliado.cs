@@ -77,5 +77,10 @@ namespace ClinicaFrba.Cancelar_Atencion
         {
 
         }
+
+        private void btSalir_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
