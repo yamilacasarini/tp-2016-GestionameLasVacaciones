@@ -51,7 +51,6 @@ namespace ClinicaFrba
             if (FuncionalidadComboBox.SelectedItem != "")
             {
                 Sesion.getInstance().rol = RolComboBox.Text.Trim();
-                this.Close();
 
                 switch (FuncionalidadComboBox.Text.ToString())
                 {

@@ -7,13 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace ClinicaFrba.Pedir_Turno
 {
 
     public partial class BuscarProfesional : Form
     {
-      
+
         public BuscarProfesional()
         {
             InitializeComponent();
@@ -28,22 +29,24 @@ namespace ClinicaFrba.Pedir_Turno
 
         private void hola_Click_1(object sender, EventArgs e)
         {
-            if (validarDatos())
+            try
             {
-                if (txMatricula.Text.Trim() == "") { txMatricula.Text = "-1"; }
+                if (Validacion.soloNumeros(txMatricula, "matricula"))
+                {
+                    if (txMatricula.Text.Trim() == "") { txMatricula.Text = "-1"; }
 
-                this.dataGridView1.DataSource = ProfesionalManager.BuscarProfesionales(txNombre.Text.Trim(), txApellido.Text.Trim(), txEspecialidad.Text.Trim(), Convert.ToInt32(txMatricula.Text.Trim()));
+                    this.dataGridView1.DataSource = ProfesionalManager.BuscarProfesionales(txNombre.Text.Trim(), txApellido.Text.Trim(), txEspecialidad.Text.Trim(), Convert.ToInt32(txMatricula.Text.Trim()));
+                }
             }
-                
-            else
+            catch (SqlException ex)
             {
-                MessageBox.Show("Ingrese al menos un campo");
+                MessageBox.Show(ex.Message);
             }
-            
-        }
-        bool validarDatos()
-        {
-            return txNombre.Text.Trim() != "" || txApellido.Text.Trim() != "" || txMatricula.Text.Trim() != "" || txEspecialidad.Text.Trim() != "" ;
+            catch (FormatException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -55,7 +58,7 @@ namespace ClinicaFrba.Pedir_Turno
                 profesional.nombre = dataGridView1.CurrentRow.Cells[1].Value.ToString();
                 profesional.apellido = dataGridView1.CurrentRow.Cells[2].Value.ToString();
                 profesional.especialidad = dataGridView1.CurrentRow.Cells[3].Value.ToString();
-              
+
                 this.Close();
             }
             else
@@ -63,13 +66,13 @@ namespace ClinicaFrba.Pedir_Turno
                 MessageBox.Show("Seleccione una unica fila");
                 return;
             }
-                        this.Close();
+            this.Close();
         }
 
         private void BuscarProfesional_Load(object sender, EventArgs e)
         {
 
         }
-        }
-    
+    }
+
 }
