@@ -1110,10 +1110,6 @@ where (t.idProfesional  in
 					(select id from GESTIONAME_LAS_VACACIONES.obtenerIdProfesional( @nombreProf ,  @apellidoProf))
 and t.especialidad like @especialidadProf) OR t.id = @idTurno
 GO
-select top 1 * from GESTIONAME_LAS_VACACIONES.Pacientes order by id desc
-
-
-EXEC GESTIONAME_LAS_VACACIONES.registrarLlegada 56565,5600,'2015-01-01 08:00:00.000'
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@turnoID INT, @numAfiliado INT, @hora as datetime)
 AS
