@@ -940,7 +940,6 @@ SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 		RAISERROR( 'El paciente ya existe',16,217)
 END 
 GO
-select * from GESTIONAME_LAS_VACACIONES.Usuarios where usuario like  '%_5600'
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarPaciente(@numAfiliado INT, @hora as datetime)
 AS
 BEGIN
