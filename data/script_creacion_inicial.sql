@@ -1192,7 +1192,7 @@ RETURNS TABLE
 AS
 RETURN (SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Roles r JOIN
 GESTIONAME_LAS_VACACIONES.RolesxUsuario rxu ON r.id = rxu.id 
-WHERE rxu.idUsuario = @idUsuario)
+WHERE rxu.idUsuario like @idUsuario)
 
 GO
 
