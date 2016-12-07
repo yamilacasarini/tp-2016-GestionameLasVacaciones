@@ -1110,27 +1110,28 @@ where (t.idProfesional  in
 					(select id from GESTIONAME_LAS_VACACIONES.obtenerIdProfesional( @nombreProf ,  @apellidoProf))
 and t.especialidad like @especialidadProf) OR t.id = @idTurno
 GO
+select top 1 * from GESTIONAME_LAS_VACACIONES.Pacientes order by id desc
+
+
+EXEC GESTIONAME_LAS_VACACIONES.registrarLlegada 56565,5600,'2015-01-01 08:00:00.000'
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@turnoID INT, @numAfiliado INT, @hora as datetime)
 AS
 BEGIN
-
-DECLARE @bonoID INT = -1
-
-
+DECLARE @bonoID INT;
 SELECT @bonoID = min(b.id) 
-FROM GESTIONAME_LAS_VACACIONES.Pacientes p JOIN GESTIONAME_LAS_VACACIONES.Bonos b 
-ON p.id/100 = b.idPaciente/100 AND b.usado = 0 AND p.id = @numAfiliado
-IF(@bonoID =-1)
-RAISERROR('El paciente no  posee bonos actualmente',6,210)
-
+FROM GESTIONAME_LAS_VACACIONES.Bonos b  where b.usado = 0 AND b.idPaciente/100 = @numAfiliado/100
+IF(@bonoID is null )
+RAISERROR('El paciente no  posee bonos actualmente',16,217)
+ELSE 
+BEGIN 
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, fecha, idTurno) 
 VALUES (@bonoID, @hora, @turnoID)
 
 UPDATE GESTIONAME_LAS_VACACIONES.Bonos
 SET usado = 1
 WHERE id = @bonoID
-
+END 
 END
 GO
 
