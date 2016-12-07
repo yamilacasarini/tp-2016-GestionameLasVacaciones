@@ -30,7 +30,6 @@
         {
             this.button1 = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
-            this.txEspecialidad = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txApellido = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -41,6 +40,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.idText = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.cbEspecialidad = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -65,15 +65,6 @@
             this.label4.TabIndex = 35;
             this.label4.Text = "Buscar turno";
             this.label4.Click += new System.EventHandler(this.label4_Click);
-            // 
-            // txEspecialidad
-            // 
-            this.txEspecialidad.Location = new System.Drawing.Point(411, 69);
-            this.txEspecialidad.MaxLength = 50;
-            this.txEspecialidad.Name = "txEspecialidad";
-            this.txEspecialidad.Size = new System.Drawing.Size(100, 20);
-            this.txEspecialidad.TabIndex = 34;
-            this.txEspecialidad.TextChanged += new System.EventHandler(this.txEspecialidad_TextChanged);
             // 
             // label3
             // 
@@ -173,16 +164,25 @@
             this.label5.TabIndex = 41;
             this.label5.Text = "Id turno";
             // 
+            // cbEspecialidad
+            // 
+            this.cbEspecialidad.FormattingEnabled = true;
+            this.cbEspecialidad.Location = new System.Drawing.Point(411, 69);
+            this.cbEspecialidad.Name = "cbEspecialidad";
+            this.cbEspecialidad.Size = new System.Drawing.Size(100, 21);
+            this.cbEspecialidad.TabIndex = 43;
+            this.cbEspecialidad.SelectedIndexChanged += new System.EventHandler(this.cbEspecialidad_SelectedIndexChanged);
+            // 
             // buscarTurno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(537, 379);
+            this.Controls.Add(this.cbEspecialidad);
             this.Controls.Add(this.idText);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.txEspecialidad);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txApellido);
             this.Controls.Add(this.label1);
@@ -203,7 +203,6 @@
 
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txEspecialidad;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txApellido;
         private System.Windows.Forms.Label label1;
@@ -214,5 +213,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TextBox idText;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox cbEspecialidad;
     }
 }

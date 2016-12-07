@@ -32,10 +32,11 @@ namespace ClinicaFrba.Cancelar_Atencion
            server.query("EXEC GESTIONAME_LAS_VACACIONES.cancelarPeriodoPorProfesional " + idProfesional + ",'" + especialidad + "','" + diaInicial + "','" + diaFinal + "','" + motivo + "' ");
            server.closeReader();
        }
-       public static List<Agenda> mostrarAgendaProfesional(int idProfesional, String especialidad)
+       public static List<Agenda> mostrarAgendaProfesional(int idProfesional)//, String especialidad)
        {
            Server server = Server.getInstance();
-           SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelProfesionalSegunId( '" + idProfesional + "','" + Program.horarioSistema + "','" + especialidad + "')");
+           string query = "SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelProfesionalSegunId( " + idProfesional + ",'" + Program.horarioSistema + "')";// + especialidad + "')";
+           SqlDataReader reader = server.query(query);
            List<Agenda> agendas = new List<Agenda>();
 
 

@@ -13,10 +13,24 @@ namespace ClinicaFrba.Registro_Llegada
     public partial class buscarTurno : Form
     {
         public Turno turnoSelect;
-        public buscarTurno()
+        public buscarTurno(int idProfesional)
         {
             InitializeComponent();
+            int soyProfesional = idProfesional; // -1 en caso de que sea el admin el que lo solicita y no un profesional
+            List<Especialidad> especialidades = TurnosManager.listarEspecialidades(soyProfesional);
+            List <String> descripcionEsp = new List<String>();
+            foreach (Especialidad esp in especialidades){
+            descripcionEsp.Add(esp.descripcion);
+            }
+            cbEspecialidad.DataSource = descripcionEsp;
             btSeleccionar.Hide();
+
+            if (soyProfesional > 0) {
+                txApellido.Text = Sesion.getInstance().profesional.apellido;
+                txNombre.Text = Sesion.getInstance().profesional.nombre;
+                txApellido.Enabled = false;
+                txNombre.Enabled = false;
+            }
         }
 
         private void label4_Click(object sender, EventArgs e)
@@ -35,7 +49,7 @@ namespace ClinicaFrba.Registro_Llegada
             {
                 if (Validacion.soloNumeros(idText, "id"))
                 {
-                    this.dataGridView1.DataSource = TurnosManager.BuscarTurnos(txNombre.Text.Trim(), txApellido.Text.Trim(), txEspecialidad.Text.Trim(), idText.Text.Trim());
+                    this.dataGridView1.DataSource = TurnosManager.BuscarTurnos(txNombre.Text.Trim(), txApellido.Text.Trim(), cbEspecialidad.Text.Trim(), idText.Text.Trim());
                     btSeleccionar.Show();
                 }
             }
@@ -67,6 +81,11 @@ namespace ClinicaFrba.Registro_Llegada
         }
 
         private void idText_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cbEspecialidad_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

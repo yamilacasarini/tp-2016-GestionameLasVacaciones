@@ -19,13 +19,17 @@ namespace ClinicaFrba.Listados
             String query = "select  * from GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones('" + fecha.ToString() + "','" + fecha.AddMonths(6).ToString() + "')";
             SqlDataReader reader = server.query(query);
             IList<string> especialidades = new List<string>();
+            int cant = 0;
             while (reader.Read())
             {
                 String nombreDeEspecialidad = reader["especialidades"].ToString();
                 especialidades.Add(nombreDeEspecialidad);
+                cant++;
             }
             reader.Close();
             dataGridView1.DataSource = especialidades.Select(x => new { Value = x }).ToList();
+            if (cant == 0)
+                MessageBox.Show("No hay cancelaciones registradas en el sistema");
         }
        
 

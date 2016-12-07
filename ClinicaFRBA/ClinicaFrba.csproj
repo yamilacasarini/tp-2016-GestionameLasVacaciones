@@ -233,6 +233,7 @@
     <Compile Include="Registro Llegada\buscarTurno.Designer.cs">
       <DependentUpon>buscarTurno.cs</DependentUpon>
     </Compile>
+    <Compile Include="Registro Llegada\Especialidad.cs" />
     <Compile Include="Registro Llegada\Turno.cs" />
     <Compile Include="Registro Llegada\TurnosManager.cs" />
     <Compile Include="Validacion.cs" />

@@ -47,19 +47,26 @@ namespace ClinicaFrba
                         Sesion s = Sesion.getInstance();
                         s.usuario = txtUsuario.Text.Trim();
                         SqlDataReader reader = server.query("select id from GESTIONAME_LAS_VACACIONES.Pacientes where usuario like '" + txtUsuario.Text.Trim() + "'");
-                        while (reader.Read())
+                        if (reader.Read())
                         {
                             s.afiliado.id = Convert.ToInt32(reader[0]);
+                            reader.Close();
                             s.afiliado = Abm_Afiliado.AfiliadoManager.BuscarUnAfiliado(s.afiliado.id);
                         }
+                        else
+                            reader.Close();
                         reader.Close();
                         reader = server.query("select id from GESTIONAME_LAS_VACACIONES.Profesionales where usuario like '" + txtUsuario.Text.Trim() + "'");
-                        while (reader.Read())
+                        if (reader.Read())
                         {
+
                             s.profesional.matricula = Convert.ToInt32(reader[0]);
-                            s.profesional = Pedir_Turno.ProfesionalManager.buscarUnProfesional(s.profesional.matricula); 
+                            reader.Close();
+                            s.profesional = Pedir_Turno.ProfesionalManager.buscarUnProfesional(s.profesional.matricula);
                         }
-                        reader.Close();
+                        else
+                            reader.Close();
+
                         new ValidacionDeRol(txtUsuario.Text.Trim()).ShowDialog();
 
                     }

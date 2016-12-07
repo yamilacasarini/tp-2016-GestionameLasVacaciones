@@ -44,10 +44,38 @@ namespace ClinicaFrba.Registro_Llegada
             reader.Close();
             return turnos;
         }
-        public static void PersistirCambios(Turno unTurno) {
+        public static void PersistirCambios(Turno unTurno)
+        {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.registrarLlegada " + unTurno.id + "," + unTurno.idPaciente+",'" + Program.horarioSistema + "'" );
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.registrarLlegada " + unTurno.id + "," + unTurno.idPaciente + ",'" + Program.horarioSistema + "'");
             reader.Close();
+        }
+
+        public static List<Especialidad> listarEspecialidades(int idMedico)
+        {
+
+            List<Especialidad> especialidades = new List<Especialidad>();
+            string query = "select * from GESTIONAME_LAS_VACACIONES.Especialidades";
+
+            if (idMedico > 0)
+            {
+                query += " e join GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional ep on (e.id = ep.idEspecialidad)" +
+                    "where ep.idProfesional = " + idMedico;
+            }
+
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query(query);
+            while (reader.Read())
+            {
+                Especialidad esp = new Especialidad();
+                esp.id = Convert.ToInt32(reader["id"]);
+                esp.descripcion = reader["descripcion"].ToString();
+                esp.tipoEspecialidad = Convert.ToInt32(reader["tipoEspecialidad"]);
+                especialidades.Add(esp);
+            }
+            reader.Close();
+            return especialidades;
+
         }
     }
 }

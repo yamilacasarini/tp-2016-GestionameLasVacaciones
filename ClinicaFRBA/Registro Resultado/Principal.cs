@@ -21,7 +21,12 @@ namespace ClinicaFrba.Registro_Resultado
         private void button1_Click(object sender, EventArgs e)
         {
             turnoAdiagnosticar = new Registro_Llegada.Turno();
-            Registro_Llegada.buscarTurno buscador=  new Registro_Llegada.buscarTurno();
+            Registro_Llegada.buscarTurno buscador;
+            Sesion s = Sesion.getInstance();
+            if(s.rol == "Profesional")
+                buscador =  new Registro_Llegada.buscarTurno(s.profesional.matricula);
+            else
+                buscador = new Registro_Llegada.buscarTurno(-1);
             buscador.ShowDialog();
             idTurno.Text = buscador.turnoSelect.id.ToString();
         }
@@ -34,6 +39,7 @@ namespace ClinicaFrba.Registro_Resultado
                 SqlDataReader reader = server.query("UPDATE GESTIONAME_LAS_VACACIONES.ConsultasMedicas set diagnostico = '" + txDiagnostico.Text.Trim() + "', sintomas ='" + txSintomas.Text.Trim() + "' WHERE idTurno =" + idTurno.Text.ToString());
                 MessageBox.Show("Datos cargados correctamente!");
                 reader.Close();
+                this.Close();
             }
             else
             {

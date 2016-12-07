@@ -21,7 +21,7 @@ namespace ClinicaFrba.Cancelar_Atencion
             InitializeComponent();
             especialidadMedico = especialidad;
             matricula = id;
-            agenda = CancelacionManager.mostrarAgendaProfesional(matricula, especialidadMedico);
+            agenda = CancelacionManager.mostrarAgendaProfesional(matricula);//, especialidadMedico);
             if (agenda == null)
             {
                 MessageBox.Show("El profesional no tiene turnos recientes");
@@ -77,7 +77,7 @@ namespace ClinicaFrba.Cancelar_Atencion
                 return;
            }
             MessageBox.Show("Dia cancelado correctamente");
-            this.dataAgenda.DataSource = CancelacionManager.mostrarAgendaProfesional(matricula, especialidadMedico);
+            this.dataAgenda.DataSource = CancelacionManager.mostrarAgendaProfesional(matricula);//, especialidadMedico);
 
 
         }
@@ -118,7 +118,7 @@ namespace ClinicaFrba.Cancelar_Atencion
                 return;
             }
             MessageBox.Show("Periodo cancelado correctamente");
-            this.dataAgenda.DataSource = CancelacionManager.mostrarAgendaProfesional(matricula,especialidadMedico);
+            this.dataAgenda.DataSource = CancelacionManager.mostrarAgendaProfesional(matricula);//,especialidadMedico);
 
 
         }

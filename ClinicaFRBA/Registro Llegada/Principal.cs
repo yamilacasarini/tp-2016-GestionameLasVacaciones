@@ -12,6 +12,7 @@ namespace ClinicaFrba.Registro_Llegada
 {
     public partial class Principal : Form
     {
+        buscarTurno buscador;
         public Principal()
         {
             InitializeComponent();
@@ -22,10 +23,14 @@ namespace ClinicaFrba.Registro_Llegada
 
         }
 
-        buscarTurno buscador = new buscarTurno();
+
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (Sesion.getInstance().rol == "Profesional")
+                buscador = new buscarTurno(Sesion.getInstance().profesional.matricula);
+            else
+                buscador = new buscarTurno(-1);
             buscador.ShowDialog();
             if (buscador.turnoSelect != null)
             {

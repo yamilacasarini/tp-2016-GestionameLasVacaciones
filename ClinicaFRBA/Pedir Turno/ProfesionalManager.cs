@@ -83,7 +83,7 @@ namespace ClinicaFrba.Pedir_Turno
                 prof.matricula = Convert.ToInt32(reader["id"]);
                 prof.nombre = reader["nombre"].ToString();
                 prof.apellido = reader["apellido"].ToString();
-                prof.especialidad = reader["especialidad"].ToString();
+       //         prof.especialidad = reader["especialidad"].ToString();
             }
             reader.Close();
             return prof;
