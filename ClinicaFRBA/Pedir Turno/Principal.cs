@@ -21,7 +21,7 @@ namespace ClinicaFrba.Pedir_Turno
         Profesional profesionalSeleccionado = new Profesional();
         private void button2_Click(object sender, EventArgs e)
         {
-              
+
             try
             {
                 ListarTurnos listado = new ListarTurnos(profesionalSeleccionado);
@@ -29,17 +29,28 @@ namespace ClinicaFrba.Pedir_Turno
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show(ex.StackTrace); 
+                System.Windows.Forms.MessageBox.Show(ex.StackTrace);
                 //System.Windows.Forms.MessageBox.Show("El profesional no tiene ninguna agenda cargada");
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            BuscarProfesional buscador = new BuscarProfesional();
-            buscador.ShowDialog();
-            profesionalSeleccionado = buscador.profesional;
-            label2.Text = (profesionalSeleccionado.apellido + "," + profesionalSeleccionado.nombre + ". Matricula: " + profesionalSeleccionado.matricula);
+            try
+            {
+                BuscarProfesional buscador = new BuscarProfesional();
+                buscador.ShowDialog();
+                profesionalSeleccionado = buscador.profesional;
+                label2.Text = (profesionalSeleccionado.apellido + "," + profesionalSeleccionado.nombre + ". Matricula: " + profesionalSeleccionado.matricula);
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception eg)
+            {
+                MessageBox.Show(eg.Message);
+            }
         }
     }
 }

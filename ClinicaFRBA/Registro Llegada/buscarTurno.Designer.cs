@@ -68,7 +68,7 @@
             // 
             // txEspecialidad
             // 
-            this.txEspecialidad.Location = new System.Drawing.Point(142, 69);
+            this.txEspecialidad.Location = new System.Drawing.Point(411, 69);
             this.txEspecialidad.MaxLength = 50;
             this.txEspecialidad.Name = "txEspecialidad";
             this.txEspecialidad.Size = new System.Drawing.Size(100, 20);
@@ -79,7 +79,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label3.Location = new System.Drawing.Point(16, 69);
+            this.label3.Location = new System.Drawing.Point(267, 67);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(99, 20);
             this.label3.TabIndex = 33;
@@ -87,7 +87,7 @@
             // 
             // txApellido
             // 
-            this.txApellido.Location = new System.Drawing.Point(411, 67);
+            this.txApellido.Location = new System.Drawing.Point(142, 67);
             this.txApellido.MaxLength = 25;
             this.txApellido.Name = "txApellido";
             this.txApellido.Size = new System.Drawing.Size(100, 20);
@@ -97,7 +97,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label1.Location = new System.Drawing.Point(265, 67);
+            this.label1.Location = new System.Drawing.Point(17, 67);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(120, 20);
             this.label1.TabIndex = 31;
@@ -192,7 +192,7 @@
             this.Controls.Add(this.btSeleccionar);
             this.Controls.Add(this.dataGridView1);
             this.Name = "buscarTurno";
-            this.Text = "buscarProfesional";
+            this.Text = "buscar turno";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -31,17 +31,16 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (txApellido.Text.Trim() != "" || txNombre.Text.Trim() != "" || txEspecialidad.Text.Trim() != "" || idText.Text.Trim() != "")
+            try
             {
                 if (Validacion.soloNumeros(idText, "id"))
                 {
-                    this.dataGridView1.DataSource = TurnosManager.BuscarTurnos(txApellido.Text.Trim(), txNombre.Text.Trim(), txEspecialidad.Text.Trim(), idText.Text.Trim());
+                    this.dataGridView1.DataSource = TurnosManager.BuscarTurnos(txNombre.Text.Trim(), txApellido.Text.Trim(), txEspecialidad.Text.Trim(), idText.Text.Trim());
                     btSeleccionar.Show();
                 }
             }
-            else
-            {
-                MessageBox.Show("Ingrese al menos un dato");
+            catch (FormatException ex) {
+                MessageBox.Show(ex.Message);
             }
         }
 
