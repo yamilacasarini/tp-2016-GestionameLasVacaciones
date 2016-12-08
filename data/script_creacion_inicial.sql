@@ -758,11 +758,14 @@ RETURN select a.fechaInicio, a.fechaFinal FROM GESTIONAME_LAS_VACACIONES.Agendas
 WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and @hora between fechaInicio and fechaFinal
 GO
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100), @hora as datetime)
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100), @hora as datetime, @fechaInicio as datetime, @fechaFin as datetime)
 RETURNS TABLE
 AS
 RETURN select a.diaInicio, a.diaFin FROM GESTIONAME_LAS_VACACIONES.Agendas a
-WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and @hora between fechaInicio and fechaFinal
+WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) 
+and @hora between fechaInicio and fechaFinal
+AND CAST(@fechaInicio AS DATE) = CAST(fechaInicio AS DATE)
+AND CAST(@fechaFin AS DATE) = CAST(fechaFinal AS DATE)
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(@matricula int, @especialidad as varchar(100))
