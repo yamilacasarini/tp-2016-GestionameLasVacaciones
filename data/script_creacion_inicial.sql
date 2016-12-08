@@ -766,7 +766,7 @@ WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIO
 and @hora between fechaInicio and fechaFinal
 AND CAST(@fechaInicio AS DATE) = CAST(fechaInicio AS DATE)
 AND CAST(@fechaFin AS DATE) = CAST(fechaFinal AS DATE)
-GO
+GO	
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(@matricula int, @especialidad as varchar(100))
 RETURNS TABLE

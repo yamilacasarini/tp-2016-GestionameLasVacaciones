@@ -53,47 +53,63 @@ namespace ClinicaFrba.Pedir_Turno
             DateTime inicio = DateTime.Now;
             DateTime fin = DateTime.Now;
 
+            List<DateTime> turnos = new List<DateTime>();
+
+            List<DateTime> turnosNoDisponibles = new List<DateTime>();
+            List<DateTime> turnosAMostrar = new List<DateTime>();
+            // con amor
+            int diaInicio = 0;
+            int diaFin = 0;
+
+            DateTime aux;
+
+            int i = 0;
+            int j = 0;
+
             while (reader.Read())
             {
 
                 inicio = (Convert.ToDateTime(reader["fechaInicio"].ToString()));
                 fin = (Convert.ToDateTime(reader["fechaFinal"].ToString()));
+
+                SqlDataReader reader3 = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(" + id + ", '" + especialidad + "', '" + Program.horarioSistema + "','" + inicio + "','" + fin + "')");
+
+                diaInicio = 0;
+                diaFin = 0;
+                // no  entendes que rompe arriba.... no?
+                while (reader3.Read())
+                {
+
+                    diaInicio = (Convert.ToInt32(reader3["diaInicio"]));
+                    diaFin = (Convert.ToInt32(reader3["diaFin"]));
+                }
+
+                reader3.Close();
+
+                aux = inicio;
+
+                while (aux != fin)
+                {
+                    turnos.Add(aux);
+                    aux = aux.AddMinutes(30);
+
+                }
+                //te  comiste un close
+                for (i = 0; i < turnos.Count(); i++)
+                {
+
+                    if (((int)turnos[i].DayOfWeek >= diaInicio && (int)turnos[i].DayOfWeek <= diaFin)
+                        && (!(turnos[i].Hour < inicio.Hour) && !(turnos[i].Hour >= fin.Hour)))
+                    {
+                        turnosAMostrar.Add(turnos[i]);
+                    }
+                }
+
             }
 
             reader.Close();
 
-            SqlDataReader reader3 = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(" + id + ", '" + especialidad + "', '" + Program.horarioSistema + "')");
-
-            int diaInicio = 0;
-            int diaFin = 0;
-
-            while (reader3.Read())
-            {
-
-                diaInicio = (Convert.ToInt32(reader3["diaInicio"]));
-                diaFin = (Convert.ToInt32(reader3["diaFin"]));
-            }
-
-
-            reader3.Close();
-
-            List<DateTime> turnos = new List<DateTime>();
-
-            DateTime aux = inicio;
-
-            while (aux != fin)
-            {
-                turnos.Add(aux);
-                aux = aux.AddMinutes(30);
-
-            }
-
-            int i = 0;
-            int j = 0;
-
             SqlDataReader reader2 = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(" + id + ", '" + especialidad + "')");
-            List<DateTime> turnosNoDisponibles = new List<DateTime>();
-            List<DateTime> turnosAMostrar = new List<DateTime>();
 
             try
             {
@@ -108,16 +124,6 @@ namespace ClinicaFrba.Pedir_Turno
 
             reader2.Close();
 
-            for (i = 0; i < turnos.Count(); i++)
-            {
-
-                if (((int)turnos[i].DayOfWeek >= diaInicio && (int)turnos[i].DayOfWeek <= diaFin)
-                    && (!(turnos[i].Hour < inicio.Hour) && !(turnos[i].Hour >= fin.Hour)))
-                {
-                    turnosAMostrar.Add(turnos[i]);
-                }
-            }
-
             for (j = 0; j < turnosNoDisponibles.Count(); j++)
             {
                 if (turnosAMostrar.Contains(turnosNoDisponibles[j]))
@@ -126,12 +132,10 @@ namespace ClinicaFrba.Pedir_Turno
                 }
             }
 
-
             reader.Close();
             return turnosAMostrar;
 
         }
-
     }
 
 }
