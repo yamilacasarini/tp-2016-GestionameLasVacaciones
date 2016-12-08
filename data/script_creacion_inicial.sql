@@ -507,7 +507,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios(usuario)
 select 'Profesional_'+Convert(varchar(10),id) from GESTIONAME_LAS_VACACIONES.Profesionales 
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario)
-select 3,usuario from GESTIONAME_LAS_VACACIONES.Profesionales where usuario like 'Profesional_%'
+select 3,usuario from GESTIONAME_LAS_VACACIONES.Usuarios where usuario like 'Profesional_%'
 
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET usuario = 'Paciente_'+convert(varchar(10),id)
 UPDATE GESTIONAME_LAS_VACACIONES.Profesionales SET usuario = 'Profesional_'+convert(varchar(10),id)
