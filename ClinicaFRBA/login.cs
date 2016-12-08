@@ -62,7 +62,7 @@ namespace ClinicaFrba
 
                             s.profesional.matricula = Convert.ToInt32(reader[0]);
                             reader.Close();
-                            s.profesional = Pedir_Turno.ProfesionalManager.buscarUnProfesional(s.profesional.matricula);
+                            s.profesional = Pedir_Turno.ProfesionalManager.BuscarUnProfesional(s.profesional.matricula);
                         }
                         else
                             reader.Close();

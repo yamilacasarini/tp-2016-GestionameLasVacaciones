@@ -11,52 +11,27 @@ namespace ClinicaFrba.Pedir_Turno
         //   Server server = Server.getInstance();
         public Profesional profSeleccionado { get; set; }
 
+        public static Profesional BuscarUnProfesional(Int32 matricula) {
+
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarProfesionales('" + "','" +"', '" + "'," + matricula+ ")");
+            Profesional prof = new Profesional();
+            while (reader.Read())
+            {
+                
+                prof.matricula = Convert.ToInt32(reader["id"]);
+                prof.nombre = reader["nombre"].ToString();
+                prof.apellido = reader["apellido"].ToString();
+                
+            }
+            reader.Close();
+            return prof;
+        }
         public static List<Profesional> BuscarProfesionales(String nombre, String apellido, String especialidad, int id)
         {
-            List<Profesional> profesionales = new List<Profesional>();
-            string query = "select p.id, GESTIONAME_LAS_VACACIONES.getDescEspecialidad(e.idEspecialidad) as especialidad, nombre, apellido" +
-                " from GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e JOIN GESTIONAME_LAS_VACACIONES.Profesionales p" +
-                " ON p.id = e.idProfesional ";
-            int parametros = 0;
-
-            if (!(nombre.Replace(" ", "") == ""))
-            {
-                query += "where p.nombre like '" + nombre + "'";
-                parametros++;
-            }
-            if (id != -1)
-            {
-                if (parametros > 0) { query += " and p.id = " + id; }
-                else
-                {
-                    parametros++;
-                    query += " where p.id = " + id;
-                }
-            }
-            if (!(apellido.Replace(" ", "") == ""))
-            {
-                if (parametros > 0) { query += " and p.apellido like '" + apellido + "'"; }
-                else
-                {
-                    parametros++;
-                    query += " where p.apellido like '" + apellido + "'";
-                }
-            }
-            if (!(especialidad.Replace(" ", "") == ""))
-            {
-                if (parametros > 0)
-                {
-                    query += " and e.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad('" + especialidad + "')";
-                }
-                else
-                {
-                    parametros++;
-                    query += " where e.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad('" + especialidad + "')";
-                }
-            }
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query(query);
-
+            SqlDataReader reader = server.query("select * from GESTIONAME_LAS_VACACIONES.buscarProfesionales('" + nombre + "','" + apellido + "', '" + especialidad + "'," + id + ")");
+            List<Profesional> profesionales = new List<Profesional>();
             while (reader.Read())
             {
                 Profesional prof = new Profesional();
@@ -68,25 +43,6 @@ namespace ClinicaFrba.Pedir_Turno
             }
             reader.Close();
             return profesionales;
-        }
-
-        public static Profesional buscarUnProfesional(int id)
-        {
-            string query = "select * from GESTIONAME_LAS_VACACIONES.Profesionales where id = " + id;
-            int parametros = 0;
-            Server server = Server.getInstance();
-            SqlDataReader reader = server.query(query);
-            Profesional prof = new Profesional();
-
-            while (reader.Read())
-            {
-                prof.matricula = Convert.ToInt32(reader["id"]);
-                prof.nombre = reader["nombre"].ToString();
-                prof.apellido = reader["apellido"].ToString();
-       //         prof.especialidad = reader["especialidad"].ToString();
-            }
-            reader.Close();
-            return prof;
         }
 
         public static List<DateTime> MostrarTurnosDeProfesional(int id, string especialidad)
@@ -177,4 +133,5 @@ namespace ClinicaFrba.Pedir_Turno
         }
 
     }
+
 }

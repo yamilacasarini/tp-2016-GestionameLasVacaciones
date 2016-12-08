@@ -57,11 +57,16 @@ namespace ClinicaFrba.Cancelar_Atencion
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (!txtDia.MaskCompleted)
+                if (!txtDia.MaskCompleted)
             {
                 MessageBox.Show("Por favor, ingrese un día a cancelar");
                 return;
             }
+                if (dataAgenda.SelectedRows.Count != 1){
+                    MessageBox.Show("Por favor seleccione la agenda de la especialidad asociada a la cancelacion");
+                    return;
+                
+                }
             if (String.IsNullOrEmpty(txtMotivo.Text))
             {
                 MessageBox.Show("Debe especificar un motivo");
@@ -69,11 +74,16 @@ namespace ClinicaFrba.Cancelar_Atencion
             }
             try
             {
+
+
+
+                especialidadMedico = dataAgenda.CurrentRow.Cells["especialidad"].Value.ToString();
+            
                     CancelacionManager.cancelarDiaProfesional(matricula, Convert.ToDateTime(txtDia.Text.Trim()), txtMotivo.Text.Trim(), especialidadMedico);
             }
             catch (Exception b)
             {
-                MessageBox.Show("El dia no se encuentra agendado");
+                MessageBox.Show(b.StackTrace);
                 return;
            }
             MessageBox.Show("Dia cancelado correctamente");
@@ -99,17 +109,24 @@ namespace ClinicaFrba.Cancelar_Atencion
                 MessageBox.Show("Ingrese ambas fechas del período");
                 return;
             }
-           /* if (DateTime.Compare(Convert.ToDateTime(txtDesde.Text), Convert.ToDateTime(txtHasta.Text)) > 0)
+            if (dataAgenda.SelectedRows.Count != 1)
+            {
+                MessageBox.Show("Por favor seleccione la agenda de la especialidad asociada a la cancelacion");
+                return;
+
+            }
+           if (DateTime.Compare(Convert.ToDateTime(txtDesde.Text), Convert.ToDateTime(txtHasta.Text)) > 0)
             {
                 MessageBox.Show("La fecha inicio del periodo es mayor a la final");
                 txtDesde.Clear();
                 txtHasta.Clear();
                 return;
-            }*/
+            }
             try
             {
                 DateTime fechaInicio = Convert.ToDateTime(txtDesde.Text.Trim()).AddHours(Convert.ToInt32(horaInicio.Text)).AddMinutes(Convert.ToInt32(minutosInicio.Text));
                 DateTime fechaFinal = Convert.ToDateTime(txtHasta.Text.Trim()).AddHours(Convert.ToInt32(horaFinal.Text)).AddMinutes(Convert.ToInt32(minutosFinal.Text));
+                especialidadMedico = dataAgenda.CurrentRow.Cells["especialidad"].Value.ToString();
                 CancelacionManager.cancelarPeriodoProfesional(matricula, fechaInicio, fechaFinal, txtMotivo.Text.Trim(), especialidadMedico);
             }
             catch (Exception b)
@@ -118,7 +135,7 @@ namespace ClinicaFrba.Cancelar_Atencion
                 return;
             }
             MessageBox.Show("Periodo cancelado correctamente");
-            this.dataAgenda.DataSource = CancelacionManager.mostrarAgendaProfesional(matricula);//,especialidadMedico);
+            this.dataAgenda.DataSource = CancelacionManager.mostrarAgendaProfesional(matricula);
 
 
         }
