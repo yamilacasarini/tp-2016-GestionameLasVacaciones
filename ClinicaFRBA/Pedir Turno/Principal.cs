@@ -30,7 +30,7 @@ namespace ClinicaFrba.Pedir_Turno
                 }
                 catch (Exception ex)
                 {
-                    System.Windows.Forms.MessageBox.Show(ex.StackTrace);
+                    System.Windows.Forms.MessageBox.Show(ex.Message);
                 }
             }
             else {

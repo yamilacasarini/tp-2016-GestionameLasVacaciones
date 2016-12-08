@@ -62,7 +62,7 @@ namespace ClinicaFrba
             try
             {
                 this.connection = new SqlConnection("Data Source=" + servidor +
-                    ";Initial Catalog=" + db + ";Integrated Security=False;User ID=" + user + ";Password=" + password);
+                    ";Initial Catalog=" + db + ";Integrated Security=False;User ID=" + user + ";Password=" + password+";MultipleActiveResultSets=True");
                 this.connection.Open();
             }
             catch (Exception ex)

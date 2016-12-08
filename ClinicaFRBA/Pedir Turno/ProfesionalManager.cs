@@ -132,7 +132,6 @@ namespace ClinicaFrba.Pedir_Turno
                 }
             }
 
-            reader.Close();
             return turnosAMostrar;
 
         }
