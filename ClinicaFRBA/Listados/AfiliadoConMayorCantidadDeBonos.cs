@@ -41,6 +41,8 @@ namespace ClinicaFrba.Listados
             dataGridView1.Columns["sexo"].Visible = false;
             dataGridView1.Columns["estadoCivil"].Visible = false;
             dataGridView1.Columns["cantConsultas"].HeaderText = "Cantidad de compras";
+            dataGridView1.Columns["planMedico"].Visible = false;
+            
             dataGridView1.Columns["servicio"].Visible = false;
 
 
