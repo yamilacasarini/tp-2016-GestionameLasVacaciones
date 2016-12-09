@@ -44,8 +44,11 @@ namespace ClinicaFrba.Pedir_Turno
             {
                 BuscarProfesional buscador = new BuscarProfesional();
                 buscador.ShowDialog();
-                profesionalSeleccionado = buscador.profesional;
-                label2.Text = (profesionalSeleccionado.apellido + "," + profesionalSeleccionado.nombre + ". Matricula: " + profesionalSeleccionado.matricula);
+                if (buscador.profesional != null)
+                {
+                    profesionalSeleccionado = buscador.profesional;
+                    label2.Text = (profesionalSeleccionado.apellido + "," + profesionalSeleccionado.nombre + ". Matricula: " + profesionalSeleccionado.matricula);
+                }
             }
             catch (SqlException ex)
             {
