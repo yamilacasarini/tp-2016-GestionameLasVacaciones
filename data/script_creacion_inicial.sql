@@ -188,7 +188,7 @@ IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.getIdAgenda') IS NOT NULL
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.getIdAgenda;
 
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional') IS NOT NULL
-DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional;
+DROP PROCEDURE GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional;
 
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.registrarLlegada') IS NOT NULL
 DROP PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada;
@@ -382,7 +382,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   CREATE INDEX ix1_turnos ON GESTIONAME_LAS_VACACIONES.Turnos (idPaciente)
 
   CREATE TABLE GESTIONAME_LAS_VACACIONES.Bonos(
-  id INTEGER PRIMARY KEY,
+  id INTEGER PRIMARY KEY IDENTITY(1,1),
   idPaciente INT REFERENCES GESTIONAME_LAS_VACACIONES.Pacientes(id),
   idPlan INT REFERENCES GESTIONAME_LAS_VACACIONES.Planes(id),
   usado INT DEFAULT 0, --0 Sin usar, 1 usado
@@ -597,7 +597,7 @@ JOIN GESTIONAME_LAS_VACACIONES.Agendas a
 ON a.idProfesional = pr.id 
 	AND a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(c.especialidad)
 WHERE c.id is not null
-
+SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Bonos.id ON; 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan, idCompraBono, idTurno)
 	SELECT DISTINCT c.idBono, p.id, m.id, b.id, t.id from #ConsultasTemporal c
 	join (GESTIONAME_LAS_VACACIONES.Planes m 
@@ -1063,7 +1063,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.ComprasBonos(idPaciente, cantidad, monto,f
 VALUES (@numAfiliado, @cantidad, GESTIONAME_LAS_VACACIONES.calcularMontoSegunPlan(@numAfiliado, @cantidad),@hora)
 WHILE (@aux < @cantidad)
 BEGIN
-INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan) 
+INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(idCompraBono, idPaciente, idPlan) 
 VALUES ((SELECT top 1 id FROM GESTIONAME_LAS_VACACIONES.ComprasBonos WHERE idPaciente = @numAfiliado AND fecha = @hora order by id desc) , @numAfiliado, (SELECT p.planes FROM GESTIONAME_LAS_VACACIONES.Pacientes p WHERE id = @numAfiliado))
 SET @aux = @aux + 1
 END
