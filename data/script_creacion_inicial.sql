@@ -100,6 +100,9 @@ DROP FUNCTION GESTIONAME_LAS_VACACIONES.getIdPlanMedico;
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.buscarAfiliados') IS NOT NULL
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.buscarAfiliados;
 
+IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.getDesDelPlan') IS NOT NULL
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.getDesDelPlan
+
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.joinearEspecialidadYProfesional') IS NOT NULL
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.joinearEspecialidadYProfesional;
 
@@ -597,7 +600,8 @@ JOIN GESTIONAME_LAS_VACACIONES.Agendas a
 ON a.idProfesional = pr.id 
 	AND a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(c.especialidad)
 WHERE c.id is not null
-SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Bonos.id ON; 
+SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos OFF; 
+SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Bonos ON; 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan, idCompraBono, idTurno)
 	SELECT DISTINCT c.idBono, p.id, m.id, b.id, t.id from #ConsultasTemporal c
 	join (GESTIONAME_LAS_VACACIONES.Planes m 
@@ -611,7 +615,8 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan, idCompraBono
 	where c.idBono is not null
 	group by c.idBono, p.id, m.id, b.id, t.id
 GO
-
+SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Bonos OFF; 
+SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON; 
 INSERT INTO GESTIONAME_LAS_VACACIONES.ConsultasMedicas(idBono, idTurno, fecha)
 SELECT b.id, c.id, c.fecha FROM #ConsultasTemporal c
 JOIN GESTIONAME_LAS_VACACIONES.Bonos b
@@ -790,7 +795,9 @@ BEGIN
 
 	IF (@intentos >= 3)
 	RAISERROR('El usuario se encuentra bloqueado por tener 3 intentos de logueo fallidos',16,217) WITH SETERROR
-
+	
+	if(exists (select * From GESTIONAME_LAS_VACACIONES.Pacientes where usuario like @username and baja = 1))
+	RAISERROR('El usuario fue dado de baja',16,217)
 			
 	SELECT @usuario = usuario FROM GESTIONAME_LAS_VACACIONES.Usuarios WHERE usuario LIKE @username AND pass LIKE @pass
 	IF (@usuario IS NULL)
@@ -1082,10 +1089,8 @@ WHERE a.idProfesional = @matricula
 AND a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad))
 END
 GO
-
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 GO
-
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.reservarTurno(@matricula INT, @numAfiliado INT, @especialidad VARCHAR(255), @fecha DATETIME)
 AS
 BEGIN
@@ -1455,7 +1460,7 @@ GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getPacientesConMasCompras(@fechaInicio DATETIME,@fechaFin  DATETIME)
 RETURNS TABLE AS
-RETURN (SELECT TOP 5 unPaciente.id , unPaciente.nombre, unPaciente.apellido , unPaciente.cantFamiliares
+RETURN (SELECT TOP 5 unPaciente.id , unPaciente.nombre, unPaciente.apellido , unPaciente.cantFamiliares, sum(compra.cantidad) as 'cantidad'
 FROM GESTIONAME_LAS_VACACIONES.Pacientes  unPaciente 
 JOIN GESTIONAME_LAS_VACACIONES.ComprasBonos compra ON  unPaciente.id/100 = compra.idPaciente/100 and compra.fecha between @fechaInicio and @fechaFin
 GROUP BY unPaciente.id, unPaciente.nombre,unPaciente.apellido,unPaciente.cantFamiliares

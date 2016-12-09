@@ -26,6 +26,7 @@ namespace ClinicaFrba.Listados
                 afiliado.nombre = Convert.ToString(reader["nombre"]);
                 afiliado.apellido = Convert.ToString(reader["apellido"]);
                 afiliado.cantFamiliares = Convert.ToInt32(reader["CantFamiliares"]);
+                afiliado.cantConsultas = Convert.ToInt32(reader["cantidad"]);
                 afiliados.Add(afiliado);
             }
 
@@ -39,7 +40,7 @@ namespace ClinicaFrba.Listados
             dataGridView1.Columns["fechaNacimiento"].Visible = false;
             dataGridView1.Columns["sexo"].Visible = false;
             dataGridView1.Columns["estadoCivil"].Visible = false;
-            dataGridView1.Columns["cantConsultas"].Visible = false;
+            dataGridView1.Columns["cantConsultas"].HeaderText = "Cantidad de compras";
             dataGridView1.Columns["servicio"].Visible = false;
 
 
