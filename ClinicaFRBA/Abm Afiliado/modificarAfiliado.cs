@@ -104,8 +104,9 @@ namespace ClinicaFrba.Abm_Afiliado
                 txMail.Text = afiliado.email;
                 txTelefono.Text = Convert.ToString(afiliado.telefono);
                 cBestadoCivil.Text = afiliado.estadoCivil;
-                cBsexo.Text = sexo(afiliado.sexo);
+                cBsexo.ValueMember = sexo(afiliado.sexo);
                 cBtipoDocumento.Text = afiliado.tipoDocumento;
+                dateTimePicker1.Value = afiliado.fechaNacimiento;
                 if (afiliado.servicio != 0)
                 {
                     txPlanMedico.Text = AfiliadoManager.planMedico(afiliado.servicio);
@@ -127,9 +128,9 @@ namespace ClinicaFrba.Abm_Afiliado
         }
         private String sexo(string genero) {
             if (String.Compare(genero,"f")==0);
-                return "femenino";
+                return "Femenino";
             if (String.Compare(genero,"m")==0);
-                return "masculino";
+                return "Masculino";
             return "";
         }
 
