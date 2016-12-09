@@ -13,7 +13,7 @@ namespace ClinicaFrba.Registro_Llegada
         public static List<Turno> BuscarTurnos(String nombre, String apellido, String especialidad, String id)
         {
             List<Turno> turnos = new List<Turno>();
-            string query = "SELECT t.id , t.fecha, t.idPaciente, t.especialidad, t.idProfesional FROM GESTIONAME_LAS_VACACIONES.Turnos t WHERE t.baja = 0 and " +
+            string query = "SELECT t.id , t.fecha, t.idPaciente, t.especialidad, t.idProfesional FROM GESTIONAME_LAS_VACACIONES.Turnos t WHERE t.baja = 0 AND t.esConsulta = 0 AND " +
               "t.idProfesional  in (SELECT  p.id FROM GESTIONAME_LAS_VACACIONES.Profesionales p where p.nombre like ";
             if (!(nombre.Replace(" ", "") == ""))
                 query += "'" + nombre + "'";
@@ -42,6 +42,7 @@ namespace ClinicaFrba.Registro_Llegada
                 turnos.Add(turno);
             }
             reader.Close();
+
             return turnos;
         }
         public static void PersistirCambios(Turno unTurno)

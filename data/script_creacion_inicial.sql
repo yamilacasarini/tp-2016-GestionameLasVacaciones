@@ -376,6 +376,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   baja INT default 0,
   tipoCancelacion INT, -- 0 Paciente, 1 Profesional
   motivo VARCHAR(255),
+  esConsulta INT DEFAULT 0, -- Usado para saber si se efectivizo el turno en una consulta medica (0 NO, 1 SI) 
   )
 
   CREATE INDEX ix1_turnos ON GESTIONAME_LAS_VACACIONES.Turnos (idPaciente)
@@ -1104,13 +1105,15 @@ AS
 RETURN SELECT  p.id FROM GESTIONAME_LAS_VACACIONES.Profesionales p where p.nombre like @nombre or p.apellido like @apellido;
 GO
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional(@nombreProf  varchar(255),@apellidoProf  VARCHAR(255), @especialidadProf VARCHAR(255), @idTurno INT)
-RETURNS TABLE 
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional(@nombreProf  varchar(255),@apellidoProf  VARCHAR(255), @especialidadProf VARCHAR(255), @idTurno INT)
 AS 
-RETURN SELECT id , fecha, idPaciente, especialidad, idProfesional FROM GESTIONAME_LAS_VACACIONES.Turnos t 
+BEGIN
+SELECT id , fecha, idPaciente, especialidad, idProfesional 
+FROM GESTIONAME_LAS_VACACIONES.Turnos t 
 where (t.idProfesional  in 
-					(select id from GESTIONAME_LAS_VACACIONES.obtenerIdProfesional( @nombreProf ,  @apellidoProf))
+(select id from GESTIONAME_LAS_VACACIONES.obtenerIdProfesional( @nombreProf ,  @apellidoProf))
 and t.especialidad like @especialidadProf) OR t.id = @idTurno
+END
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada(@turnoID INT, @numAfiliado INT, @hora as datetime)
@@ -1129,9 +1132,16 @@ VALUES (@bonoID, @hora, @turnoID)
 UPDATE GESTIONAME_LAS_VACACIONES.Bonos
 SET usado = 1
 WHERE id = @bonoID
+
+UPDATE GESTIONAME_LAS_VACACIONES.Turnos
+set esConsulta = 1
+WHERE id = @turnoID
+
 END
 END
 GO
+
+
 
 --////////////////////////////////////--
 --NUMERO 12--
@@ -1328,7 +1338,7 @@ END
 
 END
 GO
-EXEC GESTIONAME_LAS_VACACIONES.cancelarDiaPorProfesional 2,'','20/03/2015 0:00:00','sjifajof'
+
 --////////////////////////////////////--
 --NUMERO 14--
 --LISTADO ESTRATEGICO--
