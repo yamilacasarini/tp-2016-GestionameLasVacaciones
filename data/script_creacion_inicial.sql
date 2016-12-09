@@ -1490,3 +1490,13 @@ DECLARE @idPlan INT
 select idPaciente,idPlan FROM inserted
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET planes = @idPlan WHERE id = @idPaciente
 GO
+
+--COLGADO ACA DESPUES LO SUBIRE--
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDesDelPlan(@codPlan as INT)
+RETURNS VARCHAR(100)
+AS
+BEGIN
+RETURN (SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes where id = @codPlan)
+END 
+GO
