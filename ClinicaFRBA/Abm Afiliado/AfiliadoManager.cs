@@ -34,6 +34,9 @@ namespace ClinicaFrba.Abm_Afiliado
                 query += " id = " + id;
             }
 
+            if (parametros > 0) { query += " and "; }
+            query += " baja = 0";
+
             Server server = Server.getInstance();
             SqlDataReader reader = server.query(query);
             while (reader.Read())
