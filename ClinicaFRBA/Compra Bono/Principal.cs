@@ -92,16 +92,14 @@ namespace ClinicaFrba.Compra_Bono
                 SqlDataReader reader = null ;
                 try{
                 reader = server.query("Select sum(b.cantidad) from GESTIONAME_LAS_VACACIONES.ComprasBonos b where b.idPaciente/100 =" + etiquetaPaciente.Text+"/100");
-                if (reader.Read())
-                {
-                    MessageBox.Show("El usuario no posee bonos");
+                reader.Read();
+                try{
                 
-                }
-                else
-                {
                     MessageBox.Show("El usuario ahora poseee: " + reader.GetInt32(0).ToString()
-                        + " bonos");
-                }
+                        + " bonos");}
+                catch(Exception ex){
+                        MessageBox.Show("El usuario no posee bonos");
+                        }
             }catch(Exception ex){
                 MessageBox.Show(ex.Message); 
             }
