@@ -28,6 +28,7 @@ namespace ClinicaFrba.Registro_Resultado
             else
                 buscador = new Registro_Llegada.buscarTurno(-1);
             buscador.ShowDialog();
+            if(buscador.turnoSelect !=null)
             idTurno.Text = buscador.turnoSelect.id.ToString();
         }
 
