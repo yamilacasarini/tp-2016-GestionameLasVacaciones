@@ -22,6 +22,7 @@ namespace ClinicaFrba.Abm_Afiliado
         public int cantFamiliares { get; set; }
         public int cantConsultas { get; set; }
         public int servicio { get; set; }
+        public String planMedico { get; set; }
 
     }
 }

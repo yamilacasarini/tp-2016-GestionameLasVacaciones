@@ -13,7 +13,7 @@ namespace ClinicaFrba.Abm_Afiliado
         public static List<Afiliado> BuscarAfiliados(String nombre, String apellido, int id)
         {
             List<Afiliado> afiliados = new List<Afiliado>();
-            string query = "select * from GESTIONAME_LAS_VACACIONES.Pacientes where ";
+            string query = "select *, GESTIONAME_LAS_VACACIONES.getDesDelPlan(planes) as planMedico FROM GESTIONAME_LAS_VACACIONES.Pacientes where ";
             int parametros = 0;
 
             if (nombre != "")
@@ -55,6 +55,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 afiliado.sexo = reader[10].ToString();
                 afiliado.estadoCivil = reader["estadoCivil"].ToString();
                 afiliado.cantFamiliares = Convert.ToInt32(reader["cantFamiliares"]);
+                afiliado.planMedico = reader["planMedico"].ToString();
                 afiliados.Add(afiliado);
             }
             reader.Close();
