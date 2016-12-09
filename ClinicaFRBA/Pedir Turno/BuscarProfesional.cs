@@ -18,6 +18,14 @@ namespace ClinicaFrba.Pedir_Turno
         public BuscarProfesional()
         {
             InitializeComponent();
+            List<Registro_Llegada.Especialidad> especialidades =Registro_Llegada.TurnosManager.listarEspecialidades(-1);
+            List<String> descripcionEsp = new List<String>();
+            descripcionEsp.Add("");
+            foreach (Registro_Llegada.Especialidad esp in especialidades)
+            {
+                descripcionEsp.Add(esp.descripcion);
+            }
+            comboBox1.DataSource = descripcionEsp;
         }
 
         public Profesional profesional;
@@ -35,7 +43,7 @@ namespace ClinicaFrba.Pedir_Turno
                 {
                     if (txMatricula.Text.Trim() == "") { txMatricula.Text = "-1"; }
 
-                    this.dataGridView1.DataSource = ProfesionalManager.BuscarProfesionales(txNombre.Text.Trim(), txApellido.Text.Trim(), txEspecialidad.Text.Trim(), Convert.ToInt32(txMatricula.Text.Trim()));
+                    this.dataGridView1.DataSource = ProfesionalManager.BuscarProfesionales(txNombre.Text.Trim(), txApellido.Text.Trim(), comboBox1.SelectedItem.ToString().Trim(), Convert.ToInt32(txMatricula.Text.Trim()));
                 }
             }
             catch (SqlException ex)

@@ -19,6 +19,7 @@ namespace ClinicaFrba.Registro_Llegada
             int soyProfesional = idProfesional; // -1 en caso de que sea el admin el que lo solicita y no un profesional
             List<Especialidad> especialidades = TurnosManager.listarEspecialidades(soyProfesional);
             List <String> descripcionEsp = new List<String>();
+            descripcionEsp.Add("");
             foreach (Especialidad esp in especialidades){
             descripcionEsp.Add(esp.descripcion);
             }
