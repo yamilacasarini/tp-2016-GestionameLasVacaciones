@@ -16,6 +16,18 @@ namespace ClinicaFrba.Abm_Afiliado
         public BuscarModificaciones()
         {
             InitializeComponent();
+            Server server= Server.getInstance();
+            SqlDataReader reader = server.query("select id from GESTIONAME_LAS_VACACIONES.Planes");
+            List<String> idsPlanes = new List<string>();
+            idsPlanes.Add("");
+            while (reader.Read()) { 
+
+            idsPlanes.Add(reader["id"].ToString());
+            
+            }
+
+            reader.Read();
+            comboBox1.DataSource = idsPlanes;
         }
 
         private void label3_Click(object sender, EventArgs e)
@@ -25,18 +37,21 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (txApellido.Text.Trim() != "" || txId.Text.Trim() != "" || txNombre.Text.Trim() != "" || txPlan.Text.Trim() != "")
+            if (txApellido.Text.Trim() != "" || txId.Text.Trim() != "" || txNombre.Text.Trim() != "" || comboBox1.SelectedItem.ToString().Trim() != "")
             {
-                if (!(Validacion.soloNumeros(txId, "idPaciente") || Validacion.soloNumeros(txPlan, "idPlan")))
+                String aux;
+                if (!(Validacion.soloNumeros(txId, "idPaciente")))
                     MessageBox.Show("Solo pueden ingresar numeros en los id");
                 if (txId.Text.Trim() == "")
                     txId.Text = "-1";
-                if (txPlan.Text.Trim() == "")
-                    txPlan.Text = "-1";
+                if (comboBox1.SelectedItem.ToString().Trim() == "")
+                    aux = "-1";
+                else
+                    aux = comboBox1.SelectedItem.ToString().Trim();
 
                 try
                 {
-                    this.dataGridView1.DataSource = AfiliadoManager.BuscarModificaciones(txNombre.Text.Trim(), txApellido.Text.Trim(), Convert.ToInt32(txId.Text.Trim()), Convert.ToInt32(txPlan.Text.Trim()));
+                    dataGridView1.DataSource = AfiliadoManager.BuscarModificaciones(txNombre.Text.Trim(), txApellido.Text.Trim(), Convert.ToInt32(txId.Text.Trim()), Convert.ToInt32(aux));
                 }
                 catch (SqlException ex)
                 {
@@ -53,6 +68,11 @@ namespace ClinicaFrba.Abm_Afiliado
         private void btCancelar_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void BuscarModificaciones_Load(object sender, EventArgs e)
+        {
+
         }
     }
 
