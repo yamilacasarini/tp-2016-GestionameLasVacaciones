@@ -931,7 +931,7 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaFamiliar(@idFamiliar INT,@nombre 
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 	BEGIN 
-	if(GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar(@idFamiliar) >99)
+	if(GESTIONAME_LAS_VACACIONES.obtenerNuevoIDFamiliar(@idFamiliar)%100 >99)
 		RAISERROR('Numero excedido de familiares',16,217);
 	IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE  documento = @doc)
 		begin 
