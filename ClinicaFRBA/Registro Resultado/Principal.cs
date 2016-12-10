@@ -21,15 +21,14 @@ namespace ClinicaFrba.Registro_Resultado
         private void button1_Click(object sender, EventArgs e)
         {
             turnoAdiagnosticar = new Registro_Llegada.Turno();
-            Registro_Llegada.buscarTurno buscador;
+            BuscadorDeConsultas buscador;
             Sesion s = Sesion.getInstance();
             if(s.rol == "Profesional")
-                buscador =  new Registro_Llegada.buscarTurno(s.profesional.matricula);
+                buscador =  new BuscadorDeConsultas(s.profesional.matricula);
             else
-                buscador = new Registro_Llegada.buscarTurno(-1);
+                buscador = new BuscadorDeConsultas(-1);
             buscador.ShowDialog();
-            if(buscador.turnoSelect !=null)
-            idTurno.Text = buscador.turnoSelect.id.ToString();
+         
         }
 
         private void button2_Click(object sender, EventArgs e)
