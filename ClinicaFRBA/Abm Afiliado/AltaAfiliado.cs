@@ -20,6 +20,7 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             InitializeComponent();
             llenarPlanes();
+            dateTimePicker1.Value = DateTime.ParseExact(Program.horarioSistema.ToString(),"yyyy-dd-MM HH:mm:ss.fff",null);
             btAgregarFam.Hide();
             labelFamiliar.Hide();
         }
