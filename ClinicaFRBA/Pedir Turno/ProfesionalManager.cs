@@ -57,7 +57,7 @@ namespace ClinicaFrba.Pedir_Turno
 
             List<DateTime> turnosNoDisponibles = new List<DateTime>();
             List<DateTime> turnosAMostrar = new List<DateTime>();
-            // con amor
+
             int diaInicio = 0;
             int diaFin = 0;
 
@@ -76,7 +76,7 @@ namespace ClinicaFrba.Pedir_Turno
 
                 diaInicio = 0;
                 diaFin = 0;
-                // no  entendes que rompe arriba.... no?
+
                 while (reader3.Read())
                 {
 
@@ -94,7 +94,7 @@ namespace ClinicaFrba.Pedir_Turno
                     aux = aux.AddMinutes(30);
 
                 }
-                //te  comiste un close
+
                 for (i = 0; i < turnos.Count(); i++)
                 {
 
@@ -129,6 +129,24 @@ namespace ClinicaFrba.Pedir_Turno
                 if (turnosAMostrar.Contains(turnosNoDisponibles[j]))
                 {
                     turnosAMostrar.Remove(turnosNoDisponibles[j]);
+                }
+            }
+
+            int anio = Convert.ToInt32(Program.horarioSistema[0].ToString() + Program.horarioSistema[1].ToString() + Program.horarioSistema[2].ToString() + Program.horarioSistema[3].ToString());
+            int dia = Convert.ToInt32(Program.horarioSistema[5].ToString() + Program.horarioSistema[6].ToString());
+            int mes = Convert.ToInt32(Program.horarioSistema[8].ToString() + Program.horarioSistema[9].ToString());
+
+            DateTime horaDelSistema = Convert.ToDateTime(anio + "/" + mes + "/" + dia);
+
+            List<DateTime> auxiliar = turnosAMostrar;
+
+            for (j = 0; j < turnosAMostrar.Count(); j++)
+            {
+                DateTime diaAComparar = Convert.ToDateTime(auxiliar[j]).Date;
+          
+                if (diaAComparar < horaDelSistema)
+                {
+                    turnosAMostrar.Remove(auxiliar[j]);
                 }
             }
 
