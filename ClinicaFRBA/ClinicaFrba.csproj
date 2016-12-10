@@ -236,6 +236,14 @@
     <Compile Include="Registro Llegada\Especialidad.cs" />
     <Compile Include="Registro Llegada\Turno.cs" />
     <Compile Include="Registro Llegada\TurnosManager.cs" />
+    <Compile Include="Registro Resultado\BuscadorDeConsultas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Registro Resultado\BuscadorDeConsultas.Designer.cs">
+      <DependentUpon>BuscadorDeConsultas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registro Resultado\Consulta.cs" />
+    <Compile Include="Registro Resultado\ConsultasManager.cs" />
     <Compile Include="Validacion.cs" />
     <Compile Include="ValidacionDeRol.cs">
       <SubType>Form</SubType>
@@ -350,6 +358,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Registro Llegada\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Registro Resultado\BuscadorDeConsultas.resx">
+      <DependentUpon>BuscadorDeConsultas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Registro Resultado\Principal.resx">
       <DependentUpon>Principal.cs</DependentUpon>
