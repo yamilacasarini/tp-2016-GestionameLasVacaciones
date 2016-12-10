@@ -12,7 +12,7 @@ namespace ClinicaFrba.Registro_Resultado
 {
     public partial class BuscadorDeConsultas : Form
     {
-        Consulta consultaSeleccionada;
+        public Consulta consultaSeleccionada;
         Int32 matriculaProfesional;
         public BuscadorDeConsultas(int matricula)
         {
@@ -25,10 +25,6 @@ namespace ClinicaFrba.Registro_Resultado
             }
             matriculaProfesional = matricula;
 
-        }
-        public Consulta getConsulta() {
-            Consulta consu = consultaSeleccionada;
-            return consu;
         }
         private void label2_Click(object sender, EventArgs e)
         {
@@ -67,7 +63,6 @@ namespace ClinicaFrba.Registro_Resultado
         {
             if (dataGridView1.SelectedRows.Count == 1)
             {
-
                 consultaSeleccionada = new Consulta();
                 consultaSeleccionada.fecha = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[1].Value);
                 consultaSeleccionada.id = Convert.ToInt32(dataGridView1.CurrentRow.Cells[0].Value);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClinicaFrba.Registro_Resultado
 {
-    class Consulta
+public     class Consulta
     {
         public Int32 id { get; set; }
         public DateTime fecha { get; set; }
