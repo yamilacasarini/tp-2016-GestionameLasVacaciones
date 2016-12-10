@@ -14,15 +14,18 @@ namespace ClinicaFrba
     public partial class ValidacionDeRol : Form
     {
         Server server = Server.getInstance();
+        String Auxid;
         public ValidacionDeRol(String id)
         {
+            Auxid = id;
             InitializeComponent();
             rellenarListaConRoles(id);
 
         }
 
         public void rellenarListaConRoles(String id)
-        {
+            {
+                RolComboBox.Items.Clear();
             server = Server.getInstance();
             SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.RolesxUsuario u JOIN GESTIONAME_LAS_VACACIONES.Roles r ON u.idRol = r.id WHERE u.idUsuario = " + "'" + id.ToString() + "' and r.baja = 0");
             while (reader.Read())
@@ -58,6 +61,7 @@ namespace ClinicaFrba
                     {
                         case "ABM ROL":
                             new AbmRol.Principal().ShowDialog();
+                            rellenarListaConRoles(Auxid);
                             break;
                         case "ABM AFILIADOS":
                             new Abm_Afiliado.Principal().ShowDialog();
