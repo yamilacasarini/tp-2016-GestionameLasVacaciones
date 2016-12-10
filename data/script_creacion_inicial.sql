@@ -761,7 +761,7 @@ CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getHorarioDeAtencionDelProfesional(@ma
 RETURNS TABLE
 AS
 RETURN select a.fechaInicio, a.fechaFinal FROM GESTIONAME_LAS_VACACIONES.Agendas a
-WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and @hora between fechaInicio and fechaFinal
+WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and baja = 0
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100), @hora as datetime, @fechaInicio as datetime, @fechaFin as datetime)
@@ -769,7 +769,6 @@ RETURNS TABLE
 AS
 RETURN select a.diaInicio, a.diaFin FROM GESTIONAME_LAS_VACACIONES.Agendas a
 WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) 
-and @hora between fechaInicio and fechaFinal
 AND CAST(@fechaInicio AS DATE) = CAST(fechaInicio AS DATE)
 AND CAST(@fechaFin AS DATE) = CAST(fechaFinal AS DATE)
 GO	
@@ -1168,12 +1167,7 @@ GO
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cancelarTurnoPorAfiliado(@numAfiliado INT, @matricula INT, @especialidad VARCHAR(30), @fecha DATETIME, @motivo VARCHAR(255), @hora as datetime)
 AS
 BEGIN
-IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idPaciente = @numAfiliado 
-				AND (idProfesional = @matricula or especialidad LIKE @especialidad) 
-				AND fecha = @fecha AND CAST(fecha AS DATE) < CAST(@hora AS DATE) ))
-	
-RAISERROR( 'No puede cancelar turnos nunca agendados',16,217)
-ELSE 
+
 UPDATE GESTIONAME_LAS_VACACIONES.Turnos 
 SET baja = 1, tipoCancelacion = 0, motivo = @motivo
 WHERE idPaciente = @numAfiliado AND (idProfesional = @matricula or especialidad LIKE @especialidad) AND fecha = @fecha
@@ -1194,7 +1188,7 @@ CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSe
 RETURNS TABLE
 AS
 RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos turnos 
-WHERE turnos.idPaciente = @idAfiliado AND turnos.tipoCancelacion IS NULL AND CAST(turnos.fecha AS DATE) < CAST(@hora AS DATE) )
+WHERE turnos.idPaciente = @idAfiliado AND turnos.tipoCancelacion IS NULL AND CAST(turnos.fecha AS DATE) > CAST(@hora AS DATE) )
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelAfiliado(@nombreAfiliado NVARCHAR(50), @apellido NVARCHAR(50), @dni INT)
