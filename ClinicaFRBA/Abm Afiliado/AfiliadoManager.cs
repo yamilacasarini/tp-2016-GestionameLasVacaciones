@@ -13,7 +13,7 @@ namespace ClinicaFrba.Abm_Afiliado
         public static List<Afiliado> BuscarAfiliados(String nombre, String apellido, int id)
         {
             List<Afiliado> afiliados = new List<Afiliado>();
-            string query = "select * from GESTIONAME_LAS_VACACIONES.Pacientes where ";
+            string query = "select *, GESTIONAME_LAS_VACACIONES.getDesDelPlan(planes) as planMedico FROM GESTIONAME_LAS_VACACIONES.Pacientes where ";
             int parametros = 0;
 
             if (nombre != "")
@@ -55,6 +55,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 afiliado.sexo = reader[10].ToString();
                 afiliado.estadoCivil = reader["estadoCivil"].ToString();
                 afiliado.cantFamiliares = Convert.ToInt32(reader["cantFamiliares"]);
+                afiliado.planMedico = reader["planMedico"].ToString();
                 afiliados.Add(afiliado);
             }
             reader.Close();
@@ -190,12 +191,12 @@ namespace ClinicaFrba.Abm_Afiliado
             reader.Close();
         }
         public static void altaAfiliado(string nombre, string apellido, int documento, string direccion, int telefono,
-            string mail, DateTime nacimiento, string sexo, string civil, int familiares, string descPlanMedico, int idFamiliar)
+            string mail, DateTime nacimiento, string sexo, string civil, int familiares, string descPlanMedico, int idFamiliar, String tipoDocumento)
         {
             Server server = Server.getInstance();
             string query = "'" + nombre + "', '" + apellido + "'," + documento + ",'" + direccion + "'," + telefono +
                 ",'" + mail + "','" + nacimiento + "','" + genero(sexo) + "','" + civil + "'," + familiares +
-                ", " + AfiliadoManager.idPlanMedico(descPlanMedico);
+                ", " + AfiliadoManager.idPlanMedico(descPlanMedico) + ", '" + tipoDocumento + "'";
             if (idFamiliar == 0)
             {
                 server.realizarQuery("EXEC GESTIONAME_LAS_VACACIONES.altaPaciente " + query);
@@ -207,7 +208,7 @@ namespace ClinicaFrba.Abm_Afiliado
         }
         public static char genero(string genero)
         {
-            if (String.Compare(genero, "femenino") == 0)
+            if (genero == "Femenino")
                 return 'f';
             return 'm';
         }

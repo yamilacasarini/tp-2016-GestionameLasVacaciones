@@ -57,7 +57,7 @@ namespace ClinicaFrba.Pedir_Turno
 
             List<DateTime> turnosNoDisponibles = new List<DateTime>();
             List<DateTime> turnosAMostrar = new List<DateTime>();
-            // con amor
+
             int diaInicio = 0;
             int diaFin = 0;
 
@@ -65,6 +65,12 @@ namespace ClinicaFrba.Pedir_Turno
 
             int i = 0;
             int j = 0;
+
+            int anio = Convert.ToInt32(Program.horarioSistema[0].ToString() + Program.horarioSistema[1].ToString() + Program.horarioSistema[2].ToString() + Program.horarioSistema[3].ToString());
+            int dia = Convert.ToInt32(Program.horarioSistema[5].ToString() + Program.horarioSistema[6].ToString());
+            int mes = Convert.ToInt32(Program.horarioSistema[8].ToString() + Program.horarioSistema[9].ToString());
+
+            DateTime horaDelSistema = Convert.ToDateTime(anio + "/" + mes + "/" + dia);
 
             while (reader.Read())
             {
@@ -76,7 +82,7 @@ namespace ClinicaFrba.Pedir_Turno
 
                 diaInicio = 0;
                 diaFin = 0;
-                // no  entendes que rompe arriba.... no?
+
                 while (reader3.Read())
                 {
 
@@ -94,12 +100,12 @@ namespace ClinicaFrba.Pedir_Turno
                     aux = aux.AddMinutes(30);
 
                 }
-                //te  comiste un close
+
                 for (i = 0; i < turnos.Count(); i++)
                 {
 
                     if (((int)turnos[i].DayOfWeek >= diaInicio && (int)turnos[i].DayOfWeek <= diaFin)
-                        && (!(turnos[i].Hour < inicio.Hour) && !(turnos[i].Hour >= fin.Hour)))
+                        && (!(turnos[i].Hour < inicio.Hour) && !(turnos[i].Hour >= fin.Hour)) && turnos[i].Date >= horaDelSistema)
                     {
                         turnosAMostrar.Add(turnos[i]);
                     }
@@ -131,6 +137,7 @@ namespace ClinicaFrba.Pedir_Turno
                     turnosAMostrar.Remove(turnosNoDisponibles[j]);
                 }
             }
+
 
             return turnosAMostrar;
 

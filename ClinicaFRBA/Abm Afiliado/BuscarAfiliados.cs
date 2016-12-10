@@ -82,6 +82,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     else
                         auxID = txId.Text.Trim();
                     this.dataGridView1.DataSource = AfiliadoManager.BuscarAfiliados(txNombre.Text.Trim(), txApellido.Text.Trim(), Convert.ToInt32(auxID));
+                    dataGridView1.Columns["servicio"].Visible = false;
                 }
                 catch (FormatException fx)
                 {

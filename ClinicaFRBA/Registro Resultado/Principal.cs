@@ -12,7 +12,7 @@ namespace ClinicaFrba.Registro_Resultado
 {
     public partial class Principal : Form
     {
-        public Registro_Llegada.Turno turnoAdiagnosticar;
+        Consulta consulta;
         public Principal()
         {
             InitializeComponent();
@@ -20,15 +20,16 @@ namespace ClinicaFrba.Registro_Resultado
 
         private void button1_Click(object sender, EventArgs e)
         {
-            turnoAdiagnosticar = new Registro_Llegada.Turno();
-            Registro_Llegada.buscarTurno buscador;
+            BuscadorDeConsultas buscador;
             Sesion s = Sesion.getInstance();
             if(s.rol == "Profesional")
-                buscador =  new Registro_Llegada.buscarTurno(s.profesional.matricula);
+                buscador =  new BuscadorDeConsultas(s.profesional.matricula);
             else
-                buscador = new Registro_Llegada.buscarTurno(-1);
+                buscador = new BuscadorDeConsultas(-1);
             buscador.ShowDialog();
-            idTurno.Text = buscador.turnoSelect.id.ToString();
+            if (buscador.consultaSeleccionada != null) {
+                idTurno.Text= buscador.consultaSeleccionada.IdTurno.ToString();
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)

@@ -20,6 +20,7 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             InitializeComponent();
             llenarPlanes();
+            dateTimePicker1.Value = DateTime.ParseExact(Program.horarioSistema.ToString(),"yyyy-dd-MM HH:mm:ss.fff",null);
             btAgregarFam.Hide();
             labelFamiliar.Hide();
         }
@@ -64,7 +65,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     AfiliadoManager.altaAfiliado(txNombre.Text.Trim(), txApellido.Text.Trim(),
                         Convert.ToInt32(txDocumento.Text.Trim()), txDireccion.Text.Trim(), Convert.ToInt32(txTelefono.Text.Trim()),
                         txMail.Text.Trim(), Convert.ToDateTime(dateTimePicker1.Value), cBsexo.Text.Trim(),
-                        cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()), cBplanMedico.Text.Trim(), this.afiliadoFamiliar.id);
+                        cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()), cBplanMedico.Text.Trim(), this.afiliadoFamiliar.id, cBtipoDocumento.Text.Trim());
                     btAgregar.Hide();
                     if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
                     {
