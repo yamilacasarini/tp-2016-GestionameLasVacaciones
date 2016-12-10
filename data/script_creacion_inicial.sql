@@ -56,7 +56,7 @@ IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.Usuarios', N'U') IS NOT NULL
 DROP TABLE GESTIONAME_LAS_VACACIONES.Usuarios;
 
 IF OBJECT_ID(N'GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha', N'U') IS NOT NULL 
-DROP TABLE GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha;
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha;
 
 IF OBJECT_ID(N'tempdb..#PacienteTemporal', N'U') IS NOT NULL
 drop table #PacienteTemporal;
@@ -305,7 +305,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Planes(
   baja INT DEFAULT 0,
    )
 create TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
-  id INT PRIMARY KEY IDENTITY(1,1),
+  id INT PRIMARY KEY IDENTITY(100,100),
   usuario VARCHAR (255) REFERENCES GESTIONAME_LAS_VACACIONES.Usuarios(usuario),
   nombre NVARCHAR(50) NOT NULL ,
   apellido NVARCHAR(50) NOT NULL ,
@@ -816,7 +816,6 @@ BEGIN
 END
 GO
 
-
 --////////////////////////////////////--
 --NUMERO 1--
 --ABM ROLES--
@@ -842,8 +841,6 @@ ELSE
 RAISERROR('El Rol ya existe',16,217) WITH SETERROR 
 END
 GO
-
-
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerBaja(@nombreRol VARCHAR(30))
 RETURNS TABLE
@@ -910,17 +907,17 @@ GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre nvarchar(50), @apellido nvarchar(50), 
 @doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
-@cantFami INT, @planes INT)
+@cantFami INT, @planes INT, @tipoDocumento VARCHAR(30))
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 BEGIN 
-IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE documento = @doc) 
+IF NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE documento = @doc AND tipoDocumento like @tipoDocumento) 
 BEGIN
 DECLARE @IdUltimo INT = GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado()
 INSERT INTO GESTIONAME_LAS_VACACIONES.Usuarios(usuario) VALUES  ('Paciente_'+CONVERT(VARCHAR(10),@IdUltimo))
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol,idUsuario) VALUES(2,'Paciente_'+CONVERT(VARCHAR(10),@IdUltimo))
 INSERT INTO GESTIONAME_LAS_VACACIONES.Pacientes(id,nombre, apellido, documento, direccion, telefono, email, 
-fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes,usuario) VALUES (GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado(),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes,'Paciente_'+CONVERT(VARCHAR(10),@IdUltimo))
+fechaNacimiento, sexo, estadoCivil, cantFamiliares,planes,usuario, tipoDocumento) VALUES (GESTIONAME_LAS_VACACIONES.idSiguienteAfiliado(),@nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes,'Paciente_'+CONVERT(VARCHAR(10),@IdUltimo), @tipoDocumento)
 
 END
 ELSE
@@ -930,7 +927,7 @@ GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaFamiliar(@idFamiliar INT,@nombre nvarchar(50), @apellido nvarchar(50), 
 @doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
-@cantFami INT,@planes INT)
+@cantFami INT,@planes INT, @tipoDocumento as VARCHAR(30))
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 	BEGIN 
@@ -943,7 +940,7 @@ SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
 			end
 		else
 			begin
-			EXEC GESTIONAME_LAS_VACACIONES.altaPaciente @nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes
+			EXEC GESTIONAME_LAS_VACACIONES.altaPaciente @nombre, @apellido, @doc, @direc, @tel, @mail, @nacimiento, @sexo, @civil, @cantFami,@planes, @tipoDocumento
 			end
 		END
 	ELSE
@@ -975,7 +972,6 @@ END
 GO
 --////////////////////////////////////--
 --ABM FUNCIONALIDADES A ROL --
-
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.agregarFuncionalidadAUnRol (@nombreRol VARCHAR(30),@nombreFuncionalidad VARCHAR(30))
 AS
