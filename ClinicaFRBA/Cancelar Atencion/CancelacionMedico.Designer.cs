@@ -40,13 +40,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.txtHasta = new System.Windows.Forms.MaskedTextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.horaInicio = new System.Windows.Forms.TextBox();
-            this.minutosInicio = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.minutosFinal = new System.Windows.Forms.TextBox();
-            this.horaFinal = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataAgenda)).BeginInit();
             this.SuspendLayout();
             // 
@@ -54,7 +49,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F);
-            this.label3.Location = new System.Drawing.Point(12, 12);
+            this.label3.Location = new System.Drawing.Point(12, 252);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(70, 24);
             this.label3.TabIndex = 56;
@@ -63,9 +58,9 @@
             // 
             // txtMotivo
             // 
-            this.txtMotivo.Location = new System.Drawing.Point(90, 12);
+            this.txtMotivo.Location = new System.Drawing.Point(90, 238);
             this.txtMotivo.Name = "txtMotivo";
-            this.txtMotivo.Size = new System.Drawing.Size(347, 51);
+            this.txtMotivo.Size = new System.Drawing.Size(364, 51);
             this.txtMotivo.TabIndex = 57;
             this.txtMotivo.Text = "";
             // 
@@ -74,10 +69,10 @@
             this.dataAgenda.AllowUserToAddRows = false;
             this.dataAgenda.AllowUserToDeleteRows = false;
             this.dataAgenda.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataAgenda.Location = new System.Drawing.Point(54, 107);
+            this.dataAgenda.Location = new System.Drawing.Point(16, 41);
             this.dataAgenda.Name = "dataAgenda";
             this.dataAgenda.ReadOnly = true;
-            this.dataAgenda.Size = new System.Drawing.Size(383, 169);
+            this.dataAgenda.Size = new System.Drawing.Size(438, 169);
             this.dataAgenda.TabIndex = 58;
             this.dataAgenda.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataAgenda_CellContentClick);
             // 
@@ -85,7 +80,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label2.Location = new System.Drawing.Point(12, 84);
+            this.label2.Location = new System.Drawing.Point(12, 9);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(145, 20);
             this.label2.TabIndex = 59;
@@ -94,7 +89,7 @@
             // btnDia
             // 
             this.btnDia.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.btnDia.Location = new System.Drawing.Point(31, 337);
+            this.btnDia.Location = new System.Drawing.Point(16, 328);
             this.btnDia.Name = "btnDia";
             this.btnDia.Size = new System.Drawing.Size(144, 34);
             this.btnDia.TabIndex = 60;
@@ -105,7 +100,7 @@
             // txtDia
             // 
             this.txtDia.BackColor = System.Drawing.SystemColors.Window;
-            this.txtDia.Location = new System.Drawing.Point(254, 346);
+            this.txtDia.Location = new System.Drawing.Point(246, 337);
             this.txtDia.Mask = "00/00/0000";
             this.txtDia.Name = "txtDia";
             this.txtDia.Size = new System.Drawing.Size(79, 20);
@@ -116,7 +111,7 @@
             // btnPeriodo
             // 
             this.btnPeriodo.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.btnPeriodo.Location = new System.Drawing.Point(31, 421);
+            this.btnPeriodo.Location = new System.Drawing.Point(16, 409);
             this.btnPeriodo.Name = "btnPeriodo";
             this.btnPeriodo.Size = new System.Drawing.Size(144, 34);
             this.btnPeriodo.TabIndex = 62;
@@ -127,7 +122,7 @@
             // txtDesde
             // 
             this.txtDesde.BackColor = System.Drawing.SystemColors.Window;
-            this.txtDesde.Location = new System.Drawing.Point(270, 406);
+            this.txtDesde.Location = new System.Drawing.Point(246, 397);
             this.txtDesde.Mask = "00/00/0000";
             this.txtDesde.Name = "txtDesde";
             this.txtDesde.Size = new System.Drawing.Size(79, 20);
@@ -137,7 +132,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(209, 409);
+            this.label1.Location = new System.Drawing.Point(185, 400);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 13);
             this.label1.TabIndex = 64;
@@ -146,7 +141,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(212, 450);
+            this.label4.Location = new System.Drawing.Point(188, 441);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(35, 13);
             this.label4.TabIndex = 65;
@@ -155,7 +150,7 @@
             // txtHasta
             // 
             this.txtHasta.BackColor = System.Drawing.SystemColors.Window;
-            this.txtHasta.Location = new System.Drawing.Point(270, 443);
+            this.txtHasta.Location = new System.Drawing.Point(246, 434);
             this.txtHasta.Mask = "00/00/0000";
             this.txtHasta.Name = "txtHasta";
             this.txtHasta.Size = new System.Drawing.Size(79, 20);
@@ -165,80 +160,39 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(196, 349);
+            this.label5.Location = new System.Drawing.Point(188, 340);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(25, 13);
             this.label5.TabIndex = 67;
             this.label5.Text = "Día";
             // 
-            // horaInicio
-            // 
-            this.horaInicio.Location = new System.Drawing.Point(355, 406);
-            this.horaInicio.Name = "horaInicio";
-            this.horaInicio.Size = new System.Drawing.Size(40, 20);
-            this.horaInicio.TabIndex = 69;
-            // 
-            // minutosInicio
-            // 
-            this.minutosInicio.Location = new System.Drawing.Point(414, 406);
-            this.minutosInicio.Name = "minutosInicio";
-            this.minutosInicio.Size = new System.Drawing.Size(40, 20);
-            this.minutosInicio.TabIndex = 70;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(398, 409);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(10, 13);
-            this.label7.TabIndex = 71;
-            this.label7.Text = ":";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(398, 446);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(10, 13);
-            this.label8.TabIndex = 74;
-            this.label8.Text = ":";
-            // 
-            // minutosFinal
-            // 
-            this.minutosFinal.Location = new System.Drawing.Point(414, 443);
-            this.minutosFinal.Name = "minutosFinal";
-            this.minutosFinal.Size = new System.Drawing.Size(40, 20);
-            this.minutosFinal.TabIndex = 73;
-            // 
-            // horaFinal
-            // 
-            this.horaFinal.Location = new System.Drawing.Point(355, 443);
-            this.horaFinal.Name = "horaFinal";
-            this.horaFinal.Size = new System.Drawing.Size(40, 20);
-            this.horaFinal.TabIndex = 72;
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(86, 398);
+            this.label6.Location = new System.Drawing.Point(76, 376);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(19, 20);
             this.label6.TabIndex = 68;
             this.label6.Text = "ó";
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.button1.Location = new System.Drawing.Point(365, 376);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(78, 34);
+            this.button1.TabIndex = 69;
+            this.button1.Text = "Salir";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // CancelacionMedico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(466, 475);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.minutosFinal);
-            this.Controls.Add(this.horaFinal);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.minutosInicio);
-            this.Controls.Add(this.horaInicio);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtHasta);
@@ -275,12 +229,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.MaskedTextBox txtHasta;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox horaInicio;
-        private System.Windows.Forms.TextBox minutosInicio;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox minutosFinal;
-        private System.Windows.Forms.TextBox horaFinal;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button button1;
     }
 }

@@ -32,10 +32,6 @@ namespace ClinicaFrba.Cancelar_Atencion
                 txtDia.Enabled = false;
                 txtHasta.Enabled = false;
                 txtMotivo.Enabled = false;
-                horaInicio.Enabled = false;
-                horaFinal.Enabled = false;
-                minutosFinal.Enabled = false;
-                minutosInicio.Enabled = false;
             }
             else
             {
@@ -124,8 +120,8 @@ namespace ClinicaFrba.Cancelar_Atencion
             }
             try
             {
-                DateTime fechaInicio = Convert.ToDateTime(txtDesde.Text.Trim()).AddHours(Convert.ToInt32(horaInicio.Text)).AddMinutes(Convert.ToInt32(minutosInicio.Text));
-                DateTime fechaFinal = Convert.ToDateTime(txtHasta.Text.Trim()).AddHours(Convert.ToInt32(horaFinal.Text)).AddMinutes(Convert.ToInt32(minutosFinal.Text));
+                DateTime fechaInicio = Convert.ToDateTime(txtDesde.Text.Trim());
+                DateTime fechaFinal = Convert.ToDateTime(txtHasta.Text.Trim());
                 especialidadMedico = dataAgenda.CurrentRow.Cells["especialidad"].Value.ToString();
                 CancelacionManager.cancelarPeriodoProfesional(matricula, fechaInicio, fechaFinal, txtMotivo.Text.Trim(), especialidadMedico);
             }
@@ -151,6 +147,11 @@ namespace ClinicaFrba.Cancelar_Atencion
         }
 
         private void btSalir_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
         {
             this.Close();
         }

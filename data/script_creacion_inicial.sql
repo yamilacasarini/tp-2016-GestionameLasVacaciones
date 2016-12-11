@@ -1328,18 +1328,18 @@ WHERE idProfesional = @matricula
 
 IF (CAST(@diaInicialACancelar AS DATE) = CAST(@inicioAux AS DATE))
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
-VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(day,+1, @diaFinalACancelar), @finalAux, @diaInicialAux, @diaFinalAux)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(mi, DATEPART(mi, @inicioAux), DATEADD(hh, DATEPART(hh, @inicioAux), DATEADD(day,+1, @diaFinalACancelar))), @finalAux, @diaInicialAux, @diaFinalAux)
 
 IF (CAST(@diaFinalACancelar AS DATE) = CAST(@finalAux AS DATE))
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
-VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1, @diaInicialACancelar), @diaInicialAux, @diaFinalAux)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(mi, DATEPART(mi, @finalAux), DATEADD(hh, DATEPART(hh, @finalAux), DATEADD(day,-1, @diaInicialACancelar))), @diaInicialAux, @diaFinalAux)
 
 IF (CAST (@diaInicialACancelar AS DATE) != CAST(@inicioAux AS DATE) AND CAST(@diaFinalACancelar AS DATE) != CAST(@finalAux AS DATE))
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
-VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(day,-1,  @diaInicialACancelar ), @diaInicialAux, @diaFinalAux)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), @inicioAux, DATEADD(mi, DATEPART(mi, @finalAux), DATEADD(hh, DATEPART(hh, @finalAux), DATEADD(day,-1,  @diaInicialACancelar))), @diaInicialAux, @diaFinalAux)
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, fechaInicio, fechaFinal, diaInicio, diaFin)
-VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(day,+1, @diaFinalACancelar), @finalAux, @diaInicialAux, @diaFinalAux)
+VALUES (@matricula, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad), DATEADD(mi, DATEPART(mi, @inicioAux), DATEADD(hh, DATEPART(hh, @inicioAux), DATEADD(day,+1, @diaFinalACancelar))), @finalAux, @diaInicialAux, @diaFinalAux)
 END
 
 END
