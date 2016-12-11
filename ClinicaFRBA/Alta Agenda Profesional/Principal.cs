@@ -240,6 +240,7 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
             Pedir_Turno.BuscarProfesional buscador = new Pedir_Turno.BuscarProfesional();
             buscador.ShowDialog();
             prof = buscador.profesional;
+            if(prof != null)
             setearLabelProf(prof);
         }
         
