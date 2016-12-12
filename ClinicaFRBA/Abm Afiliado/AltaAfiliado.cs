@@ -58,6 +58,12 @@ namespace ClinicaFrba.Abm_Afiliado
         }
         private void btAgregar_Click(object sender, EventArgs e)
         {
+            if (dateTimePicker1.Value.CompareTo(DateTime.ParseExact(Program.horarioSistema.ToString(), "yyyy-dd-MM HH:mm:ss.fff", null)) > 0) {
+                MessageBox.Show("El paciente aun no nacio");
+                return;
+            }
+
+
             if (validarDatos())
             {
                 try
