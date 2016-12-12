@@ -105,11 +105,13 @@ namespace ClinicaFrba.Pedir_Turno
                 {
 
                     if (((int)turnos[i].DayOfWeek >= diaInicio && (int)turnos[i].DayOfWeek <= diaFin)
-                        && (!(turnos[i].Hour < inicio.Hour) && !(turnos[i].Hour >= fin.Hour)) && turnos[i].Date >= horaDelSistema)
+                        && (!(turnos[i].Hour < inicio.Hour) && !(turnos[i].Hour >= fin.Hour)) && turnos[i] >= horaDelSistema)
                     {
                         turnosAMostrar.Add(turnos[i]);
                     }
                 }
+
+                turnos.Clear();
 
             }
 
