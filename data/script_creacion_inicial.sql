@@ -1352,11 +1352,9 @@ GO
 CREATE FUNCTION  GESTIONAME_LAS_VACACIONES.unirDosColumnasDeTablaDeCancelaciones(@fechaInicio DATETIME,@fechaFin DATETIME)
 RETURNS TABLE 
 AS
-RETURN ((SELECT GESTIONAME_LAS_VACACIONES.getIdEspecialidad(t.especialidad) as especialidad
-		FROM GESTIONAME_LAS_VACACIONES.Turnos t WHERE t.baja = 1 AND (cast(t.fecha AS DATE)) BETWEEN
-		CAST(@fechaInicio AS DATE) AND CAST(@fechaFin AS DATE))
-UNION ALL
-(SELECT a.idEspecialidad as especialidad FROM GESTIONAME_LAS_VACACIONES.Agendas a WHERE a.baja = 1))  -- comparamos fecha?
+RETURN (SELECT GESTIONAME_LAS_VACACIONES.getIdEspecialidad(t.especialidad) as especialidad
+  FROM GESTIONAME_LAS_VACACIONES.Turnos t WHERE t.baja = 1 AND (cast(t.fecha AS DATE)) BETWEEN
+  CAST(@fechaInicio AS DATE) AND CAST(@fechaFin AS DATE))
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.top5EspecialidadesConMasCancelaciones(@fechaInicio DATETIME,@fechaFin DATETIME)
@@ -1386,9 +1384,8 @@ CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTop5Profesionales(@planes INT,@fech
 RETURNS TABLE AS
 RETURN SELECT TOP 5 cantConsultas, idProf
 FROM GESTIONAME_LAS_VACACIONES.getTablaProfesionalesDeConsultas(@planes,@fechaInicio,@fechaFin)
-ORDER BY cantConsultas
+ORDER BY cantConsultas desc
 GO
-
 
 
 -- LISTADO #3 --
@@ -1401,21 +1398,22 @@ especialidad INT
 ) 
 go
 
-create procedure GESTIONAME_LAS_VACACIONES.cargarTablaTemporalHorasProfesionales
+Create procedure GESTIONAME_LAS_VACACIONES.cargarTablaTemporalHorasProfesionales(@fechaDesde DATETIME, @fechaHasta DATETIME)
 as BEGIN
 
 TRUNCATE TABLE GESTIONAME_LAS_VACACIONES.TablaTemporalListado;
 
-declare @horaInicio  TIME , @horaFin TIME
+declare @horaInicio  DATETIME , @horaFin DATETIME
 declare @idProfesional int
 declare @diaInicio int, @diaFin int
 declare @especialidad int
 
-DECLARE cursoram cursor for select  idProfesional,Cast(fechaInicio as time),cast(fechaFinal as time), diaInicio,diaFin, idEspecialidad from GESTIONAME_LAS_VACACIONES.Agendas
+DECLARE cursoram cursor for select  idProfesional,fechaInicio,fechaFinal, diaInicio,diaFin, idEspecialidad from GESTIONAME_LAS_VACACIONES.Agendas
 OPEN cursoram fetch next from 
 cursoram into @idProfesional,@horaInicio,@horaFin, @diaInicio , @diaFin, @especialidad
 while (@@FETCH_STATUS =0 )
 begin 
+if (@fechaDesde BETWEEN @horaInicio and @horaFin)
 insert into GESTIONAME_LAS_VACACIONES.TablaTemporalListado values (@idProfesional,  (DATEPART(HOUR, @horaFin)*100+DATEPART(MINUTE,@horaFin)-DATEPART(HOUR, @horaInicio)*100 +DATEPART(MINUTE,@horaInicio)) * (@diaFin-@diaInicio+1), @especialidad)
 fetch next from cursoram into @idProfesional,@horaInicio,@horaFin, @diaInicio , @diaFin, @especialidad
 end 
@@ -1433,7 +1431,7 @@ return (select idProfesional, sum(cantidadDeHoras) as cantidadDeHoras, especiali
 					GROUP BY especialidad, idProfesional)
 GO 
 
-create function GESTIONAME_LAS_VACACIONES.topProfesionalesConMenosHoras(@plan INT, @especialidad INT, @fechaInicio datetime,@fechafin datetime)
+create function GESTIONAME_LAS_VACACIONES.topProfesionalesConMenosHoras(@especialidad INT)
 returns table as 
 return (select top 5 sum(temp.cantidadDeHoras) cantidadDeHorasTotales, p.nombre, p.apellido from GESTIONAME_LAS_VACACIONES.MergearAgendas() temp 
 join GESTIONAME_LAS_VACACIONES.Profesionales p 

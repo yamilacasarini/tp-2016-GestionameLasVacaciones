@@ -71,24 +71,19 @@ namespace ClinicaFrba.Listados
             reader.Close();
             return especialidades;
         }
-        public static List<profMenosHoras> obtenerProfesionalesConMenosHoras(string descPlan, string descEspecialidad, DateTime desde, DateTime hasta)
+        public static List<profMenosHoras> obtenerProfesionalesConMenosHoras(string descEspecialidad, DateTime desde, DateTime hasta)
         {
             List<profMenosHoras> profs = new List<profMenosHoras>();
             Server server = Server.getInstance();
-            string query = "select id from GESTIONAME_LAS_VACACIONES.Planes where descripcion like '" + descPlan + "'";
-            SqlDataReader reader = server.query(query);
-            reader.Read();
-            int plan = Convert.ToInt32(reader["id"]);
-            reader.Close();
-            query = "select id from GESTIONAME_LAS_VACACIONES.Especialidades where descripcion like '" + descEspecialidad + "'";
+            String query = "select id from GESTIONAME_LAS_VACACIONES.Especialidades where descripcion like '" + descEspecialidad + "'";
             SqlDataReader reader1 = server.query(query);
             reader1.Read();
             int especialidad = Convert.ToInt32(reader1["id"]);
             reader1.Close();
-            SqlDataReader reader4 = server.query("exec GESTIONAME_LAS_VACACIONES.cargarTablaTemporalHorasProfesionales");
+            SqlDataReader reader4 = server.query("exec GESTIONAME_LAS_VACACIONES.cargarTablaTemporalHorasProfesionales '" + desde.ToString() + "','" + hasta.ToString() +"'");
             reader4.Close();
-            query = "select  * from GESTIONAME_LAS_VACACIONES.topProfesionalesConMenosHoras(" + plan + "," +
-                especialidad + ",'" + desde.ToString() + "','" + hasta.ToString() + "')";
+            query = "select  * from GESTIONAME_LAS_VACACIONES.topProfesionalesConMenosHoras('" +
+                especialidad + "')";
             SqlDataReader reader3 = server.query(query);
             while (reader3.Read())
             {

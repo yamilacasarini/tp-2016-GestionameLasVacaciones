@@ -18,13 +18,9 @@ namespace ClinicaFrba.Listados
           
             InitializeComponent();
             fecha = dia;
-            ListadosManager.obtenerLaListaDePlanes().ForEach(agregarAlCombobox);
             ListadosManager.obtenerEspecialidadesMedicas().ForEach(agregarAlComboboxDeEspecialidades);
         }
-        private void agregarAlCombobox(Plan plan) {
-
-            cbPlan.Items.Add(plan.descripcion);
-        }
+     
         private void agregarAlComboboxDeEspecialidades(Especialidad esp)
         {
 
@@ -38,7 +34,7 @@ namespace ClinicaFrba.Listados
 
         private void button1_Click(object sender, EventArgs e)
         {
-            dataGridView1.DataSource = ListadosManager.obtenerProfesionalesConMenosHoras(cbPlan.Text,cbEspecialidad.Text,fecha,fecha.AddMonths(6));
+            dataGridView1.DataSource = ListadosManager.obtenerProfesionalesConMenosHoras(cbEspecialidad.Text,fecha,fecha.AddMonths(6));
 
         }
 
