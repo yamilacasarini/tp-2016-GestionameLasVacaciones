@@ -1491,7 +1491,7 @@ AFTER INSERT
 AS
 DECLARE @idPaciente INT
 DECLARE @idPlan INT
-select idPaciente,idPlan FROM inserted
+select @idPaciente = idPaciente, @idPlan= idPlan FROM inserted
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET planes = @idPlan WHERE id = @idPaciente
 GO
 
