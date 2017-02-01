@@ -615,8 +615,9 @@ JOIN GESTIONAME_LAS_VACACIONES.Bonos b
 ON c.idBono = b.id
 WHERE c.fecha IS NOT NULL
 GO
-	
 
+UPDATE GESTIONAME_LAS_VACACIONES.Bonos set usado = 1 where idTurno is not null
+GO
 
 --////////////////////////////////////--
 --FUNCIONES--
@@ -959,11 +960,13 @@ SET direccion = @direc, telefono = @tel, email = @mail, sexo = @sexo,
 estadoCivil = @civil, cantFamiliares = @cantFami WHERE id = @id
 END
 GO
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cambioPlan(@idPaciente INT,@plan INT, @motivo VARCHAR(50),@fecha as datetime)
 AS
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Modificaciones(idPaciente,idPlan,motivo,fecha)
 VALUES(@idPaciente,@plan,@motivo,@fecha)
+DELETE FROM GESTIONAME_LAS_VACACIONES.Bonos WHERE idPaciente = @idPaciente and usado = 0
 END
 GO
 --////////////////////////////////////--
