@@ -1,5 +1,4 @@
-﻿-- Saque los GO, ahora aprentando el menos de la linea siguiente, no ves mas drops :D
-IF NOT EXISTS ( SELECT  *
+﻿IF NOT EXISTS ( SELECT  *
 				FROM    sys.schemas
 				WHERE   name = N'GESTIONAME_LAS_VACACIONES' ) 
 	EXEC('CREATE SCHEMA [GESTIONAME_LAS_VACACIONES]');
