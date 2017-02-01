@@ -73,7 +73,7 @@ namespace ClinicaFrba.Abm_Afiliado
                         txMail.Text.Trim(), Convert.ToDateTime(dateTimePicker1.Value), cBsexo.Text.Trim(),
                         cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()), cBplanMedico.Text.Trim(), this.afiliadoFamiliar.id, cBtipoDocumento.Text.Trim());
                     btAgregar.Hide();
-                    if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
+                    if (cBestadoCivil.Text.Trim() == "Casado" || cBestadoCivil.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
                     {
                         btAgregarFam.Show();
                         this.afiliadoFamiliar.nombre = txNombre.Text.Trim();
