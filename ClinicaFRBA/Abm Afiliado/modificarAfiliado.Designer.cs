@@ -35,7 +35,6 @@
             this.cBsexo = new System.Windows.Forms.ComboBox();
             this.cBtipoDocumento = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.txFamiliaresACargo = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -57,6 +56,8 @@
             this.btCambiarPlan = new System.Windows.Forms.Button();
             this.txPlanMedico = new System.Windows.Forms.TextBox();
             this.btAgregar = new System.Windows.Forms.Button();
+            this.txFamiliaresACargo = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.txFamiliaresACargo)).BeginInit();
             this.SuspendLayout();
             // 
             // dateTimePicker1
@@ -104,7 +105,7 @@
             "Divorciado"});
             this.cBestadoCivil.Location = new System.Drawing.Point(219, 284);
             this.cBestadoCivil.Name = "cBestadoCivil";
-            this.cBestadoCivil.Size = new System.Drawing.Size(199, 21);
+            this.cBestadoCivil.Size = new System.Drawing.Size(78, 21);
             this.cBestadoCivil.TabIndex = 62;
             // 
             // cBsexo
@@ -116,7 +117,7 @@
             "Masculino"});
             this.cBsexo.Location = new System.Drawing.Point(219, 260);
             this.cBsexo.Name = "cBsexo";
-            this.cBsexo.Size = new System.Drawing.Size(199, 21);
+            this.cBsexo.Size = new System.Drawing.Size(78, 21);
             this.cBsexo.TabIndex = 61;
             // 
             // cBtipoDocumento
@@ -131,26 +132,18 @@
             "LD"});
             this.cBtipoDocumento.Location = new System.Drawing.Point(219, 105);
             this.cBtipoDocumento.Name = "cBtipoDocumento";
-            this.cBtipoDocumento.Size = new System.Drawing.Size(199, 21);
+            this.cBtipoDocumento.Size = new System.Drawing.Size(78, 21);
             this.cBtipoDocumento.TabIndex = 60;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label13.Location = new System.Drawing.Point(59, 306);
+            this.label13.Location = new System.Drawing.Point(59, 311);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(142, 20);
             this.label13.TabIndex = 58;
             this.label13.Text = "Familiares a cargo:";
-            // 
-            // txFamiliaresACargo
-            // 
-            this.txFamiliaresACargo.Location = new System.Drawing.Point(219, 308);
-            this.txFamiliaresACargo.MaxLength = 2;
-            this.txFamiliaresACargo.Name = "txFamiliaresACargo";
-            this.txFamiliaresACargo.Size = new System.Drawing.Size(199, 20);
-            this.txFamiliaresACargo.TabIndex = 57;
             // 
             // label9
             // 
@@ -357,11 +350,19 @@
             this.btAgregar.UseVisualStyleBackColor = true;
             this.btAgregar.Click += new System.EventHandler(this.btAgregar_Click);
             // 
+            // txFamiliaresACargo
+            // 
+            this.txFamiliaresACargo.Location = new System.Drawing.Point(219, 311);
+            this.txFamiliaresACargo.Name = "txFamiliaresACargo";
+            this.txFamiliaresACargo.Size = new System.Drawing.Size(78, 20);
+            this.txFamiliaresACargo.TabIndex = 75;
+            // 
             // modificarAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(542, 404);
+            this.Controls.Add(this.txFamiliaresACargo);
             this.Controls.Add(this.btAgregar);
             this.Controls.Add(this.txPlanMedico);
             this.Controls.Add(this.btCambiarPlan);
@@ -376,7 +377,6 @@
             this.Controls.Add(this.cBsexo);
             this.Controls.Add(this.cBtipoDocumento);
             this.Controls.Add(this.label13);
-            this.Controls.Add(this.txFamiliaresACargo);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label7);
@@ -394,6 +394,7 @@
             this.Name = "modificarAfiliado";
             this.Text = "modificarAfiliado";
             this.Load += new System.EventHandler(this.modificarAfiliado_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.txFamiliaresACargo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -408,7 +409,6 @@
         private System.Windows.Forms.ComboBox cBsexo;
         private System.Windows.Forms.ComboBox cBtipoDocumento;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox txFamiliaresACargo;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label7;
@@ -430,6 +430,7 @@
         private System.Windows.Forms.Button btCambiarPlan;
         private System.Windows.Forms.TextBox txPlanMedico;
         private System.Windows.Forms.Button btAgregar;
+        private System.Windows.Forms.NumericUpDown txFamiliaresACargo;
 
     }
 }

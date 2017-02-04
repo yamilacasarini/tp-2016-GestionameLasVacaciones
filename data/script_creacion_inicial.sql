@@ -1,4 +1,6 @@
-﻿IF NOT EXISTS ( SELECT  *
+﻿-- Modificaciones que pueden generar errores: el telefono del paciente se paso de int a varchar(15)
+
+IF NOT EXISTS ( SELECT  *
 				FROM    sys.schemas
 				WHERE   name = N'GESTIONAME_LAS_VACACIONES' ) 
 	EXEC('CREATE SCHEMA [GESTIONAME_LAS_VACACIONES]');
@@ -311,7 +313,7 @@ create TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
   documento INT NOT NULL,
   tipoDocumento VARCHAR(100) DEFAULT 'DNI' ,
   direccion VARCHAR(100) NOT NULL,
-  telefono INT NOT NULL,
+  telefono VARCHAR(15) NOT NULL,
   email VARCHAR(255),
   fechaNacimiento DATETIME NOT NULL,
   sexo CHAR,
@@ -415,7 +417,7 @@ id INT IDENTITY(1,1) PRIMARY KEY,
   apellido NVARCHAR(50) NOT NULL ,
   dni INT NOT NULL,
   direccion VARCHAR(100) NOT NULL,
-  telefono INT NOT NULL,
+  telefono VARCHAR(15) NOT NULL,
   email VARCHAR(255),
   fechaNacimiento DATETIME NOT NULL,
   idPlan INT,
@@ -478,7 +480,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('RESU
 insert into #ConsultasTemporal(id,fecha,idBono,fechaBono,precioBono,sintomas,diagnostico,dni, medicoDNI, especialidad)
 SELECT	Turno_Numero, Turno_Fecha,Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion,Plan_Med_Precio_Bono_Consulta, 
 Consulta_Sintomas,Consulta_Enfermedades, Paciente_Dni, Medico_Dni, Especialidad_Descripcion
-FROM gd_esquema.Maestra
+FROM GD2C2016.gd_esquema.Maestra
 
 INSERT INTO #PacienteTemporal (nombre,apellido,dni,direccion,telefono,email,fechaNacimiento,idPlan,descripcionPlan,precioBono,idTurno,fechaTurno,fechaBono,idBono)
 SELECT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direccion, Paciente_Telefono, Paciente_Mail,Paciente_Fecha_Nac,
@@ -901,7 +903,7 @@ GO
 --ABM PACIENTES--
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre nvarchar(50), @apellido nvarchar(50), 
-@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
+@doc INT, @direc VARCHAR(100), @tel VARCHAR(15), @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
 @cantFami INT, @planes INT, @tipoDocumento VARCHAR(30))
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
@@ -921,7 +923,7 @@ END
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaFamiliar(@idFamiliar INT,@nombre nvarchar(50), @apellido nvarchar(50), 
-@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
+@doc INT, @direc VARCHAR(100), @tel VARCHAR(15), @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
 @cantFami INT,@planes INT, @tipoDocumento as VARCHAR(30))
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
@@ -952,7 +954,7 @@ UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET baja = 1, fechaBaja = @hora WHERE
 END
 GO
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id INT,@direc VARCHAR(100),
- @tel INT, @mail VARCHAR(255), @sexo char, @civil VARCHAR(10),@cantFami INT)
+ @tel VARCHAR(15), @mail VARCHAR(255), @sexo char, @civil VARCHAR(10),@cantFami INT)
 AS
 BEGIN
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes
