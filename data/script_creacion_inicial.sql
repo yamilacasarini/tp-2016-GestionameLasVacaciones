@@ -1,5 +1,4 @@
-﻿-- Saque los GO, ahora aprentando el menos de la linea siguiente, no ves mas drops :D
-IF NOT EXISTS ( SELECT  *
+﻿IF NOT EXISTS ( SELECT  *
 				FROM    sys.schemas
 				WHERE   name = N'GESTIONAME_LAS_VACACIONES' ) 
 	EXEC('CREATE SCHEMA [GESTIONAME_LAS_VACACIONES]');
@@ -533,15 +532,8 @@ GROUP BY p.id, fechaBono,precioBono
 
 --FUNCIONALIDADES PARA ADMIN--
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (1,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (2,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (3,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (4,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (5,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (6,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (7,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (8,1)
-
+INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idRol, idFuncionalidad) 
+select 1,id from GESTIONAME_LAS_VACACIONES.Funcionalidades
 --FUNCIONALIDADES PARA AFILIADO--
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (3,2)
@@ -623,8 +615,9 @@ JOIN GESTIONAME_LAS_VACACIONES.Bonos b
 ON c.idBono = b.id
 WHERE c.fecha IS NOT NULL
 GO
-	
 
+UPDATE GESTIONAME_LAS_VACACIONES.Bonos set usado = 1 where idTurno is not null
+GO
 
 --////////////////////////////////////--
 --FUNCIONES--
@@ -870,6 +863,9 @@ END
 ELSE
 BEGIN
 UPDATE GESTIONAME_LAS_VACACIONES.Roles SET baja = 1 WHERE descripcion = @nombre
+DECLARE @idROl INT
+SELECT @idROl = id FROM GESTIONAME_LAS_VACACIONES.Roles WHERE descripcion = @nombre
+DELETE FROM GESTIONAME_LAS_VACACIONES.RolesxUsuario WHERE @idROl = idRol
 END
 END
 GO
@@ -964,11 +960,13 @@ SET direccion = @direc, telefono = @tel, email = @mail, sexo = @sexo,
 estadoCivil = @civil, cantFamiliares = @cantFami WHERE id = @id
 END
 GO
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cambioPlan(@idPaciente INT,@plan INT, @motivo VARCHAR(50),@fecha as datetime)
 AS
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Modificaciones(idPaciente,idPlan,motivo,fecha)
 VALUES(@idPaciente,@plan,@motivo,@fecha)
+DELETE FROM GESTIONAME_LAS_VACACIONES.Bonos WHERE idPaciente = @idPaciente and usado = 0
 END
 GO
 --////////////////////////////////////--
@@ -1491,7 +1489,7 @@ AFTER INSERT
 AS
 DECLARE @idPaciente INT
 DECLARE @idPlan INT
-select idPaciente,idPlan FROM inserted
+select @idPaciente = idPaciente, @idPlan= idPlan FROM inserted
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET planes = @idPlan WHERE id = @idPaciente
 GO
 
