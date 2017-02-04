@@ -57,33 +57,33 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
        
         private void cargarDias(ComboBox combito)
         {
-            combito.Items.Add("LUNES");
-            combito.Items.Add("MARTES");
-            combito.Items.Add("MIERCOLES");
-            combito.Items.Add("JUEVES");
-            combito.Items.Add("VIERNES");
-            combito.Items.Add("SABADO");
+            combito.Items.Add("Lunes");
+            combito.Items.Add("Martes");
+            combito.Items.Add("Miercoles");
+            combito.Items.Add("Jueves");
+            combito.Items.Add("Viernes");
+            combito.Items.Add("Sabado");
         }
         private bool validarDatos()
         {
-            return 
-               validarDia(DiaInicio.Text, mesInicio.Text, anioInicio.Text)
-                && validarDia(anioFinal.Text, mesFinal.Text, anioFinal.Text)
+            return
+               validarDia(DiaInicio.Value, mesInicio.Value, anioInicio.Value)
+                && validarDia(anioFinal.Value, mesFinal.Value, anioFinal.Value)
                 && validacion48Horas()
-                && validarQueSeaFechaFutura(anioInicio.Text, anioFinal.Text, 
-                mesInicio.Text, mesFinal.Text, DiaInicio.Text, anioFinal.Text)
-                && validarQueSeaFechaFutura(anioDelSistema, anioInicio.Text,
-                mesDelSistema, mesInicio.Text, diaDelSistema, DiaInicio.Text)
-                && validarQueSeaFechaFutura(anioDelSistema, anioFinal.Text,
-                mesDelSistema, mesFinal.Text, diaDelSistema, anioFinal.Text)
-                && validarHorarioSabados(diaSemanaInicio.Text, listaHorasInicio.Text)
-                && validarHorarioSabados(diaSemanaFinal.Text, listaHorasInicio.Text)
-                && validarHorarioSabados(diaSemanaInicio.Text, listaHorasFinal.Text)
-                && validarHorarioSabados(diaSemanaFinal.Text, listaHorasFinal.Text)
+                && validarQueSeaFechaFutura(anioInicio.Value, anioFinal.Value,
+                mesInicio.Value, mesFinal.Value, DiaInicio.Value, anioFinal.Value)
+                && validarQueSeaFechaFutura(Convert.ToDecimal(anioDelSistema), anioInicio.Value,
+                Convert.ToDecimal(mesDelSistema), mesInicio.Value, Convert.ToDecimal(diaDelSistema), DiaInicio.Value)
+                && validarQueSeaFechaFutura(Convert.ToDecimal(anioDelSistema), anioFinal.Value,
+                Convert.ToDecimal(mesDelSistema), mesFinal.Value, Convert.ToDecimal(diaDelSistema), anioFinal.Value)
+                && validarHorarioSabados(diaSemanaInicio.Text, listaHorasInicio.Value)
+                && validarHorarioSabados(diaSemanaFinal.Text, listaHorasInicio.Value)
+                && validarHorarioSabados(diaSemanaInicio.Text, listaHorasFinal.Value)
+                && validarHorarioSabados(diaSemanaFinal.Text, listaHorasFinal.Value)
                 ;
         }
 
-        private bool validarHorarioSabados(string dia, string hora)
+        private bool validarHorarioSabados(string dia, decimal hora)
         {
             if ((diaNumericoDeLaSemana(dia) == 6 && (aInt(hora) >= 15 || aInt(hora) < 10)))
                  return fallarPor("Los sabados el hospital solamente esta abierto de 10 a 15 hs");
@@ -91,9 +91,9 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
         }
 
         
-        private bool validarQueSeaFechaFutura(string anioInicio,
-            string anioFinal, string mesInicio, string mesFinal,
-            string diaInicio, string diaFinal)
+        private bool validarQueSeaFechaFutura(decimal anioInicio,
+            decimal anioFinal, decimal mesInicio, decimal mesFinal,
+            decimal diaInicio, decimal diaFinal)
         {
             if (aInt(anioInicio) > aInt(anioFinal))
                 return fallarPor("La fecha inicial es posterior a la final");
@@ -106,7 +106,7 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
             return true;
         }
 
-        private bool validarDia(string dia, string mes, string anio)
+        private bool validarDia(decimal dia, decimal mes, decimal anio)
         {
             int mesInicial = aInt(mes);
             if (mesInicial == 1 || mesInicial == 3 || mesInicial == 5 || mesInicial == 7 || mesInicial == 8 || mesInicial == 10 || mesInicial == 12)
@@ -145,8 +145,8 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
 
         private bool validacion48Horas()
         {
-            int horarioInicio = aInt(listaHorasInicio.Text) * 100 + aInt(listaMinutosInicio.Text);
-            int horarioFin = aInt(listaHorasFinal.Text) * 100 + aInt(listaMinutosFinal.Text);
+            int horarioInicio = aInt(listaHorasInicio.Value) * 100 + aInt(listaMinutosInicio.Value);
+            int horarioFin = aInt(listaHorasFinal.Value) * 100 + aInt(listaMinutosFinal.Value);
             int suma = (horarioFin - horarioInicio) * (diaNumericoDeLaSemana(diaSemanaFinal.Text) - diaNumericoDeLaSemana(diaSemanaInicio.Text) + 1);
             if (suma > 4800)
                 fallarPor("El profesional supera las 48 horas de trabajo");
@@ -156,7 +156,7 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
         int matr = 0;
         string esp;
 
-        private int aInt(string algo)
+        private int aInt(decimal algo)
         {
             return Convert.ToInt32(algo);
         }
@@ -165,9 +165,10 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
         {
             if (!validarVacio() || validarDatos())
             {
+                
                         Server server = Server.getInstance();
-                        DateTime fechaA = new DateTime(aInt(anioInicio.Text), aInt(mesInicio.Text), aInt(DiaInicio.Text), aInt(listaHorasInicio.Text), aInt(listaMinutosInicio.Text), 0);
-                        DateTime fechaB = new DateTime(aInt(anioFinal.Text), aInt(mesFinal.Text), aInt(anioFinal.Text), aInt(listaHorasFinal.Text), aInt(listaMinutosFinal.Text), 0);
+                        DateTime fechaA = new DateTime(aInt(anioInicio.Value), aInt(mesInicio.Value), aInt(DiaInicio.Value), aInt(listaHorasInicio.Value), aInt(listaMinutosInicio.Value), 0);
+                        DateTime fechaB = new DateTime(aInt(anioFinal.Value), aInt(mesFinal.Value), aInt(diaFinal.Value), aInt(listaHorasFinal.Value), aInt(listaMinutosFinal.Value), 0);
                         server.query("exec GESTIONAME_LAS_VACACIONES.altaAgendaProfesional " + matr + "," + "'" + esp + "','" + fechaA.ToString() + "','" + fechaB.ToString() + "'," + diaNumericoDeLaSemana(diaSemanaInicio.Text) + "," + diaNumericoDeLaSemana(diaSemanaFinal.Text));
                         System.Windows.Forms.MessageBox.Show("Agenda dada de alta exitosamente");
             }
