@@ -33,31 +33,41 @@
             this.btBuscar = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.anioInicio = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.mesInicio = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.DiaInicio = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.diaFinal = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.mesFinal = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.anioFinal = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.listaHorasInicio = new System.Windows.Forms.ComboBox();
-            this.listaMinutosInicio = new System.Windows.Forms.ComboBox();
-            this.listaMinutosFinal = new System.Windows.Forms.ComboBox();
-            this.listaHorasFinal = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.diaSemanaInicio = new System.Windows.Forms.ComboBox();
             this.diaSemanaFinal = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.listaHorasInicio = new System.Windows.Forms.NumericUpDown();
+            this.listaMinutosInicio = new System.Windows.Forms.NumericUpDown();
+            this.listaMinutosFinal = new System.Windows.Forms.NumericUpDown();
+            this.listaHorasFinal = new System.Windows.Forms.NumericUpDown();
+            this.anioInicio = new System.Windows.Forms.NumericUpDown();
+            this.mesInicio = new System.Windows.Forms.NumericUpDown();
+            this.DiaInicio = new System.Windows.Forms.NumericUpDown();
+            this.anioFinal = new System.Windows.Forms.NumericUpDown();
+            this.mesFinal = new System.Windows.Forms.NumericUpDown();
+            this.diaFinal = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.listaHorasInicio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listaMinutosInicio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listaMinutosFinal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listaHorasFinal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.anioInicio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mesInicio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DiaInicio)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.anioFinal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mesFinal)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.diaFinal)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -111,13 +121,6 @@
             this.label4.TabIndex = 4;
             this.label4.Text = "Año:";
             // 
-            // anioInicio
-            // 
-            this.anioInicio.Location = new System.Drawing.Point(60, 88);
-            this.anioInicio.Name = "anioInicio";
-            this.anioInicio.Size = new System.Drawing.Size(76, 20);
-            this.anioInicio.TabIndex = 5;
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -127,13 +130,6 @@
             this.label5.Size = new System.Drawing.Size(43, 20);
             this.label5.TabIndex = 6;
             this.label5.Text = "Mes:";
-            // 
-            // mesInicio
-            // 
-            this.mesInicio.Location = new System.Drawing.Point(191, 88);
-            this.mesInicio.Name = "mesInicio";
-            this.mesInicio.Size = new System.Drawing.Size(76, 20);
-            this.mesInicio.TabIndex = 7;
             // 
             // label6
             // 
@@ -145,13 +141,6 @@
             this.label6.TabIndex = 8;
             this.label6.Text = "Dia:";
             // 
-            // DiaInicio
-            // 
-            this.DiaInicio.Location = new System.Drawing.Point(316, 88);
-            this.DiaInicio.Name = "DiaInicio";
-            this.DiaInicio.Size = new System.Drawing.Size(76, 20);
-            this.DiaInicio.TabIndex = 9;
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
@@ -161,13 +150,6 @@
             this.label7.Size = new System.Drawing.Size(144, 20);
             this.label7.TabIndex = 10;
             this.label7.Text = "Ingrese fecha final:";
-            // 
-            // diaFinal
-            // 
-            this.diaFinal.Location = new System.Drawing.Point(316, 154);
-            this.diaFinal.Name = "diaFinal";
-            this.diaFinal.Size = new System.Drawing.Size(76, 20);
-            this.diaFinal.TabIndex = 16;
             // 
             // label8
             // 
@@ -179,13 +161,6 @@
             this.label8.TabIndex = 15;
             this.label8.Text = "Dia:";
             // 
-            // mesFinal
-            // 
-            this.mesFinal.Location = new System.Drawing.Point(191, 154);
-            this.mesFinal.Name = "mesFinal";
-            this.mesFinal.Size = new System.Drawing.Size(76, 20);
-            this.mesFinal.TabIndex = 14;
-            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -195,13 +170,6 @@
             this.label9.Size = new System.Drawing.Size(43, 20);
             this.label9.TabIndex = 13;
             this.label9.Text = "Mes:";
-            // 
-            // anioFinal
-            // 
-            this.anioFinal.Location = new System.Drawing.Point(60, 154);
-            this.anioFinal.Name = "anioFinal";
-            this.anioFinal.Size = new System.Drawing.Size(76, 20);
-            this.anioFinal.TabIndex = 12;
             // 
             // label10
             // 
@@ -263,38 +231,6 @@
             this.label16.TabIndex = 26;
             this.label16.Text = "Dia Final:";
             // 
-            // listaHorasInicio
-            // 
-            this.listaHorasInicio.FormattingEnabled = true;
-            this.listaHorasInicio.Location = new System.Drawing.Point(233, 193);
-            this.listaHorasInicio.Name = "listaHorasInicio";
-            this.listaHorasInicio.Size = new System.Drawing.Size(60, 21);
-            this.listaHorasInicio.TabIndex = 27;
-            // 
-            // listaMinutosInicio
-            // 
-            this.listaMinutosInicio.FormattingEnabled = true;
-            this.listaMinutosInicio.Location = new System.Drawing.Point(316, 193);
-            this.listaMinutosInicio.Name = "listaMinutosInicio";
-            this.listaMinutosInicio.Size = new System.Drawing.Size(60, 21);
-            this.listaMinutosInicio.TabIndex = 28;
-            // 
-            // listaMinutosFinal
-            // 
-            this.listaMinutosFinal.FormattingEnabled = true;
-            this.listaMinutosFinal.Location = new System.Drawing.Point(316, 229);
-            this.listaMinutosFinal.Name = "listaMinutosFinal";
-            this.listaMinutosFinal.Size = new System.Drawing.Size(60, 21);
-            this.listaMinutosFinal.TabIndex = 31;
-            // 
-            // listaHorasFinal
-            // 
-            this.listaHorasFinal.FormattingEnabled = true;
-            this.listaHorasFinal.Location = new System.Drawing.Point(233, 229);
-            this.listaHorasFinal.Name = "listaHorasFinal";
-            this.listaHorasFinal.Size = new System.Drawing.Size(60, 21);
-            this.listaHorasFinal.TabIndex = 30;
-            // 
             // label14
             // 
             this.label14.AutoSize = true;
@@ -307,6 +243,7 @@
             // 
             // diaSemanaInicio
             // 
+            this.diaSemanaInicio.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.diaSemanaInicio.FormattingEnabled = true;
             this.diaSemanaInicio.Location = new System.Drawing.Point(88, 265);
             this.diaSemanaInicio.Name = "diaSemanaInicio";
@@ -315,6 +252,7 @@
             // 
             // diaSemanaFinal
             // 
+            this.diaSemanaFinal.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.diaSemanaFinal.FormattingEnabled = true;
             this.diaSemanaFinal.Location = new System.Drawing.Point(301, 265);
             this.diaSemanaFinal.Name = "diaSemanaFinal";
@@ -332,36 +270,176 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // listaHorasInicio
+            // 
+            this.listaHorasInicio.Location = new System.Drawing.Point(240, 195);
+            this.listaHorasInicio.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.listaHorasInicio.Minimum = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+            this.listaHorasInicio.Name = "listaHorasInicio";
+            this.listaHorasInicio.Size = new System.Drawing.Size(58, 20);
+            this.listaHorasInicio.TabIndex = 35;
+            this.listaHorasInicio.Value = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+            // 
+            // listaMinutosInicio
+            // 
+            this.listaMinutosInicio.Location = new System.Drawing.Point(311, 194);
+            this.listaMinutosInicio.Maximum = new decimal(new int[] {
+            59,
+            0,
+            0,
+            0});
+            this.listaMinutosInicio.Name = "listaMinutosInicio";
+            this.listaMinutosInicio.Size = new System.Drawing.Size(58, 20);
+            this.listaMinutosInicio.TabIndex = 36;
+            // 
+            // listaMinutosFinal
+            // 
+            this.listaMinutosFinal.Location = new System.Drawing.Point(311, 227);
+            this.listaMinutosFinal.Maximum = new decimal(new int[] {
+            59,
+            0,
+            0,
+            0});
+            this.listaMinutosFinal.Name = "listaMinutosFinal";
+            this.listaMinutosFinal.Size = new System.Drawing.Size(58, 20);
+            this.listaMinutosFinal.TabIndex = 38;
+            // 
+            // listaHorasFinal
+            // 
+            this.listaHorasFinal.Location = new System.Drawing.Point(240, 228);
+            this.listaHorasFinal.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            this.listaHorasFinal.Minimum = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+            this.listaHorasFinal.Name = "listaHorasFinal";
+            this.listaHorasFinal.Size = new System.Drawing.Size(58, 20);
+            this.listaHorasFinal.TabIndex = 37;
+            this.listaHorasFinal.Value = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+            // 
+            // anioInicio
+            // 
+            this.anioInicio.Location = new System.Drawing.Point(49, 88);
+            this.anioInicio.Maximum = new decimal(new int[] {
+            2037,
+            0,
+            0,
+            0});
+            this.anioInicio.Name = "anioInicio";
+            this.anioInicio.Size = new System.Drawing.Size(87, 20);
+            this.anioInicio.TabIndex = 39;
+            // 
+            // mesInicio
+            // 
+            this.mesInicio.Location = new System.Drawing.Point(180, 86);
+            this.mesInicio.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.mesInicio.Name = "mesInicio";
+            this.mesInicio.Size = new System.Drawing.Size(87, 20);
+            this.mesInicio.TabIndex = 40;
+            // 
+            // DiaInicio
+            // 
+            this.DiaInicio.Location = new System.Drawing.Point(305, 88);
+            this.DiaInicio.Maximum = new decimal(new int[] {
+            31,
+            0,
+            0,
+            0});
+            this.DiaInicio.Name = "DiaInicio";
+            this.DiaInicio.Size = new System.Drawing.Size(87, 20);
+            this.DiaInicio.TabIndex = 41;
+            // 
+            // anioFinal
+            // 
+            this.anioFinal.Location = new System.Drawing.Point(49, 152);
+            this.anioFinal.Maximum = new decimal(new int[] {
+            2037,
+            0,
+            0,
+            0});
+            this.anioFinal.Name = "anioFinal";
+            this.anioFinal.Size = new System.Drawing.Size(87, 20);
+            this.anioFinal.TabIndex = 42;
+            // 
+            // mesFinal
+            // 
+            this.mesFinal.Location = new System.Drawing.Point(180, 154);
+            this.mesFinal.Maximum = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.mesFinal.Name = "mesFinal";
+            this.mesFinal.Size = new System.Drawing.Size(87, 20);
+            this.mesFinal.TabIndex = 43;
+            // 
+            // diaFinal
+            // 
+            this.diaFinal.Location = new System.Drawing.Point(311, 154);
+            this.diaFinal.Maximum = new decimal(new int[] {
+            31,
+            0,
+            0,
+            0});
+            this.diaFinal.Name = "diaFinal";
+            this.diaFinal.Size = new System.Drawing.Size(87, 20);
+            this.diaFinal.TabIndex = 44;
+            // 
             // Principal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(443, 342);
+            this.Controls.Add(this.diaFinal);
+            this.Controls.Add(this.mesFinal);
+            this.Controls.Add(this.anioFinal);
+            this.Controls.Add(this.DiaInicio);
+            this.Controls.Add(this.mesInicio);
+            this.Controls.Add(this.anioInicio);
+            this.Controls.Add(this.listaMinutosFinal);
+            this.Controls.Add(this.listaHorasFinal);
+            this.Controls.Add(this.listaMinutosInicio);
+            this.Controls.Add(this.listaHorasInicio);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.diaSemanaFinal);
             this.Controls.Add(this.diaSemanaInicio);
-            this.Controls.Add(this.listaMinutosFinal);
-            this.Controls.Add(this.listaHorasFinal);
             this.Controls.Add(this.label14);
-            this.Controls.Add(this.listaMinutosInicio);
-            this.Controls.Add(this.listaHorasInicio);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label11);
-            this.Controls.Add(this.diaFinal);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.mesFinal);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.anioFinal);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.DiaInicio);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.mesInicio);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.anioInicio);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btBuscar);
@@ -369,6 +447,16 @@
             this.Controls.Add(this.label1);
             this.Name = "Principal";
             this.Text = "Alta Agenda de Profesional";
+            ((System.ComponentModel.ISupportInitialize)(this.listaHorasInicio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listaMinutosInicio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listaMinutosFinal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.listaHorasFinal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.anioInicio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mesInicio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DiaInicio)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.anioFinal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mesFinal)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.diaFinal)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -381,30 +469,30 @@
         private System.Windows.Forms.Button btBuscar;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox anioInicio;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox mesInicio;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox DiaInicio;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox diaFinal;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox mesFinal;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox anioFinal;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.ComboBox listaHorasInicio;
-        private System.Windows.Forms.ComboBox listaMinutosInicio;
-        private System.Windows.Forms.ComboBox listaMinutosFinal;
-        private System.Windows.Forms.ComboBox listaHorasFinal;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox diaSemanaInicio;
         private System.Windows.Forms.ComboBox diaSemanaFinal;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.NumericUpDown listaHorasInicio;
+        private System.Windows.Forms.NumericUpDown listaMinutosInicio;
+        private System.Windows.Forms.NumericUpDown listaMinutosFinal;
+        private System.Windows.Forms.NumericUpDown listaHorasFinal;
+        private System.Windows.Forms.NumericUpDown anioInicio;
+        private System.Windows.Forms.NumericUpDown mesInicio;
+        private System.Windows.Forms.NumericUpDown DiaInicio;
+        private System.Windows.Forms.NumericUpDown anioFinal;
+        private System.Windows.Forms.NumericUpDown mesFinal;
+        private System.Windows.Forms.NumericUpDown diaFinal;
     }
 }
