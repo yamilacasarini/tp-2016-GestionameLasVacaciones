@@ -48,7 +48,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 afiliado.tipoDocumento = reader["tipoDocumento"].ToString();
                 afiliado.documento = Convert.ToInt32(reader["documento"]);
                 afiliado.direccion = reader["direccion"].ToString();
-                afiliado.telefono = Convert.ToInt32(reader["telefono"]);
+                afiliado.telefono = reader["telefono"].ToString();
                 afiliado.email = reader["email"].ToString();
                 afiliado.servicio = Convert.ToInt32(reader["planes"]);
                 afiliado.fechaNacimiento = Convert.ToDateTime(reader["fechaNacimiento"]);
@@ -126,12 +126,12 @@ namespace ClinicaFrba.Abm_Afiliado
                 return true;
             return false;
         }
-        public static void ModificarAfiliado(int id, String direccion, int telefono, String mail,
+        public static void ModificarAfiliado(int id, String direccion, String telefono, String mail,
             string sexo, String estadoCivil, int CantidadFamiliares)
         {
             Server server = Server.getInstance();
             string q = "EXEC GESTIONAME_LAS_VACACIONES.modificarPaciente " + id +
-                ",'" + direccion + "'," + telefono + ",'" + mail + "'," + AfiliadoManager.genero(sexo) +
+                ",'" + direccion + "','" + telefono + "','" + mail + "'," + AfiliadoManager.genero(sexo) +
                 ",'" + estadoCivil + "'," + CantidadFamiliares;
             SqlDataReader reader = server.query(q);
             reader.Close();
@@ -190,12 +190,12 @@ namespace ClinicaFrba.Abm_Afiliado
             SqlDataReader reader = server.query(query);
             reader.Close();
         }
-        public static void altaAfiliado(string nombre, string apellido, int documento, string direccion, int telefono,
+        public static void altaAfiliado(string nombre, string apellido, int documento, string direccion, String telefono,
             string mail, DateTime nacimiento, string sexo, string civil, int familiares, string descPlanMedico, int idFamiliar, String tipoDocumento)
         {
             Server server = Server.getInstance();
-            string query = "'" + nombre + "', '" + apellido + "'," + documento + ",'" + direccion + "'," + telefono +
-                ",'" + mail + "','" + nacimiento + "','" + genero(sexo) + "','" + civil + "'," + familiares +
+            string query = "'" + nombre + "', '" + apellido + "'," + documento + ",'" + direccion + "','" + telefono +
+                "','" + mail + "','" + nacimiento + "','" + genero(sexo) + "','" + civil + "'," + familiares +
                 ", " + AfiliadoManager.idPlanMedico(descPlanMedico) + ", '" + tipoDocumento + "'";
             if (idFamiliar == 0)
             {
@@ -226,7 +226,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 afiliado.tipoDocumento = reader["tipoDocumento"].ToString();
                 afiliado.documento = Convert.ToInt32(reader["documento"]);
                 afiliado.direccion = reader["direccion"].ToString();
-                afiliado.telefono = Convert.ToInt32(reader["telefono"]);
+                afiliado.telefono = reader["telefono"].ToString();
                 afiliado.email = reader["email"].ToString();
                 afiliado.servicio = Convert.ToInt32(reader["planes"]);
                 afiliado.fechaNacimiento = Convert.ToDateTime(reader["fechaNacimiento"]);

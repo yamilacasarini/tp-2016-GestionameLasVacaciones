@@ -18,10 +18,44 @@ namespace ClinicaFrba.Abm_Afiliado
         public modificarAfiliado()
         {
             InitializeComponent();
-            btAceptar.Hide();
-            btCambiarPlan.Hide();
-            afiliado.id = -1;
-            btAgregar.Hide();
+            BuscarAfiliados form = new BuscarAfiliados();
+
+            form.ShowDialog();
+            afiliado = form.afiliadoBuscado;
+            if (afiliado.id != -1)
+            {
+                txApellido.Text = afiliado.apellido;
+                txNombre.Text = afiliado.nombre;
+                txDireccion.Text = afiliado.direccion;
+                txDocumento.Text = Convert.ToString(afiliado.documento);
+                txFamiliaresACargo.Text = Convert.ToString(afiliado.cantFamiliares);
+                txMail.Text = afiliado.email;
+                txTelefono.Text = afiliado.telefono;
+                cBestadoCivil.Text = afiliado.estadoCivil;
+                cBsexo.ValueMember = sexo(afiliado.sexo);
+                cBtipoDocumento.Text = afiliado.tipoDocumento;
+                dateTimePicker1.Value = afiliado.fechaNacimiento;
+                if (afiliado.servicio != 0)
+                {
+                    txPlanMedico.Text = AfiliadoManager.planMedico(afiliado.servicio);
+                    btAgregar.Show();
+                    btAceptar.Show();
+                    btCambiarPlan.Show();
+                }
+                else
+                {
+                    MessageBox.Show("No posee plan medico vigente a la fecha");
+                    txPlanMedico.Hide();
+                    btAgregar.Show();
+                    btAceptar.Show();
+                    btCambiarPlan.Show();
+                }
+
+            }
+         //   btAceptar.Hide();
+         //   btCambiarPlan.Hide();
+         //   afiliado.id = -1;
+         //   btAgregar.Hide();
         }
 
         private void label6_Click(object sender, EventArgs e)
@@ -71,7 +105,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 if (validarDatos())
                 {
                     try{
-                    AfiliadoManager.ModificarAfiliado(afiliado.id,txDireccion.Text.Trim(),Convert.ToInt32(txTelefono.Text.Trim()),txMail.Text.Trim(),
+                    AfiliadoManager.ModificarAfiliado(afiliado.id,txDireccion.Text.Trim(),txTelefono.Text.Trim(),txMail.Text.Trim(),
                         cBsexo.Text.Trim(), cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()));
                     this.Close();
                     }
@@ -90,6 +124,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void btBuscar_Click_1(object sender, EventArgs e)
         {
+            /*
             BuscarAfiliados form = new BuscarAfiliados();
 
             form.ShowDialog();
@@ -123,7 +158,7 @@ namespace ClinicaFrba.Abm_Afiliado
                     btCambiarPlan.Show();
                 }
 
-            }
+            }*/
 
         }
         private String sexo(string genero) {

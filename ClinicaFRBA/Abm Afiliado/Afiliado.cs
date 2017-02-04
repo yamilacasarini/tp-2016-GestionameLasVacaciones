@@ -14,7 +14,7 @@ namespace ClinicaFrba.Abm_Afiliado
         public int documento { get; set; }
         public String tipoDocumento { get; set; }
         public String direccion { get; set; }
-        public Int32 telefono { get; set; }
+        public String telefono { get; set; }
         public String email { get; set; }
         public DateTime fechaNacimiento { get; set; }
         public String sexo { get; set; }
