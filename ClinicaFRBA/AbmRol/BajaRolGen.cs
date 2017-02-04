@@ -23,7 +23,7 @@ namespace ClinicaFrba.AbmRol
             Abm_Afiliado.BuscarAfiliados buscadorAfiliado = new Abm_Afiliado.BuscarAfiliados();
             buscadorAfiliado.ShowDialog();
             afiliado = buscadorAfiliado.afiliadoBuscado;
-            if (afiliado != null)
+            if (afiliado.id != -1)
             {
                 new BajaRolPorUsuario(afiliado).ShowDialog();
             }

@@ -25,7 +25,7 @@ namespace ClinicaFrba.AbmRol
              Abm_Afiliado.BuscarAfiliados buscadorAfiliado = new Abm_Afiliado.BuscarAfiliados();
             buscadorAfiliado.ShowDialog();
             afiliado = buscadorAfiliado.afiliadoBuscado;
-            if (afiliado != null)
+            if (afiliado.id != -1)
             {
                 this.Nombre.Text = afiliado.nombre;
                 this.Apellido.Text = afiliado.apellido;
@@ -50,7 +50,15 @@ namespace ClinicaFrba.AbmRol
                 DataGridViewSelectedRowCollection seleccion = this.dataGridView2.SelectedRows;
                 foreach (DataGridViewRow rol in seleccion)
                 {
-                   RolManager.agregarRolesAUsuario(afiliado.id, Convert.ToInt32(rol.Cells[0].Value));
+                    try
+                    {
+                        RolManager.agregarRolesAUsuario(afiliado.id, Convert.ToInt32(rol.Cells[0].Value));
+                    }
+                    catch (Exception a)
+                    {
+                        MessageBox.Show("No se ha podido agregar satisfactoriamente el rol");
+                        return;
+                    }
                 }
 
                 MessageBox.Show("Los roles han sido agregados al usuario exitosamente");
