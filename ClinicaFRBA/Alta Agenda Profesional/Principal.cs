@@ -166,6 +166,8 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
             int horarioInicio = aInt(listaHorasInicio.Text) * 100 + aInt(listaMinutosInicio.Text);
             int horarioFin = aInt(listaHorasFinal.Text) * 100 + aInt(listaMinutosFinal.Text);
             int suma = (horarioFin - horarioInicio) * (diaNumericoDeLaSemana(diaSemanaFinal.Text) - diaNumericoDeLaSemana(diaSemanaInicio.Text) + 1);
+            if (suma > 4800)
+                MessageBox.Show("El profesional supera las 48 horas de trabajo");
            return suma <= 4800;
         }
 
