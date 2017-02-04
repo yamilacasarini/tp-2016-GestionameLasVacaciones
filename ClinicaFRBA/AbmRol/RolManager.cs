@@ -121,6 +121,12 @@ namespace ClinicaFrba.AbmRol
             SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.borrarRol '" + rol + "'");
             reader.Close();
         }
+        public static void eliminarRolPorUsuario(int idUsuario, String descripcionRol)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.borrarRolPaciente '" + idUsuario + "','" + descripcionRol + "'");
+            reader.Close();
+        }
         //MODIFICA LA TABLA DE ROLES, CAMBIANDO EL NOMBRE POR EL NUEVO
         public static void mofidicarNombre(String viejoNombre, String nuevoNombre)
         {

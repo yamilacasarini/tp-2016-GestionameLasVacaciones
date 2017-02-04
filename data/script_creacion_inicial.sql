@@ -855,6 +855,7 @@ RETURN 0
 END
 GO
 
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarRol(@nombre VARCHAR(30))
 AS 
 BEGIN 
@@ -868,6 +869,24 @@ UPDATE GESTIONAME_LAS_VACACIONES.Roles SET baja = 1 WHERE descripcion = @nombre
 DECLARE @idROl INT
 SELECT @idROl = id FROM GESTIONAME_LAS_VACACIONES.Roles WHERE descripcion = @nombre
 DELETE FROM GESTIONAME_LAS_VACACIONES.RolesxUsuario WHERE @idROl = idRol
+END
+END
+GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarRolPaciente(@id INTEGER, @rol VARCHAR(255))
+AS
+BEGIN
+DECLARE @idUsuario VARCHAR(255)
+SELECT @idUsuario = usuario FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE id=@id
+DECLARE @idRol INTEGER
+SELECT @idRol = id FROM GESTIONAME_LAS_VACACIONES.Roles WHERE descripcion = @rol
+IF NOT EXISTS (SELECT * FROM  GESTIONAME_LAS_VACACIONES.RolesxUsuario WHERE idUsuario = @idUsuario AND idRol = @idRol)
+BEGIN
+RAISERROR('El Rol vincluado al usuario no existe',16,217) WITH SETERROR
+END
+ELSE
+BEGIN
+DELETE FROM GESTIONAME_LAS_VACACIONES.RolesxUsuario WHERE idUsuario = @idUsuario AND idRol = @idRol
 END
 END
 GO
@@ -1476,7 +1495,6 @@ ON turno.especialidad = especialidad.descripcion
 GROUP BY especialidad.id
 ORDER BY COUNT(consulta.id) DESC)
 GO
-
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada(@id INTEGER)
 RETURNS TABLE AS

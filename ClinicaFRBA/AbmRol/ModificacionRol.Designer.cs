@@ -185,6 +185,7 @@
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(168, 21);
             this.txtNombre.TabIndex = 62;
+            this.txtNombre.SelectedIndexChanged += new System.EventHandler(this.txtNombre_SelectedIndexChanged);
             // 
             // ModificacionRol
             // 

@@ -185,5 +185,10 @@ namespace ClinicaFrba.AbmRol
         {
 
         }
+
+        private void txtNombre_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

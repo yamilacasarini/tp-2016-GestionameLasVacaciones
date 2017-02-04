@@ -75,7 +75,7 @@ namespace ClinicaFrba.AbmRol
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            new BajaRol().ShowDialog();
+            new BajaRolGen().ShowDialog();
         }
     }
 }
