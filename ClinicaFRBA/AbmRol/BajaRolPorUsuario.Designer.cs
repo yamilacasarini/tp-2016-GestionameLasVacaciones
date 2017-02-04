@@ -72,7 +72,7 @@
             // 
             this.Apellido.AutoSize = true;
             this.Apellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.Apellido.Location = new System.Drawing.Point(137, 19);
+            this.Apellido.Location = new System.Drawing.Point(104, 19);
             this.Apellido.Name = "Apellido";
             this.Apellido.Size = new System.Drawing.Size(65, 20);
             this.Apellido.TabIndex = 68;
@@ -82,7 +82,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label1.Location = new System.Drawing.Point(283, 19);
+            this.label1.Location = new System.Drawing.Point(211, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(27, 20);
             this.label1.TabIndex = 69;
@@ -92,7 +92,7 @@
             // 
             this.Id.AutoSize = true;
             this.Id.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.Id.Location = new System.Drawing.Point(316, 19);
+            this.Id.Location = new System.Drawing.Point(259, 19);
             this.Id.Name = "Id";
             this.Id.Size = new System.Drawing.Size(23, 20);
             this.Id.TabIndex = 70;

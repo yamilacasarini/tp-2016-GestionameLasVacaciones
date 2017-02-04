@@ -822,6 +822,24 @@ RETURN (SELECT funcionalidad.id, funcionalidad.descripcion
  AND rolxfun.idRol = GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol))
  GO
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerRolesDeUsuario(@idPaciente INTEGER)
+RETURNS TABLE
+AS
+RETURN (SELECT r.id, r.descripcion
+ FROM GESTIONAME_LAS_VACACIONES.Roles r JOIN GESTIONAME_LAS_VACACIONES.RolesxUsuario rxu 
+ ON r.id = rxu.idRol JOIN GESTIONAME_LAS_VACACIONES.Pacientes pa
+ ON pa.usuario = rxu.idUsuario WHERE pa.id = @idPaciente)
+ GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.agregarRolesAUsuario(@idPaciente INTEGER, @idRol INTEGER)
+AS
+BEGIN
+DECLARE @idUsuario VARCHAR(255)
+SELECT @idUsuario = usuario FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE id=@idPaciente
+INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol, idUsuario) VALUES (@idRol, @idUsuario)
+END
+GO
+
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.crearRol(@nombreRol VARCHAR(30), @nombreUsuario VARCHAR(30))
 AS 
@@ -1012,6 +1030,17 @@ BEGIN
 RETURN (SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Funcionalidades WHERE id = @id)
 END
 GO
+
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerRolesFaltantesUsuario(@idPaciente INTEGER)
+RETURNS TABLE
+AS
+RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Roles r WHERE r.id NOT IN 
+(SELECT rxu.idRol FROM
+GESTIONAME_LAS_VACACIONES.RolesxUsuario rxu JOIN GESTIONAME_LAS_VACACIONES.Pacientes pa ON pa.usuario = rxu.idUsuario
+WHERE pa.id = @idPaciente))
+GO
+
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerFuncionesNoCargadasAUnRol(@nombreRol NVARCHAR(50))
 RETURNS TABLE

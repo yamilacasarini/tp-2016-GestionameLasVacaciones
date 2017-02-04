@@ -30,6 +30,45 @@ namespace ClinicaFrba.AbmRol
             return funcionalidades;
 
         }
+        public static List<Rol> obtenerRolesDeUsuario(int idPaciente)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerRolesDeUsuario( '" + idPaciente + "' )");
+            List<Rol> roles = new List<Rol>();
+
+            while (reader.Read())
+            {
+                Rol rol = new Rol();
+                rol.id = Convert.ToInt32(reader["id"]);
+                rol.descripcion = reader["descripcion"].ToString();
+                roles.Add(rol);
+            }
+            reader.Close();
+            return roles;
+        }
+        public static List<Rol> obtenerRolesFaltantesUsuario(int idPaciente)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.obtenerRolesFaltantesUsuario( '" + idPaciente + "' )");
+            List<Rol> roles = new List<Rol>();
+
+            while (reader.Read())
+            {
+                Rol rol = new Rol();
+                rol.id = Convert.ToInt32(reader["id"]);
+                rol.descripcion = reader["descripcion"].ToString();
+                roles.Add(rol);
+            }
+            reader.Close();
+            return roles;
+        
+        }
+        public static void agregarRolesAUsuario(int idPaciente, int idRol)
+        {
+            Server server = Server.getInstance();
+            SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.agregarRolesAUsuario '" + idPaciente + "','" + idRol + "' ");
+            reader.Close();
+        }
         //MUESTRA TODAS LAS FUNCIONALIDADES DE LA TABLA FUNCIONALIDADES DE SQL
         public static List<Funcionalidad> mostrarTodasLasFuncionalidades()
         {
