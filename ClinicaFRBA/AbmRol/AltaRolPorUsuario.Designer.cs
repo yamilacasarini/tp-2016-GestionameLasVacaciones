@@ -28,39 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Nombre = new System.Windows.Forms.Label();
-            this.Apellido = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.Id = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.button3 = new System.Windows.Forms.Button();
+            this.Nombre = new System.Windows.Forms.Label();
+            this.Apellido = new System.Windows.Forms.Label();
+            this.Id = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
-            // 
-            // Nombre
-            // 
-            this.Nombre.AutoSize = true;
-            this.Nombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.Nombre.Location = new System.Drawing.Point(12, 22);
-            this.Nombre.Name = "Nombre";
-            this.Nombre.Size = new System.Drawing.Size(65, 20);
-            this.Nombre.TabIndex = 67;
-            this.Nombre.Text = "Nombre";
-            // 
-            // Apellido
-            // 
-            this.Apellido.AutoSize = true;
-            this.Apellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.Apellido.Location = new System.Drawing.Point(110, 22);
-            this.Apellido.Name = "Apellido";
-            this.Apellido.Size = new System.Drawing.Size(65, 20);
-            this.Apellido.TabIndex = 69;
-            this.Apellido.Text = "Apellido";
             // 
             // label1
             // 
@@ -71,16 +51,6 @@
             this.label1.Size = new System.Drawing.Size(27, 20);
             this.label1.TabIndex = 70;
             this.label1.Text = "Id:";
-            // 
-            // Id
-            // 
-            this.Id.AutoSize = true;
-            this.Id.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.Id.Location = new System.Drawing.Point(259, 22);
-            this.Id.Name = "Id";
-            this.Id.Size = new System.Drawing.Size(23, 20);
-            this.Id.TabIndex = 71;
-            this.Id.Text = "Id";
             // 
             // button1
             // 
@@ -97,7 +67,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label2.Location = new System.Drawing.Point(381, 106);
+            this.label2.Location = new System.Drawing.Point(22, 106);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(138, 20);
             this.label2.TabIndex = 74;
@@ -107,7 +77,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.label3.Location = new System.Drawing.Point(12, 106);
+            this.label3.Location = new System.Drawing.Point(383, 106);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(130, 20);
             this.label3.TabIndex = 75;
@@ -145,6 +115,36 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // Nombre
+            // 
+            this.Nombre.AutoSize = true;
+            this.Nombre.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.Nombre.Location = new System.Drawing.Point(12, 22);
+            this.Nombre.Name = "Nombre";
+            this.Nombre.Size = new System.Drawing.Size(65, 20);
+            this.Nombre.TabIndex = 67;
+            this.Nombre.Text = "Nombre";
+            // 
+            // Apellido
+            // 
+            this.Apellido.AutoSize = true;
+            this.Apellido.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.Apellido.Location = new System.Drawing.Point(110, 22);
+            this.Apellido.Name = "Apellido";
+            this.Apellido.Size = new System.Drawing.Size(65, 20);
+            this.Apellido.TabIndex = 69;
+            this.Apellido.Text = "Apellido";
+            // 
+            // Id
+            // 
+            this.Id.AutoSize = true;
+            this.Id.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.Id.Location = new System.Drawing.Point(259, 22);
+            this.Id.Name = "Id";
+            this.Id.Size = new System.Drawing.Size(23, 20);
+            this.Id.TabIndex = 71;
+            this.Id.Text = "Id";
+            // 
             // AltaRolPorUsuario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -172,15 +172,15 @@
 
         #endregion
 
-        private System.Windows.Forms.Label Nombre;
-        private System.Windows.Forms.Label Apellido;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label Id;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label Nombre;
+        private System.Windows.Forms.Label Apellido;
+        private System.Windows.Forms.Label Id;
     }
 }

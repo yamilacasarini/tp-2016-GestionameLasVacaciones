@@ -96,11 +96,35 @@
     <Compile Include="AbmRol\AltaRol.Designer.cs">
       <DependentUpon>AltaRol.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmRol\AltaRolGen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\AltaRolGen.Designer.cs">
+      <DependentUpon>AltaRolGen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\AltaRolPorUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\AltaRolPorUsuario.Designer.cs">
+      <DependentUpon>AltaRolPorUsuario.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmRol\BajaRol.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmRol\BajaRol.Designer.cs">
       <DependentUpon>BajaRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\BajaRolGen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\BajaRolGen.Designer.cs">
+      <DependentUpon>BajaRolGen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\BajaRolPorUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\BajaRolPorUsuario.Designer.cs">
+      <DependentUpon>BajaRolPorUsuario.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRol\Funcionalidad.cs" />
     <Compile Include="AbmRol\ModificacionRol.cs">
@@ -289,6 +313,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\AltaRol.resx">
       <DependentUpon>AltaRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\AltaRolPorUsuario.resx">
+      <DependentUpon>AltaRolPorUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\BajaRol.resx">
       <DependentUpon>BajaRol.cs</DependentUpon>
