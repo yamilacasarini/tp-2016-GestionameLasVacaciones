@@ -1104,7 +1104,8 @@ BEGIN
 IF(EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE 
 (CAST(@fechaInicio AS date) BETWEEN CAST(fechaInicio AS date) AND CAST(fechaFinal AS date) OR CAST(@fechaFin AS date) BETWEEN CAST(fechaInicio AS date) AND CAST(fechaFinal AS date))
 AND (@diaInicio BETWEEN diaInicio AND diaFin OR @diaFin BETWEEN	diaInicio AND diaFin)
-AND CAST(@fechaInicio AS TIME) BETWEEN CAST(fechaInicio AS time) AND CAST(fechaFinal AS time)))
+AND CAST(@fechaInicio AS TIME) BETWEEN CAST(fechaInicio AS time) AND CAST(fechaFinal AS time)
+AND baja=0))
 BEGIN 
 RAISERROR ('Esa fecha ya se encuentra agendada',16,217)
 END 
