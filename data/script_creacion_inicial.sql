@@ -1038,7 +1038,7 @@ AS
 RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Roles r WHERE r.id NOT IN 
 (SELECT rxu.idRol FROM
 GESTIONAME_LAS_VACACIONES.RolesxUsuario rxu JOIN GESTIONAME_LAS_VACACIONES.Pacientes pa ON pa.usuario = rxu.idUsuario
-WHERE pa.id = @idPaciente))
+WHERE pa.id = @idPaciente) and r.baja = 0)
 GO
 
 
@@ -1085,9 +1085,19 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaAgendaProfesional
   @diaFin INT)
 AS
 BEGIN
+IF(EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE 
+(CAST(@fechaInicio AS date) BETWEEN CAST(fechaInicio AS date) AND CAST(fechaFinal AS date) OR CAST(@fechaFin AS date) BETWEEN CAST(fechaInicio AS date) AND CAST(fechaFinal AS date))
+AND (@diaInicio BETWEEN diaInicio AND diaFin OR @diaFin BETWEEN	diaInicio AND diaFin)
+AND CAST(@fechaInicio AS TIME) BETWEEN CAST(fechaInicio AS time) AND CAST(fechaFinal AS time)))
+BEGIN 
+RAISERROR ('Esa fecha ya se encuentra agendada',16,217)
+END 
+ELSE 
+BEGIN 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, 
 fechaInicio, fechaFinal, diaInicio, diaFin)
 VALUES (@matriculaProfesional, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descEspecialidad), @fechaInicio, @fechaFin, @diaInicio, @diaFin) 
+END
 END
 GO
 
