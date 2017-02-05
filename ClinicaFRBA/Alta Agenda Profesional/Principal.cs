@@ -64,18 +64,32 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
             combito.Items.Add("Viernes");
             combito.Items.Add("Sabado");
         }
+        private bool validarQueLaHoraEsteCorrecta(decimal horaInicio, decimal minutosInicio, decimal horaFinal, decimal minutosFinal) {
+            if (aInt(horaInicio) > aInt(horaFinal))
+                return fallarPor("Horario inicial mayor a final");
+            else if (aInt(horaInicio) == aInt(horaFinal) && aInt(minutosInicio)> aInt(minutosFinal))
+                return fallarPor("Horario inicial mayor a final");
+            return true;
+        }
+        private bool validarDiasDeSemana(String inicio, String final){
+            if (diaNumericoDeLaSemana(inicio) > diaNumericoDeLaSemana(final))
+                return fallarPor("Dia de la semana inicial mayor al final");
+            return true;
+        }
         private bool validarDatos()
         {
             return
                validarDia(DiaInicio.Value, mesInicio.Value, anioInicio.Value)
-                && validarDia(anioFinal.Value, mesFinal.Value, anioFinal.Value)
+                && validarDia(diaFinal.Value, mesFinal.Value, anioFinal.Value)
+                && validarDiasDeSemana(diaSemanaInicio.Text, diaSemanaFinal.Text)
                 && validacion48Horas()
+                && validarQueLaHoraEsteCorrecta(listaHorasInicio.Value,listaMinutosInicio.Value,listaHorasFinal.Value,listaMinutosFinal.Value)
                 && validarQueSeaFechaFutura(anioInicio.Value, anioFinal.Value,
-                mesInicio.Value, mesFinal.Value, DiaInicio.Value, anioFinal.Value)
+                mesInicio.Value, mesFinal.Value, DiaInicio.Value, diaFinal.Value)
                 && validarQueSeaFechaFutura(Convert.ToDecimal(anioDelSistema), anioInicio.Value,
                 Convert.ToDecimal(mesDelSistema), mesInicio.Value, Convert.ToDecimal(diaDelSistema), DiaInicio.Value)
                 && validarQueSeaFechaFutura(Convert.ToDecimal(anioDelSistema), anioFinal.Value,
-                Convert.ToDecimal(mesDelSistema), mesFinal.Value, Convert.ToDecimal(diaDelSistema), anioFinal.Value)
+                Convert.ToDecimal(mesDelSistema), mesFinal.Value, Convert.ToDecimal(diaDelSistema), diaFinal.Value)
                 && validarHorarioSabados(diaSemanaInicio.Text, listaHorasInicio.Value)
                 && validarHorarioSabados(diaSemanaFinal.Text, listaHorasInicio.Value)
                 && validarHorarioSabados(diaSemanaInicio.Text, listaHorasFinal.Value)
@@ -163,7 +177,7 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (!validarVacio() || validarDatos())
+            if ((!validarVacio()) && validarDatos())
             {
                 try
                 {
@@ -175,12 +189,13 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                 }
                 catch (Exception ex) {
                     MessageBox.Show(ex.Message);
+                    
                 }
                    
             }
             else
             {
-                MessageBox.Show("Faltan datos por completar");
+                MessageBox.Show("Faltan datos por completar o los datos son invalidos");
             }
         }
 
