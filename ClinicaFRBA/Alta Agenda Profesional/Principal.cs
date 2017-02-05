@@ -165,12 +165,18 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
         {
             if (!validarVacio() || validarDatos())
             {
-                
-                        Server server = Server.getInstance();
-                        DateTime fechaA = new DateTime(aInt(anioInicio.Value), aInt(mesInicio.Value), aInt(DiaInicio.Value), aInt(listaHorasInicio.Value), aInt(listaMinutosInicio.Value), 0);
-                        DateTime fechaB = new DateTime(aInt(anioFinal.Value), aInt(mesFinal.Value), aInt(diaFinal.Value), aInt(listaHorasFinal.Value), aInt(listaMinutosFinal.Value), 0);
-                        server.query("exec GESTIONAME_LAS_VACACIONES.altaAgendaProfesional " + matr + "," + "'" + esp + "','" + fechaA.ToString() + "','" + fechaB.ToString() + "'," + diaNumericoDeLaSemana(diaSemanaInicio.Text) + "," + diaNumericoDeLaSemana(diaSemanaFinal.Text));
-                        System.Windows.Forms.MessageBox.Show("Agenda dada de alta exitosamente");
+                try
+                {
+                    Server server = Server.getInstance();
+                    DateTime fechaA = new DateTime(aInt(anioInicio.Value), aInt(mesInicio.Value), aInt(DiaInicio.Value), aInt(listaHorasInicio.Value), aInt(listaMinutosInicio.Value), 0);
+                    DateTime fechaB = new DateTime(aInt(anioFinal.Value), aInt(mesFinal.Value), aInt(diaFinal.Value), aInt(listaHorasFinal.Value), aInt(listaMinutosFinal.Value), 0);
+                    server.query("exec GESTIONAME_LAS_VACACIONES.altaAgendaProfesional " + matr + "," + "'" + esp + "','" + fechaA.ToString() + "','" + fechaB.ToString() + "'," + diaNumericoDeLaSemana(diaSemanaInicio.Text) + "," + diaNumericoDeLaSemana(diaSemanaFinal.Text));
+                    MessageBox.Show("Agenda dada de alta exitosamente");
+                }
+                catch (Exception ex) {
+                    MessageBox.Show(ex.Message);
+                }
+                   
             }
             else
             {
