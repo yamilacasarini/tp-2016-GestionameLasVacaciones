@@ -32,7 +32,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 txMail.Text = afiliado.email;
                 txTelefono.Text = afiliado.telefono;
                 cBestadoCivil.Text = afiliado.estadoCivil;
-                cBsexo.ValueMember = sexo(afiliado.sexo);
+                cBsexo.Text = sexo(afiliado.sexo);
                 cBtipoDocumento.Text = afiliado.tipoDocumento;
                 dateTimePicker1.Value = afiliado.fechaNacimiento;
                 if (afiliado.servicio != 0)
@@ -51,6 +51,9 @@ namespace ClinicaFrba.Abm_Afiliado
                     btCambiarPlan.Show();
                 }
 
+            }
+            else {
+                this.Close();
             }
          //   btAceptar.Hide();
          //   btCambiarPlan.Hide();

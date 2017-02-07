@@ -61,7 +61,7 @@ namespace ClinicaFrba.Abm_Afiliado
             reader.Close();
             return afiliados;
         }
-        public static List<Modificacion> BuscarModificaciones(String nombre, String apellido, int idPaciente, int idPlan)
+        public static List<Modificacion> BuscarModificaciones(String nombre, String apellido, int idPaciente, String plan)
         {
             List<Modificacion> modificaciones = new List<Modificacion>();
             string query;
@@ -69,7 +69,7 @@ namespace ClinicaFrba.Abm_Afiliado
 
             Server server = Server.getInstance();
             AfiliadoManager.validarDato(apellido);
-            query = "select * from GESTIONAME_LAS_VACACIONES.Modificaciones m join GESTIONAME_LAS_VACACIONES.Pacientes p ON (p.id = m.idPaciente) where ";
+            query = "select * from GESTIONAME_LAS_VACACIONES.Modificaciones m join GESTIONAME_LAS_VACACIONES.Pacientes p ON (p.id = m.idPaciente) join GESTIONAME_LAS_VACACIONES.Planes pl ON (m.idPlan = pl.id) where ";
 
             if (nombre != "")
             {
@@ -88,11 +88,11 @@ namespace ClinicaFrba.Abm_Afiliado
                 parametros++;
                 query += " m.idPaciente = " + idPaciente;
             }
-            if (idPlan != -1)
+            if (plan != "")
             {
                 if (parametros > 0) { query += " and "; }
                 parametros++;
-                query += " m.idPlan = " + idPlan;
+                query += " pl.descripcion = '" + plan + "'";
             }
 
             SqlDataReader reader = server.query(query);
