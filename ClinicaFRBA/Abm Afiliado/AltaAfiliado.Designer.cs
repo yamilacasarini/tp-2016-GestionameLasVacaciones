@@ -184,6 +184,7 @@
             this.txTelefono.Name = "txTelefono";
             this.txTelefono.Size = new System.Drawing.Size(200, 20);
             this.txTelefono.TabIndex = 22;
+            this.txTelefono.TextChanged += new System.EventHandler(this.txTelefono_TextChanged_1);
             // 
             // label8
             // 

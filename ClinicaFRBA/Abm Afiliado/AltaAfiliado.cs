@@ -182,5 +182,10 @@ namespace ClinicaFrba.Abm_Afiliado
             btAgregarFam.Text = "Agregar otro familiar";
         }
 
+        private void txTelefono_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
