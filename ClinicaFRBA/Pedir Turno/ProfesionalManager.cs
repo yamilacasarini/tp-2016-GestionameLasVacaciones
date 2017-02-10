@@ -103,9 +103,11 @@ namespace ClinicaFrba.Pedir_Turno
 
                 for (i = 0; i < turnos.Count(); i++)
                 {
+                      DateTime horaDelSistema1 = DateTime.ParseExact(Program.horarioSistema, "yyyy-dd-MM HH:mm:ss.fff",
+                                      System.Globalization.CultureInfo.InvariantCulture);
 
                     if (((int)turnos[i].DayOfWeek >= diaInicio && (int)turnos[i].DayOfWeek <= diaFin)
-                        && (!(turnos[i].Hour < inicio.Hour) && !(turnos[i].Hour >= fin.Hour)) && turnos[i] >= horaDelSistema)
+                        && (!(turnos[i].Hour < inicio.Hour) && !(turnos[i].Hour >= fin.Hour)) && turnos[i] >= horaDelSistema1 )
                     {
                         turnosAMostrar.Add(turnos[i]);
                     }
