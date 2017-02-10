@@ -71,9 +71,10 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                 return fallarPor("Horario inicial mayor a final");
             return true;
         }
-        private bool validarDiasDeSemana(String inicio, String final){
-            if (diaNumericoDeLaSemana(inicio) > diaNumericoDeLaSemana(final))
-                return fallarPor("Dia de la semana inicial mayor al final");
+        private bool validarHoraDeApertura(decimal listaHorasInicio,decimal listaMinutosInicio,decimal  listaHorasFinal, decimal listaMinutosFinal) {
+            if (aInt(listaHorasFinal) == 20 && aInt(listaMinutosFinal) != 0) {
+                return fallarPor("El horario cierre del hospital es 20hs");
+            }
             return true;
         }
         private bool validarDatos()
@@ -81,8 +82,8 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
             return
                validarDia(DiaInicio.Value, mesInicio.Value, anioInicio.Value)
                 && validarDia(diaFinal.Value, mesFinal.Value, anioFinal.Value)
-                && validarDiasDeSemana(diaSemanaInicio.Text, diaSemanaFinal.Text)
                 && validacion48Horas()
+                && validarHoraDeApertura(listaHorasInicio.Value, listaMinutosInicio.Value, listaHorasFinal.Value, listaMinutosFinal.Value)
                 && validarQueLaHoraEsteCorrecta(listaHorasInicio.Value,listaMinutosInicio.Value,listaHorasFinal.Value,listaMinutosFinal.Value)
                 && validarQueSeaFechaFutura(anioInicio.Value, anioFinal.Value,
                 mesInicio.Value, mesFinal.Value, DiaInicio.Value, diaFinal.Value)
