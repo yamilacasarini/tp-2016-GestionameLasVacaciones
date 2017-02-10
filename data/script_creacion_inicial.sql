@@ -1153,14 +1153,15 @@ GO
 --NUMERO 10--
 --RESERVA DE TURNOS--
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdAgenda(@especialidad varchar(255), @matricula int)
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdAgenda(@especialidad varchar(255), @matricula int, @fecha datetime)
 RETURNS INT
 AS BEGIN
 RETURN (SELECT a.id FROM GESTIONAME_LAS_VACACIONES.Agendas a 
 WHERE a.idProfesional = @matricula 
-AND a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad))
+AND a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) AND CAST(@fecha as date) between CAST(fechaInicio AS DATE) and CAST(fechaFinal AS DATE))
 END
 GO
+
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 GO
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.reservarTurno(@matricula INT, @numAfiliado INT, @especialidad VARCHAR(255), @fecha DATETIME)
@@ -1168,7 +1169,7 @@ AS
 BEGIN
 IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idProfesional = @matricula AND fecha = @fecha AND idPaciente = @numAfiliado))
 	INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos (idPaciente, idProfesional, especialidad, idAgenda, fecha) 
-	VALUES (@numAfiliado, @matricula, @especialidad , GESTIONAME_LAS_VACACIONES.getIdAgenda(@especialidad, @matricula), @fecha) 
+	VALUES (@numAfiliado, @matricula, @especialidad , GESTIONAME_LAS_VACACIONES.getIdAgenda(@especialidad, @matricula,@fecha), @fecha) 
 END
 GO
 
