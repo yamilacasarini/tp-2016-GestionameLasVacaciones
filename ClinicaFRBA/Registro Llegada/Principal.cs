@@ -45,6 +45,10 @@ namespace ClinicaFrba.Registro_Llegada
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (textBox2.Text == "") {
+                MessageBox.Show("No ha ingresado el numero de turno aun");
+                return; 
+            }
             TurnosManager.PersistirCambios(buscador.turnoSelect);
             MessageBox.Show("Se registro la llegada del turno exitosamente!");
         }

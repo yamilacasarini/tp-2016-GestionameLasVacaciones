@@ -29,7 +29,7 @@ namespace ClinicaFrba.Registro_Llegada
             {
                 query += " and t.id =" + id + "";
             }
-            query+= "and CAST(t.fecha AS DATE) = CAST(CAST('" + Program.horarioSistema.ToString() + "' AS DATETIME) AS DATE)";
+            query+= "and CAST(t.fecha AS DATE) = CAST(CAST('" + Program.horarioSistema.ToString() + "' AS DATETIME) AS DATE) and CAST(CAST('"+ Program.horarioSistema.ToString()+"' as DATETIME) AS TIME) < CAST(t.fecha AS TIME)";
             Server server = Server.getInstance();
             SqlDataReader reader = server.query(query);
             while (reader.Read())
