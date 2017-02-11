@@ -1270,7 +1270,7 @@ CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSe
 RETURNS TABLE
 AS
 RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos turnos 
-WHERE turnos.idPaciente = @idAfiliado AND turnos.tipoCancelacion IS NULL AND CAST(turnos.fecha AS DATE) > DATEADD(day,1, CAST(@hora AS DATETIME)) AND turnos.esConsulta <> 1)
+WHERE turnos.idPaciente = @idAfiliado AND turnos.tipoCancelacion IS NULL AND CAST(turnos.fecha AS DATE) > DATEADD(day,1, CAST(@hora AS DATETIME)) AND turnos.esConsulta <> 1 AND turnos.baja <> 1) 
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelAfiliado(@nombreAfiliado NVARCHAR(50), @apellido NVARCHAR(50), @dni INT)
