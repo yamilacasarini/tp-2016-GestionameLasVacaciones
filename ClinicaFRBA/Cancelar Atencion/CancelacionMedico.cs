@@ -71,7 +71,15 @@ namespace ClinicaFrba.Cancelar_Atencion
             }
             DateTime horaDelSistema = DateTime.ParseExact(Program.horarioSistema, "yyyy-dd-MM HH:mm:ss.fff",
                                      System.Globalization.CultureInfo.InvariantCulture);
-
+            try
+            {
+                 Convert.ToDateTime(txtDia.Text.Trim());
+            }
+            catch (Exception a)
+            {
+                MessageBox.Show("Error, ha ingresado una fecha invalida");
+                return;
+            }
             if (horaDelSistema.CompareTo(Convert.ToDateTime(txtDia.Text.Trim())) > 0)
             {
                 MessageBox.Show("La fecha inicio del periodo es mayor al dia del sistema");
@@ -94,8 +102,12 @@ namespace ClinicaFrba.Cancelar_Atencion
 
 
                 especialidadMedico = dataAgenda.CurrentRow.Cells["especialidad"].Value.ToString();
-            
-                    CancelacionManager.cancelarDiaProfesional(matricula, Convert.ToDateTime(txtDia.Text.Trim()), txtMotivo.Text.Trim(), especialidadMedico);
+                DateTime variableLoca = DateTime.Now;
+               
+                    variableLoca = Convert.ToDateTime(txtDia.Text.Trim());
+                            
+             
+                    CancelacionManager.cancelarDiaProfesional(matricula, variableLoca, txtMotivo.Text.Trim(), especialidadMedico);
             }
             catch (Exception b)
             {
@@ -131,6 +143,16 @@ namespace ClinicaFrba.Cancelar_Atencion
                 return;
 
             }
+            try
+            {
+                Convert.ToDateTime(txtDesde.Text.Trim());
+                 Convert.ToDateTime(txtHasta.Text.Trim());
+            }
+            catch (Exception z)
+            {
+                MessageBox.Show("Las fechas insertadas son invalidas");
+                return;
+            }
            if (DateTime.Compare(Convert.ToDateTime(txtDesde.Text), Convert.ToDateTime(txtHasta.Text)) > 0)
             {
                 MessageBox.Show("La fecha inicio del periodo es mayor a la final");
@@ -140,6 +162,7 @@ namespace ClinicaFrba.Cancelar_Atencion
             }
     DateTime horaDelSistema = DateTime.ParseExact(Program.horarioSistema, "yyyy-dd-MM HH:mm:ss.fff",
                                      System.Globalization.CultureInfo.InvariantCulture);
+
     if (horaDelSistema.CompareTo(Convert.ToDateTime(txtDesde.Text.Trim())) > 0)
     {
         MessageBox.Show("La fecha inicio del periodo es mayor al dia del sistema");
@@ -158,8 +181,14 @@ namespace ClinicaFrba.Cancelar_Atencion
     }
             try
             {
-                DateTime fechaInicio = Convert.ToDateTime(txtDesde.Text.Trim());
-                DateTime fechaFinal = Convert.ToDateTime(txtHasta.Text.Trim());
+                
+                 DateTime fechaInicio = DateTime.Now;
+                DateTime fechaFinal = DateTime.Now;
+               
+                    fechaInicio = Convert.ToDateTime(txtDesde.Text.Trim());
+                    fechaFinal = Convert.ToDateTime(txtHasta.Text.Trim());
+               
+            
                 especialidadMedico = dataAgenda.CurrentRow.Cells["especialidad"].Value.ToString();
                 CancelacionManager.cancelarPeriodoProfesional(matricula, fechaInicio, fechaFinal, txtMotivo.Text.Trim(), especialidadMedico);
             }
