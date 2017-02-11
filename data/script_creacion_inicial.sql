@@ -396,7 +396,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   baja INT default 0,
   tipoCancelacion INT, -- 0 Paciente, 1 Profesional
   motivo VARCHAR(255),
-  esConsulta INT DEFAULT 0, -- Usado para saber si se efectivizo el turno en una consulta medica (0 NO, 1 SI) 
+  esConsulta INT DEFAULT 0 -- Usado para saber si se efectivizo el turno en una consulta medica (0 NO, 1 SI) 
   )
 
   CREATE INDEX ix1_turnos ON GESTIONAME_LAS_VACACIONES.Turnos (idPaciente)
@@ -464,6 +464,7 @@ CREATE TABLE #TemporalProfesional(
  idEspecialidad2 int,
  especialidadDescripcion2 varchar(50),
 )
+
 
 create table #ConsultasTemporal(
 id INTEGER,
@@ -599,9 +600,9 @@ END
 GO
 
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idPaciente, idProfesional, fecha, especialidad, idAgenda)
-SELECT DISTINCT c.id, pa.id, pr.id, c.fecha, c.especialidad, a.id FROM #ConsultasTemporal c
+SELECT DISTINCT c.id, pa.id, pr.id, c.fecha, c.especialidad, a.id
+ FROM #ConsultasTemporal c
 JOIN GESTIONAME_LAS_VACACIONES.Pacientes pa
 ON c.dni = pa.documento
 JOIN GESTIONAME_LAS_VACACIONES.Profesionales pr
@@ -610,6 +611,10 @@ JOIN GESTIONAME_LAS_VACACIONES.Agendas a
 ON a.idProfesional = pr.id 
 	AND a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(c.especialidad)
 WHERE c.id is not null
+
+
+
+
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos OFF; 
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Bonos ON; 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan, idCompraBono, idTurno)
@@ -633,7 +638,7 @@ JOIN GESTIONAME_LAS_VACACIONES.Bonos b
 ON c.idBono = b.id
 WHERE c.fecha IS NOT NULL
 GO
-
+UPDATE GESTIONAME_LAS_VACACIONES.Turnos SET esConsulta = 1 WHERE id IN(SELECT c.idTurno FROM GESTIONAME_LAS_VACACIONES.ConsultasMedicas c)
 UPDATE GESTIONAME_LAS_VACACIONES.Bonos set usado = 1 where idTurno is not null
 GO
 
@@ -1260,11 +1265,12 @@ RETURN @id
 END
 GO
 
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSegunId(@idAfiliado INT, @hora as DATETIME)
 RETURNS TABLE
 AS
 RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos turnos 
-WHERE turnos.idPaciente = @idAfiliado AND turnos.tipoCancelacion IS NULL AND CAST(turnos.fecha AS DATE) > CAST(@hora AS DATE) )
+WHERE turnos.idPaciente = @idAfiliado AND turnos.tipoCancelacion IS NULL AND CAST(turnos.fecha AS DATE) > CAST(@hora AS DATE) AND turnos.esConsulta <> 1)
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelAfiliado(@nombreAfiliado NVARCHAR(50), @apellido NVARCHAR(50), @dni INT)
