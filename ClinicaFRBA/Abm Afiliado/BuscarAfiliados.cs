@@ -20,6 +20,7 @@ namespace ClinicaFrba.Abm_Afiliado
         public BuscarAfiliados()
         {
             InitializeComponent();
+            afiliadoBuscado.id = -1;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
