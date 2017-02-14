@@ -95,7 +95,8 @@ namespace ClinicaFrba.Pedir_Turno
                 aux = inicio;
 
                 while (aux != fin)
-                {
+                { // NO SE COMO SACAR DE LA LISTA DE POSIBLES TURNOS. SI ESTA OCUPADO NO INGRESA
+         //           server.query("SELECT * FROM GESTIONAME_LAS_VACACIONES.GESTIONAME_LAS_VACACIONES.elProfesionalEstaConOtroTurno(" +turnos+");
                     turnos.Add(aux);
                     aux = aux.AddMinutes(30);
 

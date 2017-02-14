@@ -286,7 +286,7 @@ IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada') IS NOT NUL
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada;
 
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.turnoEnElMismoHorario') IS NOT NULL
-DROP FUNCTION GESTIONAME_LAS_VACACIONES.turnoEnElMismoHorario;
+DROP TRIGGER GESTIONAME_LAS_VACACIONES.turnoEnElMismoHorario;
 GO
 
 
@@ -784,6 +784,22 @@ AS
 RETURN select a.fechaInicio, a.fechaFinal FROM GESTIONAME_LAS_VACACIONES.Agendas a
 WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and baja = 0
 GO
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.elProfesionalEstaConOtroTurno(@turno int)
+RETURNS INT
+AS BEGIN
+DECLARE @fecha DATETIME
+DECLARE @profesional INT
+SELECT @fecha = t.fecha, @profesional = t.idProfesional FROM GESTIONAME_LAS_VACACIONES.Turnos t WHERE @turno = t.id
+IF EXISTS(select * from GESTIONAME_LAS_VACACIONES.Turnos p WHERE @fecha = p.fecha AND @profesional = p.idProfesional AND @turno <> p.id)
+BEGIN
+RETURN 0
+END
+ELSE
+RETURN @turno
+END
+GO
+
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100), @hora as datetime, @fechaInicio as datetime, @fechaFin as datetime)
 RETURNS TABLE
