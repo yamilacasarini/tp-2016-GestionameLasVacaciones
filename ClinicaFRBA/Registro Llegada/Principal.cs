@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Data.SqlClient;
 namespace ClinicaFrba.Registro_Llegada
 {
     public partial class Principal : Form
@@ -49,8 +49,8 @@ namespace ClinicaFrba.Registro_Llegada
                 MessageBox.Show("No ha ingresado el numero de turno aun");
                 return; 
             }
-            TurnosManager.PersistirCambios(buscador.turnoSelect);
-            MessageBox.Show("Se registro la llegada del turno exitosamente!");
+            Int32 cantidadBonos = TurnosManager.PersistirCambios(buscador.turnoSelect);
+            MessageBox.Show("Se registro la llegada del turno exitosamente!, la cantidad de bonos es: "+ cantidadBonos.ToString());
         }
     }
 }

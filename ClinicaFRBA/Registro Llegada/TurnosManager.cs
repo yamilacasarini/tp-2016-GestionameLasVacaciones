@@ -46,11 +46,15 @@ namespace ClinicaFrba.Registro_Llegada
 
             return turnos;
         }
-        public static void PersistirCambios(Turno unTurno)
+        public static Int32 PersistirCambios(Turno unTurno)
         {
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.registrarLlegada " + unTurno.id + "," + unTurno.idPaciente + ",'" + Program.horarioSistema + "'");
             reader.Close();
+            reader = server.query("SELECT COUNT(*) as cantidad FROM GESTIONAME_LAS_VACACIONES.Bonos WHERE USADO = 0 AND idPaciente = "+unTurno.idPaciente);           
+            reader.Close();
+            return Convert.ToInt32(reader["cantidad"]);
+
         }
 
         public static List<Especialidad> listarEspecialidades(int idMedico)

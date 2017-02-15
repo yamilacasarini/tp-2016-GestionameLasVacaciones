@@ -795,7 +795,7 @@ IF EXISTS(select * from GESTIONAME_LAS_VACACIONES.Turnos p WHERE @fecha = p.fech
 BEGIN
 RETURN 0
 END
-ELSE
+
 RETURN @turno
 END
 GO
@@ -809,11 +809,12 @@ WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIO
 AND CAST(@fechaInicio AS DATE) = CAST(fechaInicio AS DATE)
 AND CAST(@fechaFin AS DATE) = CAST(fechaFinal AS DATE)
 GO	
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(@matricula int, @especialidad as varchar(100))
 RETURNS TABLE
 AS
 RETURN select fecha from GESTIONAME_LAS_VACACIONES.Turnos t
-WHERE t.idProfesional = @matricula and t.especialidad like @especialidad and baja = 0 
+WHERE t.idProfesional = @matricula and baja = 0 
 GO
 
 --////////////////////////////////////--
