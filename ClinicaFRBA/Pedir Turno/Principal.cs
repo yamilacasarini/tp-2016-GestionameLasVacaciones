@@ -59,5 +59,10 @@ namespace ClinicaFrba.Pedir_Turno
                 MessageBox.Show(eg.Message);
             }
         }
+
+        private void Principal_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

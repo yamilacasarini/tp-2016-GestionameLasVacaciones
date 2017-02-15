@@ -447,6 +447,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Principal";
             this.Text = "Alta Agenda de Profesional";
+            this.Load += new System.EventHandler(this.Principal_Load);
             ((System.ComponentModel.ISupportInitialize)(this.listaHorasInicio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.listaMinutosInicio)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.listaMinutosFinal)).EndInit();
