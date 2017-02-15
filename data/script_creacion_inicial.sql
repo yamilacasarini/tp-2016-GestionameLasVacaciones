@@ -1611,11 +1611,11 @@ select @idPaciente = i.idPaciente, @fecha = i.fecha, @idProfesional = i.idProfes
 	SET @hayERROR = 0
 	RAISERROR('El paciente esta ocupado en ese horario',16,217)
 	END
-	IF EXISTS(select * from GESTIONAME_LAS_VACACIONES.Turnos t WHERE @turno <> t.id AND @fecha = t.fecha AND @idProfesional = t.idProfesional)
-	BEGIN
-	SET @hayERROR = 0
-	RAISERROR('El profesional esta ocupado en ese horario',16,217)
-	END
+--	IF EXISTS(select * from GESTIONAME_LAS_VACACIONES.Turnos t WHERE @turno <> t.id AND @fecha = t.fecha AND @idProfesional = t.idProfesional)
+--	BEGIN
+--	SET @hayERROR = 0
+--	RAISERROR('El profesional esta ocupado en ese horario',16,217)
+--	END
 	IF (@hayERROR = 0)
 	BEGIN
 	ROLLBACK TRANSACTION
