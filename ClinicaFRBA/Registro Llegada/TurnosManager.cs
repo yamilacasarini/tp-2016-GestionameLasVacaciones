@@ -51,10 +51,12 @@ namespace ClinicaFrba.Registro_Llegada
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.registrarLlegada " + unTurno.id + "," + unTurno.idPaciente + ",'" + Program.horarioSistema + "'");
             reader.Close();
-            reader = server.query("SELECT COUNT(*) as cantidad FROM GESTIONAME_LAS_VACACIONES.Bonos WHERE USADO = 0 AND idPaciente = "+unTurno.idPaciente);           
-            reader.Close();
-            return Convert.ToInt32(reader["cantidad"]);
-
+            string q = "SELECT COUNT(*) as cantidad FROM GESTIONAME_LAS_VACACIONES.Bonos WHERE USADO = 0 AND idPaciente = " + unTurno.idPaciente;
+            SqlDataReader reader1 = server.query("SELECT COUNT(*) FROM GESTIONAME_LAS_VACACIONES.Bonos WHERE USADO = 0 AND idPaciente = " + unTurno.idPaciente);
+            reader1.Read();
+            Int32 aux = Convert.ToInt32(reader1[0]);
+            reader1.Close();
+            return aux;
         }
 
         public static List<Especialidad> listarEspecialidades(int idMedico)
