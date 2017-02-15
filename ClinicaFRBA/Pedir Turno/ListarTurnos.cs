@@ -55,7 +55,14 @@ namespace ClinicaFrba.Pedir_Turno
                 {
                     Abm_Afiliado.BuscarAfiliados buscador = new Abm_Afiliado.BuscarAfiliados();
                     buscador.ShowDialog();
-                    afiliado = buscador.afiliadoBuscado;
+                    afiliado = null;
+                    if (buscador.afiliadoBuscado.id != -1)
+                        afiliado = buscador.afiliadoBuscado;
+                    else
+                    {
+                        this.Close();
+                        return;
+                    }
                 }
                 else
                 {
