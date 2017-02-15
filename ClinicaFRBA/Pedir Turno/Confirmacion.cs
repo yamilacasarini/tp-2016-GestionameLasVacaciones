@@ -59,8 +59,16 @@ namespace ClinicaFrba.Pedir_Turno
         {
              
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("exec GESTIONAME_LAS_VACACIONES.reservarTurno " + profesional.matricula + "," + afiliado.id + ",'" + profesional.especialidad + "','" + fecha.ToString() + "'");
-            reader.Close();
+            try
+            {
+                SqlDataReader reader = server.query("exec GESTIONAME_LAS_VACACIONES.reservarTurno " + profesional.matricula + "," + afiliado.id + ",'" + profesional.especialidad + "','" + fecha.ToString() + "'");
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("El paciente esta ocupado en ese horario");
+                return;
+            }
             MessageBox.Show("Se ha agendado el turno correctamente!");
             this.Close();
         }

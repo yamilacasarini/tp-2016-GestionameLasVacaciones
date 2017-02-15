@@ -91,13 +91,15 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                 Convert.ToDecimal(mesDelSistema), mesInicio.Value, Convert.ToDecimal(diaDelSistema), DiaInicio.Value)
                 && validarQueSeaFechaFutura(Convert.ToDecimal(anioDelSistema), anioFinal.Value,
                 Convert.ToDecimal(mesDelSistema), mesFinal.Value, Convert.ToDecimal(diaDelSistema), diaFinal.Value)
+                && validarFechaFuturaAFechaSistema(Convert.ToDecimal(anioDelSistema), anioInicio.Value,
+                Convert.ToDecimal(mesDelSistema), mesInicio.Value, Convert.ToDecimal(diaDelSistema), DiaInicio.Value)
                 && validarHorarioSabados(diaSemanaInicio.Text, listaHorasInicio.Value)
                 && validarHorarioSabados(diaSemanaFinal.Text, listaHorasInicio.Value)
                 && validarHorarioSabados(diaSemanaInicio.Text, listaHorasFinal.Value)
                 && validarHorarioSabados(diaSemanaFinal.Text, listaHorasFinal.Value)
                 ;
         }
-
+        
         private bool validarHorarioSabados(string dia, decimal hora)
         {
             if ((diaNumericoDeLaSemana(dia) == 6 && (aInt(hora) >= 15 || aInt(hora) < 10)))
@@ -105,7 +107,20 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
              return true;
         }
 
-        
+        private bool validarFechaFuturaAFechaSistema(decimal anioSistema,
+            decimal anioFinal, decimal mesSistema, decimal mesFinal,
+            decimal diaSistema, decimal diaFinal)
+        {
+            if (aInt(anioSistema) > aInt(anioFinal))
+                return fallarPor("La fecha del sistema es posterior a la final");
+            if (aInt(anioSistema) == aInt(anioFinal) &&
+                aInt(mesSistema) > aInt(mesFinal))
+                return fallarPor("La fecha del sistema es posterior a la final");
+            if (aInt(mesSistema) == aInt(mesFinal) &&
+                aInt(diaSistema) > aInt(diaFinal))
+                return fallarPor("La fecha del sistema es posterior a la final");
+            return true;
+        }
         private bool validarQueSeaFechaFutura(decimal anioInicio,
             decimal anioFinal, decimal mesInicio, decimal mesFinal,
             decimal diaInicio, decimal diaFinal)
@@ -236,6 +251,11 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
 
 
         private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Principal_Load(object sender, EventArgs e)
         {
 
         }

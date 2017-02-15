@@ -87,6 +87,7 @@
             this.Controls.Add(this.label1);
             this.Name = "Principal";
             this.Text = "Principal";
+            this.Load += new System.EventHandler(this.Principal_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
