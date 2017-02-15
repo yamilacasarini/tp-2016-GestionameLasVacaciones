@@ -1148,6 +1148,26 @@ END
 END
 GO
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales(@fechaInicio datetime, @fechaFIn datetime,@diaInicio int, @diaFin int  )
+RETURNS INT
+AS
+begin
+return  DATEPART(HOUR, @fechaInicio)   -  DATEPART(HOUR, @fechaFin)  
+END 
+go
+exec GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales  '2011-01-01 18:01.000', '2015-23-04 10:00:00.000' ,1 ,1
+CREATE TRIGGER cheuqueo48Horas ON GESTIONAME_LAS_VACACIONES.Agendas AFTER INSERT
+AS
+DECLARE @fechaInicio DATETIME
+DECLARE @fechaFin DATETIME
+DECLARE @idProfesional INT
+DECLARE @diaInicio INT
+DECLARE @diafin INT
+select @idProfesional = idProfesional, @fechaInicio = fechaInicio, @fechaFin = fechaFinal, @diaInicio = diaInicio, @diafin = diaFin from inserted
+
+SELECT * from GESTIONAME_LAS_VACACIONES.Agendas
+END
+
 --////////////////////////////////////--
 --NUMERO 9--
 --COMPRA DE BONOS--
