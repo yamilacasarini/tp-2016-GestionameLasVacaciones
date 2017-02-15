@@ -131,7 +131,7 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                 aInt(mesInicio) > aInt(mesFinal))
                 return fallarPor("La fecha inicial es posterior a la final");
             if (aInt(mesInicio) == aInt(mesFinal) &&
-                aInt(diaInicio) > aInt(diaFinal))
+                aInt(diaInicio) > aInt(diaFinal) && (aInt(anioInicio) == aInt(anioFinal)))
                 return fallarPor("La fecha inicial es posterior a la final");
             return true;
         }
