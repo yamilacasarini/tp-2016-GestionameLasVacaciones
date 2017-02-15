@@ -54,7 +54,13 @@ DROP TABLE GESTIONAME_LAS_VACACIONES.Especialidades;
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.Usuarios', N'U') IS NOT NULL 
 DROP TABLE GESTIONAME_LAS_VACACIONES.Usuarios;
 
-IF OBJECT_ID(N'GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha', N'U') IS NOT NULL 
+IF OBJECT_ID(N'GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales') IS NOT NULL 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales;
+
+IF OBJECT_ID(N'GESTIONAME_LAS_VACACIONES.intervalosSolapeados') IS NOT NULL 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.intervalosSolapeados;
+
+IF OBJECT_ID(N'GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha') IS NOT NULL 
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha;
 
 IF OBJECT_ID(N'tempdb..#PacienteTemporal', N'U') IS NOT NULL
@@ -1125,6 +1131,21 @@ GO
 --NUMERO 8--
 --CREACION AGENDA PROFESIONAL--
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.intervalosSolapeados(@periodo1Inicio datetime, @periodo1Fin datetime, @periodo2Inicio datetime, @periodo2Fin datetime  )
+RETURNS INT
+AS
+begin
+IF(CAST(@periodo1Inicio AS date) BETWEEN CAST(@periodo2Inicio AS date) AND CAST(@periodo2Fin AS date) 
+	OR CAST(@periodo1Fin AS date) BETWEEN CAST(@periodo2Inicio AS date) AND CAST(@periodo2Fin AS date)
+	OR (CAST(@periodo2Inicio as date) between cast(@periodo1Inicio as date) and cast(@periodo1Fin as date)	
+	AND CAST(@periodo2Fin as date) between cast(@periodo1Inicio as date) and cast(@periodo1Fin as date)))
+	begin 
+	return 1;
+	end 
+return 0;
+END 
+go
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaAgendaProfesional
 (@matriculaProfesional  INT, @descEspecialidad VARCHAR(255), 
 @fechaInicio  DATETIME, @fechaFin DATETIME, @diaInicio INT, 
@@ -1132,10 +1153,10 @@ CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaAgendaProfesional
 AS
 BEGIN
 IF(EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE 
-(CAST(@fechaInicio AS date) BETWEEN CAST(fechaInicio AS date) AND CAST(fechaFinal AS date) OR CAST(@fechaFin AS date) BETWEEN CAST(fechaInicio AS date) AND CAST(fechaFinal AS date))
+GESTIONAME_LAS_VACACIONES.intervalosSolapeados(@fechaInicio,@fechaFin,fechaInicio,fechaFinal) = 1
 AND (@diaInicio BETWEEN diaInicio AND diaFin OR @diaFin BETWEEN	diaInicio AND diaFin)
 AND CAST(@fechaInicio AS TIME) BETWEEN CAST(fechaInicio AS time) AND CAST(fechaFinal AS time)
-AND baja=0))
+AND baja=0 AND idProfesional = @matriculaProfesional))
 BEGIN 
 RAISERROR ('Esa fecha ya se encuentra agendada',16,217)
 END 
@@ -1152,10 +1173,11 @@ CREATE FUNCTION GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales(@fechaIn
 RETURNS INT
 AS
 begin
-return  DATEPART(HOUR, @fechaInicio)   -  DATEPART(HOUR, @fechaFin)  
+return  (DATEPART(HOUR, @fechaFin) * 100   -  DATEPART(HOUR, @fechaInicio)  * 100 + DATEPART(MINUTE, @fechaFin) - DATEPART(MINUTE,@fechaInicio)) * ABS(@diaFin - @diaInicio)
 END 
 go
-exec GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales  '2011-01-01 18:01.000', '2015-23-04 10:00:00.000' ,1 ,1
+
+
 CREATE TRIGGER cheuqueo48Horas ON GESTIONAME_LAS_VACACIONES.Agendas AFTER INSERT
 AS
 DECLARE @fechaInicio DATETIME
@@ -1163,10 +1185,18 @@ DECLARE @fechaFin DATETIME
 DECLARE @idProfesional INT
 DECLARE @diaInicio INT
 DECLARE @diafin INT
+DECLARE @horasInsertadas INT
+DECLARE @horasDeAgenda INT
 select @idProfesional = idProfesional, @fechaInicio = fechaInicio, @fechaFin = fechaFinal, @diaInicio = diaInicio, @diafin = diaFin from inserted
-
-SELECT * from GESTIONAME_LAS_VACACIONES.Agendas
+set @horasInsertadas = GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales (@fechaInicio, @fechaFin, @diaInicio, @diaFin)
+SELECT @horasDeAgenda =  SUM(GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales(fechaInicio,fechaFinal,diaInicio,diaFin)) FROM GESTIONAME_LAS_VACACIONES.Agendas
+WHERE @idProfesional = idProfesional and baja = 0 and GESTIONAME_LAS_VACACIONES.intervalosSolapeados(@fechaInicio,@fechaFin,fechaInicio,fechaFinal) = 1
+IF((@horasInsertadas + @horasDeAgenda) > 4800)
+BEGIN
+RAISERROR('El profesional exedio las 48 horas de atencion',16,217)
+ROLLBACK TRANSACTION
 END
+GO
 
 --////////////////////////////////////--
 --NUMERO 9--
