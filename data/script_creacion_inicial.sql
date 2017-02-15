@@ -816,7 +816,6 @@ AS
 RETURN select fecha from GESTIONAME_LAS_VACACIONES.Turnos t
 WHERE t.idProfesional = @matricula and baja = 0 
 GO
-
 --////////////////////////////////////--
 --PROCEDURES--
 --NUMERO 2--
