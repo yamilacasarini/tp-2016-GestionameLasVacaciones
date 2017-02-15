@@ -1,6 +1,4 @@
-﻿-- Modificaciones que pueden generar errores: el telefono del paciente se paso de int a varchar(15)
-
-IF NOT EXISTS ( SELECT  *
+﻿IF NOT EXISTS ( SELECT  *
 				FROM    sys.schemas
 				WHERE   name = N'GESTIONAME_LAS_VACACIONES' ) 
 	EXEC('CREATE SCHEMA [GESTIONAME_LAS_VACACIONES]');
