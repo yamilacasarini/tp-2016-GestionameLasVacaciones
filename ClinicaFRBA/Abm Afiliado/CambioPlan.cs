@@ -18,15 +18,14 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             InitializeComponent();
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT DISTINCT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes");
-
+            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Planes");
+            
             while (reader.Read())
             {
                 cBplanMedico.Items.Add(reader["descripcion"].ToString());
             }
             reader.Close();
-           // if (afiliado.servicio == 0)
-           //     txMotivo.Hide();
+           
         }
 
         private void buttonAceptar_Click(object sender, EventArgs e)

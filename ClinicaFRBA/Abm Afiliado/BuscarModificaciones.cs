@@ -46,7 +46,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 if (idPaciente == "")
                     idPaciente = "-1";
                 if (cbIdPlan.SelectedItem.ToString().Trim() == "")
-                    plan = "''";
+                    plan = "";
                 else
                     plan = cbIdPlan.SelectedItem.ToString().Trim();
 

@@ -77,9 +77,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(282, 68);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(57, 13);
+            this.label3.Size = new System.Drawing.Size(63, 13);
             this.label3.TabIndex = 22;
-            this.label3.Text = "idPaciente";
+            this.label3.Text = "ID Paciente";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // txApellido
@@ -143,9 +143,9 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(282, 94);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(36, 13);
+            this.label5.Size = new System.Drawing.Size(42, 13);
             this.label5.TabIndex = 26;
-            this.label5.Text = "idPlan";
+            this.label5.Text = "ID Plan";
             // 
             // cbIdPlan
             // 

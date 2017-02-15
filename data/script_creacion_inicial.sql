@@ -598,7 +598,7 @@ SELECT DISTINCT p.id, e.idEspecialidad FROM GESTIONAME_LAS_VACACIONES.Profesiona
 JOIN GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e
 ON p.id = e.idProfesional
 GO
-
+ 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descEspecialidad VARCHAR(100))
 RETURNS INTEGER
 AS
