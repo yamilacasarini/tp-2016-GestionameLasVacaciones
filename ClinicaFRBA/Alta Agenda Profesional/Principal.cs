@@ -87,10 +87,6 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
                 && validarQueLaHoraEsteCorrecta(listaHorasInicio.Value,listaMinutosInicio.Value,listaHorasFinal.Value,listaMinutosFinal.Value)
                 && validarQueSeaFechaFutura(anioInicio.Value, anioFinal.Value,
                 mesInicio.Value, mesFinal.Value, DiaInicio.Value, diaFinal.Value)
-                && validarQueSeaFechaFutura(Convert.ToDecimal(anioDelSistema), anioInicio.Value,
-                Convert.ToDecimal(mesDelSistema), mesInicio.Value, Convert.ToDecimal(diaDelSistema), DiaInicio.Value)
-                && validarQueSeaFechaFutura(Convert.ToDecimal(anioDelSistema), anioFinal.Value,
-                Convert.ToDecimal(mesDelSistema), mesFinal.Value, Convert.ToDecimal(diaDelSistema), diaFinal.Value)
                 && validarFechaFuturaAFechaSistema(Convert.ToDecimal(anioDelSistema), anioInicio.Value,
                 Convert.ToDecimal(mesDelSistema), mesInicio.Value, Convert.ToDecimal(diaDelSistema), DiaInicio.Value)
                 && validarHorarioSabados(diaSemanaInicio.Text, listaHorasInicio.Value)
@@ -112,13 +108,13 @@ namespace ClinicaFrba.Alta_Agenda_Profesional
             decimal diaSistema, decimal diaFinal)
         {
             if (aInt(anioSistema) > aInt(anioFinal))
-                return fallarPor("La fecha del sistema es posterior a la final");
+                return fallarPor("La fecha del sistema es posterior a la inicial");
             if (aInt(anioSistema) == aInt(anioFinal) &&
                 aInt(mesSistema) > aInt(mesFinal))
-                return fallarPor("La fecha del sistema es posterior a la final");
+                return fallarPor("La fecha del sistema es posterior a la inicial");
             if (aInt(mesSistema) == aInt(mesFinal) &&
                 aInt(diaSistema) > aInt(diaFinal))
-                return fallarPor("La fecha del sistema es posterior a la final");
+                return fallarPor("La fecha del sistema es posterior a la inicial");
             return true;
         }
         private bool validarQueSeaFechaFutura(decimal anioInicio,
