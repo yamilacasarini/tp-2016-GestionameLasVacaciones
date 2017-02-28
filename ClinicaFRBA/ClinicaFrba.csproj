@@ -96,11 +96,35 @@
     <Compile Include="AbmRol\AltaRol.Designer.cs">
       <DependentUpon>AltaRol.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmRol\AltaRolGen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\AltaRolGen.Designer.cs">
+      <DependentUpon>AltaRolGen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\AltaRolPorUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\AltaRolPorUsuario.Designer.cs">
+      <DependentUpon>AltaRolPorUsuario.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmRol\BajaRol.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmRol\BajaRol.Designer.cs">
       <DependentUpon>BajaRol.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\BajaRolGen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\BajaRolGen.Designer.cs">
+      <DependentUpon>BajaRolGen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\BajaRolPorUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\BajaRolPorUsuario.Designer.cs">
+      <DependentUpon>BajaRolPorUsuario.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRol\Funcionalidad.cs" />
     <Compile Include="AbmRol\ModificacionRol.cs">
@@ -221,12 +245,6 @@
     </Compile>
     <Compile Include="Pedir Turno\Profesional.cs" />
     <Compile Include="Pedir Turno\ProfesionalManager.cs" />
-    <Compile Include="Registrar Agenta Medico\AltaAgenda.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Registrar Agenta Medico\AltaAgenda.Designer.cs">
-      <DependentUpon>AltaAgenda.cs</DependentUpon>
-    </Compile>
     <Compile Include="Registro Llegada\buscarTurno.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -260,12 +278,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Registrar Agenta Medico\Principal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Registrar Agenta Medico\Principal.Designer.cs">
-      <DependentUpon>Principal.cs</DependentUpon>
-    </Compile>
     <Compile Include="Registro Llegada\Principal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -301,6 +313,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\AltaRol.resx">
       <DependentUpon>AltaRol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\AltaRolPorUsuario.resx">
+      <DependentUpon>AltaRolPorUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\BajaRol.resx">
       <DependentUpon>BajaRol.cs</DependentUpon>
@@ -349,9 +364,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Pedir Turno\BuscarProfesional.resx">
       <DependentUpon>BuscarProfesional.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Registrar Agenta Medico\AltaAgenda.resx">
-      <DependentUpon>AltaAgenda.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Registro Llegada\buscarTurno.resx">
       <DependentUpon>buscarTurno.cs</DependentUpon>

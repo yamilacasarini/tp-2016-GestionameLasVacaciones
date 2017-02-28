@@ -10,7 +10,7 @@ namespace ClinicaFrba.AbmRol
     {
       public int id { get; set; }
       public String descripcion {get; set;}
-      public int baja {get; set;}
+      
 
       public Rol() { }
 
@@ -18,7 +18,7 @@ namespace ClinicaFrba.AbmRol
       {
           this.id = unId;
           this.descripcion = unaDescrip;
-          this.baja = unaBaja;
+         
       }
     }
 }

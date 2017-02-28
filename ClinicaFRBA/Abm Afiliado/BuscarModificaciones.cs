@@ -17,17 +17,17 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             InitializeComponent();
             Server server= Server.getInstance();
-            SqlDataReader reader = server.query("select id from GESTIONAME_LAS_VACACIONES.Planes");
+            SqlDataReader reader = server.query("select descripcion from GESTIONAME_LAS_VACACIONES.Planes");
             List<String> idsPlanes = new List<string>();
             idsPlanes.Add("");
             while (reader.Read()) { 
 
-            idsPlanes.Add(reader["id"].ToString());
+            idsPlanes.Add(reader["descripcion"].ToString());
             
             }
 
             reader.Read();
-            comboBox1.DataSource = idsPlanes;
+            cbIdPlan.DataSource = idsPlanes;
         }
 
         private void label3_Click(object sender, EventArgs e)
@@ -37,21 +37,22 @@ namespace ClinicaFrba.Abm_Afiliado
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (txApellido.Text.Trim() != "" || txId.Text.Trim() != "" || txNombre.Text.Trim() != "" || comboBox1.SelectedItem.ToString().Trim() != "")
+            if (txApellido.Text.Trim() != "" || txId.Text.Trim() != "" || txNombre.Text.Trim() != "" || cbIdPlan.SelectedItem.ToString().Trim() != "")
             {
-                String aux;
+                String plan;
+                String idPaciente = txId.Text.Trim();
                 if (!(Validacion.soloNumeros(txId, "idPaciente")))
                     MessageBox.Show("Solo pueden ingresar numeros en los id");
-                if (txId.Text.Trim() == "")
-                    txId.Text = "-1";
-                if (comboBox1.SelectedItem.ToString().Trim() == "")
-                    aux = "-1";
+                if (idPaciente == "")
+                    idPaciente = "-1";
+                if (cbIdPlan.SelectedItem.ToString().Trim() == "")
+                    plan = "";
                 else
-                    aux = comboBox1.SelectedItem.ToString().Trim();
+                    plan = cbIdPlan.SelectedItem.ToString().Trim();
 
                 try
                 {
-                    dataGridView1.DataSource = AfiliadoManager.BuscarModificaciones(txNombre.Text.Trim(), txApellido.Text.Trim(), Convert.ToInt32(txId.Text.Trim()), Convert.ToInt32(aux));
+                    dataGridView1.DataSource = AfiliadoManager.BuscarModificaciones(txNombre.Text.Trim(), txApellido.Text.Trim(), Convert.ToInt32(idPaciente), plan);
                 }
                 catch (SqlException ex)
                 {

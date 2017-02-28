@@ -20,6 +20,7 @@ namespace ClinicaFrba.Abm_Afiliado
         public BuscarAfiliados()
         {
             InitializeComponent();
+            afiliadoBuscado.id = -1;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -35,7 +36,7 @@ namespace ClinicaFrba.Abm_Afiliado
                 afiliadoBuscado.documento = Convert.ToInt32(dataGridView1.CurrentRow.Cells[3].Value);
                 afiliadoBuscado.tipoDocumento = Convert.ToString(dataGridView1.CurrentRow.Cells[4].Value);
                  afiliadoBuscado.direccion = Convert.ToString(dataGridView1.CurrentRow.Cells[5].Value);
-                afiliadoBuscado.telefono= Convert.ToInt32(dataGridView1.CurrentRow.Cells[6].Value);
+                afiliadoBuscado.telefono= Convert.ToString(dataGridView1.CurrentRow.Cells[6].Value);
                 afiliadoBuscado.email = Convert.ToString(dataGridView1.CurrentRow.Cells[7].Value);
                 afiliadoBuscado.fechaNacimiento = Convert.ToDateTime(dataGridView1.CurrentRow.Cells[8].Value);
                 afiliadoBuscado.sexo = Convert.ToString(dataGridView1.CurrentRow.Cells[9].Value);

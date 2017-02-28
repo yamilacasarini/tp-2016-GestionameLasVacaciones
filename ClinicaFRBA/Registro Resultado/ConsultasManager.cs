@@ -41,6 +41,7 @@ namespace ClinicaFrba.Registro_Resultado
                     query += " and ";
                 query += "t.idPaciente = " + numeroPaciente;
             }
+            query += "and CAST('" + Program.horarioSistema.ToString() + "' as datetime) > t.fecha ";
             SqlDataReader read = server.query(query);
             while (read.Read()) {
                 Consulta con = new Consulta();

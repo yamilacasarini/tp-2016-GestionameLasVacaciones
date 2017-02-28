@@ -1,5 +1,4 @@
-﻿-- Saque los GO, ahora aprentando el menos de la linea siguiente, no ves mas drops :D
-IF NOT EXISTS ( SELECT  *
+﻿IF NOT EXISTS ( SELECT  *
 				FROM    sys.schemas
 				WHERE   name = N'GESTIONAME_LAS_VACACIONES' ) 
 	EXEC('CREATE SCHEMA [GESTIONAME_LAS_VACACIONES]');
@@ -55,7 +54,13 @@ DROP TABLE GESTIONAME_LAS_VACACIONES.Especialidades;
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.Usuarios', N'U') IS NOT NULL 
 DROP TABLE GESTIONAME_LAS_VACACIONES.Usuarios;
 
-IF OBJECT_ID(N'GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha', N'U') IS NOT NULL 
+IF OBJECT_ID(N'GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales') IS NOT NULL 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales;
+
+IF OBJECT_ID(N'GESTIONAME_LAS_VACACIONES.intervalosSolapeados') IS NOT NULL 
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.intervalosSolapeados;
+
+IF OBJECT_ID(N'GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha') IS NOT NULL 
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.modificarDiaDeUnaFecha;
 
 IF OBJECT_ID(N'tempdb..#PacienteTemporal', N'U') IS NOT NULL
@@ -121,6 +126,13 @@ DROP FUNCTION GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional;
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.LoguearUsuario') IS NOT NULL
 DROP PROCEDURE GESTIONAME_LAS_VACACIONES.LoguearUsuario;
 
+IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.obtenerRolesDeUsuario') IS NOT NULL
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerRolesDeUsuario;
+
+IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.obtenerRolesFaltantesUsuario') IS NOT NULL
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerRolesFaltantesUsuario;
+
+
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.obtenerFuncionalidades') IS NOT NULL
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerFuncionalidades;
 
@@ -160,8 +172,14 @@ DROP PROCEDURE GESTIONAME_LAS_VACACIONES.cambioPlan;
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.agregarFuncionalidadAUnRol') IS NOT NULL
 DROP PROCEDURE GESTIONAME_LAS_VACACIONES.agregarFuncionalidadAUnRol;
 
+IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.elProfesionalEstaConOtroTurno') IS NOT NULL
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.elProfesionalEstaConOtroTurno;
+
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.getDescripcionFuncionalidad') IS NOT NULL
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.getDescripcionFuncionalidad;
+
+IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.obtenerFuncionesNoCargadasAUnRol') IS NOT NULL
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerFuncionesNoCargadasAUnRol;
 
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.obtenerFuncionesNoCargadasAUnRol') IS NOT NULL
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerFuncionesNoCargadasAUnRol;
@@ -175,8 +193,14 @@ DROP PROCEDURE GESTIONAME_LAS_VACACIONES.modificarFuncionalidadAUnRol;
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.altaAgendaProfesional') IS NOT NULL
 DROP PROCEDURE GESTIONAME_LAS_VACACIONES.altaAgendaProfesional;
 
+IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.borrarRolPaciente') IS NOT NULL
+DROP PROCEDURE GESTIONAME_LAS_VACACIONES.borrarRolPaciente;
+
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.obtenerPlanAcutalAfiliado') IS NOT NULL
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.obtenerPlanAcutalAfiliado;
+
+IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.getDescripcionFuncionalidad') IS NOT NULL
+DROP FUNCTION GESTIONAME_LAS_VACACIONES.getDescripcionFuncionalidad;
 
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.compraDeBonos') IS NOT NULL
 DROP PROCEDURE GESTIONAME_LAS_VACACIONES.compraDeBonos;
@@ -192,6 +216,9 @@ DROP FUNCTION GESTIONAME_LAS_VACACIONES.getIdAgenda;
 
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional') IS NOT NULL
 DROP PROCEDURE GESTIONAME_LAS_VACACIONES.obtenerTurnosDelprofesional;
+
+IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.agregarRolesAUsuario') IS NOT NULL
+DROP PROCEDURE GESTIONAME_LAS_VACACIONES.agregarRolesAUsuario;
 
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.registrarLlegada') IS NOT NULL
 DROP PROCEDURE GESTIONAME_LAS_VACACIONES.registrarLlegada;
@@ -267,7 +294,12 @@ DROP  PROCEDURE GESTIONAME_LAS_VACACIONES.cargarTablaTemporalHorasProfesionales;
 
 IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada') IS NOT NULL
 DROP FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada;
+
+IF OBJECT_ID (N'GESTIONAME_LAS_VACACIONES.turnoEnElMismoHorario') IS NOT NULL
+DROP TRIGGER GESTIONAME_LAS_VACACIONES.turnoEnElMismoHorario;
 GO
+
+
 
 --/////////////////////////////////////////////////////--
 --CREACION DE TABLAS--
@@ -312,7 +344,7 @@ create TABLE GESTIONAME_LAS_VACACIONES.Pacientes (
   documento INT NOT NULL,
   tipoDocumento VARCHAR(100) DEFAULT 'DNI' ,
   direccion VARCHAR(100) NOT NULL,
-  telefono INT NOT NULL,
+  telefono VARCHAR(15) NOT NULL,
   email VARCHAR(255),
   fechaNacimiento DATETIME NOT NULL,
   sexo CHAR,
@@ -379,7 +411,7 @@ CREATE TABLE GESTIONAME_LAS_VACACIONES.Turnos(
   baja INT default 0,
   tipoCancelacion INT, -- 0 Paciente, 1 Profesional
   motivo VARCHAR(255),
-  esConsulta INT DEFAULT 0, -- Usado para saber si se efectivizo el turno en una consulta medica (0 NO, 1 SI) 
+  esConsulta INT DEFAULT 0 -- Usado para saber si se efectivizo el turno en una consulta medica (0 NO, 1 SI) 
   )
 
   CREATE INDEX ix1_turnos ON GESTIONAME_LAS_VACACIONES.Turnos (idPaciente)
@@ -416,7 +448,7 @@ id INT IDENTITY(1,1) PRIMARY KEY,
   apellido NVARCHAR(50) NOT NULL ,
   dni INT NOT NULL,
   direccion VARCHAR(100) NOT NULL,
-  telefono INT NOT NULL,
+  telefono VARCHAR(15) NOT NULL,
   email VARCHAR(255),
   fechaNacimiento DATETIME NOT NULL,
   idPlan INT,
@@ -447,6 +479,7 @@ CREATE TABLE #TemporalProfesional(
  idEspecialidad2 int,
  especialidadDescripcion2 varchar(50),
 )
+
 
 create table #ConsultasTemporal(
 id INTEGER,
@@ -479,7 +512,7 @@ INSERT INTO GESTIONAME_LAS_VACACIONES.Funcionalidades(descripcion) VALUES ('RESU
 insert into #ConsultasTemporal(id,fecha,idBono,fechaBono,precioBono,sintomas,diagnostico,dni, medicoDNI, especialidad)
 SELECT	Turno_Numero, Turno_Fecha,Bono_Consulta_Numero,Bono_Consulta_Fecha_Impresion,Plan_Med_Precio_Bono_Consulta, 
 Consulta_Sintomas,Consulta_Enfermedades, Paciente_Dni, Medico_Dni, Especialidad_Descripcion
-FROM gd_esquema.Maestra
+FROM GD2C2016.gd_esquema.Maestra
 
 INSERT INTO #PacienteTemporal (nombre,apellido,dni,direccion,telefono,email,fechaNacimiento,idPlan,descripcionPlan,precioBono,idTurno,fechaTurno,fechaBono,idBono)
 SELECT Paciente_Nombre,Paciente_Apellido, Paciente_Dni, Paciente_Direccion, Paciente_Telefono, Paciente_Mail,Paciente_Fecha_Nac,
@@ -533,15 +566,8 @@ GROUP BY p.id, fechaBono,precioBono
 
 --FUNCIONALIDADES PARA ADMIN--
 
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (1,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (2,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (3,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (4,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (5,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (6,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (7,1)
-INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (8,1)
-
+INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idRol, idFuncionalidad) 
+select 1,id from GESTIONAME_LAS_VACACIONES.Funcionalidades
 --FUNCIONALIDADES PARA AFILIADO--
 
 INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxFuncionalidad(idFuncionalidad, idRol) VALUES (3,2)
@@ -572,7 +598,7 @@ SELECT DISTINCT p.id, e.idEspecialidad FROM GESTIONAME_LAS_VACACIONES.Profesiona
 JOIN GESTIONAME_LAS_VACACIONES.EspecialidadesxProfesional e
 ON p.id = e.idProfesional
 GO
-
+ 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descEspecialidad VARCHAR(100))
 RETURNS INTEGER
 AS
@@ -589,9 +615,9 @@ END
 GO
 
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
-
 INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos(id, idPaciente, idProfesional, fecha, especialidad, idAgenda)
-SELECT DISTINCT c.id, pa.id, pr.id, c.fecha, c.especialidad, a.id FROM #ConsultasTemporal c
+SELECT DISTINCT c.id, pa.id, pr.id, c.fecha, c.especialidad, a.id
+ FROM #ConsultasTemporal c
 JOIN GESTIONAME_LAS_VACACIONES.Pacientes pa
 ON c.dni = pa.documento
 JOIN GESTIONAME_LAS_VACACIONES.Profesionales pr
@@ -600,6 +626,10 @@ JOIN GESTIONAME_LAS_VACACIONES.Agendas a
 ON a.idProfesional = pr.id 
 	AND a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(c.especialidad)
 WHERE c.id is not null
+
+
+
+
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos OFF; 
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Bonos ON; 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Bonos(id, idPaciente, idPlan, idCompraBono, idTurno)
@@ -623,8 +653,9 @@ JOIN GESTIONAME_LAS_VACACIONES.Bonos b
 ON c.idBono = b.id
 WHERE c.fecha IS NOT NULL
 GO
-	
-
+UPDATE GESTIONAME_LAS_VACACIONES.Turnos SET esConsulta = 1 WHERE id IN(SELECT c.idTurno FROM GESTIONAME_LAS_VACACIONES.ConsultasMedicas c)
+UPDATE GESTIONAME_LAS_VACACIONES.Bonos set usado = 1 where idTurno is not null
+GO
 
 --////////////////////////////////////--
 --FUNCIONES--
@@ -764,6 +795,22 @@ RETURN select a.fechaInicio, a.fechaFinal FROM GESTIONAME_LAS_VACACIONES.Agendas
 WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) and baja = 0
 GO
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.elProfesionalEstaConOtroTurno(@turno int)
+RETURNS INT
+AS BEGIN
+DECLARE @fecha DATETIME
+DECLARE @profesional INT
+SELECT @fecha = t.fecha, @profesional = t.idProfesional FROM GESTIONAME_LAS_VACACIONES.Turnos t WHERE @turno = t.id
+IF EXISTS(select * from GESTIONAME_LAS_VACACIONES.Turnos p WHERE @fecha = p.fecha AND @profesional = p.idProfesional AND @turno <> p.id)
+BEGIN
+RETURN 0
+END
+
+RETURN @turno
+END
+GO
+
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getDiasDeAtencionDelProfesional(@matricula int, @especialidad as varchar(100), @hora as datetime, @fechaInicio as datetime, @fechaFin as datetime)
 RETURNS TABLE
 AS
@@ -772,13 +819,13 @@ WHERE a.idProfesional = @matricula and a.idEspecialidad = GESTIONAME_LAS_VACACIO
 AND CAST(@fechaInicio AS DATE) = CAST(fechaInicio AS DATE)
 AND CAST(@fechaFin AS DATE) = CAST(fechaFinal AS DATE)
 GO	
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getTurnosAgendadosProfesional(@matricula int, @especialidad as varchar(100))
 RETURNS TABLE
 AS
 RETURN select fecha from GESTIONAME_LAS_VACACIONES.Turnos t
-WHERE t.idProfesional = @matricula and t.especialidad like @especialidad and baja = 0 
+WHERE t.idProfesional = @matricula and baja = 0 
 GO
-
 --////////////////////////////////////--
 --PROCEDURES--
 --NUMERO 2--
@@ -827,6 +874,24 @@ RETURN (SELECT funcionalidad.id, funcionalidad.descripcion
  AND rolxfun.idRol = GESTIONAME_LAS_VACACIONES.getIdRol(@nombreRol))
  GO
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerRolesDeUsuario(@idPaciente INTEGER)
+RETURNS TABLE
+AS
+RETURN (SELECT r.id, r.descripcion
+ FROM GESTIONAME_LAS_VACACIONES.Roles r JOIN GESTIONAME_LAS_VACACIONES.RolesxUsuario rxu 
+ ON r.id = rxu.idRol JOIN GESTIONAME_LAS_VACACIONES.Pacientes pa
+ ON pa.usuario = rxu.idUsuario WHERE pa.id = @idPaciente)
+ GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.agregarRolesAUsuario(@idPaciente INTEGER, @idRol INTEGER)
+AS
+BEGIN
+DECLARE @idUsuario VARCHAR(255)
+SELECT @idUsuario = usuario FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE id=@idPaciente
+INSERT INTO GESTIONAME_LAS_VACACIONES.RolesxUsuario(idRol, idUsuario) VALUES (@idRol, @idUsuario)
+END
+GO
+
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.crearRol(@nombreRol VARCHAR(30), @nombreUsuario VARCHAR(30))
 AS 
@@ -860,6 +925,7 @@ RETURN 0
 END
 GO
 
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarRol(@nombre VARCHAR(30))
 AS 
 BEGIN 
@@ -870,6 +936,27 @@ END
 ELSE
 BEGIN
 UPDATE GESTIONAME_LAS_VACACIONES.Roles SET baja = 1 WHERE descripcion = @nombre
+DECLARE @idROl INT
+SELECT @idROl = id FROM GESTIONAME_LAS_VACACIONES.Roles WHERE descripcion = @nombre
+DELETE FROM GESTIONAME_LAS_VACACIONES.RolesxUsuario WHERE @idROl = idRol
+END
+END
+GO
+
+CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.borrarRolPaciente(@id INTEGER, @rol VARCHAR(255))
+AS
+BEGIN
+DECLARE @idUsuario VARCHAR(255)
+SELECT @idUsuario = usuario FROM GESTIONAME_LAS_VACACIONES.Pacientes WHERE id=@id
+DECLARE @idRol INTEGER
+SELECT @idRol = id FROM GESTIONAME_LAS_VACACIONES.Roles WHERE descripcion = @rol
+IF NOT EXISTS (SELECT * FROM  GESTIONAME_LAS_VACACIONES.RolesxUsuario WHERE idUsuario = @idUsuario AND idRol = @idRol)
+BEGIN
+RAISERROR('El Rol vincluado al usuario no existe',16,217) WITH SETERROR
+END
+ELSE
+BEGIN
+DELETE FROM GESTIONAME_LAS_VACACIONES.RolesxUsuario WHERE idUsuario = @idUsuario AND idRol = @idRol
 END
 END
 GO
@@ -905,7 +992,7 @@ GO
 --ABM PACIENTES--
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaPaciente(@nombre nvarchar(50), @apellido nvarchar(50), 
-@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
+@doc INT, @direc VARCHAR(100), @tel VARCHAR(15), @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
 @cantFami INT, @planes INT, @tipoDocumento VARCHAR(30))
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
@@ -925,7 +1012,7 @@ END
 GO
 
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaFamiliar(@idFamiliar INT,@nombre nvarchar(50), @apellido nvarchar(50), 
-@doc INT, @direc VARCHAR(100), @tel INT, @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
+@doc INT, @direc VARCHAR(100), @tel VARCHAR(15), @mail VARCHAR(100), @nacimiento DATETIME, @sexo char, @civil VARCHAR(10),
 @cantFami INT,@planes INT, @tipoDocumento as VARCHAR(30))
 AS
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Pacientes ON
@@ -956,7 +1043,7 @@ UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET baja = 1, fechaBaja = @hora WHERE
 END
 GO
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.modificarPaciente(@id INT,@direc VARCHAR(100),
- @tel INT, @mail VARCHAR(255), @sexo char, @civil VARCHAR(10),@cantFami INT)
+ @tel VARCHAR(15), @mail VARCHAR(255), @sexo char, @civil VARCHAR(10),@cantFami INT)
 AS
 BEGIN
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes
@@ -964,11 +1051,13 @@ SET direccion = @direc, telefono = @tel, email = @mail, sexo = @sexo,
 estadoCivil = @civil, cantFamiliares = @cantFami WHERE id = @id
 END
 GO
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.cambioPlan(@idPaciente INT,@plan INT, @motivo VARCHAR(50),@fecha as datetime)
 AS
 BEGIN
 INSERT INTO GESTIONAME_LAS_VACACIONES.Modificaciones(idPaciente,idPlan,motivo,fecha)
 VALUES(@idPaciente,@plan,@motivo,@fecha)
+DELETE FROM GESTIONAME_LAS_VACACIONES.Bonos WHERE idPaciente = @idPaciente and usado = 0
 END
 GO
 --////////////////////////////////////--
@@ -993,6 +1082,17 @@ BEGIN
 RETURN (SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Funcionalidades WHERE id = @id)
 END
 GO
+
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerRolesFaltantesUsuario(@idPaciente INTEGER)
+RETURNS TABLE
+AS
+RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Roles r WHERE r.id NOT IN 
+(SELECT rxu.idRol FROM
+GESTIONAME_LAS_VACACIONES.RolesxUsuario rxu JOIN GESTIONAME_LAS_VACACIONES.Pacientes pa ON pa.usuario = rxu.idUsuario
+WHERE pa.id = @idPaciente) and r.baja = 0)
+GO
+
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerFuncionesNoCargadasAUnRol(@nombreRol NVARCHAR(50))
 RETURNS TABLE
@@ -1031,15 +1131,70 @@ GO
 --NUMERO 8--
 --CREACION AGENDA PROFESIONAL--
 
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.intervalosSolapeados(@periodo1Inicio datetime, @periodo1Fin datetime, @periodo2Inicio datetime, @periodo2Fin datetime  )
+RETURNS INT
+AS
+begin
+IF(CAST(@periodo1Inicio AS date) BETWEEN CAST(@periodo2Inicio AS date) AND CAST(@periodo2Fin AS date) 
+	OR CAST(@periodo1Fin AS date) BETWEEN CAST(@periodo2Inicio AS date) AND CAST(@periodo2Fin AS date)
+	OR (CAST(@periodo2Inicio as date) between cast(@periodo1Inicio as date) and cast(@periodo1Fin as date)	
+	AND CAST(@periodo2Fin as date) between cast(@periodo1Inicio as date) and cast(@periodo1Fin as date)))
+	begin 
+	return 1;
+	end 
+return 0;
+END 
+go
+
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.altaAgendaProfesional
 (@matriculaProfesional  INT, @descEspecialidad VARCHAR(255), 
 @fechaInicio  DATETIME, @fechaFin DATETIME, @diaInicio INT, 
   @diaFin INT)
 AS
 BEGIN
+IF(EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Agendas WHERE 
+GESTIONAME_LAS_VACACIONES.intervalosSolapeados(@fechaInicio,@fechaFin,fechaInicio,fechaFinal) = 1
+AND (@diaInicio BETWEEN diaInicio AND diaFin OR @diaFin BETWEEN	diaInicio AND diaFin)
+AND CAST(@fechaInicio AS TIME) BETWEEN CAST(fechaInicio AS time) AND CAST(fechaFinal AS time)
+AND baja=0 AND idProfesional = @matriculaProfesional))
+BEGIN 
+RAISERROR ('Esa fecha ya se encuentra agendada',16,217)
+END 
+ELSE 
+BEGIN 
 INSERT INTO GESTIONAME_LAS_VACACIONES.Agendas(idProfesional, idEspecialidad, 
 fechaInicio, fechaFinal, diaInicio, diaFin)
 VALUES (@matriculaProfesional, GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@descEspecialidad), @fechaInicio, @fechaFin, @diaInicio, @diaFin) 
+END
+END
+GO
+
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales(@fechaInicio datetime, @fechaFIn datetime,@diaInicio int, @diaFin int  )
+RETURNS INT
+AS
+begin
+return  (DATEPART(HOUR, @fechaFin) * 100   -  DATEPART(HOUR, @fechaInicio)  * 100 + DATEPART(MINUTE, @fechaFin) - DATEPART(MINUTE,@fechaInicio)) * ABS(@diaFin - @diaInicio)
+END 
+go
+
+
+CREATE TRIGGER cheuqueo48Horas ON GESTIONAME_LAS_VACACIONES.Agendas AFTER INSERT
+AS
+DECLARE @fechaInicio DATETIME
+DECLARE @fechaFin DATETIME
+DECLARE @idProfesional INT
+DECLARE @diaInicio INT
+DECLARE @diafin INT
+DECLARE @horasInsertadas INT
+DECLARE @horasDeAgenda INT
+select @idProfesional = idProfesional, @fechaInicio = fechaInicio, @fechaFin = fechaFinal, @diaInicio = diaInicio, @diafin = diaFin from inserted
+set @horasInsertadas = GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales (@fechaInicio, @fechaFin, @diaInicio, @diaFin)
+SELECT @horasDeAgenda =  SUM(GESTIONAME_LAS_VACACIONES.ObtenerNumeroDeHorasSemanales(fechaInicio,fechaFinal,diaInicio,diaFin)) FROM GESTIONAME_LAS_VACACIONES.Agendas
+WHERE @idProfesional = idProfesional and baja = 0 and GESTIONAME_LAS_VACACIONES.intervalosSolapeados(@fechaInicio,@fechaFin,fechaInicio,fechaFinal) = 1
+IF((@horasInsertadas + @horasDeAgenda) > 4800)
+BEGIN
+RAISERROR('El profesional exedio las 48 horas de atencion',16,217)
+ROLLBACK TRANSACTION
 END
 GO
 
@@ -1078,14 +1233,15 @@ GO
 --NUMERO 10--
 --RESERVA DE TURNOS--
 
-CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdAgenda(@especialidad varchar(255), @matricula int)
+CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getIdAgenda(@especialidad varchar(255), @matricula int, @fecha datetime)
 RETURNS INT
 AS BEGIN
 RETURN (SELECT a.id FROM GESTIONAME_LAS_VACACIONES.Agendas a 
 WHERE a.idProfesional = @matricula 
-AND a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad))
+AND a.idEspecialidad = GESTIONAME_LAS_VACACIONES.getIdEspecialidad(@especialidad) AND CAST(@fecha as date) between CAST(fechaInicio AS DATE) and CAST(fechaFinal AS DATE))
 END
 GO
+
 SET IDENTITY_INSERT GESTIONAME_LAS_VACACIONES.Turnos ON
 GO
 CREATE PROCEDURE GESTIONAME_LAS_VACACIONES.reservarTurno(@matricula INT, @numAfiliado INT, @especialidad VARCHAR(255), @fecha DATETIME)
@@ -1093,7 +1249,7 @@ AS
 BEGIN
 IF (NOT EXISTS (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos WHERE idProfesional = @matricula AND fecha = @fecha AND idPaciente = @numAfiliado))
 	INSERT INTO GESTIONAME_LAS_VACACIONES.Turnos (idPaciente, idProfesional, especialidad, idAgenda, fecha) 
-	VALUES (@numAfiliado, @matricula, @especialidad , GESTIONAME_LAS_VACACIONES.getIdAgenda(@especialidad, @matricula), @fecha) 
+	VALUES (@numAfiliado, @matricula, @especialidad , GESTIONAME_LAS_VACACIONES.getIdAgenda(@especialidad, @matricula,@fecha), @fecha) 
 END
 GO
 
@@ -1184,11 +1340,12 @@ RETURN @id
 END
 GO
 
+
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosNoCanceladosDelAfiliadoSegunId(@idAfiliado INT, @hora as DATETIME)
 RETURNS TABLE
 AS
 RETURN (SELECT * FROM GESTIONAME_LAS_VACACIONES.Turnos turnos 
-WHERE turnos.idPaciente = @idAfiliado AND turnos.tipoCancelacion IS NULL AND CAST(turnos.fecha AS DATE) > CAST(@hora AS DATE) )
+WHERE turnos.idPaciente = @idAfiliado AND turnos.tipoCancelacion IS NULL AND CAST(turnos.fecha AS DATE) > DATEADD(day,1, CAST(@hora AS DATETIME)) AND turnos.esConsulta <> 1 AND turnos.baja <> 1) 
 GO
 
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.obtenerTurnosDelAfiliado(@nombreAfiliado NVARCHAR(50), @apellido NVARCHAR(50), @dni INT)
@@ -1477,7 +1634,6 @@ GROUP BY especialidad.id
 ORDER BY COUNT(consulta.id) DESC)
 GO
 
-
 CREATE FUNCTION GESTIONAME_LAS_VACACIONES.getEspecialidadNoAgendada(@id INTEGER)
 RETURNS TABLE AS
 RETURN (SELECT tipoEspecialidad FROM GESTIONAME_LAS_VACACIONES.Especialidades e JOIN 
@@ -1491,9 +1647,26 @@ AFTER INSERT
 AS
 DECLARE @idPaciente INT
 DECLARE @idPlan INT
-select idPaciente,idPlan FROM inserted
+select @idPaciente = idPaciente, @idPlan= idPlan FROM inserted
 UPDATE GESTIONAME_LAS_VACACIONES.Pacientes SET planes = @idPlan WHERE id = @idPaciente
 GO
+
+CREATE TRIGGER GESTIONAME_LAS_VACACIONES.turnoEnElMismoHorario ON GESTIONAME_LAS_VACACIONES.Turnos
+AFTER INSERT
+AS
+DECLARE @idPaciente INT
+DECLARE @fecha DATETIME
+DECLARE @idProfesional INT
+DECLARE @turno INT
+DECLARE @hayERROR INT = 1 
+select @idPaciente = i.idPaciente, @fecha = i.fecha, @idProfesional = i.idProfesional, @turno = i.id FROM inserted i
+	IF EXISTS(select * from GESTIONAME_LAS_VACACIONES.Turnos t WHERE @turno <> t.id AND @fecha = t.fecha AND @idPaciente = t.idPaciente)
+	BEGIN
+	RAISERROR('El paciente esta ocupado en ese horario',16,217)
+	ROLLBACK TRANSACTION
+	END
+GO
+
 
 --COLGADO ACA DESPUES LO SUBIRE--
 

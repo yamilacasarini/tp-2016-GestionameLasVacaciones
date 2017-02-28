@@ -69,11 +69,11 @@ namespace ClinicaFrba.Abm_Afiliado
                 try
                 {
                     AfiliadoManager.altaAfiliado(txNombre.Text.Trim(), txApellido.Text.Trim(),
-                        Convert.ToInt32(txDocumento.Text.Trim()), txDireccion.Text.Trim(), Convert.ToInt32(txTelefono.Text.Trim()),
+                        Convert.ToInt32(txDocumento.Text.Trim()), txDireccion.Text.Trim(), txTelefono.Text.Trim(),
                         txMail.Text.Trim(), Convert.ToDateTime(dateTimePicker1.Value), cBsexo.Text.Trim(),
                         cBestadoCivil.Text.Trim(), Convert.ToInt32(txFamiliaresACargo.Text.Trim()), cBplanMedico.Text.Trim(), this.afiliadoFamiliar.id, cBtipoDocumento.Text.Trim());
                     btAgregar.Hide();
-                    if (cBplanMedico.Text.Trim() == "Soltero" || cBplanMedico.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
+                    if (cBestadoCivil.Text.Trim() == "Casado" || cBestadoCivil.Text.Trim() == "Concubinato" || Convert.ToInt32(txFamiliaresACargo.Text.Trim()) > 0)
                     {
                         btAgregarFam.Show();
                         this.afiliadoFamiliar.nombre = txNombre.Text.Trim();
@@ -90,11 +90,6 @@ namespace ClinicaFrba.Abm_Afiliado
                     MessageBox.Show(fx.Message);
                 }
             }
-            else
-            {
-                MessageBox.Show("Datos inconsistentes");
-            }
-
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
@@ -115,12 +110,16 @@ namespace ClinicaFrba.Abm_Afiliado
         {
             try
             {
-                return txNombre.Text.Trim() != "" && txApellido.Text.Trim() != "" &&
+                bool retornito = txNombre.Text.Trim() != "" && txApellido.Text.Trim() != "" &&
                     txTelefono.Text.Trim() != "" && txMail.Text.Trim() != "" &&
                     txDireccion.Text.Trim() != "" && txDocumento.Text.Trim() != "" &&
                     cBestadoCivil.Text.Trim() != "" && cBplanMedico.Text.Trim() != "" &&
-                    cBsexo.Text.Trim() != "" && cBtipoDocumento.Text.Trim() != "" &&
-                Validacion.soloLetras(txNombre, "nombre") && Validacion.soloLetras(txApellido, "apellido") &&
+                    cBsexo.Text.Trim() != "" && cBtipoDocumento.Text.Trim() != "";
+                if (!retornito) {
+                    MessageBox.Show("No puede haber campo vacios");
+                    return retornito;
+                }
+                return Validacion.soloLetras(txNombre, "nombre") && Validacion.soloLetras(txApellido, "apellido") &&
                 Validacion.soloNumeros(txTelefono, "telefono") && Validacion.emailValido(txMail) &&
                 Validacion.esAlfanumerico(txDireccion, "direccion") && Validacion.soloNumeros(txDocumento, "documento") &&
                 Validacion.soloNumeros(txFamiliaresACargo, "familiares") && Convert.ToInt32(txFamiliaresACargo.Text.Trim()) >= 0;
@@ -181,6 +180,11 @@ namespace ClinicaFrba.Abm_Afiliado
             labelFamiliar.Text = "Ingresando familiar de:" + afiliadoFamiliar.apellido;
             labelFamiliar.Show();
             btAgregarFam.Text = "Agregar otro familiar";
+        }
+
+        private void txTelefono_TextChanged_1(object sender, EventArgs e)
+        {
+
         }
 
     }

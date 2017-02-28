@@ -29,7 +29,7 @@ namespace ClinicaFrba.Registro_Llegada
             {
                 query += " and t.id =" + id + "";
             }
-            query+= "and CAST(t.fecha AS DATE) = CAST(CAST('" + Program.horarioSistema.ToString() + "' AS DATETIME) AS DATE)";
+            query+= "and CAST(t.fecha AS DATE) = CAST(CAST('" + Program.horarioSistema.ToString() + "' AS DATETIME) AS DATE) and CAST(CAST('"+ Program.horarioSistema.ToString()+"' as DATETIME) AS TIME) < CAST(t.fecha AS TIME)";
             Server server = Server.getInstance();
             SqlDataReader reader = server.query(query);
             while (reader.Read())
@@ -46,11 +46,17 @@ namespace ClinicaFrba.Registro_Llegada
 
             return turnos;
         }
-        public static void PersistirCambios(Turno unTurno)
+        public static Int32 PersistirCambios(Turno unTurno)
         {
             Server server = Server.getInstance();
             SqlDataReader reader = server.query("EXEC GESTIONAME_LAS_VACACIONES.registrarLlegada " + unTurno.id + "," + unTurno.idPaciente + ",'" + Program.horarioSistema + "'");
             reader.Close();
+            string q = "SELECT COUNT(*) as cantidad FROM GESTIONAME_LAS_VACACIONES.Bonos WHERE USADO = 0 AND idPaciente = " + unTurno.idPaciente;
+            SqlDataReader reader1 = server.query("SELECT COUNT(*) FROM GESTIONAME_LAS_VACACIONES.Bonos WHERE USADO = 0 AND idPaciente = " + unTurno.idPaciente);
+            reader1.Read();
+            Int32 aux = Convert.ToInt32(reader1[0]);
+            reader1.Close();
+            return aux;
         }
 
         public static List<Especialidad> listarEspecialidades(int idMedico)

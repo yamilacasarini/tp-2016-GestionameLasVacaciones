@@ -57,7 +57,7 @@ namespace ClinicaFrba.AbmRol
         public void rellenarListaConRolesNoEliminados(String id)
         {
             Server server = Server.getInstance();
-            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.RolesxUsuario u JOIN GESTIONAME_LAS_VACACIONES.Roles r ON u.idRol = r.id WHERE r.baja <> 1 AND u.idUsuario = " + "'" + id.ToString() + "'");
+            SqlDataReader reader = server.query("SELECT descripcion FROM GESTIONAME_LAS_VACACIONES.Roles WHERE baja <> 1");
             while (reader.Read())
             {
                 comboEliminar.Items.Add(reader["descripcion"].ToString());

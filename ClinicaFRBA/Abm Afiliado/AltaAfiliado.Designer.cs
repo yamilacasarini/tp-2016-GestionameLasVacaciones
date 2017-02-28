@@ -45,7 +45,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
-            this.txFamiliaresACargo = new System.Windows.Forms.TextBox();
             this.cBtipoDocumento = new System.Windows.Forms.ComboBox();
             this.cBsexo = new System.Windows.Forms.ComboBox();
             this.cBestadoCivil = new System.Windows.Forms.ComboBox();
@@ -58,6 +57,8 @@
             this.txId = new System.Windows.Forms.Label();
             this.btAgregarFam = new System.Windows.Forms.Button();
             this.labelFamiliar = new System.Windows.Forms.Label();
+            this.txFamiliaresACargo = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.txFamiliaresACargo)).BeginInit();
             this.SuspendLayout();
             // 
             // label2
@@ -114,7 +115,7 @@
             this.txDocumento.Location = new System.Drawing.Point(171, 155);
             this.txDocumento.MaxLength = 10;
             this.txDocumento.Name = "txDocumento";
-            this.txDocumento.Size = new System.Drawing.Size(200, 20);
+            this.txDocumento.Size = new System.Drawing.Size(78, 20);
             this.txDocumento.TabIndex = 15;
             this.txDocumento.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
@@ -179,10 +180,11 @@
             // txTelefono
             // 
             this.txTelefono.Location = new System.Drawing.Point(171, 205);
-            this.txTelefono.MaxLength = 12;
+            this.txTelefono.MaxLength = 15;
             this.txTelefono.Name = "txTelefono";
             this.txTelefono.Size = new System.Drawing.Size(200, 20);
             this.txTelefono.TabIndex = 22;
+            this.txTelefono.TextChanged += new System.EventHandler(this.txTelefono_TextChanged_1);
             // 
             // label8
             // 
@@ -224,15 +226,6 @@
             this.label13.TabIndex = 31;
             this.label13.Text = "Familiares a cargo:";
             // 
-            // txFamiliaresACargo
-            // 
-            this.txFamiliaresACargo.Location = new System.Drawing.Point(171, 332);
-            this.txFamiliaresACargo.MaxLength = 2;
-            this.txFamiliaresACargo.Name = "txFamiliaresACargo";
-            this.txFamiliaresACargo.Size = new System.Drawing.Size(200, 20);
-            this.txFamiliaresACargo.TabIndex = 30;
-            this.txFamiliaresACargo.TextChanged += new System.EventHandler(this.txFamiliaresACargo_TextChanged);
-            // 
             // cBtipoDocumento
             // 
             this.cBtipoDocumento.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -244,7 +237,7 @@
             "LD"});
             this.cBtipoDocumento.Location = new System.Drawing.Point(171, 130);
             this.cBtipoDocumento.Name = "cBtipoDocumento";
-            this.cBtipoDocumento.Size = new System.Drawing.Size(200, 21);
+            this.cBtipoDocumento.Size = new System.Drawing.Size(78, 21);
             this.cBtipoDocumento.TabIndex = 36;
             this.cBtipoDocumento.SelectedIndexChanged += new System.EventHandler(this.cBtipoDocumento_SelectedIndexChanged);
             // 
@@ -257,7 +250,7 @@
             "Masculino"});
             this.cBsexo.Location = new System.Drawing.Point(171, 280);
             this.cBsexo.Name = "cBsexo";
-            this.cBsexo.Size = new System.Drawing.Size(200, 21);
+            this.cBsexo.Size = new System.Drawing.Size(78, 21);
             this.cBsexo.TabIndex = 37;
             this.cBsexo.SelectedIndexChanged += new System.EventHandler(this.cBsexo_SelectedIndexChanged);
             // 
@@ -273,7 +266,7 @@
             "Divorciado"});
             this.cBestadoCivil.Location = new System.Drawing.Point(171, 306);
             this.cBestadoCivil.Name = "cBestadoCivil";
-            this.cBestadoCivil.Size = new System.Drawing.Size(200, 21);
+            this.cBestadoCivil.Size = new System.Drawing.Size(78, 21);
             this.cBestadoCivil.TabIndex = 38;
             this.cBestadoCivil.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
             // 
@@ -325,7 +318,7 @@
             // 
             this.cBplanMedico.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cBplanMedico.FormattingEnabled = true;
-            this.cBplanMedico.Location = new System.Drawing.Point(171, 357);
+            this.cBplanMedico.Location = new System.Drawing.Point(171, 362);
             this.cBplanMedico.Name = "cBplanMedico";
             this.cBplanMedico.Size = new System.Drawing.Size(200, 21);
             this.cBplanMedico.TabIndex = 39;
@@ -371,11 +364,19 @@
             this.labelFamiliar.TabIndex = 46;
             this.labelFamiliar.Text = "Ingresando familiar de:";
             // 
+            // txFamiliaresACargo
+            // 
+            this.txFamiliaresACargo.Location = new System.Drawing.Point(171, 337);
+            this.txFamiliaresACargo.Name = "txFamiliaresACargo";
+            this.txFamiliaresACargo.Size = new System.Drawing.Size(78, 20);
+            this.txFamiliaresACargo.TabIndex = 76;
+            // 
             // AltaAfiliado
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(445, 443);
+            this.Controls.Add(this.txFamiliaresACargo);
             this.Controls.Add(this.labelFamiliar);
             this.Controls.Add(this.btAgregarFam);
             this.Controls.Add(this.txId);
@@ -389,7 +390,6 @@
             this.Controls.Add(this.cBtipoDocumento);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label13);
-            this.Controls.Add(this.txFamiliaresACargo);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label10);
@@ -409,6 +409,7 @@
             this.Name = "AltaAfiliado";
             this.Text = "Alta  Afiliado";
             this.Load += new System.EventHandler(this.AltaAfiliado_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.txFamiliaresACargo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -433,7 +434,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox txFamiliaresACargo;
         private System.Windows.Forms.ComboBox cBtipoDocumento;
         private System.Windows.Forms.ComboBox cBsexo;
         private System.Windows.Forms.ComboBox cBestadoCivil;
@@ -447,5 +447,6 @@
         private System.Windows.Forms.Label txId;
         private System.Windows.Forms.Button btAgregarFam;
         private System.Windows.Forms.Label labelFamiliar;
+        private System.Windows.Forms.NumericUpDown txFamiliaresACargo;
     }
 }

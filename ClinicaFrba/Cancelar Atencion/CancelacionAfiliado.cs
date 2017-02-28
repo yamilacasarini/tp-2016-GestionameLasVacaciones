@@ -82,5 +82,10 @@ namespace ClinicaFrba.Cancelar_Atencion
         {
             this.Close();
         }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
